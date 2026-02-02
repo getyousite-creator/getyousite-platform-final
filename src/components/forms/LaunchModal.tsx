@@ -31,13 +31,14 @@ export default function LaunchModal() {
         defaultValues: {
             vision: visionPrefill || "",
             budget: "pro",
-            email: ""
+            email: "",
+            siteType: "business"
         }
     });
 
     useEffect(() => {
         if (isOpen) {
-            reset({ vision: visionPrefill || "", budget: "pro", email: "" });
+            reset({ vision: visionPrefill || "", budget: "pro", email: "", siteType: "business" });
             setSuccess(false);
             setIsDeploying(false);
         }
@@ -50,6 +51,7 @@ export default function LaunchModal() {
         formData.append("email", data.email);
         formData.append("vision", data.vision);
         formData.append("budget", data.budget);
+        formData.append("siteType", data.siteType);
 
         try {
             const result = await captureLead({ success: false }, formData);
@@ -125,6 +127,19 @@ export default function LaunchModal() {
                                                     <AlertCircle className="w-3 h-3" /> {errors.email.message}
                                                 </p>
                                             )}
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <Label htmlFor="siteType" className="text-xs font-bold text-zinc-500 uppercase">What are you building?</Label>
+                                            <select
+                                                id="siteType"
+                                                {...register("siteType")}
+                                                className="w-full bg-white/5 border border-white/10 rounded-md h-12 text-sm text-zinc-100 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none"
+                                            >
+                                                <option value="blog" className="bg-zinc-900">Personal / Blog Presence</option>
+                                                <option value="business" className="bg-zinc-900">Professional Business Site</option>
+                                                <option value="store" className="bg-zinc-900">E-commerce / Online Store</option>
+                                            </select>
                                         </div>
 
                                         <div className="space-y-2">

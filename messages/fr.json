@@ -87,10 +87,22 @@
     "Pricing": {
         "title": "Investissement Stratégique",
         "subtitle": "Choisissez le cœur de réacteur adapté à votre trajectoire. Prix transparents, rendement maximal.",
+        "niche": {
+            "blog": "Blog / Personnel",
+            "business": "Business / Médical",
+            "store": "Boutique / E-commerce",
+            "agency": "Agences / Multi"
+        },
         "starter": "Démarrage",
         "pro": "Professionnel",
         "business": "Business IA",
         "enterprise": "Entreprise",
+        "desc": {
+            "starter": "Commencez votre voyage numérique dès aujourd'hui. Dédié aux blogs personnels et CV.",
+            "pro": "Pivotez votre entreprise vers le professionnalisme absolu. Spécialisé pour entreprises, cliniques et bureaux.",
+            "business": "La machine de vente qui ne s'arrête jamais. E-commerce intégré avec gestion des stocks.",
+            "enterprise": "Souveraineté numérique totale sans limites. Support technique direct et solutions personnalisées."
+        },
         "price_custom": "Sur mesure",
         "per_project": "/projet",
         "choose": "Choisir ce plan",
@@ -103,13 +115,19 @@
             "cms": "Intégration CMS",
             "analytics": "Tableau de Bord Analytics",
             "support": "Support Prioritaire",
+            "domain_free": "Domaine .com Gratuit",
             "ecommerce": "E-commerce Complet",
+            "inventory": "Gestion de Stock",
+            "reports": "Rapports de Ventes",
             "chatbot": "Intégration Chatbot IA",
             "multilingual": "Support Multilingue",
             "animations": "Animations Personnalisées",
             "monitoring": "Monitoring 24/7",
             "team": "Équipe Dédiée",
             "whitelabel": "Solutions Marque Blanche",
+            "whatsapp_support": "Support WhatsApp Direct",
+            "high_security": "Sécurité Militaire",
+            "unlimited": "Projets Illimités",
             "custom_ai": "Modèles IA Personnalisés",
             "sla": "Garantie SLA",
             "onpremise": "Options Sur Site"

@@ -13,6 +13,7 @@ export type ActionState = {
         email?: string[];
         vision?: string[];
         budget?: string[];
+        siteType?: string[];
     };
 };
 
@@ -36,6 +37,7 @@ export async function captureLead(prevState: ActionState, formData: FormData): P
         email: formData.get('email'),
         vision: formData.get('vision'),
         budget: formData.get('budget'),
+        siteType: formData.get('siteType'),
     };
 
     const validatedFields = LeadSchema.safeParse(rawData);
@@ -48,7 +50,7 @@ export async function captureLead(prevState: ActionState, formData: FormData): P
         };
     }
 
-    const { vision, budget, email: userEmail } = validatedFields.data;
+    const { vision, budget, siteType, email: userEmail } = validatedFields.data;
 
     try {
         console.log("ACTION_LOG: Initializing Sovereign Customization Sequence...");
@@ -57,7 +59,7 @@ export async function captureLead(prevState: ActionState, formData: FormData): P
         // Defaulting to 't1-quantum' for hero generation if no template is pre-selected
         const finalBlueprint = await CustomizerEngine.generateFinalBlueprint({
             businessName: vision.split(' ').slice(0, 2).join(' '),
-            niche: "General Innovation",
+            niche: siteType === 'blog' ? 'Blogging & Content' : siteType === 'store' ? 'E-commerce & Retail' : 'Professional Business',
             vision: vision,
             selectedId: "t1-quantum"
         });

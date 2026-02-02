@@ -6,14 +6,17 @@ import { CreditCard, Landmark, DollarSign, ShieldCheck, Upload, CheckCircle2, Lo
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import Script from "next/script";
+import { submitPaymentProofAction } from "@/app/actions/payment-actions";
 
 interface CheckoutModuleProps {
-    planId: "pro" | "enterprise";
+    planId: "starter" | "pro" | "business" | "enterprise";
+    siteType: "blog" | "business" | "store";
+    currency: "MAD" | "USD";
     amount: string;
     onSuccess: () => void;
 }
 
-export const CheckoutModule = ({ planId, amount, onSuccess }: CheckoutModuleProps) => {
+export const CheckoutModule = ({ planId, siteType, currency, amount, onSuccess }: CheckoutModuleProps) => {
     const [method, setMethod] = useState<"card" | "local">("card");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isUploaded, setIsUploaded] = useState(false);
@@ -43,12 +46,22 @@ export const CheckoutModule = ({ planId, amount, onSuccess }: CheckoutModuleProp
 
     const handleLocalSubmit = async () => {
         setIsSubmitting(true);
-        // Logic: Submit Payment Request to Supabase
-        setTimeout(() => {
+        try {
+            // Logic: Submit Payment Request to Supabase via Server Action
+            const result = await submitPaymentProofAction(planId, siteType, 'cih', 'https://placeholder-receipt.com'); // Placeholder URL for now
+
+            if (result.success) {
+                setIsUploaded(true);
+                toast.success("Reçu envoyé avec succès. Validation en cours.");
+                onSuccess();
+            } else {
+                toast.error(result.error || "Failed to submit request.");
+            }
+        } catch (error) {
+            toast.error("An error occurred during submission.");
+        } finally {
             setIsSubmitting(false);
-            setIsUploaded(true);
-            toast.success("Reçu envoyé avec succès. Validation en cours.");
-        }, 2000);
+        }
     };
 
     return (
@@ -92,7 +105,7 @@ export const CheckoutModule = ({ planId, amount, onSuccess }: CheckoutModuleProp
                         <div className="p-6 bg-zinc-50 rounded-2xl flex items-center justify-between">
                             <div>
                                 <div className="text-[10px] font-black uppercase text-zinc-400 tracking-widest mb-1">Total_Amount</div>
-                                <div className="text-3xl font-black">${amount}</div>
+                                <div className="text-3xl font-black">{amount} {currency}</div>
                             </div>
                             <ShieldCheck className="w-10 h-10 text-emerald-500" />
                         </div>

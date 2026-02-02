@@ -87,10 +87,22 @@
     "Pricing": {
         "title": "Strategic Investment",
         "subtitle": "Choose the reactor core that fits your trajectory. Transparent pricing, maximum yield.",
+        "niche": {
+            "blog": "Blog / Personal",
+            "business": "Business / Medical",
+            "store": "Store / E-commerce",
+            "agency": "Agencies / Multi"
+        },
         "starter": "Starter",
         "pro": "Professional",
         "business": "Business AI",
         "enterprise": "Enterprise",
+        "desc": {
+            "starter": "Start your digital journey today. Dedicated to personal blogs and resumes.",
+            "pro": "Pivot your business toward absolute professionalism. Specialized for companies, clinics, and offices.",
+            "business": "The selling machine that never stops. Integrated e-commerce with inventory management.",
+            "enterprise": "Total digital sovereignty without limits. Direct technical support and custom solutions."
+        },
         "price_custom": "Custom",
         "per_project": "/project",
         "choose": "Choose Plan",
@@ -103,13 +115,19 @@
             "cms": "CMS Integration",
             "analytics": "Analytics Dashboard",
             "support": "Priority Support",
+            "domain_free": "Free .com Domain",
             "ecommerce": "Full E-commerce",
+            "inventory": "Inventory Management",
+            "reports": "Sales Reports",
             "chatbot": "AI Chatbot Integration",
             "multilingual": "Multilingual Support",
             "animations": "Custom Animations",
             "monitoring": "24/7 Monitoring",
             "team": "Dedicated Team",
             "whitelabel": "White-label Solutions",
+            "whatsapp_support": "Direct WhatsApp Support",
+            "high_security": "Military-grade Security",
+            "unlimited": "Unlimited Projects",
             "custom_ai": "Custom AI Models",
             "sla": "SLA Guarantee",
             "onpremise": "On-premise Options"

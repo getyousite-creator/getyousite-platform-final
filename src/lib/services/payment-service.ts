@@ -1,10 +1,12 @@
 import { createClient } from '../supabase/server';
 
-export type SubscriptionPlan = 'free' | 'pro' | 'enterprise';
+export type SubscriptionPlan = 'starter' | 'pro' | 'business' | 'enterprise';
+export type SiteType = 'blog' | 'business' | 'store';
 
 export interface UserSubscription {
     user_id: string;
     plan_id: SubscriptionPlan;
+    allowed_site_type: SiteType;
     status: string;
     current_period_end?: string;
 }
@@ -24,14 +26,14 @@ export class PaymentService {
                 .single();
 
             if (error || !data) {
-                // If no entry, we assume 'free' tier by default
-                return { user_id: userId, plan_id: 'free', status: 'active' };
+                // Default Tier: Starter (Blog)
+                return { user_id: userId, plan_id: 'starter', allowed_site_type: 'blog', status: 'active' };
             }
 
             return data as UserSubscription;
         } catch (e) {
             console.error("PaymentService.getUserSubscription Error:", e);
-            return { user_id: userId, plan_id: 'free', status: 'active' };
+            return { user_id: userId, plan_id: 'starter', allowed_site_type: 'blog', status: 'active' };
         }
     }
 
@@ -92,10 +94,17 @@ export class PaymentService {
     static async submitPaymentProof(
         userId: string,
         planId: SubscriptionPlan,
+        siteType: SiteType,
         method: 'cih' | 'barid' | 'cashplus',
         receiptUrl: string
     ): Promise<{ success: boolean; error?: string }> {
         try {
+            const pricingMAD: Record<SubscriptionPlan, number> = {
+                starter: 499,
+                pro: 999,
+                business: 1499,
+                enterprise: 2999
+            };
             // 1. Check Spam protection
             const spam = await this.checkSpamProtection(userId);
             if (spam.blocked) {
@@ -108,8 +117,10 @@ export class PaymentService {
                 .insert({
                     user_id: userId,
                     plan_id: planId,
+                    site_type: siteType,
                     method,
-                    amount: planId === 'pro' ? 49 : 199,
+                    amount: pricingMAD[planId],
+                    currency_code: 'MAD',
                     receipt_url: receiptUrl,
                     status: 'pending'
                 });
@@ -126,8 +137,14 @@ export class PaymentService {
     /**
      * SOVEREIGN AUTO: Update subscription status after successful global capture
      */
-    static async handlePayPalCapture(userId: string, planId: SubscriptionPlan): Promise<{ success: boolean }> {
+    static async handlePayPalCapture(userId: string, planId: SubscriptionPlan, siteType: SiteType): Promise<{ success: boolean }> {
         try {
+            const pricingUSD: Record<SubscriptionPlan, number> = {
+                starter: 55,
+                pro: 110,
+                business: 165,
+                enterprise: 330
+            };
             const supabase = await createClient();
 
             // 1. Update user_subscriptions
@@ -136,6 +153,7 @@ export class PaymentService {
                 .upsert({
                     user_id: userId,
                     plan_id: planId,
+                    allowed_site_type: siteType,
                     status: 'active',
                     updated_at: new Date().toISOString()
                 });
@@ -146,8 +164,10 @@ export class PaymentService {
             await supabase.from('payment_requests').insert({
                 user_id: userId,
                 plan_id: planId,
+                site_type: siteType,
                 method: 'paypal',
-                amount: planId === 'pro' ? 49 : 199,
+                amount: pricingUSD[planId],
+                currency_code: 'USD',
                 status: 'approved'
             });
 
@@ -208,6 +228,7 @@ export class PaymentService {
                     .upsert({
                         user_id: request.user_id,
                         plan_id: request.plan_id,
+                        allowed_site_type: request.site_type,
                         status: 'active',
                         updated_at: new Date().toISOString()
                     });

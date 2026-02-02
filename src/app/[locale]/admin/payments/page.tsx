@@ -13,8 +13,11 @@ import Image from "next/image";
 
 interface PaymentRequest {
     id: string;
+    plan_id: string;
+    site_type: string;
     method: string;
     amount: number;
+    currency_code: string;
     receipt_url: string;
     created_at: string;
     profiles?: {
@@ -162,10 +165,10 @@ export default function AdminPaymentsPage() {
                             >
                                 <div className="flex justify-between items-start mb-6">
                                     <div className="px-4 py-1.5 bg-zinc-50 border border-zinc-100 rounded-full text-[9px] font-black uppercase tracking-widest text-zinc-400">
-                                        {req.method} Flow
+                                        {req.method} Flow • {req.site_type}
                                     </div>
                                     <div className="text-2xl font-black text-emerald-500">
-                                        ${req.amount}
+                                        {req.amount} <span className="text-[10px] text-zinc-400">{req.currency_code}</span>
                                     </div>
                                 </div>
 
@@ -208,7 +211,7 @@ export default function AdminPaymentsPage() {
                                         onClick={() => handleApprove(req.id)}
                                         className="h-14 rounded-2xl bg-zinc-950 text-white hover:bg-emerald-600 transition-all font-black uppercase tracking-widest text-[10px]"
                                     >
-                                        <CheckCircle2 className="w-4 h-4 mr-2" /> Activate Pro
+                                        <CheckCircle2 className="w-4 h-4 mr-2" /> Activate {req.plan_id}
                                     </Button>
                                 </div>
                             </motion.div>

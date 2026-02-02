@@ -1,6 +1,6 @@
 "use server";
 
-import { PaymentService, SubscriptionPlan } from "@/lib/services/payment-service";
+import { PaymentService, SubscriptionPlan, SiteType } from "@/lib/services/payment-service";
 import { AuthService } from "@/lib/services/auth-service";
 import { revalidatePath } from "next/cache";
 
@@ -12,12 +12,12 @@ export type PaymentResult = {
 /**
  * Handle PayPal Success Result (Global)
  */
-export async function handlePayPalSuccessAction(planId: SubscriptionPlan): Promise<PaymentResult> {
+export async function handlePayPalSuccessAction(planId: SubscriptionPlan, siteType: SiteType): Promise<PaymentResult> {
     try {
-        const user = await AuthService.getCurrentUser();
-        if (!user.data) return { success: false, error: "Authentication required" };
+        const { data: user } = await AuthService.getCurrentUser();
+        if (!user) return { success: false, error: "Authentication required" };
 
-        const result = await PaymentService.handlePayPalCapture(user.data.id, planId);
+        const result = await PaymentService.handlePayPalCapture(user.id, planId, siteType);
         if (result.success) {
             revalidatePath('/dashboard');
             return { success: true };
@@ -33,14 +33,15 @@ export async function handlePayPalSuccessAction(planId: SubscriptionPlan): Promi
  */
 export async function submitPaymentProofAction(
     planId: SubscriptionPlan,
+    siteType: SiteType,
     method: 'cih' | 'barid' | 'cashplus',
     receiptUrl: string
 ): Promise<PaymentResult> {
     try {
-        const user = await AuthService.getCurrentUser();
-        if (!user.data) return { success: false, error: "Authentication required" };
+        const { data: user } = await AuthService.getCurrentUser();
+        if (!user) return { success: false, error: "Authentication required" };
 
-        const result = await PaymentService.submitPaymentProof(user.data.id, planId, method, receiptUrl);
+        const result = await PaymentService.submitPaymentProof(user.id, planId, siteType, method, receiptUrl);
         if (result.success) {
             return { success: true };
         }

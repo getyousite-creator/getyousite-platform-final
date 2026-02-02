@@ -87,10 +87,22 @@
     "Pricing": {
         "title": "Inversión Estratégica",
         "subtitle": "Elija el núcleo del reactor que se ajuste a su trayectoria. Precios transparentes, rendimiento máximo.",
+        "niche": {
+            "blog": "Blog / Personal",
+            "business": "Negocios / Médico",
+            "store": "Tienda / E-commerce",
+            "agency": "Agencias / Multi"
+        },
         "starter": "Inicial",
         "pro": "Profesional",
         "business": "Negocios IA",
         "enterprise": "Empresarial",
+        "desc": {
+            "starter": "Comience su viaje digital hoy. Dedicado a blogs personales y currículums.",
+            "pro": "Gire su negocio hacia el profesionalismo absoluto. Especializado para empresas, clínicas y oficinas.",
+            "business": "La máquina de ventas que nunca se detiene. E-commerce integrado con gestión de inventario.",
+            "enterprise": "Soberanía digital total sin límites. Soporte técnico directo y soluciones personalizadas."
+        },
         "price_custom": "A medida",
         "per_project": "/proyecto",
         "choose": "Elegir Plan",
@@ -103,13 +115,19 @@
             "cms": "Integración CMS",
             "analytics": "Panel de Análisis",
             "support": "Soporte Prioritario",
+            "domain_free": "Dominio .com Gratis",
             "ecommerce": "E-commerce Completo",
+            "inventory": "Gestión de Inventario",
+            "reports": "Informes de Ventas",
             "chatbot": "Integración Chatbot IA",
             "multilingual": "Soporte Multilingüe",
             "animations": "Animaciones Personalizadas",
             "monitoring": "Monitoreo 24/7",
             "team": "Equipo Dedicado",
             "whitelabel": "Soluciones Marca Blanca",
+            "whatsapp_support": "Soporte WhatsApp Directo",
+            "high_security": "Seguridad de Grado Militar",
+            "unlimited": "Proyectos Ilimitados",
             "custom_ai": "Modelos IA Personalizados",
             "sla": "Garantía SLA",
             "onpremise": "Opciones On-premise"

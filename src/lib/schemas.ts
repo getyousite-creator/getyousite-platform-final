@@ -3,7 +3,8 @@ import { z } from 'zod';
 export const LeadSchema = z.object({
     email: z.string().email({ message: "Invalid email address" }),
     vision: z.string().min(10, { message: "Vision description must be at least 10 characters" }),
-    budget: z.enum(["starter", "pro", "business", "enterprise"])
+    budget: z.enum(["starter", "pro", "business", "enterprise"]),
+    siteType: z.enum(["blog", "business", "store"])
 });
 
 export type LeadFormValues = z.infer<typeof LeadSchema>;
