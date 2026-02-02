@@ -1,0 +1,107 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Zap, Globe, Cpu, Shield, Smartphone, Rocket } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
+
+export default function Services() {
+    const t = useTranslations('Services');
+
+    const services = [
+        {
+            icon: Zap,
+            id: "velocity",
+            color: "text-yellow-400",
+        },
+        {
+            icon: Cpu,
+            id: "ai",
+            color: "text-purple-400",
+        },
+        {
+            icon: Globe,
+            id: "cdn",
+            color: "text-blue-400",
+        },
+        {
+            icon: Shield,
+            id: "security",
+            color: "text-green-400",
+        },
+        {
+            icon: Smartphone,
+            id: "responsive",
+            color: "text-pink-400",
+        },
+        {
+            icon: Rocket,
+            id: "growth",
+            color: "text-orange-400",
+        },
+    ];
+
+    return (
+        <section id="services" className="py-32 bg-slate-950/20 relative overflow-hidden">
+            <div className="container mx-auto px-6 relative z-10">
+                <div className="mb-24 text-center">
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-white/5 text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 mb-8"
+                    >
+                        Capabilities_Silo
+                    </motion.div>
+                    <motion.h2
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-5xl md:text-[5rem] font-black text-white mb-8 tracking-tighter uppercase leading-none"
+                    >
+                        {t('title')}
+                    </motion.h2>
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.1 }}
+                        className="text-slate-400 max-w-2xl mx-auto text-lg font-medium leading-relaxed"
+                    >
+                        {t('subtitle')}
+                    </motion.p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {services.map((service, index) => (
+                        <motion.div
+                            key={service.id}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: index * 0.1 }}
+                            whileHover={{ y: -5 }}
+                            className="group relative p-10 rounded-3xl bg-slate-900/40 border border-slate-800/50 hover:border-blue-500/30 transition-all duration-500 overflow-hidden backdrop-blur-sm"
+                        >
+                            {/* Hover Flux Glow */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
+                            <div className={cn("mb-8 w-14 h-14 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center shadow-2xl transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3", service.color)}>
+                                <service.icon className="w-7 h-7" />
+                            </div>
+
+                            <h3 className="text-2xl font-black text-white mb-4 group-hover:text-blue-400 transition-colors tracking-tight">
+                                {t(`${service.id}.title`)}
+                            </h3>
+                            <p className="text-slate-400 text-sm leading-relaxed font-medium">
+                                {t(`${service.id}.desc`)}
+                            </p>
+
+                            <div className="mt-8 w-12 h-1 bg-slate-800 rounded-full group-hover:w-24 group-hover:bg-blue-600 transition-all duration-500" />
+                        </motion.div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+}

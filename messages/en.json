@@ -1,0 +1,131 @@
+{
+    "Header": {
+        "services": "Services",
+        "pricing": "Pricing",
+        "aiEngine": "AI Engine",
+        "portfolio": "Portfolio",
+        "launch": "Launch Empire"
+    },
+    "Hero": {
+        "badge": "System Online • v2.0 Ready",
+        "headline": "Architecting <gradient>Digital Empires</gradient> in 48 Hours.",
+        "subheadline": "High-Performance Ecosystems. AI Integrated. German Engineered. Input your vision below and let our Quantum Engine construct the blueprint.",
+        "placeholder": "Describe your dream platform...",
+        "generate": "Generate",
+        "gdpr": "GDPR Compliant",
+        "uptime": "99.9% Uptime",
+        "aiCore": "AI-Driven Core"
+    },
+    "Services": {
+        "title": "Quantum Capabilities",
+        "subtitle": "Beyond standard web development. We engineer digital organisms that live, breathe, and evolve.",
+        "velocity": {
+            "title": "Velocity Architecture",
+            "desc": "Server-side rendering optimized for <50ms Time-to-First-Byte. Speed is our religion."
+        },
+        "ai": {
+            "title": "AI Neural Core",
+            "desc": "Integrated LLM agents that handle customer support and dynamic content generation 24/7."
+        },
+        "cdn": {
+            "title": "Global CDN Mesh",
+            "desc": "Content duplicated across 300+ edge nodes. Your empire is accessible from Tokyo to New York instantly."
+        },
+        "security": {
+            "title": "Sovereign Security",
+            "desc": "Enterprise-grade DDOS protection, automated SSL, and military-standard encryption protocols."
+        },
+        "responsive": {
+            "title": "Liquid Responsive",
+            "desc": "Designs that flow like water across every device class, from 8k walls to smartwatches."
+        },
+        "growth": {
+            "title": "Growth Reactors",
+            "desc": "Built-in SEO schematics and conversion funnels designed to scale your traffic exponentially."
+        }
+    },
+    "Showcase": {
+        "title": "Visual <span class=\"text-blue-500\">Proof</span>",
+        "subtitle": "Explore our library of production-ready architectures. Filter by industry.",
+        "tabs": {
+            "all": "All Architectures",
+            "business": "Business & SaaS",
+            "creative": "Creative & Portfolio",
+            "ecommerce": "E-Commerce",
+            "medical": "Medical & Health",
+            "food": "Hospitality"
+        },
+        "preview": "Live Preview",
+        "view_archive": "View Full Library",
+        "projects": {
+            "saas": {
+                "title": "SaaS Analytics Pro",
+                "desc": "Real-time data visualization complex with sub-50ms latency updates."
+            },
+            "fashion": {
+                "title": "Maison Élite",
+                "desc": "Minimalist fashion platform optimizing LCP for high-conversion retail."
+            },
+            "portfolio": {
+                "title": "Neon Dreams",
+                "desc": "Brutalist design system with WebGL-powered interactions."
+            },
+            "medical": {
+                "title": "Nova Clinic",
+                "desc": "HIPAA-compliant patient portal with appointment scheduling core."
+            },
+            "restaurant": {
+                "title": "Aurum & Ash",
+                "desc": "Luxury dining experience with reservation engine and dynamic menu."
+            },
+            "tech": {
+                "title": "SyncSphere",
+                "desc": "B2B collaboration platform with isometric visual identity."
+            }
+        }
+    },
+    "Pricing": {
+        "title": "Strategic Investment",
+        "subtitle": "Choose the reactor core that fits your trajectory. Transparent pricing, maximum yield.",
+        "starter": "Starter",
+        "pro": "Professional",
+        "business": "Business AI",
+        "enterprise": "Enterprise",
+        "price_custom": "Custom",
+        "per_project": "/project",
+        "choose": "Choose Plan",
+        "features": {
+            "single_page": "Single Page App",
+            "basic_seo": "Basic SEO",
+            "mobile": "Mobile Responsive",
+            "delivery": "48h Delivery",
+            "pages": "5 Page Ecosystem",
+            "cms": "CMS Integration",
+            "analytics": "Analytics Dashboard",
+            "support": "Priority Support",
+            "ecommerce": "Full E-commerce",
+            "chatbot": "AI Chatbot Integration",
+            "multilingual": "Multilingual Support",
+            "animations": "Custom Animations",
+            "monitoring": "24/7 Monitoring",
+            "team": "Dedicated Team",
+            "whitelabel": "White-label Solutions",
+            "custom_ai": "Custom AI Models",
+            "sla": "SLA Guarantee",
+            "onpremise": "On-premise Options"
+        }
+    },
+    "Footer": {
+        "tagline": "Architecting the digital future. We build high-performance, AI-integrated ecosystems for visionaries.",
+        "platform": "Platform",
+        "legal": "Legal",
+        "system": "System Status",
+        "operational": "All Systems Operational",
+        "hosted": "Hosted in Frankfurt, DE",
+        "copyright": "© 2026 GetYouSite Platform. All rights reserved."
+    },
+    "Metadata": {
+        "title": "GetYouSite | Architecting Digital Empires",
+        "description": "Build your dream website in 48 hours with AI-driven precision. The only platform capable of constructing sovereign digital ecosystems."
+    }
+}

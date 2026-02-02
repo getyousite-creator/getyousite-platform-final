@@ -1,0 +1,34 @@
+.canvasRoot {
+    all: initial;
+    /* Reset all inherited styles */
+    font-family: inherit;
+    /* Allow font inheritance if controlled */
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+    background-color: white;
+    color: black;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+.canvasRoot * {
+    box-sizing: border-box;
+}
+
+/* Ensure images and videos are responsive but contained */
+.canvasRoot img,
+.canvasRoot video {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Scoped Utility Classes for Blueprints */
+.quantum {
+    background: black;
+    color: white;
+}
+
+.glowHighlight {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+}
