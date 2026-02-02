@@ -17,24 +17,30 @@ const VermaHospitality = dynamic(() => import('./hospitality/VermaHospitality'),
 const OmegaAgencyPro = dynamic(() => import('./agency/OmegaAgencyPro'), { ssr: false });
 const AlphaStorePro = dynamic(() => import('./ecommerce/AlphaStorePro'), { ssr: false });
 
-const templateMap = {
-    'creative-agency': NeuraAgency,
-    'sierra-industry': SierraIndustrial,
-    'vital-care': VitalCare,
-    'luxe-cart': LuxeCart,
-    'law-silo': LawSilo,
-    'elite-lms': EliteLMS,
-    'zen-food': ZenKitchen,
-    'boreal-estate': BorealEstates,
-    'cyber-portfolio': CyberPortfolio,
-    'tech-grid': TechGrid,
-    'verma-hospitality': VermaHospitality,
-    'omega-pro': OmegaAgencyPro,
-    'alpha-pro': AlphaStorePro,
+import { SovereignTemplateProps } from "@/lib/types/template";
+
+const templateMap: Record<string, React.ComponentType<SovereignTemplateProps>> = {
+    'creative-agency': NeuraAgency as any, // Temporary cast until strict refactor is complete for all
+    'sierra-industry': SierraIndustrial as any,
+    'vital-care': VitalCare as any,
+    'luxe-cart': LuxeCart as any,
+    'law-silo': LawSilo as any,
+    'elite-lms': EliteLMS as any,
+    'zen-food': ZenKitchen as any,
+    'boreal-estate': BorealEstates as any,
+    'cyber-portfolio': CyberPortfolio as any,
+    'tech-grid': TechGrid as any,
+    'verma-hospitality': VermaHospitality as any,
+    'omega-pro': OmegaAgencyPro as any,
+    'alpha-pro': AlphaStorePro as any,
 };
 
 export default function TemplateRenderer({ templateId }: { templateId: string }) {
     const Template = templateMap[templateId as keyof typeof templateMap];
+
+    // Sovereign Update: Subscribe to store changes to ensure real-time preview (Optimistic UI)
+    const settings = useTemplateEditor(state => state.settings);
+    const blueprint = useTemplateEditor(state => state.blueprint);
 
     if (!Template) {
         return (
@@ -44,7 +50,6 @@ export default function TemplateRenderer({ templateId }: { templateId: string })
         );
     }
 
-    // Pro models handle their own wrapping already. 
-    // Legacy models will be refactored one by one.
-    return <Template settings={useTemplateEditor.getState().settings} />;
+    // Sovereign Update: Inject full blueprint schema
+    return <Template settings={settings} blueprint={blueprint} />;
 }

@@ -2,20 +2,102 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTemplateEditor } from '@/hooks/use-template-editor';
+import { useAutoSave } from "@/hooks/use-auto-save";
 import { CustomizerEngine } from '@/lib/engine/customizer';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
-import { BlueprintPersistence } from '@/lib/engine/persistence';
 import { CommandCenter } from '@/components/customizer/CommandCenter';
 import { PreviewCanvas } from '@/components/customizer/PreviewCanvas';
 import { PaymentModule } from '@/components/customizer/PaymentModule';
+import { saveStoreAction, getStoreAction } from '@/app/actions/store-actions';
+import { StorageService } from '@/lib/services/storage-service';
+import AuthModal from '@/components/auth/AuthModal';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react'; // Note: Button isn't in lucide, fixing this import
+import { toast } from 'sonner';
+
 
 export default function CustomizerPage() {
-    const { blueprint, updateBlueprint, isGenerating, setIsGenerating } = useTemplateEditor();
+    // 1. Hooks & State
+    const { blueprint, updateBlueprint, isGenerating, setIsGenerating, saveStatus } = useTemplateEditor();
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const storeIdParam = searchParams.get('id');
+
     const [vision, setVision] = useState("");
     const [businessName, setBusinessName] = useState("");
+    const [niche, setNiche] = useState("AI & Tech");
     const [selectedId, setSelectedId] = useState("t1-quantum");
     const [showPay, setShowPay] = useState(false);
 
+    const [isLoadingStore, setIsLoadingStore] = useState(false);
+    const [activeStoreId, setActiveStoreId] = useState<string | null>(null);
+    const [userId, setUserId] = useState<string>(""); // Sovereign State: Needed for RLS storage paths
+    const [showAuthModal, setShowAuthModal] = useState(false);
+
+    // 2. Auto-Save Integration
+    useAutoSave(activeStoreId);
+
+    // 3. Load Existing Store
+    useEffect(() => {
+        if (!storeIdParam) return;
+
+        const loadStore = async () => {
+            setIsLoadingStore(true);
+            const result = await getStoreAction(storeIdParam);
+
+            if (result.success && result.data) {
+                console.log("LOGIC: Existing store loaded", result.data.id);
+                setActiveStoreId(result.data.id);
+                setUserId(result.data.user_id); // Set User ID for Storage RLS
+                setBusinessName(result.data.name);
+                setVision(result.data.vision || "");
+                if (result.data.blueprint) {
+                    updateBlueprint(result.data.blueprint);
+                    // Optionally set selectedId if stored in blueprint metadata
+                }
+                setShowPay(true);
+            } else {
+                console.error("LOGIC: Failed to load store", result.error);
+                toast.error("Failed to load store");
+            }
+            setIsLoadingStore(false);
+        };
+
+        loadStore();
+    }, [storeIdParam, updateBlueprint]);
+
+    // 4. Save Logic
+    const handleSave = useCallback(async (generatedBlueprint: any) => {
+        try {
+            const result = await saveStoreAction(
+                generatedBlueprint,
+                businessName || "My Store",
+                vision,
+                activeStoreId || undefined
+            );
+
+            if (!result.success && result.error?.includes("Unauthorized")) {
+                setShowAuthModal(true);
+                return false;
+            } else if (!result.success) {
+                console.error("Save failed:", result.error);
+                return false;
+            }
+
+            if (result.success && result.data?.id && !activeStoreId) {
+                setActiveStoreId(result.data.id);
+                // Update URL without reload to establish edit session
+                router.replace(`?id=${result.data.id}`, { scroll: false });
+            }
+
+            return true;
+        } catch (e) {
+            console.error(e);
+            return false;
+        }
+    }, [businessName, vision, activeStoreId, router]);
+
+    // 5. Generation Orchestration
     const triggerGeneration = useCallback(async () => {
         if (!vision || !businessName) return;
 
@@ -23,51 +105,141 @@ export default function CustomizerPage() {
         try {
             const finalBlueprint = await CustomizerEngine.generateFinalBlueprint({
                 businessName,
-                niche: "General Innovation",
+                niche,
                 vision,
                 selectedId
             });
+
+            // Optimistic Update
             updateBlueprint(finalBlueprint);
-            setShowPay(true);
-            await BlueprintPersistence.archive(finalBlueprint);
+
+            // Secure Save
+            const saved = await handleSave(finalBlueprint);
+
+            if (saved) {
+                setShowPay(true);
+            }
+
         } catch (error) {
             console.error("ORCHESTRATION_FAILURE:", error);
+            toast.error("Generation failed");
         } finally {
             setIsGenerating(false);
         }
-    }, [vision, businessName, selectedId, setIsGenerating, updateBlueprint]);
+    }, [vision, businessName, niche, selectedId, setIsGenerating, updateBlueprint, handleSave]);
 
+    // 6. Asset Logic
+    const handleAssetUpload = useCallback(async (url: string) => {
+        if (!blueprint) return;
+
+        // Clone and Update Blueprint (Logic: Find hero or relevant section and inject image)
+        const updatedBlueprint = { ...blueprint };
+        let oldUrl: string | undefined;
+
+        // Strategy: Intelligent Replacement
+        // 1. Look for 'hero' section
+        const heroSection = updatedBlueprint.layout?.find((s: any) => s.type === 'hero');
+        if (heroSection && heroSection.content) {
+            oldUrl = heroSection.content.image;
+            heroSection.content.image = url;
+        } else {
+            // Fallback: Add metadata
+            if (!updatedBlueprint.metadata) updatedBlueprint.metadata = {};
+            oldUrl = updatedBlueprint.metadata.heroImage;
+            updatedBlueprint.metadata.heroImage = url;
+        }
+
+        // Sovereign Cleanup: Delete old asset if it exists and is from our storage
+        if (oldUrl && oldUrl.includes("site-assets") && oldUrl !== url) {
+            console.log("Purging old asset:", oldUrl);
+            // We fire and forget the delete to not block UI, or we could await if critical
+            // Given the user's strict requirement, we should probably log error if it fails
+            StorageService.deleteAsset(oldUrl).then(res => {
+                if (!res.success) console.error("Failed to purge asset:", res.error);
+                else console.log("Asset purged successfully");
+            });
+        }
+
+        updateBlueprint(updatedBlueprint);
+
+        // Debounced Save will kick in via useAutoSave if we trigger an update, 
+        // OR we can explicitly save here to be safe since assets are external.
+        handleSave(updatedBlueprint);
+        toast.success("Blueprint Synced with Asset");
+    }, [blueprint, updateBlueprint, handleSave]);
+
+
+    // 7. Auto-Generate for New Sessions
     useEffect(() => {
+        if (activeStoreId || isLoadingStore) return;
+
         const timer = setTimeout(() => {
             if (vision && businessName) triggerGeneration();
         }, 1500);
         return () => clearTimeout(timer);
-    }, [vision, businessName, selectedId, triggerGeneration]);
+    }, [vision, businessName, selectedId, triggerGeneration, activeStoreId, isLoadingStore]);
+
+
+    // 7. Render
+    if (isLoadingStore) {
+        return (
+            <div className="min-h-screen bg-zinc-950 flex items-center justify-center text-white">
+                <Loader2 className="animate-spin text-blue-500 w-8 h-8" />
+                <span className="ml-2 font-mono text-zinc-400">LOADING_ASSET_DATA...</span>
+            </div>
+        );
+    }
 
     return (
         <PayPalScriptProvider options={{
             clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "",
             currency: "USD",
-            intent: "capture"
+            intent: "capture" // capture
         }}>
             <div className="min-h-screen bg-zinc-950 text-white flex flex-col md:flex-row overflow-hidden">
                 {/* LEFT SIDE: COMMAND CENTER */}
-                <aside className="w-full md:w-1/3 border-r border-white/5 p-8 overflow-y-auto bg-zinc-950/50 backdrop-blur-xl z-20 relative">
+                <aside className="w-full md:w-1/3 border-r border-white/5 p-8 overflow-y-auto bg-zinc-950/50 backdrop-blur-xl z-20 relative flex flex-col gap-6">
                     <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-transparent pointer-events-none" />
+
+                    {/* Status Bar */}
+                    <div className="flex items-center justify-between">
+                        {activeStoreId ? (
+                            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900 border border-zinc-800">
+                                <div className={`w-2 h-2 rounded-full ${saveStatus === 'saving' ? 'bg-yellow-500 animate-pulse' :
+                                    saveStatus === 'saved' ? 'bg-green-500' :
+                                        saveStatus === 'error' ? 'bg-red-500' : 'bg-zinc-600'
+                                    }`} />
+                                <span className="text-[10px] uppercase font-bold text-zinc-400">
+                                    {saveStatus === 'saving' ? 'Syncing...' :
+                                        saveStatus === 'saved' ? 'Synced' :
+                                            saveStatus === 'error' ? 'Sync Error' : 'Unsaved'}
+                                </span>
+                            </div>
+                        ) : (
+                            <div className="px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20">
+                                <span className="text-[10px] uppercase font-bold text-blue-400">New Session</span>
+                            </div>
+                        )}
+                    </div>
 
                     <CommandCenter
                         businessName={businessName}
                         setBusinessName={setBusinessName}
                         vision={vision}
                         setVision={setVision}
+                        niche={niche}
+                        setNiche={setNiche}
                         selectedId={selectedId}
                         setSelectedId={setSelectedId}
                         isGenerating={isGenerating}
                         onGenerate={triggerGeneration}
+                        activeStoreId={activeStoreId}
+                        userId={userId}
+                        onAssetUpload={handleAssetUpload}
                     />
 
                     {showPay && (
-                        <PaymentModule siteId={blueprint?.id || "temp_id"} />
+                        <PaymentModule siteId={activeStoreId || blueprint?.id || "temp_id"} />
                     )}
                 </aside>
 
@@ -77,6 +249,9 @@ export default function CustomizerPage() {
                     <PreviewCanvas blueprint={blueprint} isGenerating={isGenerating} />
                 </main>
             </div>
+
+            <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
+
         </PayPalScriptProvider>
     );
 }

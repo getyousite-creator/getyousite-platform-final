@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { CheckCircle2, Rocket, Globe, Shield, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { BlueprintPersistence } from '@/lib/engine/persistence';
+import { getStoreStatusAction } from '@/app/actions/store-actions';
 
 export default function SuccessPage({ params }: { params: { siteId: string, locale: string } }) {
     const [status, setStatus] = useState<'verifying' | 'deploying' | 'active' | 'pending_payment'>('verifying');
@@ -14,18 +14,20 @@ export default function SuccessPage({ params }: { params: { siteId: string, loca
     useEffect(() => {
         let pollCount = 0;
         const checkStatus = async () => {
-            const data = await BlueprintPersistence.getStatus(params.siteId);
+            const result = await getStoreStatusAction(params.siteId);
 
-            if (data.status === 'deployed') {
-                setStatus('active');
-                setLiveUrl(data.deployment_url ?? null);
-                return true;
-            } else if (data.status === 'paid' || data.status === 'deploying') {
-                setStatus('deploying');
-            } else if (data.status === 'pending_payment') {
-                setStatus('verifying');
+            if (result.success && result.data) {
+                const data = result.data;
+                if (data.status === 'deployed') {
+                    setStatus('active');
+                    setLiveUrl(data.deployment_url ?? null);
+                    return true;
+                } else if (data.status === 'paid' || data.status === 'deploying') {
+                    setStatus('deploying');
+                } else if (data.status === 'pending_payment') {
+                    setStatus('verifying');
+                }
             }
-
             return false;
         };
 

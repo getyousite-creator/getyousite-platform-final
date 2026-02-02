@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import paypal from '@paypal/checkout-server-sdk';
 import paypalClient from '@/lib/payments/paypal';
 import { DeploymentEngine } from '@/lib/engine/deployment';
-import { BlueprintPersistence } from '@/lib/engine/persistence';
+import { StoreService } from '@/lib/services/store-service';
 
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
@@ -43,13 +43,17 @@ export async function POST(req: Request) {
 
         const response = await paypalClient.client().execute(request);
 
+        // ...
+
         if (response.result.status === 'COMPLETED') {
             const siteId = response.result.purchase_units[0].custom_id;
+            const captureId = response.result.purchase_units[0].payments.captures[0].id;
+            const amount = parseFloat(response.result.purchase_units[0].payments.captures[0].amount.value);
 
             console.log("PAYPAL_CAPTURE_SUCCESS: Site ID", siteId);
 
-            // LOGIC HARDENING: Mark as paid in DB immediately
-            await BlueprintPersistence.markAsPaid(siteId);
+            // LOGIC HARDENING: Mark as paid in DB immediately using Secure Service
+            await StoreService.markAsPaid(siteId, captureId, amount);
 
             // Trigger the Deployment Engine
             await DeploymentEngine.launchToHostinger(siteId);

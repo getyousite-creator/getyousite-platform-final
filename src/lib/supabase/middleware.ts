@@ -15,7 +15,7 @@ export async function updateSession(request: NextRequest) {
                     return request.cookies.getAll()
                 },
                 setAll(cookiesToSet) {
-                    cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
+                    cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
                     supabaseResponse = NextResponse.next({
                         request,
                     })
@@ -35,11 +35,22 @@ export async function updateSession(request: NextRequest) {
         data: { user },
     } = await supabase.auth.getUser()
 
+    const AUTHORIZED_EMAIL = "u110877386@getyousite.com";
+    const isAdminPath = request.nextUrl.pathname.includes('/admin');
+
+    if (isAdminPath) {
+        if (!user || user.email !== AUTHORIZED_EMAIL) {
+            const url = request.nextUrl.clone();
+            url.pathname = '/404'; // Or simple redirect to home
+            return NextResponse.redirect(url);
+        }
+    }
+
     if (
         !user &&
         !request.nextUrl.pathname.startsWith('/login') &&
         !request.nextUrl.pathname.startsWith('/auth') &&
-        (request.nextUrl.pathname.includes('/customizer') || request.nextUrl.pathname.includes('/success'))
+        (request.nextUrl.pathname.includes('/customizer') || request.nextUrl.pathname.includes('/success') || request.nextUrl.pathname.includes('/dashboard'))
     ) {
         // no user, potentially respond by redirecting the user to the login page
         const url = request.nextUrl.clone()

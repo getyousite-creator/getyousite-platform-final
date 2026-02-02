@@ -26,8 +26,9 @@ export const CustomizerEngine = {
         }
 
         // CLINICAL CONTENT GENERATION MAP
+        // CLINICAL CONTENT GENERATION MAP
         const nicheContent: Record<string, any> = {
-            "AI News": {
+            "AI & Tech": {
                 headline: `Breaking: ${userData.businessName} Orchestrates the Future of Intelligence`,
                 subheadline: `Real-time neural analysis and high-frequency reporting on the global AI ecosystem.`,
                 features: ["Neural-Feed-v1", "Deep-Logic-Analysis", "Global-Intelligence-Network"]
@@ -36,6 +37,31 @@ export const CustomizerEngine = {
                 headline: `Luxury Architecture. Sovereign Ownership.`,
                 subheadline: `Curating the future of residential and commercial ecosystems for ${userData.businessName}.`,
                 features: ["Virtual-Blueprint-Tours", "Sovereign-Asset-Protection", "Geometric-Layout-Optimization"]
+            },
+            "Cooking & Culinary": {
+                headline: `Taste the Art of Perfection`,
+                subheadline: `Where ${userData.businessName} blends tradition with avant-garde culinary science.`,
+                features: ["Seasonal-Menu-Curation", "Farm-to-Table-Logistics", "Chef's-Table-Experience"]
+            },
+            "News & Media": {
+                headline: `The Truth, Accelerated.`,
+                subheadline: `${userData.businessName} delivers the world's pulse with uncompromising clarity.`,
+                features: ["Real-Time-Wire", "Investigative-Deep-Dives", "Global-Correspondent-Network"]
+            },
+            "Health & Science": {
+                headline: `Advancing Human Longevity`,
+                subheadline: `Pioneering research and clinical excellence at ${userData.businessName}.`,
+                features: ["Clinical-Trials-Access", "Precision-Medicine-Protocol", "Advanced-Diagnostics"]
+            },
+            "Finance & Law": {
+                headline: `Protecting Your Legacy`,
+                subheadline: `Strategic counsel for the modern era by ${userData.businessName}.`,
+                features: ["Wealth-Preservation", "Corporate-Governance", "Strategic-Litigation"]
+            },
+            "Fitness & Wellness": {
+                headline: `Forge Your Ultimate Self`,
+                subheadline: `${userData.businessName} provides the blueprint for physical and mental mastery.`,
+                features: ["Performance-Tracking", "Elite-Coaching", "Recovery-Protocols"]
             }
         };
 

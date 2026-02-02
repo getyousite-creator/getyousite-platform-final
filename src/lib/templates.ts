@@ -164,6 +164,48 @@ export const SITE_TEMPLATES: { categories: TemplateCategory[] } = {
                     blueprint: constructBlueprint("Studio X", "#000000", ["hero", "gallery", "cta"])
                 }
             ]
+        },
+        {
+            id: "media-lifestyle",
+            name: "Media & Lifestyle",
+            themes: [
+                {
+                    id: "m1-chronicle",
+                    name: "The Chronicle",
+                    image: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=2070&auto=format&fit=crop",
+                    description: "Classic newspaper aesthetic, serif fonts, high readability.",
+                    components: ["News-Ticker-Top", "Headlines-Grid-Hero", "Editor-Picks-Sidebar", "Newsletter-Inline"],
+                    primaryColor: "#000000",
+                    blueprint: constructBlueprint("The Chronicle", "#000000", ["hero", "features", "testimonials"])
+                },
+                {
+                    id: "m2-culinary",
+                    name: "Chef's Table",
+                    image: "https://images.unsplash.com/photo-1556910103-1c02745a30bf",
+                    description: "Warm tones, appetite-inducing layout, menu focused.",
+                    components: ["Hero-Video-Dish", "Menu-Tabs-Section", "Chef-Bio-Split", "Reservation-Floater"],
+                    primaryColor: "#ea580c",
+                    blueprint: constructBlueprint("Chef's Table", "#ea580c", ["hero", "gallery", "cta"])
+                },
+                {
+                    id: "m3-science",
+                    name: "Lab Zero",
+                    image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d",
+                    description: "Clinical white/blue, data visualization focus, clean lines.",
+                    components: ["Research-Abstract-Hero", "Data-Points-Grid", "Team-Labs-Grid", "Publication-List"],
+                    primaryColor: "#0284c7",
+                    blueprint: constructBlueprint("Lab Zero", "#0284c7", ["hero", "features", "custom"])
+                },
+                {
+                    id: "m4-wellness",
+                    name: "Zenith Yoga",
+                    image: "https://images.unsplash.com/photo-1545205597-3d9d02c29597",
+                    description: "Soft pastels, breathing space, calming typography.",
+                    components: ["Full-Screen-Breath-Hero", "Class-Schedule-Table", "Instructor-Cards-Soft", "Membership-Tiers-Simple"],
+                    primaryColor: "#57534e",
+                    blueprint: constructBlueprint("Zenith Yoga", "#57534e", ["hero", "features", "gallery"])
+                }
+            ]
         }
     ]
 };

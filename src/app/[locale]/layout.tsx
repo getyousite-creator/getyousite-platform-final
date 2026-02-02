@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 import JsonLd from "@/components/seo/JsonLd";
 import LaunchModal from "@/components/forms/LaunchModal";
 import AuthModalManager from "@/components/auth/AuthModalManager";
+import { Toaster } from "@/components/ui/sonner";
+import { AnalyticsProvider } from "@/components/providers/AnalyticsProvider";
 
 // LOGIC UPDATE: Use system fonts to prevent build blocking on external fetch
 const inter = { variable: "--font-inter" };
@@ -56,10 +58,13 @@ export default async function LocaleLayout({
                 "bg-background text-foreground antialiased font-sans transition-colors duration-500"
             )}>
                 <NextIntlClientProvider messages={messages}>
-                    <JsonLd />
-                    <LaunchModal />
-                    <AuthModalManager />
-                    {children}
+                    <AnalyticsProvider>
+                        <JsonLd />
+                        <LaunchModal />
+                        <AuthModalManager />
+                        {children}
+                        <Toaster />
+                    </AnalyticsProvider>
                 </NextIntlClientProvider>
             </body>
         </html>

@@ -2,23 +2,20 @@
 
 import { motion } from "framer-motion";
 import { Zap, Eye, Code, Cpu, Globe, ArrowDownRight } from "lucide-react";
-import Image from "next/image";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
+import { SovereignImage } from "@/components/ui/sovereign-image";
+import { SovereignTemplateProps } from "@/lib/types/template";
 
-interface CyberPortfolioProps {
-    settings: {
-        primaryColor: string;
-        secondaryColor: string;
-        headline: string;
-        subheadline: string;
-        accentColor: string;
-        fontFamily: string;
-    };
-}
-
-export default function CyberPortfolio({ settings }: CyberPortfolioProps) {
+export default function CyberPortfolio({ settings, blueprint }: SovereignTemplateProps) {
     const { primaryColor, secondaryColor, headline, subheadline, fontFamily } = settings;
+
+    // Modular Data Extraction (Sovereign Schema)
+    const heroSection = blueprint?.layout?.find((s: any) => s.type === 'hero');
+    const heroHeadline = heroSection?.content?.headline || headline;
+    const heroSubheadline = heroSection?.content?.subheadline || subheadline;
+    const heroImage = heroSection?.content?.image || "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=2432";
+
     const updatePulse = useTemplateEditor((state) => state.updatePulse);
     const onOpen = useLaunchModal((state) => state.onOpen);
 
@@ -62,12 +59,12 @@ export default function CyberPortfolio({ settings }: CyberPortfolioProps) {
                         className="h-[1px] w-full bg-zinc-800 mb-20 origin-left"
                     />
                     <h1 className="text-[12vw] font-black leading-[0.75] uppercase tracking-tighter mb-20">
-                        {headline}
+                        {heroHeadline}
                     </h1>
                     <div className="flex flex-wrap gap-20 items-start">
                         <div className="max-w-md">
                             <p className="text-xl text-zinc-500 leading-relaxed mb-12">
-                                {subheadline}
+                                {heroSubheadline}
                             </p>
                             <button
                                 onClick={() => onOpen("Portfolio View")}
@@ -87,8 +84,8 @@ export default function CyberPortfolio({ settings }: CyberPortfolioProps) {
                     </div>
                 </div>
                 <div className="lg:col-span-4 relative aspect-[4/5] bg-zinc-900 border border-white/5 overflow-hidden group cursor-pointer" onClick={() => onOpen("Asset_01")}>
-                    <Image
-                        src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=2432"
+                    <SovereignImage
+                        src={heroImage}
                         alt="Cyber Subject"
                         fill
                         className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000"

@@ -2,23 +2,26 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Trees, Compass, MapPin, Star, Volume2, ArrowRight } from "lucide-react";
-import Image from "next/image";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
+import { SovereignImage } from "@/components/ui/sovereign-image";
+import { SovereignTemplateProps } from "@/lib/types/template";
 
-interface VermaHospitalityProps {
-    settings: {
-        primaryColor: string;
-        secondaryColor: string;
-        headline: string;
-        subheadline: string;
-        accentColor: string;
-        fontFamily: string;
-    };
-}
-
-export default function VermaHospitality({ settings }: VermaHospitalityProps) {
+export default function VermaHospitality({ settings, blueprint }: SovereignTemplateProps) {
     const { primaryColor, secondaryColor, headline, subheadline, fontFamily } = settings;
+
+    // Modular Data Extraction (Sovereign Schema)
+    const heroSection = blueprint?.layout?.find((s: any) => s.type === 'hero');
+    const heroHeadline = heroSection?.content?.headline || headline;
+    const heroSubheadline = heroSection?.content?.subheadline || subheadline;
+    const heroImage = heroSection?.content?.image || "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=2430";
+
+    // Philosophy/Feature Section
+    const philosophySection = blueprint?.layout?.find((s: any) => s.type === 'features');
+    const philosophyImage = philosophySection?.content?.image || "https://images.unsplash.com/photo-1544124499-58912cbddaad?auto=format&fit=crop&q=80&w=2430";
+    const philosophyTitle = philosophySection?.content?.title || "Deep Serenity.";
+    const philosophyDesc = philosophySection?.content?.description || "The platform architected to vanish leaving only the experience. No clutter. No noise. Only the pure essence of luxury.";
+
     const updatePulse = useTemplateEditor((state) => state.updatePulse);
     const onOpen = useLaunchModal((state) => state.onOpen);
 
@@ -51,8 +54,8 @@ export default function VermaHospitality({ settings }: VermaHospitalityProps) {
 
             {/* Cinematic Hero */}
             <section className="relative h-[90vh] flex flex-col justify-center px-10 overflow-hidden">
-                <Image
-                    src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=2430"
+                <SovereignImage
+                    src={heroImage}
                     alt="Luxury Hotel"
                     fill
                     className="object-cover object-center opacity-60 scale-110 animate-subtle-zoom"
@@ -73,10 +76,10 @@ export default function VermaHospitality({ settings }: VermaHospitalityProps) {
                         <span className="ml-4">Ultra-High Fidelity Architecture</span>
                     </motion.div>
                     <h1 className="text-7xl md:text-[10vw] font-black uppercase leading-[0.8] mb-12 tracking-tightest">
-                        {headline}
+                        {heroHeadline}
                     </h1>
                     <p className="text-xl md:text-2xl text-zinc-400 font-light max-w-2xl leading-relaxed mb-16">
-                        {subheadline}
+                        {heroSubheadline}
                     </p>
                     <div className="flex flex-wrap gap-8 items-center">
                         <button
@@ -108,17 +111,17 @@ export default function VermaHospitality({ settings }: VermaHospitalityProps) {
             {/* Philosophy */}
             <section className="py-40 px-10 grid grid-cols-1 md:grid-cols-2 gap-40 bg-white text-black rounded-t-[100px]">
                 <div className="relative aspect-[4/5] overflow-hidden group">
-                    <Image
-                        src="https://images.unsplash.com/photo-1544124499-58912cbddaad?auto=format&fit=crop&q=80&w=2430"
+                    <SovereignImage
+                        src={philosophyImage}
                         alt="Pool"
                         fill
                         className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
                     />
                 </div>
                 <div className="flex flex-col justify-center">
-                    <h2 className="text-6xl font-black mb-12 uppercase tracking-tighter italic">Deep Serenity.</h2>
+                    <h2 className="text-6xl font-black mb-12 uppercase tracking-tighter italic">{philosophyTitle}</h2>
                     <p className="text-xl text-zinc-500 leading-relaxed mb-12 italic">
-                        The platform architected to vanish leaving only the experience. No clutter. No noise. Only the pure essence of luxury.
+                        {philosophyDesc}
                     </p>
                     <ul className="space-y-6 text-[10px] font-black uppercase tracking-[0.4em] text-zinc-800">
                         <li className="flex items-center gap-4"><ArrowRight className="w-4 h-4 text-[#c4a47c]" /> Private Concierge API</li>

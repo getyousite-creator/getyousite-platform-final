@@ -5,9 +5,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { supabase, isSupabaseConfigured } from "@/lib/supabase";
-import { AlertCircle, ShieldCheck, Mail, Globe } from "lucide-react";
+import { isSupabaseConfigured } from "@/lib/supabase";
+import { AlertCircle, Globe } from "lucide-react";
 import Logo from "@/components/ui/Logo";
+import { signInAction, signUpAction, signInWithOAuthAction } from "@/app/actions/auth-actions";
+import { useRouter } from "next/navigation";
 
 interface AuthModalProps {
     isOpen: boolean;
@@ -15,6 +17,7 @@ interface AuthModalProps {
 }
 
 export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
+    const router = useRouter();
     const [mode, setMode] = useState<"signin" | "signup">("signin");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -24,14 +27,14 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
     const handleGoogleLogin = async () => {
         if (!isSupabaseConfigured) return;
         setLoading(true);
-        const { error } = await supabase.auth.signInWithOAuth({
-            provider: "google",
-            options: {
-                redirectTo: `${window.location.origin}/api/auth/callback`,
-            },
-        });
-        if (error) setError(error.message);
-        setLoading(false);
+        setError(null);
+
+        try {
+            await signInWithOAuthAction("google");
+        } catch (err) {
+            setError("Google auth failed. Please try again.");
+            setLoading(false);
+        }
     };
 
     const handleEmailAuth = async (e: React.FormEvent) => {
@@ -40,16 +43,26 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
         setLoading(true);
         setError(null);
 
-        const { error } = mode === "signin"
-            ? await supabase.auth.signInWithPassword({ email, password })
-            : await supabase.auth.signUp({ email, password });
+        const result = mode === "signin"
+            ? await signInAction(email, password)
+            : await signUpAction(email, password);
 
-        if (error) {
-            setError(error.message);
+        if (!result.success) {
+            setError(result.error || "Authentication failed");
+            setLoading(false);
         } else {
-            onClose();
+            // Success
+            if (mode === "signin") {
+                onClose();
+                router.refresh();
+            } else {
+                // For signup, we usually wait for email verification or auto-login
+                // Assuming auto-login or redirect to verify page
+                onClose();
+                router.push("/customizer"); // Or verify-email page
+                router.refresh();
+            }
         }
-        setLoading(true); // Wait for redirect/refresh
     };
 
     return (

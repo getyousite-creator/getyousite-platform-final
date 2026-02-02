@@ -2,23 +2,17 @@
 
 import { motion } from "framer-motion";
 import { Activity, Calendar, Shield, MapPin, Phone, Heart } from "lucide-react";
-import Image from "next/image";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
+import { SovereignImage } from "@/components/ui/sovereign-image";
+import { SovereignTemplateProps } from "@/lib/types/template";
 
-interface VitalCareProps {
-    settings: {
-        primaryColor: string;
-        secondaryColor: string;
-        headline: string;
-        subheadline: string;
-        accentColor: string;
-        fontFamily: string;
-    };
-}
-
-export default function VitalCare({ settings }: VitalCareProps) {
+export default function VitalCare({ settings, blueprint }: SovereignTemplateProps) {
     const { primaryColor, secondaryColor, headline, subheadline, fontFamily } = settings;
+    // Schema Logic: Prefer blueprint data
+    const heroHeadline = blueprint?.layout?.find((s: any) => s.type === 'hero')?.content?.headline || headline;
+    const heroSubheadline = blueprint?.layout?.find((s: any) => s.type === 'hero')?.content?.subheadline || subheadline;
+
     const updatePulse = useTemplateEditor((state) => state.updatePulse);
     const onOpen = useLaunchModal((state) => state.onOpen);
 
@@ -29,7 +23,7 @@ export default function VitalCare({ settings }: VitalCareProps) {
             className="w-full min-h-screen bg-slate-50 text-slate-900"
             style={{ fontFamily }}
         >
-            {/* Clinic Header */}
+            {/* ... (Header remains same) */}
             <nav className="px-8 py-4 flex items-center justify-between bg-white border-b border-slate-200 sticky top-0 z-50">
                 <div className="flex items-center gap-2 font-bold text-xl text-slate-800">
                     <Activity className="w-6 h-6" style={{ color: primaryColor }} />
@@ -60,10 +54,10 @@ export default function VitalCare({ settings }: VitalCareProps) {
                         animate={{ opacity: 1, y: 0 }}
                         className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1] mb-8"
                     >
-                        {headline}
+                        {heroHeadline}
                     </motion.h1>
                     <p className="text-lg text-slate-600 mb-10 leading-relaxed max-w-lg">
-                        {subheadline}
+                        {heroSubheadline}
                     </p>
                     <div className="flex flex-wrap gap-4">
                         <button
@@ -82,7 +76,7 @@ export default function VitalCare({ settings }: VitalCareProps) {
                     onClick={() => onOpen("Virtual Tour")}
                     className="relative aspect-[5/4] rounded-3xl overflow-hidden shadow-2xl group cursor-pointer"
                 >
-                    <Image
+                    <SovereignImage
                         src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=2430"
                         alt="Medical Center"
                         fill

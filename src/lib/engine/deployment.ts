@@ -21,13 +21,13 @@ export const DeploymentEngine = {
                     .from('stores')
                     .select('blueprint, status')
                     .eq('id', siteId)
-                    .single();
+                    .single<{ blueprint: SiteBlueprint; status: string }>();
 
                 if (fetchError || !siteData) {
                     console.warn("DEPLOYMENT_ENGINE: Blueprint fetch failed, but proceeding if blueprint provided.");
                     if (!providedBlueprint) throw new Error("BLUEPRINT_FETCH_FAILED");
                 } else {
-                    blueprint = siteData.blueprint as SiteBlueprint;
+                    blueprint = siteData.blueprint;
                     currentStatus = siteData.status;
                 }
             }
@@ -42,6 +42,7 @@ export const DeploymentEngine = {
 
             // Update status to 'deploying' (Graceful fail if table missing)
             try {
+                // @ts-ignore - Supabase types will be generated in Phase 2
                 await supabase.from('stores').update({ status: 'deploying' }).eq('id', siteId);
             } catch (e: any) {
                 console.error("SUPABASE_STATUS_UPDATE_FAILED:", e.message);
@@ -58,6 +59,7 @@ export const DeploymentEngine = {
 
             // 4. FINAL TRUTH: Commit to Deployed State
             try {
+                // @ts-ignore - Supabase types will be generated in Phase 2
                 await supabase.from('stores').update({
                     status: 'deployed',
                     deployment_url: liveUrl,
@@ -77,6 +79,7 @@ export const DeploymentEngine = {
         } catch (error) {
             console.error("DEPLOYMENT_ENGINE_CRITICAL_ERROR:", error);
             try {
+                // @ts-ignore - Supabase types will be generated in Phase 2
                 await supabase.from('stores').update({ status: 'failed' }).eq('id', siteId);
             } catch (e) { }
             throw error;

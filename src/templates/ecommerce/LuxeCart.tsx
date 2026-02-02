@@ -6,21 +6,29 @@ import Image from "next/image";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
 
-interface LuxeCartProps {
-    settings: {
-        primaryColor: string;
-        secondaryColor: string;
-        headline: string;
-        subheadline: string;
-        accentColor: string;
-        fontFamily: string;
-    };
-}
+import { SovereignTemplateProps } from "@/lib/types/template";
+import { SovereignImage } from "@/components/ui/sovereign-image";
 
-export default function LuxeCart({ settings }: LuxeCartProps) {
+export default function LuxeCart({ settings, blueprint }: SovereignTemplateProps) {
     const { primaryColor, secondaryColor, headline, subheadline, fontFamily } = settings;
+
+    // Modular Data Extraction
+    const heroSection = blueprint?.layout?.find((s: any) => s.type === 'hero');
+    const heroHeadline = heroSection?.content?.headline || headline;
+    const heroSubheadline = heroSection?.content?.subheadline || subheadline;
+    const heroImage = heroSection?.content?.image || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=2430";
+
     const updatePulse = useTemplateEditor((state) => state.updatePulse);
     const onOpen = useLaunchModal((state) => state.onOpen);
+
+    // Products
+    const productsSection = blueprint?.layout?.find((s: any) => s.type === 'features' || s.type === 'custom');
+    const products = productsSection?.content?.products || [
+        { name: "Astra Chrono", price: "$850", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=2430" },
+        { name: "Neon Mist", price: "$1,200", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=2430" },
+        { name: "Vault Bag", price: "$2,400", image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=2430" },
+        { name: "Core Lens", price: "$540", image: "https://images.unsplash.com/photo-1526170315830-ef18a283ac13?auto=format&fit=crop&q=80&w=2430" }
+    ];
 
     return (
         <motion.div
@@ -50,8 +58,8 @@ export default function LuxeCart({ settings }: LuxeCartProps) {
 
             {/* Fashion Hero */}
             <section className="relative h-[90vh] flex items-center justify-center overflow-hidden bg-zinc-100">
-                <Image
-                    src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=2430"
+                <SovereignImage
+                    src={heroImage}
                     alt="E-commerce Hero"
                     fill
                     className="object-cover object-center transition-all duration-1000 group-hover:scale-105"
@@ -63,10 +71,10 @@ export default function LuxeCart({ settings }: LuxeCartProps) {
                         animate={{ opacity: 1, scale: 1 }}
                         className="text-6xl md:text-9xl font-black uppercase mb-8 leading-[0.8] tracking-tighter"
                     >
-                        {headline}
+                        {heroHeadline}
                     </motion.h1>
                     <p className="text-xl md:text-2xl font-light mb-12 max-w-2xl mx-auto opacity-90">
-                        {subheadline}
+                        {heroSubheadline}
                     </p>
                     <button
                         onClick={() => onOpen("Shop Collection")}
@@ -86,10 +94,9 @@ export default function LuxeCart({ settings }: LuxeCartProps) {
                     <span className="text-[10px] font-extrabold uppercase tracking-widest hover:text-blue-500 cursor-pointer">View All</span>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-1px bg-zinc-100 border border-zinc-100">
-                    <ProductCard name="Astra Chrono" price="$850" image="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=2430" onOpen={onOpen} />
-                    <ProductCard name="Neon Mist" price="$1,200" image="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=2430" onOpen={onOpen} />
-                    <ProductCard name="Vault Bag" price="$2,400" image="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=2430" onOpen={onOpen} />
-                    <ProductCard name="Core Lens" price="$540" image="https://images.unsplash.com/photo-1526170315830-ef18a283ac13?auto=format&fit=crop&q=80&w=2430" onOpen={onOpen} />
+                    {products.map((product: any, i: number) => (
+                        <ProductCard key={i} name={product.name} price={product.price} image={product.image} onOpen={onOpen} />
+                    ))}
                 </div>
             </section>
         </motion.div>
@@ -100,7 +107,7 @@ function ProductCard({ name, price, image, onOpen }: any) {
     return (
         <div className="bg-white p-8 group cursor-pointer" onClick={() => onOpen(name)}>
             <div className="relative aspect-[3/4] mb-8 overflow-hidden bg-zinc-50">
-                <Image src={image} alt={name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+                <SovereignImage src={image} alt={name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
                 <div className="absolute top-4 left-4">
                     <span className="bg-white text-[8px] font-black px-3 py-1 uppercase tracking-widest border border-zinc-100 shadow-sm">New In</span>
                 </div>

@@ -1,31 +1,51 @@
 "use client";
 
 import SovereignWrapper from "../SovereignWrapper";
-import { motion } from "framer-motion";
 import {
     ShoppingBag,
     Search,
     User,
-    Heart,
-    Eye,
     Filter,
     ArrowRight,
     Star,
     Plus
 } from "lucide-react";
-import Image from "next/image";
-
-/**
- * ALPHA STORE (PRO EDITION)
- * Transcription Strategy: Divi Flexible Grid + Sovereign Fluidity.
- * Vector: Multi-column product orchestration and floating sensory elements.
- */
+import { SovereignTemplateProps } from "@/lib/types/template";
+import { SovereignImage } from "@/components/ui/sovereign-image";
+import { useLaunchModal } from "@/hooks/use-launch-modal";
 import Logo from "@/components/ui/Logo";
 
-export default function AlphaStore() {
+interface Section {
+    type: string;
+    content: Record<string, unknown>;
+}
+
+interface Product {
+    name: string;
+    price: string;
+    img: string;
+}
+
+export default function AlphaStore({ settings, blueprint }: SovereignTemplateProps) {
+    // Modular Data Extraction
+    const heroSection = blueprint?.layout?.find((s) => s.type === 'hero');
+    const heroHeadline = (heroSection?.content?.headline as string) || "SOVEREIGN \n COLLECTION";
+    const heroImage = (heroSection?.content?.image as string) || "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=2430";
+
+    // Products (Modular: Extract from features/custom or fallback)
+    const productsSection = blueprint?.layout?.find((s) => s.type === 'features' || s.type === 'custom');
+    const products = (productsSection?.content?.products as Product[]) || [
+        { name: "Quantum Fabric 01", price: "$240", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2430" },
+        { name: "Neural Shell", price: "$580", img: "https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=2430" },
+        { name: "Astra Lens", price: "$1,200", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2430" },
+        { name: "Sovereign Core", price: "$89", img: "https://images.unsplash.com/photo-1583394838336-acd977736f90?q=80&w=2430" }
+    ];
+
+    const onOpen = useLaunchModal((state) => state.onOpen);
+
     return (
         <SovereignWrapper>
-            {({ settings, onOpen, primary, secondary }) => (
+            {({ settings, onOpen }) => (
                 <div
                     className="bg-white text-zinc-950 selection:bg-zinc-900 selection:text-white min-h-screen"
                     style={{ fontFamily: settings.fontFamily }}
@@ -52,15 +72,15 @@ export default function AlphaStore() {
                     {/* STORE HERO (PRO TRANSCRIPTION) */}
                     <section className="px-10 py-24 grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-[1920px] mx-auto">
                         <div className="lg:col-span-8 relative aspect-[21/9] rounded-[40px] bg-zinc-100 overflow-hidden group cursor-pointer" onClick={() => onOpen("Season Drop")}>
-                            <Image
-                                src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=2430"
+                            <SovereignImage
+                                src={heroImage}
                                 alt="Pro Showcase"
                                 fill
                                 className="object-cover transition-transform duration-[3000ms] group-hover:scale-105"
                             />
                             <div className="absolute inset-x-12 bottom-12 max-w-xl">
-                                <h2 className="text-white text-7xl font-black uppercase leading-none tracking-tightest mb-8">
-                                    SOVEREIGN <br /> COLLECTION
+                                <h2 className="text-white text-7xl font-black uppercase leading-none tracking-tightest mb-8 whitespace-pre-line">
+                                    {heroHeadline}
                                 </h2>
                                 <button className="px-12 h-16 bg-white text-black font-black uppercase tracking-[0.4em] text-xs hover:invert transition-all">
                                     Discover_Now
@@ -99,10 +119,9 @@ export default function AlphaStore() {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-20">
-                            <ProductCard settings={settings} name="Quantum Fabric 01" price="$240" img="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2430" />
-                            <ProductCard settings={settings} name="Neural Shell" price="$580" img="https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=2430" />
-                            <ProductCard settings={settings} name="Astra Lens" price="$1,200" img="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2430" />
-                            <ProductCard settings={settings} name="Sovereign Core" price="$89" img="https://images.unsplash.com/photo-1583394838336-acd977736f90?q=80&w=2430" />
+                            {products.map((product, i) => (
+                                <ProductCard key={i} name={product.name} price={product.price} img={product.img} />
+                            ))}
                         </div>
                     </section>
                 </div>
@@ -111,11 +130,18 @@ export default function AlphaStore() {
     );
 }
 
-function ProductCard({ name, price, img, settings }: any) {
+interface ProductCardProps {
+    name: string;
+    price: string;
+    img: string;
+    settings: unknown;
+}
+
+function ProductCard({ name, price, img }: Omit<ProductCardProps, 'settings'>) {
     return (
         <div className="group cursor-pointer">
             <div className="relative aspect-[3/4] rounded-[20px] overflow-hidden bg-white shadow-sm group-hover:shadow-[0_40px_80px_rgba(0,0,0,0.1)] transition-all duration-700">
-                <Image src={img} alt={name} fill className="object-cover group-hover:scale-110 transition-transform duration-1000" />
+                <SovereignImage src={img} alt={name} fill className="object-cover group-hover:scale-110 transition-transform duration-1000" />
                 <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity" />
 
                 {/* QUICK ACTIONS */}
