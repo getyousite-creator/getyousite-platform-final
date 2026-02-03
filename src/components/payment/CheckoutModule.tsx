@@ -50,13 +50,13 @@ const BankPortal = ({ name, account, rib }: { name: string, account: string, rib
 };
 
 export const CheckoutModule = ({ planId, siteType, currency, amount, onSuccess }: CheckoutModuleProps) => {
-    const [method, setMethod] = useState<"card" | "local">("card");
+    const [method, setMethod] = useState<"card" | "local">(currency === "MAD" ? "local" : "card");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isUploaded, setIsUploaded] = useState(false);
 
-    // PAYPAL INTEGRATION (BASED ON USER DATA)
-    const PAYPAL_CLIENT_ID = "BAAQAqL5S1GSIIaFYyUFHc1spAUiiwg2iQT2tfIvyNhtLOXQj5RBD9nhPNPlIhwl2XTlNoovU6U_Vmq2Zc";
-    const HOSTED_BUTTON_ID = "7CNRL6QR9UFM2";
+    // PAYPAL INTEGRATION (Dynamic Environment Logic)
+    const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "BAAQAqL5S1GSIIaFYyUFHc1spAUiiwg2iQT2tfIvyNhtLOXQj5RBD9nhPNPlIhwl2XTlNoovU6U_Vmq2Zc";
+    const HOSTED_BUTTON_ID = process.env.NEXT_PUBLIC_PAYPAL_HOSTED_BUTTON_ID || "7CNRL6QR9UFM2";
 
     useEffect(() => {
         // Force re-render of PayPal button when method changes to 'card'

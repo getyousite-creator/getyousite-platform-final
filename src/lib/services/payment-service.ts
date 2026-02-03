@@ -50,9 +50,8 @@ export class PaymentService {
      * (Strict Constraint: We handle pricing and redirect here)
      */
     static async createCheckoutSession(userId: string, planId: SubscriptionPlan): Promise<string | null> {
-        // This will eventually call Stripe API
-        console.log(`Creating Checkout Session for User ${userId}, Plan: ${planId}`);
-        // Return dummy URL for now
+        // STRIPE_TEMPORARILY_DISABLED (Strict Focus: PayPal + Bank Transfer)
+        console.log(`Stripe disabled. Use PayPal/Bank for User ${userId}, Plan: ${planId}`);
         return "#checkout";
     }
 
