@@ -1,0 +1,104 @@
+{
+    "platform": {
+        "name": "GetYouSite Platform",
+        "vision": "Architecting Digital Empires in 48 Hours with AI Precision.",
+        "technology": "German-engineered infrastructure, React/Next.js modern stack, Supabase Sovereign Data, Edge-rendered Global CDN.",
+        "deployment": "Automated deployment to high-performance servers (Hetzner/Vercel) with 99.9% uptime."
+    },
+    "pricing": {
+        "currency": [
+            "MAD (Dirham)",
+            "USD (Dollar)"
+        ],
+        "tiers": {
+            "starter": {
+                "name": "Eco-Launch / Personal",
+                "price": "499 MAD / $55",
+                "ideal_for": "Personal blogs, resumes, landing pages.",
+                "features": [
+                    "Single Page",
+                    "Basic SEO",
+                    "Mobile Optimized",
+                    "48h Delivery"
+                ]
+            },
+            "pro": {
+                "name": "Pro-Business",
+                "price": "999 MAD / $110",
+                "ideal_for": "Clinics, companies, offices, professional sites.",
+                "features": [
+                    "5 Pages",
+                    "CMS Integration",
+                    "Analytics Dashboard",
+                    "Priority Support",
+                    "Free .com Domain"
+                ]
+            },
+            "business": {
+                "name": "E-com Master",
+                "price": "1499 MAD / $165",
+                "ideal_for": "Stores, large inventories, retail business.",
+                "features": [
+                    "Full E-commerce",
+                    "Inventory Management",
+                    "Sales Reports",
+                    "Multilingual Support",
+                    "24/7 Monitoring"
+                ]
+            },
+            "enterprise": {
+                "name": "Agency / Elite",
+                "price": "2999 MAD / $330",
+                "ideal_for": "Agencies, custom large-scale infrastructure.",
+                "features": [
+                    "White-label",
+                    "Dedicated Team",
+                    "Direct WhatsApp Support",
+                    "Military-grade Security",
+                    "Unlimited Projects"
+                ]
+            }
+        }
+    },
+    "payments": {
+        "morocco": {
+            "methods": [
+                "CIH Bank",
+                "Barid Bank",
+                "CashPlus"
+            ],
+            "procedure": "Select 'Morocco Local' during checkout, transfer the amount, and upload the screenshot. Validation takes 1-12 hours.",
+            "bank_details": {
+                "cih": "230 450 1234567890 01",
+                "barid": "181 330 9876543210 55",
+                "cashplus": "REDA EL MOURADI"
+            }
+        },
+        "global": {
+            "methods": [
+                "PayPal",
+                "Credit Card"
+            ],
+            "procedure": "Automated checkout via PayPal. Instant access upon successful transaction."
+        }
+    },
+    "trust_protocols": {
+        "security": "Military-grade encryption, SSL automated, Daily backups, Isolated Sovereign Databases.",
+        "ownership": "The client owns 100% of the site files and data. No vendor lock-in.",
+        "guarantee": "48-hour delivery or we credit your account. Dedicated support for all tiers."
+    },
+    "frequently_asked_difficult": {
+        "site_shutdown_fear": {
+            "question": "How do I know you won't close the site after I pay?",
+            "answer": "We provide digital sovereignty. You own 100% of your data and files. The platform is designed as an asset for YOU, not a rental. Our German-engineered servers have a 99.9% uptime guarantee with legally binding SLAs."
+        },
+        "pay_after_launch": {
+            "question": "Can I pay after the site is finished?",
+            "answer": "To maintain high-quality infrastructure and reserve premium resources (AI training, Server space, Domain registration), we require payment to initiate the Sovereign Protocol. This ensures your project is prioritized by our German Engineering team."
+        },
+        "bot_vs_human": {
+            "question": "Is this just a stupid bot or real intelligence?",
+            "answer": "I am JO/Youssef, a high-level digital consultant. I don't just answer questions; I analyze your business strategy and ensure your digital architecture is optimized for conversion. I am powered by the same Quantum Engine that builds your sites."
+        }
+    }
+}

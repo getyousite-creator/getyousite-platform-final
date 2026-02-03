@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import JsonLd from "@/components/seo/JsonLd";
 import LaunchModal from "@/components/forms/LaunchModal";
 import AuthModalManager from "@/components/auth/AuthModalManager";
+import FloatingChat from "@/components/chat/FloatingChat";
 import { Toaster } from "@/components/ui/sonner";
 import { AnalyticsProvider } from "@/components/providers/AnalyticsProvider";
 
@@ -63,6 +64,7 @@ export default async function LocaleLayout({
                         <LaunchModal />
                         <AuthModalManager />
                         {children}
+                        <FloatingChat />
                         <Toaster />
                     </AnalyticsProvider>
                 </NextIntlClientProvider>
