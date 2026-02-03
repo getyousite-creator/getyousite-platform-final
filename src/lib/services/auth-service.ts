@@ -149,7 +149,7 @@ export const AuthService = {
     /**
      * Sign in with OAuth provider (Google, GitHub, etc.)
      */
-    async signInWithOAuth(provider: 'google' | 'github' | 'azure'): Promise<AuthResult<{ url: string }>> {
+    async signInWithOAuth(provider: 'google' | 'github' | 'azure' | 'apple'): Promise<AuthResult<{ url: string }>> {
         try {
             const supabase = await createClient();
 

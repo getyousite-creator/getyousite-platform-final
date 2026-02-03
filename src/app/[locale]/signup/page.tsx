@@ -1,42 +1,26 @@
 import { Metadata } from 'next';
-import SignUpForm from '@/components/auth/SignUpForm';
+import AuthHub from '@/components/auth/AuthHub';
 import Link from 'next/link';
-import Logo from '@/components/ui/Logo';
 
 export const metadata: Metadata = {
-    title: 'Sign Up | GetYouSite',
-    description: 'Create your GetYouSite account',
+    title: 'Sign Up | Architect Registration',
+    description: 'Register your Sovereign GetYouSite account',
 };
 
 export default function SignUpPage() {
     return (
-        <div className="min-h-screen bg-black flex items-center justify-center p-4">
-            <div className="w-full max-w-md">
-                {/* Logo */}
-                <div className="text-center mb-8">
-                    <Link href="/">
-                        <Logo className="inline-block" />
-                    </Link>
-                </div>
+        <div className="min-h-screen bg-[#080808] flex items-center justify-center p-6 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-black to-black">
+            <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] pointer-events-none" />
 
-                {/* SignUp Form */}
-                <SignUpForm />
+            <div className="w-full relative z-10 flex flex-col items-center">
+                <AuthHub initialMode="signup" />
 
-                {/* Footer Links */}
-                <div className="mt-6 text-center space-y-3">
-                    <p className="text-sm text-zinc-500">
-                        Already have an account?{' '}
-                        <Link href="/login" className="text-blue-500 hover:text-blue-400 font-semibold">
-                            Log in
-                        </Link>
-                    </p>
-                    <Link
-                        href="/"
-                        className="block text-xs text-zinc-600 hover:text-zinc-400 transition-colors"
-                    >
-                        ← Back to home
-                    </Link>
-                </div>
+                <Link
+                    href="/"
+                    className="mt-8 text-[10px] font-black uppercase tracking-[0.5em] text-zinc-600 hover:text-white transition-all flex items-center gap-2"
+                >
+                    <span className="opacity-50">←</span> BACK_TO_CONTROL_CENTER
+                </Link>
             </div>
         </div>
     );

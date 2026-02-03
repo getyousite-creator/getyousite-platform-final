@@ -145,5 +145,23 @@
     "Metadata": {
         "title": "GetYouSite | Architecturer des Empires Numériques",
         "description": "Construisez votre site de rêve en 48 heures avec une précision pilotée par l'IA. La seule plateforme capable de construire des écosystèmes numériques souverains."
+    },
+    "Auth": {
+        "signin_title": "Autoriser l'Accès",
+        "signup_title": "Inscription Architecte",
+        "subtitle": "Protocole d'Identité Souveraine",
+        "google": "Continuer avec Google",
+        "apple": "Continuer avec Apple",
+        "microsoft": "Continuer avec Microsoft",
+        "or_divider": "OU_ORCHESTRER_DIRECTEMENT",
+        "email_label": "Lien_Identité",
+        "password_label": "Clé_Accès",
+        "email_placeholder": "commander@getyousite.com",
+        "continue": "Continuer",
+        "login_button": "Autoriser_Accès",
+        "signup_button": "Finaliser_Inscription",
+        "have_account": "Vous avez déjà un compte ? Se connecter",
+        "no_account": "Accès manquant ? S'inscrire",
+        "terms": "En vous connectant, vous acceptez les CGU et la Politique de Confidentialité."
     }
 }

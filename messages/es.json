@@ -145,5 +145,23 @@
     "Metadata": {
         "title": "GetYouSite | Arquitectura de Imperios Digitales",
         "description": "Construya su sitio soñado en 48 horas con precisión impulsada por IA. La única plataforma capaz de construir ecosistemas digitales soberanos."
+    },
+    "Auth": {
+        "signin_title": "Autorizar Acceso",
+        "signup_title": "Registro de Arquitecto",
+        "subtitle": "Protocolo de Identidad Soberana",
+        "google": "Continuar con Google",
+        "apple": "Continuar con Apple",
+        "microsoft": "Continuar con Microsoft",
+        "or_divider": "O_ORQUESTAR_DIRECTAMENTE",
+        "email_label": "Enlace_Identidad",
+        "password_label": "Clave_Acceso",
+        "email_placeholder": "commander@getyousite.com",
+        "continue": "Continuar",
+        "login_button": "Autorizar_Acceso",
+        "signup_button": "Finalizar_Registro",
+        "have_account": "¿Ya tiene una cuenta? Iniciar sesión",
+        "no_account": "¿Le falta acceso? Registrese",
+        "terms": "Al iniciar sesión, acepta los T&C y la Política de Privacidad."
     }
 }

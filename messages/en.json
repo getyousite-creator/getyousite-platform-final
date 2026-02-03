@@ -145,5 +145,23 @@
     "Metadata": {
         "title": "GetYouSite | Architecting Digital Empires",
         "description": "Build your dream website in 48 hours with AI-driven precision. The only platform capable of constructing sovereign digital ecosystems."
+    },
+    "Auth": {
+        "signin_title": "Authorize Access",
+        "signup_title": "Architect Registration",
+        "subtitle": "Sovereign Identity Protocol",
+        "google": "Continue with Google",
+        "apple": "Continue with Apple",
+        "microsoft": "Continue with Microsoft",
+        "or_divider": "OR_ORCHESTRATE_DIRECTLY",
+        "email_label": "Identity_Link",
+        "password_label": "Access_Key",
+        "email_placeholder": "commander@getyousite.com",
+        "continue": "Continue",
+        "login_button": "Authorize_Access",
+        "signup_button": "Finalize_Registration",
+        "have_account": "Already have an account? Sign in",
+        "no_account": "Missing Access? Register",
+        "terms": "By signing in, you accept the T&C and Privacy Policy."
     }
 }

@@ -80,7 +80,7 @@ export async function signInAction(email: string, password: string): Promise<Act
 /**
  * Sign in with OAuth provider
  */
-export async function signInWithOAuthAction(provider: 'google' | 'github' | 'azure'): Promise<ActionResult<{ url: string }>> {
+export async function signInWithOAuthAction(provider: 'google' | 'github' | 'azure' | 'apple'): Promise<ActionResult<{ url: string }>> {
     try {
         const result = await AuthService.signInWithOAuth(provider);
 
