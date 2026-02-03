@@ -69,8 +69,14 @@
             ],
             "procedure": "Select 'Morocco Local' during checkout, transfer the amount, and upload the screenshot. Validation takes 1-12 hours.",
             "bank_details": {
-                "cih": "230 450 1234567890 01",
-                "barid": "181 330 9876543210 55",
+                "cih": {
+                    "account": "4682850211031600",
+                    "rib": "230022468285021103160034"
+                },
+                "barid": {
+                    "account": "1762740",
+                    "rib": "350810000000000176274005"
+                },
                 "cashplus": "REDA EL MOURADI"
             }
         },
