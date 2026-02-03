@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 export default function Pricing() {
     const t = useTranslations('Pricing');
+    const router = useRouter();
     const [currency, setCurrency] = useState<'MAD' | 'USD'>('MAD');
 
     const plans = [
@@ -127,6 +129,7 @@ export default function Pricing() {
                             </ul>
 
                             <Button
+                                onClick={() => router.push('/signup')}
                                 className={cn(
                                     "w-full h-14 rounded-2xl font-black tracking-widest uppercase text-[10px] transition-all",
                                     plan.highlight

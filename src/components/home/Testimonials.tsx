@@ -6,28 +6,28 @@ import Image from "next/image";
 
 const testimonials = [
     {
-        name: "Alex Sterling",
-        role: "CEO, FinTech Nexus",
-        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
-        content: "We launched in 48 hours. The AI optimized our funnel and we saw a 300% ROI in week one. Unbelievable precision.",
+        name: "عمر السقلي",
+        role: "Merchant, Casablanca",
+        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Omar",
+        content: "نقلت متجري لـ GetYouSite ووفرت 2000 درهم شهرياً من العمولات. السرعة خيالية والدعم الفني دائماً في الموعد.",
     },
     {
-        name: "Sarah Chen",
-        role: "Founder, Orbital Dynamics",
+        name: "Sarah Jenkins",
+        role: "Creative Director, NY",
         image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
-        content: "The German hosting speed is real. Our latency dropped to near zero globally. This is engineering art.",
+        content: "The German-engineered hosting is no joke. Our latency dropped to zero globally. The most logical choice for pro agencies.",
+    },
+    {
+        name: "ياسين العلمي",
+        role: "Founder, TechRabat",
+        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Yassine",
+        content: "بنيت موقع شركتي في أقل من 48 ساعة. الدقة في التصميم والأداء لا تقارن بأي منصة أخرى. فخور بمنتج مغربي عالمي.",
     },
     {
         name: "Marcus Vole",
-        role: "Director, HyperScale",
+        role: "CTO, HyperScale",
         image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Marcus",
-        content: "I've worked with top agencies for decades. GetYouSite's AI engine outperforms them all. Pure dominance.",
-    },
-    {
-        name: "Elena Kova",
-        role: "CTO, Quantum Leap",
-        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Elena",
-        content: "The code quality is immaculate. Zero errors, strict typing, and the animations are fluid as mercury.",
+        content: "Pure dominance in the web building space. The AI engine writes immaculate code. Zero errors, strict execution.",
     },
 ];
 

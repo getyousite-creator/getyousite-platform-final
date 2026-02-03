@@ -88,14 +88,14 @@ export default function Header() {
                         <Button
                             variant="ghost"
                             className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-white"
-                            onClick={() => onOpenAuth()}
+                            onClick={() => router.push('/login')}
                         >
                             Log_In
                         </Button>
                         <Button
                             variant="glow"
                             className="bg-blue-600 hover:bg-blue-500 text-white border-0 h-10 px-6 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(37,99,235,0.2)]"
-                            onClick={() => onOpenLaunch()}
+                            onClick={() => router.push('/signup')}
                         >
                             {t('launch')}
                         </Button>
@@ -119,8 +119,8 @@ export default function Header() {
                             <a href="#pricing" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{t('pricing')}</a>
                             <a href="#showcase" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{t('portfolio')}</a>
                             <div className="flex flex-col gap-3 pt-4 border-t border-white/5">
-                                <Button variant="outline" className="w-full border-white/10 text-[10px] font-black uppercase tracking-[0.3em]" onClick={() => onOpenAuth()}>{t('login') || 'Log_In'}</Button>
-                                <Button className="w-full bg-blue-600 text-[10px] font-black uppercase tracking-[0.3em]" onClick={() => onOpenLaunch()}>{t('launch')}</Button>
+                                <Button variant="outline" className="w-full border-white/10 text-[10px] font-black uppercase tracking-[0.3em]" onClick={() => router.push('/login')}>{t('login') || 'Log_In'}</Button>
+                                <Button className="w-full bg-blue-600 text-[10px] font-black uppercase tracking-[0.3em]" onClick={() => router.push('/signup')}>{t('launch')}</Button>
                             </div>
 
                             <div className="flex gap-4 mt-4 pt-4 border-t border-white/10 justify-center">

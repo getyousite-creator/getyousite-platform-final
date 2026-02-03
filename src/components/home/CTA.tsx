@@ -40,7 +40,12 @@ export default function CTA() {
                     viewport={{ once: true }}
                     transition={{ delay: 0.2 }}
                 >
-                    <Button variant="premium" size="lg" className="text-lg px-12 py-8 rounded-full shadow-[0_0_50px_rgba(37,99,235,0.5)]">
+                    <Button
+                        onClick={() => window.location.href = '/signup'}
+                        variant="premium"
+                        size="lg"
+                        className="text-lg px-12 py-8 rounded-full shadow-[0_0_50px_rgba(37,99,235,0.5)] transition-all hover:scale-105 active:scale-95"
+                    >
                         Ignite Protocol <ArrowRight className="ml-2 w-5 h-5" />
                     </Button>
                 </motion.div>
