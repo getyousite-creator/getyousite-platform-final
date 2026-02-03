@@ -6,7 +6,7 @@ import { useTemplateEditor } from "@/hooks/use-template-editor";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
 import { SiteBlueprint, Section } from "@/lib/schemas";
 import styles from "@/styles/isolation.module.css";
-import { Shield, CloudCheck, HardDrive } from "lucide-react";
+import { Shield, CloudCheck, HardDrive, LucideIcon } from "lucide-react";
 
 interface SovereignWrapperProps {
     children?: (props: {
@@ -123,7 +123,7 @@ function BlueprintSectionRenderer({ section }: { section: Section }) {
 }
 
 // STUB DYNAMIC COMPONENTS (To be expanded in later sub-phases)
-function DynamicHero({ content }: { content: any }) {
+function DynamicHero({ content }: { content: Record<string, any> }) {
     return (
         <section className="py-24 px-10 text-center">
             <h1 className="text-6xl font-black mb-6">{content.headline}</h1>
@@ -132,10 +132,10 @@ function DynamicHero({ content }: { content: any }) {
     );
 }
 
-function DynamicFeatures({ content }: { content: any }) {
+function DynamicFeatures({ content }: { content: Record<string, any> }) {
     return (
         <section className="py-24 px-10 grid grid-cols-1 md:grid-cols-3 gap-8">
-            {content.items?.map((item: any, i: number) => (
+            {content.items?.map((item: Record<string, any>, i: number) => (
                 <div key={i} className="p-8 bg-zinc-50 rounded-2xl">
                     <h3 className="font-bold mb-2">{item.title}</h3>
                     <p className="text-sm text-zinc-500">{item.description}</p>

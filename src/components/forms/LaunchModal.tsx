@@ -63,7 +63,7 @@ export default function LaunchModal() {
                 setIsDeploying(false);
                 alert(result.message || "Failed to initialize protocol.");
             }
-        } catch (error) {
+        } catch (error: unknown) {
             setIsDeploying(false);
             console.error("ORCHESTRATION_BREACH:", error);
         }

@@ -8,7 +8,7 @@ import SovereignWrapper from "../SovereignWrapper";
 export default function ZenKitchen() {
     return (
         <SovereignWrapper>
-            {({ settings, onOpen, primary, secondary }) => (
+            {({ settings, onOpen, primary }) => (
                 <div
                     className="w-full min-h-screen bg-stone-50 text-zinc-900 relative"
                     style={{ fontFamily: settings.fontFamily }}
@@ -128,7 +128,12 @@ export default function ZenKitchen() {
     );
 }
 
-function Dish({ name, price }: any) {
+interface DishProps {
+    name: string;
+    price: string;
+}
+
+function Dish({ name, price }: DishProps) {
     return (
         <div className="flex items-center justify-between pb-8 border-b border-zinc-800 hover:border-orange-500/50 transition-colors group cursor-pointer group">
             <div>

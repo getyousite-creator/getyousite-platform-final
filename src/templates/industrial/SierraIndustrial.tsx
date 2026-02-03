@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Building2, Users2, Briefcase, Factory, ShieldCheck, Mail, Globe } from "lucide-react";
+import { Building2, Users2, Briefcase, Factory, ShieldCheck, Globe, LucideIcon } from "lucide-react";
 import Image from "next/image";
 
 import { useLaunchModal } from "@/hooks/use-launch-modal";
@@ -19,7 +19,7 @@ interface SierraIndustrialProps {
 }
 
 export default function SierraIndustrial({ settings }: SierraIndustrialProps) {
-    const { primaryColor, secondaryColor, headline, subheadline, fontFamily } = settings;
+    const { primaryColor, headline, subheadline, fontFamily } = settings;
     const updatePulse = useTemplateEditor((state) => state.updatePulse);
     const onOpen = useLaunchModal((state) => state.onOpen);
 
@@ -121,7 +121,13 @@ export default function SierraIndustrial({ settings }: SierraIndustrialProps) {
     );
 }
 
-function ServiceBlock({ title, desc, icon: Icon }: any) {
+interface ServiceBlockProps {
+    title: string;
+    desc: string;
+    icon: LucideIcon;
+}
+
+function ServiceBlock({ title, desc, icon: Icon }: ServiceBlockProps) {
     return (
         <div className="bg-white p-12 hover:bg-zinc-50 transition-colors">
             <Icon className="w-8 h-8 mb-8 text-zinc-400" />

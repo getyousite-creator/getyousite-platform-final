@@ -1,23 +1,24 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Trees, Compass, MapPin, Star, Volume2, ArrowRight } from "lucide-react";
+import { Compass, MapPin, Star, Volume2, ArrowRight } from "lucide-react";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
 import { SovereignImage } from "@/components/ui/sovereign-image";
 import { SovereignTemplateProps } from "@/lib/types/template";
+import { Section } from "@/lib/schemas";
 
 export default function VermaHospitality({ settings, blueprint }: SovereignTemplateProps) {
-    const { primaryColor, secondaryColor, headline, subheadline, fontFamily } = settings;
+    const { primaryColor, headline, subheadline, fontFamily } = settings;
 
     // Modular Data Extraction (Sovereign Schema)
-    const heroSection = blueprint?.layout?.find((s: any) => s.type === 'hero');
+    const heroSection = blueprint?.layout?.find((s: Section) => s.type === 'hero');
     const heroHeadline = heroSection?.content?.headline || headline;
     const heroSubheadline = heroSection?.content?.subheadline || subheadline;
     const heroImage = heroSection?.content?.image || "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=2430";
 
     // Philosophy/Feature Section
-    const philosophySection = blueprint?.layout?.find((s: any) => s.type === 'features');
+    const philosophySection = blueprint?.layout?.find((s: Section) => s.type === 'features');
     const philosophyImage = philosophySection?.content?.image || "https://images.unsplash.com/photo-1544124499-58912cbddaad?auto=format&fit=crop&q=80&w=2430";
     const philosophyTitle = philosophySection?.content?.title || "Deep Serenity.";
     const philosophyDesc = philosophySection?.content?.description || "The platform architected to vanish leaving only the experience. No clutter. No noise. Only the pure essence of luxury.";

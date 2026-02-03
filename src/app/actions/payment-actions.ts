@@ -23,8 +23,8 @@ export async function handlePayPalSuccessAction(planId: SubscriptionPlan, siteTy
             return { success: true };
         }
         return { success: false, error: "Failed to finalize subscription" };
-    } catch (e: any) {
-        return { success: false, error: e.message };
+    } catch (e: unknown) {
+        return { success: false, error: e instanceof Error ? e.message : "Neural Bridge Failure" };
     }
 }
 
@@ -46,7 +46,7 @@ export async function submitPaymentProofAction(
             return { success: true };
         }
         return { success: false, error: "Failed to submit payment request" };
-    } catch (e: any) {
-        return { success: false, error: e.message };
+    } catch (e: unknown) {
+        return { success: false, error: e instanceof Error ? e.message : "Neural Bridge Failure" };
     }
 }

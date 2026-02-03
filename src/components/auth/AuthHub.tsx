@@ -40,7 +40,7 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
         setError(null);
         try {
             await signInWithOAuthAction(provider);
-        } catch (err) {
+        } catch (_err) {
             setError("Authentication failed. Please try again.");
             setLoading(false);
         }

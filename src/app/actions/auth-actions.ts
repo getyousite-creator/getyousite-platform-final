@@ -63,13 +63,12 @@ export async function signInAction(email: string, password: string): Promise<Act
             };
         }
 
-        // Revalidate to update auth state
         revalidatePath('/', 'layout');
 
         return {
             success: true,
         };
-    } catch (error) {
+    } catch (error: unknown) {
         return {
             success: false,
             error: error instanceof Error ? error.message : 'Unknown error',

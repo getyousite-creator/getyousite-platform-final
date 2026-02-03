@@ -6,11 +6,17 @@ import { MessageSquare, X, Send, Bot, User, Sparkles } from 'lucide-react';
 import { useLocale } from 'next-intl';
 import { cn } from '@/lib/utils';
 
+interface Message {
+    id: string;
+    role: 'user' | 'assistant' | 'system';
+    content: string;
+}
+
 export default function FloatingChat() {
     const locale = useLocale();
     const [isOpen, setIsOpen] = useState(false);
     const [input, setInput] = useState('');
-    const [messages, setMessages] = useState<any[]>([]);
+    const [messages, setMessages] = useState<Message[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -25,8 +31,8 @@ export default function FloatingChat() {
         e.preventDefault();
         if (!input.trim() || isLoading) return;
 
-        const userMsg = { id: Date.now().toString(), role: 'user', content: input };
-        const updatedMessages = [...messages, userMsg];
+        const userMsg: Message = { id: Date.now().toString(), role: 'user', content: input };
+        const updatedMessages: Message[] = [...messages, userMsg];
         setMessages(updatedMessages);
         setInput('');
         setIsLoading(true);

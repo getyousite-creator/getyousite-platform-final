@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Home, Map, Ruler, BedDouble, Bath } from "lucide-react";
+import { Home, Map, Ruler, BedDouble, Bath, LucideIcon } from "lucide-react";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
 import { cn } from "@/lib/utils";
@@ -24,7 +24,7 @@ interface BorealEstatesProps {
 import Logo from "@/components/ui/Logo";
 
 export default function BorealEstates({ settings }: BorealEstatesProps) {
-    const { primaryColor, secondaryColor, headline, subheadline, fontFamily, locale = 'en' } = settings;
+    const { primaryColor, headline, subheadline, fontFamily, locale = 'en' } = settings;
     const updatePulse = useTemplateEditor((state) => state.updatePulse);
     const onOpen = useLaunchModal((state) => state.onOpen);
 
@@ -139,7 +139,13 @@ export default function BorealEstates({ settings }: BorealEstatesProps) {
     );
 }
 
-function PropertySpec({ icon: Icon, label, value }: any) {
+interface PropertySpecProps {
+    icon: LucideIcon;
+    label: string;
+    value: string;
+}
+
+function PropertySpec({ icon: Icon, label, value }: PropertySpecProps) {
     return (
         <div className="flex flex-col gap-6 group">
             <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center group-hover:bg-blue-600 transition-all duration-500 group-hover:scale-110">

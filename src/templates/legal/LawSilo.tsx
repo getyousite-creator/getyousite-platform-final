@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Scale, ShieldCheck, Gavel, FileText, Users, MapPin } from "lucide-react";
+import { Scale, ShieldCheck, Gavel, FileText, Users, MapPin, LucideIcon } from "lucide-react";
 import Image from "next/image";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
@@ -18,7 +18,7 @@ interface LawSiloProps {
 }
 
 export default function LawSilo({ settings }: LawSiloProps) {
-    const { primaryColor, secondaryColor, headline, subheadline, fontFamily } = settings;
+    const { primaryColor, headline, subheadline, fontFamily } = settings;
     const updatePulse = useTemplateEditor((state) => state.updatePulse);
     const onOpen = useLaunchModal((state) => state.onOpen);
 
@@ -107,7 +107,12 @@ export default function LawSilo({ settings }: LawSiloProps) {
     );
 }
 
-function Stat({ icon: Icon, label }: any) {
+interface StatProps {
+    icon: LucideIcon;
+    label: string;
+}
+
+function Stat({ icon: Icon, label }: StatProps) {
     return (
         <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded bg-stone-100 flex items-center justify-center text-stone-500">
@@ -118,7 +123,13 @@ function Stat({ icon: Icon, label }: any) {
     );
 }
 
-function PracticeBlock({ icon: Icon, title, desc }: any) {
+interface PracticeBlockProps {
+    icon: LucideIcon;
+    title: string;
+    desc: string;
+}
+
+function PracticeBlock({ icon: Icon, title, desc }: PracticeBlockProps) {
     return (
         <div className="p-12 border border-stone-800 hover:border-stone-600 transition-colors group cursor-pointer">
             <Icon className="w-8 h-8 mb-8 text-stone-400 group-hover:text-white transition-colors" />
