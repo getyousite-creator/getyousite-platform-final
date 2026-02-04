@@ -22,9 +22,9 @@ export default function Footer() {
                     <div>
                         <h4 className="font-semibold text-white mb-6">{t('platform')}</h4>
                         <ul className="space-y-3 text-sm text-zinc-500">
-                            <li><a href="#" className="hover:text-blue-400 transition-colors">AI Engine</a></li>
-                            <li><a href="#" className="hover:text-blue-400 transition-colors">Pricing</a></li>
-                            <li><a href="#" className="hover:text-blue-400 transition-colors">Case Studies</a></li>
+                            <li><a href="#services" className="hover:text-blue-400 transition-colors">{t('aiEngine') || "AI Engine"}</a></li>
+                            <li><a href="#pricing" className="hover:text-blue-400 transition-colors">{t('pricing') || "Pricing"}</a></li>
+                            <li><a href="#showcase" className="hover:text-blue-400 transition-colors">Case Studies</a></li>
                             <li><a href="#" className="hover:text-blue-400 transition-colors">Documentation</a></li>
                         </ul>
                     </div>
@@ -33,9 +33,9 @@ export default function Footer() {
                     <div>
                         <h4 className="font-semibold text-white mb-6">{t('legal')}</h4>
                         <ul className="space-y-3 text-sm text-zinc-500">
-                            <li><a href="#" className="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
-                            <li><a href="#" className="hover:text-blue-400 transition-colors">Terms of Service</a></li>
-                            <li><a href="#" className="hover:text-blue-400 transition-colors">GDPR Compliance</a></li>
+                            <li><a href="/terms" className="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
+                            <li><a href="/terms" className="hover:text-blue-400 transition-colors">Terms of Service</a></li>
+                            <li><a href="/terms" className="hover:text-blue-400 transition-colors">GDPR Compliance</a></li>
                         </ul>
                     </div>
 
