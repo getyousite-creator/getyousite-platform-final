@@ -53,6 +53,9 @@ export const CheckoutModule = ({ planId, siteType, currency, amount, onSuccess }
     const [method, setMethod] = useState<"card" | "local">(currency === "MAD" ? "local" : "card");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isUploaded, setIsUploaded] = useState(false);
+    const [couponCode, setCouponCode] = useState("");
+    const [discount, setDiscount] = useState(0);
+    const [isCouponApplied, setIsCouponApplied] = useState(false);
 
     // PAYPAL INTEGRATION (Dynamic Environment Logic)
     const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "BAAQAqL5S1GSIIaFYyUFHc1spAUiiwg2iQT2tfIvyNhtLOXQj5RBD9nhPNPlIhwl2XTlNoovU6U_Vmq2Zc";
@@ -80,8 +83,21 @@ export const CheckoutModule = ({ planId, siteType, currency, amount, onSuccess }
     const handleLocalSubmit = async () => {
         setIsSubmitting(true);
         try {
+            if (isCouponApplied) {
+                const { activateInstantSubscriptionAction } = await import("@/app/actions/payment-actions");
+                const result = await activateInstantSubscriptionAction(planId, siteType);
+                if (result.success) {
+                    toast.success("SOVEREIGN_ACCESS_ACTIVATED: Welcome Architect.");
+                    onSuccess();
+                } else {
+                    toast.error(result.error || "Activation Failure");
+                }
+                return;
+            }
+
             // Logic: Submit Payment Request to Supabase via Server Action
             const result = await submitPaymentProofAction(planId, siteType, 'cih', 'https://placeholder-receipt.com'); // Placeholder URL for now
+            // ...
 
             if (result.success) {
                 setIsUploaded(true);
@@ -96,6 +112,18 @@ export const CheckoutModule = ({ planId, siteType, currency, amount, onSuccess }
             setIsSubmitting(false);
         }
     };
+
+    const handleApplyCoupon = () => {
+        if (couponCode.toUpperCase() === 'RAZANETEST') {
+            setDiscount(1.0);
+            setIsCouponApplied(true);
+            toast.success("COUPON_RAZANE_ACTIVATED: 100% Discount Applied");
+        } else {
+            toast.error("INVALID_COUPON: Authentication Breach");
+        }
+    };
+
+    const finalAmount = isCouponApplied ? "0.00" : amount;
 
     return (
         <div className="bg-white rounded-3xl border border-zinc-100 p-8 shadow-2xl max-w-xl mx-auto overflow-hidden">
@@ -126,6 +154,32 @@ export const CheckoutModule = ({ planId, siteType, currency, amount, onSuccess }
                 </button>
             </div>
 
+            {/* COUPON INPUT */}
+            {!isCouponApplied && (
+                <div className="flex gap-2 mb-8">
+                    <input
+                        type="text"
+                        placeholder="ENTER_COUPON"
+                        value={couponCode}
+                        onChange={(e) => setCouponCode(e.target.value)}
+                        className="flex-1 bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-xs font-bold uppercase tracking-widest focus:outline-none focus:border-zinc-300 transition-colors"
+                    />
+                    <Button
+                        onClick={handleApplyCoupon}
+                        variant="ghost"
+                        className="bg-zinc-950 text-white hover:bg-zinc-800 text-[10px] font-black uppercase tracking-widest px-6 rounded-xl"
+                    >
+                        APPLY
+                    </Button>
+                </div>
+            )}
+            {isCouponApplied && (
+                <div className="mb-8 p-4 bg-emerald-50 border border-emerald-100 rounded-2xl flex items-center justify-between">
+                    <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Coupon_Active: RAZANETEST (-100%)</span>
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                </div>
+            )}
+
             <AnimatePresence mode="wait">
                 {method === "card" ? (
                     <motion.div
@@ -138,7 +192,7 @@ export const CheckoutModule = ({ planId, siteType, currency, amount, onSuccess }
                         <div className="p-6 bg-zinc-50 rounded-2xl flex items-center justify-between">
                             <div>
                                 <div className="text-[10px] font-black uppercase text-zinc-400 tracking-widest mb-1">Total_Amount</div>
-                                <div className="text-3xl font-black">{amount} {currency}</div>
+                                <div className="text-3xl font-black">{finalAmount} {currency}</div>
                             </div>
                             <ShieldCheck className="w-10 h-10 text-emerald-500" />
                         </div>
@@ -205,55 +259,57 @@ export const CheckoutModule = ({ planId, siteType, currency, amount, onSuccess }
                             </p>
                         </div>
 
-                        {/* PROOF UPLOAD PROTOCOL */}
-                        <div className="space-y-4">
-                            <div className="border-2 border-dashed border-zinc-200 rounded-3xl p-8 text-center bg-zinc-50 hover:bg-zinc-100/50 transition-all cursor-pointer group" onClick={() => setIsUploaded(true)}>
-                                {isUploaded ? (
-                                    <div className="space-y-2 py-2">
-                                        <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto text-emerald-600">
-                                            <CheckCircle2 className="w-6 h-6" />
+                        {/* PROOF UPLOAD PROTOCOL (Bypassed if Coupon Applied) */}
+                        {!isCouponApplied && (
+                            <div className="space-y-4">
+                                <div className="border-2 border-dashed border-zinc-200 rounded-3xl p-8 text-center bg-zinc-50 hover:bg-zinc-100/50 transition-all cursor-pointer group" onClick={() => setIsUploaded(true)}>
+                                    {isUploaded ? (
+                                        <div className="space-y-2 py-2">
+                                            <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto text-emerald-600">
+                                                <CheckCircle2 className="w-6 h-6" />
+                                            </div>
+                                            <h4 className="text-[11px] font-black uppercase tracking-tight">Receipt_Uploaded</h4>
                                         </div>
-                                        <h4 className="text-[11px] font-black uppercase tracking-tight">Receipt_Uploaded</h4>
-                                    </div>
-                                ) : (
-                                    <div className="space-y-3 py-2">
-                                        <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mx-auto text-zinc-400 group-hover:scale-110 transition-transform">
-                                            <Upload className="w-6 h-6" />
+                                    ) : (
+                                        <div className="space-y-3 py-2">
+                                            <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mx-auto text-zinc-400 group-hover:scale-110 transition-transform">
+                                                <Upload className="w-6 h-6" />
+                                            </div>
+                                            <h4 className="text-[11px] font-black uppercase tracking-widest">Step 1: Upload_Receipt</h4>
+                                            <p className="text-[9px] text-zinc-400 font-bold uppercase">Click to browse files</p>
                                         </div>
-                                        <h4 className="text-[11px] font-black uppercase tracking-widest">Step 1: Upload_Receipt</h4>
-                                        <p className="text-[9px] text-zinc-400 font-bold uppercase">Click to browse files</p>
-                                    </div>
-                                )}
-                            </div>
-
-                            <motion.div
-                                className="p-5 bg-zinc-950 rounded-2xl border border-white/10 shadow-xl"
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                            >
-                                <div className="flex gap-4 items-start">
-                                    <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center shrink-0 border border-blue-600/30">
-                                        <span className="text-blue-500 text-[10px] font-black">2</span>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <h4 className="text-[10px] font-black text-white uppercase tracking-widest leading-none">Express_Activation (30-min)</h4>
-                                        <p className="text-[9px] text-zinc-400 font-bold leading-relaxed uppercase tracking-tight">
-                                            Forward your receipt image to <span className="text-blue-400 select-all">GETYOUSITE@GMAIL.COM</span> for rapid validation protocol.
-                                        </p>
-                                    </div>
+                                    )}
                                 </div>
-                            </motion.div>
-                        </div>
+
+                                <motion.div
+                                    className="p-5 bg-zinc-950 rounded-2xl border border-white/10 shadow-xl"
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                >
+                                    <div className="flex gap-4 items-start">
+                                        <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center shrink-0 border border-blue-600/30">
+                                            <span className="text-blue-500 text-[10px] font-black">2</span>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <h4 className="text-[10px] font-black text-white uppercase tracking-widest leading-none">Express_Activation (30-min)</h4>
+                                            <p className="text-[9px] text-zinc-400 font-bold leading-relaxed uppercase tracking-tight">
+                                                Forward your receipt image to <span className="text-blue-400 select-all">GETYOUSITE@GMAIL.COM</span> for rapid validation protocol.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            </div>
+                        )}
 
                         <Button
                             className="w-full h-16 rounded-2xl bg-zinc-950 text-white font-black uppercase tracking-[0.2em] text-[11px] hover:scale-[1.01] transition-all shadow-[0_20px_40px_rgba(0,0,0,0.2)]"
                             onClick={handleLocalSubmit}
-                            disabled={!isUploaded || isSubmitting}
+                            disabled={(!isUploaded && !isCouponApplied) || isSubmitting}
                         >
                             {isSubmitting ? (
                                 <Loader2 className="w-5 h-5 animate-spin" />
                             ) : (
-                                "ACTIVATE_SOVEREIGN_PROTOCOL"
+                                isCouponApplied ? "ACTIVATE_FREE_TRIAL" : "ACTIVATE_SOVEREIGN_PROTOCOL"
                             )}
                         </Button>
                     </motion.div>

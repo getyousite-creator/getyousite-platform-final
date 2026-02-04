@@ -59,22 +59,29 @@ export default function FloatingChat() {
                 const { done, value } = await reader.read();
                 if (done) break;
 
-                // Note: the Vercel AI SDK 'toDataStreamResponse' sends a specific format
-                // In v4/v6 it might send JSON-serialized chunks. 
-                // However, for gpt-4o-mini via streamText, standard decoding of raw text is often sufficient 
-                // if we handle the stream decoding properly.
+                const chunk = decoder.decode(value, { stream: true });
 
-                const chunk = decoder.decode(value);
-                // Vercel AI SDK v3/v4 data stream format: 0:"text"
-                const parts = chunk.split('\n').filter(Boolean);
+                // Robust parsing for Vercel AI SDK Data Stream Format
+                // Format: code:"payload"
+                // 0: text, 1: data, etc.
+                const lines = chunk.split('\n').filter(Boolean);
+                for (const line of lines) {
+                    try {
+                        const firstColonIndex = line.indexOf(':');
+                        if (firstColonIndex === -1) continue;
 
-                for (const part of parts) {
-                    if (part.startsWith('0:')) {
-                        const text = JSON.parse(part.slice(2));
-                        accumulatedContent += text;
-                        setMessages(prev =>
-                            prev.map(m => m.id === assistantMsgId ? { ...m, content: accumulatedContent } : m)
-                        );
+                        const type = line.slice(0, firstColonIndex);
+                        const content = line.slice(firstColonIndex + 1);
+
+                        if (type === '0') {
+                            const text = JSON.parse(content);
+                            accumulatedContent += text;
+                            setMessages(prev =>
+                                prev.map(m => m.id === assistantMsgId ? { ...m, content: accumulatedContent } : m)
+                            );
+                        }
+                    } catch (e) {
+                        console.warn('STREAM_PARSE_RECOVERABLE_ERROR:', e);
                     }
                 }
             }

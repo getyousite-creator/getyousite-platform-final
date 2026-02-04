@@ -10,9 +10,11 @@ import Image from "next/image";
 
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
+import { useLaunchModal } from "@/hooks/use-launch-modal";
 
 export default function ShowcaseGallery() {
     const { updateBlueprint } = useTemplateEditor();
+    const onOpen = useLaunchModal((state) => state.onOpen);
     const [featuredSites, setFeaturedSites] = useState<any[]>([]);
 
     useEffect(() => {
@@ -104,32 +106,46 @@ export default function ShowcaseGallery() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                    {SITE_TEMPLATES.categories.flatMap(c => c.themes).slice(0, 4).map((theme) => (
+                    {SITE_TEMPLATES.categories.flatMap(c => c.themes).filter(t => t.id === 'dr-khalil' || t.id === 't1-quantum' || t.id === 'luxe-cart' || t.id === 'law-silo').map((theme) => (
                         <motion.div
                             key={theme.id}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            className="group relative bg-zinc-950 border border-white/5 rounded-3xl overflow-hidden hover:border-white/10 transition-all"
+                            className="group relative bg-zinc-950 border border-white/5 rounded-3xl overflow-hidden hover:border-blue-500/30 transition-all duration-500"
                         >
-                            <div className="aspect-[21/9] relative overflow-hidden opacity-50 group-hover:opacity-100 transition-opacity">
+                            <div className="aspect-[21/9] relative overflow-hidden opacity-40 group-hover:opacity-100 transition-opacity duration-700">
                                 <Image
                                     src={theme.image}
                                     alt={theme.name}
                                     fill
-                                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                                    className="object-cover grayscale group-hover:grayscale-0 scale-110 group-hover:scale-100 transition-all duration-1000"
                                 />
+                                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent" />
+
+                                {/* Hover Interaction Layer */}
+                                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <Button
+                                        onClick={() => handlePreview(theme.blueprint)}
+                                        className="bg-white text-black hover:bg-zinc-200 font-bold uppercase tracking-widest text-[10px] px-8 py-6 rounded-full shadow-2xl"
+                                    >
+                                        Live_Preview <ArrowRight className="ml-2 w-4 h-4" />
+                                    </Button>
+                                </div>
                             </div>
-                            <div className="p-8 flex items-center justify-between">
+                            <div className="p-8 flex items-center justify-between bg-zinc-950/50 backdrop-blur-md">
                                 <div>
-                                    <h4 className="text-xl font-bold text-white uppercase tracking-tight">{theme.name}</h4>
-                                    <p className="text-zinc-600 text-[10px] uppercase font-black tracking-widest">{theme.description}</p>
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                                        <h4 className="text-xl font-black text-white uppercase tracking-tight italic">{theme.name}</h4>
+                                    </div>
+                                    <p className="text-zinc-500 text-[10px] uppercase font-black tracking-widest">{theme.description}</p>
                                 </div>
                                 <Button
-                                    onClick={() => handlePreview(theme.blueprint)}
-                                    variant="glow"
-                                    className="h-12 w-12 rounded-full p-0 flex items-center justify-center"
+                                    onClick={() => onOpen(theme.name)}
+                                    className="h-14 px-6 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(37,99,235,0.2)]"
                                 >
-                                    <ArrowRight size={18} />
+                                    <Box size={18} />
+                                    <span className="text-[10px] font-black uppercase tracking-widest hidden sm:block">Adopt Blueprint</span>
                                 </Button>
                             </div>
                         </motion.div>

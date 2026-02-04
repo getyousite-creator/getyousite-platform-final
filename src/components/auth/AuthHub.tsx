@@ -60,9 +60,10 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
             setLoading(false);
         } else {
             if (mode === "signin") {
-                router.push("/dashboard");
+                router.push(`/${locale}/dashboard`);
                 router.refresh();
             } else {
+                setError("SUCCESS: Please check your email to confirm registration.");
                 setMode("signin");
                 setLoading(false);
             }

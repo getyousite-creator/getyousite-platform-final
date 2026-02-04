@@ -16,6 +16,7 @@ const TechGrid = dynamic(() => import('./fintech/TechGrid'), { ssr: false });
 const VermaHospitality = dynamic(() => import('./hospitality/VermaHospitality'), { ssr: false });
 const OmegaAgencyPro = dynamic(() => import('./agency/OmegaAgencyPro'), { ssr: false });
 const AlphaStorePro = dynamic(() => import('./ecommerce/AlphaStorePro'), { ssr: false });
+const DrKhalilDental = dynamic(() => import('./healthcare/DrKhalilDental'), { ssr: false });
 
 import { SovereignTemplateProps } from "@/lib/types/template";
 
@@ -33,6 +34,7 @@ const templateMap: Record<string, React.ComponentType<SovereignTemplateProps>> =
     'verma-hospitality': VermaHospitality as any,
     'omega-pro': OmegaAgencyPro as any,
     'alpha-pro': AlphaStorePro as any,
+    'dr-khalil': DrKhalilDental as any,
 };
 
 export default function TemplateRenderer({ templateId }: { templateId: string }) {

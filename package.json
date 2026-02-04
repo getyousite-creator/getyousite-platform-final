@@ -6,9 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "ignite": "npx tsx scripts/activate-runtime.ts",
-    "clean-deploy": "npx tsx scripts/deploy-prod.ts",
-    "lint": "eslint"
+    "lint": "next lint"
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.25",

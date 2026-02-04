@@ -45,7 +45,7 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="text-6xl md:text-[8rem] font-black tracking-tighter text-white mb-8 max-w-6xl leading-[0.8] uppercase"
+                    className="text-4xl md:text-6xl lg:text-8xl font-black tracking-tighter text-white mb-8 max-w-5xl leading-[0.85] uppercase"
                     dangerouslySetInnerHTML={{
                         __html: t.raw('headline').replace('<gradient>', '<span class="text-blue-600">').replace('</gradient>', '</span>')
                     }}
@@ -70,7 +70,7 @@ export default function Hero() {
                 >
                     <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 via-slate-800 to-blue-600/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition duration-1000" />
                     <div className="relative flex items-center bg-slate-950/80 rounded-2xl p-2 border border-slate-800 backdrop-blur-md shadow-2xl overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[simmer_2s_infinite]" />
                         <input
                             type="text"
                             value={inputValue}
@@ -79,7 +79,7 @@ export default function Hero() {
                             placeholder={t('placeholder')}
                             className="w-full bg-transparent text-white px-6 py-4 focus:outline-none placeholder:text-slate-600 font-medium text-lg"
                         />
-                        <Button className="shrink-0 h-14 px-8 rounded-xl bg-blue-600 hover:bg-blue-500 text-white shadow-[0_0_20px_rgba(37,99,235,0.3)] transition-all active:scale-95" onClick={handleGenerate}>
+                        <Button className="shrink-0 h-14 px-8 rounded-xl bg-blue-600 hover:bg-blue-500 text-white shadow-[0_0_20px_rgba(37,99,235,0.3)] transition-all active:scale-95 text-lg font-semibold" onClick={handleGenerate}>
                             {t('generate')} <ArrowRight className="ml-2 w-5 h-5" />
                         </Button>
                     </div>

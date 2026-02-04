@@ -46,7 +46,7 @@ export const SITE_TEMPLATES: { categories: TemplateCategory[] } = {
                 {
                     id: "t1-quantum",
                     name: "Quantum Tech",
-                    image: "https://images.unsplash.com/photo-1518770660439-4636190af475",
+                    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop",
                     description: "Dark mode, neon accents, high-frequency layout.",
                     components: ["Glassmorphism-Centered", "Video-Background-Dark", "Features-Grid", "Tech-Stack-Marquee"],
                     primaryColor: "#00f2ff",
@@ -88,7 +88,7 @@ export const SITE_TEMPLATES: { categories: TemplateCategory[] } = {
                 {
                     id: "e1-vault",
                     name: "The Vault",
-                    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
+                    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2070&auto=format&fit=crop",
                     description: "Gold & Black, parallax scrolling, high-res focus.",
                     components: ["Luxury-Slim-Nav", "Parallax-Image-FullWidth", "Product-Lookbook", "Storytelling-Section"],
                     primaryColor: "#d4af37",
@@ -137,18 +137,18 @@ export const SITE_TEMPLATES: { categories: TemplateCategory[] } = {
                     blueprint: constructBlueprint("Global Advisor", "#1e40af", ["hero", "features", "testimonials"])
                 },
                 {
-                    id: "s2-health",
-                    name: "Vital Core",
-                    image: "https://images.unsplash.com/photo-1505751172107-596229738840",
-                    description: "Clean green/teal, focus on booking and care.",
-                    components: ["Booking-Button-Header", "Friendly-Doctor-Image", "Specialties-Grid", "Patient-Testimonials"],
-                    primaryColor: "#0d9488",
-                    blueprint: constructBlueprint("Vital Core", "#0d9488", ["hero", "features", "custom"])
+                    id: "dr-khalil",
+                    name: "Dr. Khalil Dental",
+                    image: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2070&auto=format&fit=crop",
+                    description: "High-fidelity clinical aesthetic, focus on dental excellence.",
+                    components: ["Cinematic-Hero-Dental", "Service-Grid-Clinical", "Appointment-Portal-Sim", "Patient-Testimonials"],
+                    primaryColor: "#0ea5e9",
+                    blueprint: constructBlueprint("Dr. Khalil Dental", "#0ea5e9", ["hero", "features", "testimonials", "cta"])
                 },
                 {
                     id: "s3-legal",
                     name: "Sovereign Law",
-                    image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f",
+                    image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=2070&auto=format&fit=crop",
                     description: "Deep wood tones, classic serif fonts, absolute trust.",
                     components: ["Traditional-Header", "Static-Classic-Hero", "Practice-Areas-Detailed", "Attorney-Profiles"],
                     primaryColor: "#451a03",

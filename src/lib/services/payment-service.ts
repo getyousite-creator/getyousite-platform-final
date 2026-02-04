@@ -134,6 +134,53 @@ export class PaymentService {
     }
 
     /**
+     * SOVEREIGN COUPON ENGINE: Validate RAZANETEST bypass
+     * Logic: If coupon is 'RAZANETEST', grant 100% discount for testing.
+     */
+    static validateCoupon(code: string): { valid: boolean; discount: number } {
+        if (code.toUpperCase() === 'RAZANETEST') {
+            return { valid: true, discount: 1.0 }; // 100% off
+        }
+        return { valid: false, discount: 0 };
+    }
+
+    /**
+     * SOVEREIGN INSTANT: Activate subscription immediately (Coupon Bypass)
+     */
+    static async activateSubscriptionInstantly(userId: string, planId: SubscriptionPlan, siteType: SiteType): Promise<{ success: boolean; error?: string }> {
+        try {
+            const supabase = await createClient();
+            const { error } = await supabase
+                .from('user_subscriptions')
+                .upsert({
+                    user_id: userId,
+                    plan_id: planId,
+                    allowed_site_type: siteType,
+                    status: 'active',
+                    updated_at: new Date().toISOString()
+                });
+
+            if (error) throw error;
+
+            // Log as approved payment
+            await supabase.from('payment_requests').insert({
+                user_id: userId,
+                plan_id: planId,
+                site_type: siteType,
+                method: 'coupon_bypass',
+                amount: 0,
+                currency_code: 'USD',
+                status: 'approved',
+                admin_notes: 'System Activated: RAZANETEST'
+            });
+
+            return { success: true };
+        } catch (e) {
+            return { success: false, error: (e as Error).message };
+        }
+    }
+
+    /**
      * SOVEREIGN AUTO: Update subscription status after successful global capture
      */
     static async handlePayPalCapture(userId: string, planId: SubscriptionPlan, siteType: SiteType): Promise<{ success: boolean }> {

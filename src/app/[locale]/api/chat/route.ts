@@ -4,8 +4,12 @@ import knowledge from '@/data/support-knowledge.json';
 
 // Note: Ensure OPENAI_API_KEY is in .env.local
 const openai = createOpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+    apiKey: process.env.OPENAI_API_KEY || '',
 });
+
+if (!process.env.OPENAI_API_KEY) {
+    console.warn("NEURAL_BRIDGE_WARNING: OPENAI_API_KEY is missing. Responses will fail.");
+}
 
 export const runtime = 'edge';
 

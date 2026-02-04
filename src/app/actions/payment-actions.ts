@@ -50,3 +50,21 @@ export async function submitPaymentProofAction(
         return { success: false, error: e instanceof Error ? e.message : "Neural Bridge Failure" };
     }
 }
+/**
+ * Activate subscription instantly (Coupon Bypass)
+ */
+export async function activateInstantSubscriptionAction(planId: SubscriptionPlan, siteType: SiteType): Promise<PaymentResult> {
+    try {
+        const { data: user } = await AuthService.getCurrentUser();
+        if (!user) return { success: false, error: "Authentication required" };
+
+        const result = await PaymentService.activateSubscriptionInstantly(user.id, planId, siteType);
+        if (result.success) {
+            revalidatePath('/dashboard');
+            return { success: true };
+        }
+        return { success: false, error: result.error || "Failed to activate" };
+    } catch (e: unknown) {
+        return { success: false, error: e instanceof Error ? e.message : "Neural Bridge Failure" };
+    }
+}
