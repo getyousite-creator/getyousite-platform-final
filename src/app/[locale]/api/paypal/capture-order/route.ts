@@ -56,7 +56,7 @@ export async function POST(req: Request) {
             await StoreService.markAsPaid(siteId, captureId, amount);
 
             // Trigger the Deployment Engine
-            await DeploymentEngine.launchToHostinger(siteId);
+            await DeploymentEngine.deployToProduction(siteId);
 
             return NextResponse.json({
                 success: true,

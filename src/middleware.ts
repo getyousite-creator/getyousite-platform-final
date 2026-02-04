@@ -9,6 +9,12 @@ export default async function middleware(request: NextRequest) {
     // 1. Update session / Refresh token
     const supabaseResponse = await updateSession(request);
 
+    // LOGIC GUARD: If Supabase middleware returned a redirect (e.g. auth required), return it immediately.
+    // This prevents MIDDLEWARE_INVOCATION_FAILED caused by conflicting response headers.
+    if (supabaseResponse.status >= 300 && supabaseResponse.status < 400) {
+        return supabaseResponse;
+    }
+
     // 2. Handle Localization
     const response = intlMiddleware(request);
 

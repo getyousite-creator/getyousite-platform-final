@@ -16,9 +16,29 @@ export interface UserPromptData {
  */
 export const CustomizerEngine = {
     /**
-     * Generates a final, personalized blueprint by mutating a base template.
+     * Generates a final, personalized blueprint by either mutating a base template
+     * or calling the Generative AI engine.
      */
     async generateFinalBlueprint(userData: UserPromptData): Promise<SiteBlueprint> {
+        // Logic: Try AI generation first for "Legendary" output
+        try {
+            const locale = typeof window !== 'undefined' ? window.location.pathname.split('/')[1] || 'en' : 'en';
+            const response = await fetch(`/${locale}/api/generate`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...userData, locale }),
+            });
+
+            if (response.ok) {
+                const aiBlueprint = await response.json();
+                console.log("ENGINE_EVOLUTION: Generative AI Blueprint Synthesized.");
+                return aiBlueprint;
+            }
+            console.warn("ENGINE_FALLBACK: AI Generation failed, falling back to heuristic customization.");
+        } catch (e) {
+            console.error("ENGINE_RECOVERY: AI Error, using heuristic fallback.", e);
+        }
+
         const template = this.findTemplate(userData.selectedId);
         if (!template) {
             console.error(`ENGINE_CRITICAL_FAILURE: Template ID '${userData.selectedId}' not found.`);

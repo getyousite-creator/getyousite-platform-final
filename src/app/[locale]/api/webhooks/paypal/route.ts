@@ -16,7 +16,7 @@ export async function POST(req: Request) {
 
             if (siteId) {
                 console.log("PAYPAL_WEBHOOK_CAPTURE_SUCCESS: Site ID", siteId);
-                await DeploymentEngine.launchToHostinger(siteId);
+                await DeploymentEngine.deployToProduction(siteId);
             }
         }
 

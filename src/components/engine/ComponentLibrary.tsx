@@ -19,6 +19,12 @@ export function ComponentLibrary({ type, content, primaryColor }: ComponentLibra
             return <PreviewHero content={content} primaryColor={primaryColor} />;
         case 'features':
             return <PreviewFeatures content={content} primaryColor={primaryColor} />;
+        case 'benefits':
+            return <PreviewBenefits content={content} primaryColor={primaryColor} />;
+        case 'trust_bar':
+            return <PreviewTrustBar content={content} primaryColor={primaryColor} />;
+        case 'faq':
+            return <PreviewFAQ content={content} primaryColor={primaryColor} />;
         case 'cta':
             return <PreviewCTA content={content} primaryColor={primaryColor} />;
         case 'gallery':
@@ -32,6 +38,54 @@ export function ComponentLibrary({ type, content, primaryColor }: ComponentLibra
                 </div>
             );
     }
+}
+
+function PreviewBenefits({ content, primaryColor }: any) {
+    const items = content?.items || ["Instant Setup", "High Security", "Growth Ready"];
+    return (
+        <section className="py-20 px-8 bg-white text-center">
+            <h2 className="text-3xl font-black mb-12 tracking-tight">Core Advantages</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto">
+                {items.map((benefit: string, i: number) => (
+                    <div key={i} className="space-y-4">
+                        <div className="text-4xl font-black text-zinc-100 mb-2">0{i + 1}</div>
+                        <h3 className="text-xl font-bold">{benefit}</h3>
+                        <div className="h-1 w-12 mx-auto rounded-full" style={{ backgroundColor: primaryColor }} />
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+}
+
+function PreviewTrustBar({ content, primaryColor }: any) {
+    const logos = content?.logos || ["Partner Alpha", "Tech Beta", "Global Gamma"];
+    return (
+        <section className="py-12 bg-zinc-900 overflow-hidden">
+            <div className="flex gap-16 justify-center opacity-30 grayscale invert">
+                {logos.map((logo: string, i: number) => (
+                    <span key={i} className="text-xl font-black tracking-tighter text-white whitespace-nowrap">{logo}</span>
+                ))}
+            </div>
+        </section>
+    );
+}
+
+function PreviewFAQ({ content, primaryColor }: any) {
+    const items = content?.items || [{ q: "How long does it take?", a: "Seconds with our AI." }];
+    return (
+        <section className="py-20 px-8 bg-zinc-50 border-t border-black/5">
+            <div className="max-w-3xl mx-auto space-y-8">
+                <h2 className="text-3xl font-black text-center mb-12">Common Inquiries</h2>
+                {items.map((item: any, i: number) => (
+                    <div key={i} className="p-6 bg-white rounded-xl border border-black/5 shadow-sm">
+                        <h4 className="font-bold mb-2">{item.q}</h4>
+                        <p className="text-sm text-zinc-500">{item.a}</p>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
 }
 
 function PreviewHero({ content, primaryColor }: any) {

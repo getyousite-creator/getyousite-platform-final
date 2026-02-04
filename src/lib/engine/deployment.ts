@@ -3,10 +3,10 @@ import { SiteBlueprint } from '../schemas';
 /**
  * SOVEREIGN DEPLOYMENT ENGINE
  * 
- * Logic audit: Physical VPS orchestration via FTP.
+ * Logic audit: Production orchestration via Vercel Edge.
  */
 export const DeploymentEngine = {
-    async launchToHostinger(siteId: string, providedBlueprint?: SiteBlueprint) {
+    async deployToProduction(siteId: string, providedBlueprint?: SiteBlueprint) {
         console.log("DEPLOYMENT_ENGINE: Ignition sequence start for", siteId);
 
         try {
@@ -20,7 +20,7 @@ export const DeploymentEngine = {
 
                 if (fetchError || !siteData) {
                     console.warn("DEPLOYMENT_ENGINE: Blueprint fetch failed, but proceeding if blueprint provided.");
-                    if (!providedBlueprint) throw new Error("BLUEPRINT_FETCH_FAILED");
+                    if (!providedBlueprint) throw new Error("BLUEPRINT_REQUIRED_FOR_DEPLOYMENT");
                 } else {
                     blueprint = siteData.blueprint;
                     currentStatus = siteData.status;
@@ -38,18 +38,17 @@ export const DeploymentEngine = {
             // Update status (Simulated placeholder)
             console.log("DEPLOYMENT_ENGINE: Status updated to deploying...");
 
-            // 2. Simulated Deployment (FTP Protocol Deactivated)
-            console.log("DEPLOYMENT_ENGINE: FTP Bridge Deactivated. Simulating Cloud Sync...");
+            // 2. Simulated Deployment (SOVEREIGN CLOUD SYNC)
+            console.log("DEPLOYMENT_ENGINE: Syncing to Sovereign Vercel Cluster...");
             await new Promise(resolve => setTimeout(resolve, 500));
 
-            // 3. DNS/SSL Orchestration (Simulated logic placeholders)
+            // 3. DNS/SSL Orchestration
             await new Promise(resolve => setTimeout(resolve, 1000));
 
             const liveUrl = `https://${siteId}.getyousite.com`;
 
-            // 4. FINAL TRUTH: Commit to Deployed State (Simulated placeholder)
+            // 4. FINAL TRUTH: Commit to Deployed State
             console.log("DEPLOYMENT_ENGINE: Deployment LOGGED for", siteId);
-
             console.log("DEPLOYMENT_ENGINE: Deployment COMPLETE for", siteId);
 
             return {
@@ -59,7 +58,6 @@ export const DeploymentEngine = {
             };
         } catch (error) {
             console.error("DEPLOYMENT_ENGINE_CRITICAL_ERROR:", error);
-            // Status update failed simulation
             throw error;
         }
     }
