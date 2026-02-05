@@ -163,5 +163,32 @@
         "have_account": "Vous avez déjà un compte ? Se connecter",
         "no_account": "Accès manquant ? S'inscrire",
         "terms": "En vous connectant, vous acceptez les CGU et la Politique de Confidentialité."
+    },
+    "Contact": {
+        "title": "Hub de Contact",
+        "subtitle": "Protocole de communication directe avec les architectes Souverains. Attendez-vous à une précision clinique.",
+        "badge": "Centre de Transmission",
+        "form": {
+            "name": "Identité",
+            "email": "Lien_Signal",
+            "subject": "Objectif_Cible",
+            "message": "Données_Transmission",
+            "send": "Exécuter Transmission",
+            "sending": "Transmission en cours..."
+        },
+        "info": {
+            "title": "Nœuds Stratégiques",
+            "support": "Support Global",
+            "commercial": "Partenariats Stratégiques",
+            "hq": "QG Tactique",
+            "address": "Casablanca Finance City, MA"
+        }
+    },
+    "Blog": {
+        "title": "Perspectives Souveraines",
+        "subtitle": "Analyse approfondie de l'architecture IA, de la souveraineté numérique et du commerce haute fréquence.",
+        "badge": "Répertoire_Savoir",
+        "read_more": "Décoder_Article",
+        "categories": "Flux_Intelligence"
     }
 }

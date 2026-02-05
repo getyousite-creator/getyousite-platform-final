@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useTranslations, useLocale } from "next-intl";
-import { usePathname, useRouter } from "@/i18n/routing";
+import { usePathname, useRouter, Link } from "@/i18n/routing";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
 
 const languages = [
@@ -61,6 +61,8 @@ export default function Header() {
                         <a href="#services" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-blue-400 transition-all">{t('services')}</a>
                         <a href="#pricing" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-blue-400 transition-all">{t('pricing')}</a>
                         <a href="#showcase" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-blue-400 transition-all">{t('portfolio')}</a>
+                        <Link href="/blog" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-blue-400 transition-all font-mono">Blog</Link>
+                        <Link href="/contact" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-blue-400 transition-all font-mono">Contact</Link>
                     </nav>
 
                     {/* Actions */}
@@ -118,6 +120,8 @@ export default function Header() {
                             <a href="#services" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{t('services')}</a>
                             <a href="#pricing" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{t('pricing')}</a>
                             <a href="#showcase" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{t('portfolio')}</a>
+                            <Link href="/blog" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Blog</Link>
+                            <Link href="/contact" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Contact</Link>
                             <div className="flex flex-col gap-3 pt-4 border-t border-white/5">
                                 <Button variant="outline" className="w-full border-white/10 text-[10px] font-black uppercase tracking-[0.3em]" onClick={() => router.push('/login')}>{t('login') || 'Log_In'}</Button>
                                 <Button className="w-full bg-blue-600 text-[10px] font-black uppercase tracking-[0.3em]" onClick={() => router.push('/signup')}>{t('launch')}</Button>

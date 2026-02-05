@@ -1,12 +1,12 @@
 "use client";
 
 import React from "react";
-import { ShieldCheck, Scale, Globe, FileText, Lock, Zap } from "lucide-react";
+import { Shield, Eye, Lock, FileLock, Scale } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { motion } from "framer-motion";
 
-export default function TermsOfServicePage() {
+export default function PrivacyPolicyPage() {
     return (
         <div className="min-h-screen bg-slate-950 text-white selection:bg-blue-600 selection:text-white">
             <Header />
@@ -20,56 +20,51 @@ export default function TermsOfServicePage() {
                             animate={{ opacity: 1, scale: 1 }}
                             className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-slate-900 border border-white/10 text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 mb-8"
                         >
-                            <Scale className="w-3 h-3 text-blue-500" />
-                            Legal_Node_v2.0
+                            <Shield className="w-3 h-3 text-blue-500" />
+                            Security_Protocol_v2.0
                         </motion.div>
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             className="text-6xl md:text-8xl font-black italic tracking-tightest uppercase mb-6 leading-none"
                         >
-                            Sovereign Protocol
+                            Privacy Anchor
                         </motion.h1>
-                        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-slate-500">Terms of Service / Operation Logic</p>
+                        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-slate-500">How we protect your signal and data</p>
                     </div>
 
                     <div className="max-w-4xl mx-auto space-y-20">
-                        {/* SECTION 1 */}
-                        <Section
-                            icon={Globe}
-                            title="1. ARCHITECTURAL SERVICE"
-                            text="GetYouSite functions as a Sovereign Site Architect. By deploying architectures through our engine, you retain 100% ownership of your business logic and customer data. GetYouSite remains the guardian of the underlying core code and hosting infrastructure."
-                        />
-
-                        {/* SECTION 2 - PAYMENTS */}
-                        <Section
-                            icon={ShieldCheck}
-                            title="2. MONETIZATION PROTOCOL"
-                            text="We provide hybrid payment processing (PayPal & Local Moroccan Transfers). Automated gateways are activated upon transaction confirmation. Manual transfers (CIH, Barid Bank) require verifiable 'Proof of Payment'. Any submission of fraudulent data triggers an immediate and permanent terminal ban."
-                        />
-
-                        {/* SECTION 3 - PERFORMANCE */}
-                        <Section
-                            icon={Zap}
-                            title="3. ZERO COMMISSION GUARANTEE"
-                            text="Our operational logic is simple: Zero commissions on your revenue. You invest in the infrastructure; every dirham of profit belongs to your empire. This is the Sovereign advantage."
-                        />
-
-                        {/* SECTION 4 - SECURITY */}
                         <Section
                             icon={Lock}
-                            title="4. CORE SECURITY & DATA"
-                            text="All deployments are protected by Enterprise DDOS layers and Military-grade encryption. We do not sell your data; we architect the walls that protect it."
+                            title="1. DATA SOVEREIGNTY"
+                            text="Your data is your property. We do not sell, rent, or trade your personal information. Our architecture is designed to minimize data footprint and maximize security."
                         />
 
-                        {/* THE FINE PRINT */}
+                        <Section
+                            icon={Eye}
+                            title="2. TRACKING & SIGNALS"
+                            text="We use minimal tracking for performance optimization and security monitoring. No third-party behavioral tracking is permitted within the Sovereign core."
+                        />
+
+                        <Section
+                            icon={FileLock}
+                            title="3. ENCRYPTION PROTOCOL"
+                            text="Every transmission is encrypted at rest and in transit. Your access keys are never stored in plain text and are protected by multi-layer hashing."
+                        />
+
+                        <Section
+                            icon={Scale}
+                            title="4. LEGAL COMPLIANCE"
+                            text="We comply with GDPR and Moroccan data protection laws (Law 09-08). You have the right to request a full wipe of your digital signal at any time."
+                        />
+
                         <motion.div
                             initial={{ opacity: 0 }}
                             whileInView={{ opacity: 1 }}
                             className="pt-20 border-t border-white/5 opacity-40 text-[10px] font-mono leading-relaxed space-y-4"
                         >
-                            <p>Last Protocol Update: February 05, 2026.</p>
-                            <p>The service is provided 'As Is'. We are not responsible for user-generated content or 3rd party store transactions. Compliance with local E-commerce laws is the responsibility of the account holder.</p>
+                            <p>Last Privacy Update: February 05, 2026.</p>
+                            <p>Casablanca, Morocco / Global Sovereign Network.</p>
                         </motion.div>
                     </div>
                 </div>

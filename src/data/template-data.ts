@@ -57,6 +57,16 @@ export const templates = [
     },
     // Healthcare
     {
+        id: "dr-khalil",
+        title: "Dr. Khalil Dental",
+        desc: "High-fidelity clinical aesthetic for dental centers with booking simulations.",
+        category: "healthcare",
+        image: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2070&auto=format&fit=crop",
+        demoUrl: "https://demo-dental.getyousite.com",
+        badge: "Highly Rated",
+        features: ["Appointment Portal", "Service Grid", "Patient Proofs"]
+    },
+    {
         id: "vital-care",
         title: "VitalCare Health",
         desc: "Clinical, clean, and patient-focused architecture for medical centers and clinics.",
@@ -152,6 +162,116 @@ export const templates = [
         demoUrl: "https://demo-hotel.getyousite.com",
         badge: "Elite",
         features: ["Concierge Connect", "Amenity Showcase", "Direct Booking"]
+    },
+    // E-Commerce (Wix Style Expansion)
+    {
+        id: "eco-style",
+        title: "EcoStyle Sustainable",
+        desc: "High-end organic fashion store with minimal aesthetics and focus on ethical storytelling.",
+        category: "ecommerce",
+        image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=2070&auto=format&fit=crop",
+        demoUrl: "https://demo-eco.getyousite.com",
+        badge: "Eco-Trend",
+        features: ["Impact Metrics", "Recycle-First Flow", "Natural UI"]
+    },
+    // Creative & Portfolio
+    {
+        id: "arch-studio",
+        title: "ArchStudio Minimal",
+        desc: "Breathtaking minimalist portfolio for architectural firms and interior designers. Focus on visual space.",
+        category: "creative",
+        image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop",
+        demoUrl: "https://demo-arch.getyousite.com",
+        badge: "Architect Picks",
+        features: ["Depth Parallax", "Project Dossiers", "Blueprint Mode"]
+    },
+    // Food & Restaurant
+    {
+        id: "bistro-modern",
+        title: "Bistro Modern Elite",
+        desc: "Sophisticated fine dining experience with molecular gastronomy focus and immersive menus.",
+        category: "restaurant",
+        image: "https://images.unsplash.com/photo-1550966842-2b2df6653a91?q=80&w=2070&auto=format&fit=crop",
+        demoUrl: "https://demo-bistro.getyousite.com",
+        badge: "Michelin Ready",
+        features: ["Sensory Menu", "Global Booking", "Chef Stories"]
+    },
+    // Fintech & SaaS
+    {
+        id: "quantum-dash",
+        title: "QuantumDash SaaS",
+        desc: "Hyper-metric analytical dashboard for modern tech enterprises. Data-first AI architecture.",
+        category: "fintech",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
+        demoUrl: "https://demo-quantum.getyousite.com",
+        badge: "AI Powered",
+        features: ["Auto-Forecasting", "Metric Clusters", "Safe-Key Auth"]
+    },
+    // Health & Wellness
+    {
+        id: "zen-wellness",
+        title: "ZenWellness Spa",
+        desc: "Immersive digital sanctuary for high-end spas and luxury yoga centers. Soft-touch design.",
+        category: "healthcare",
+        image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=2070&auto=format&fit=crop",
+        demoUrl: "https://demo-zen.getyousite.com",
+        badge: "Sanctuary",
+        features: ["Breathing Transitions", "Mood Selection", "Ritual Booking"]
+    },
+    // Legal & Corporate
+    {
+        id: "neo-legal",
+        title: "NeoLegal Sovereign",
+        desc: "Authoritative yet modern law firm architecture. Built for trust and high-stakes corporate legalities.",
+        category: "legal",
+        image: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=2070&auto=format&fit=crop",
+        demoUrl: "https://demo-neo-legal.getyousite.com",
+        badge: "Authoritative",
+        features: ["Secure Dossier", "Legal Marquee", "Client Portal"]
+    },
+    // Industrial & Energy
+    {
+        id: "solar-tech",
+        title: "SolarTech Industrial",
+        desc: "The future of energy management. Clean industrial design for solar and wind power empires.",
+        category: "business",
+        image: "https://images.unsplash.com/photo-1509391366360-fe5bb60213ca?q=80&w=2070&auto=format&fit=crop",
+        demoUrl: "https://demo-solar.getyousite.com",
+        badge: "Innovation",
+        features: ["Energy Tracking", "Hardware Sync", "Global Impact"]
+    },
+    // Education
+    {
+        id: "ai-academy",
+        title: "AIAcademy Quantum",
+        desc: "Revolutionary e-learning platform focusing on AI-first education. Modern LMS architecture.",
+        category: "education",
+        image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=2070&auto=format&fit=crop",
+        demoUrl: "https://demo-academy.getyousite.com",
+        badge: "Quantum LMS",
+        features: ["Skill Trees", "AI Tutoring", "Peer Ledger"]
+    },
+    // Real Estate
+    {
+        id: "luxe-living",
+        title: "LuxeLiving Estate",
+        desc: "High-frequency real estate listings for luxury properties. Immersive visual search and map logic.",
+        category: "realestate",
+        image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop",
+        demoUrl: "https://demo-luxe-living.getyousite.com",
+        badge: "Premium Listings",
+        features: ["AR Visualizer", "Smart Map", "Priority Access"]
+    },
+    // Non-Profit
+    {
+        id: "global-impact",
+        title: "GlobalImpact DAO",
+        desc: "Modern storytelling for global non-profits and decentralized impact organizations.",
+        category: "all",
+        image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop",
+        demoUrl: "https://demo-impact.getyousite.com",
+        badge: "Impact First",
+        features: ["Donation Trace", "Story Engine", "Transparency Log"]
     }
 ];
 

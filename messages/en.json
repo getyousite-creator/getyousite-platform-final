@@ -163,5 +163,32 @@
         "have_account": "Already have an account? Sign in",
         "no_account": "Missing Access? Register",
         "terms": "By signing in, you accept the T&C and Privacy Policy."
+    },
+    "Contact": {
+        "title": "Contact Hub",
+        "subtitle": "Direct communication protocol with the Sovereign architects. Expect clinical precision in response.",
+        "badge": "Transmission Center",
+        "form": {
+            "name": "Identity",
+            "email": "Signal_Link",
+            "subject": "Target_Objective",
+            "message": "Transmission_Data",
+            "send": "Execute Transmission",
+            "sending": "Transmitting..."
+        },
+        "info": {
+            "title": "Strategic Nodes",
+            "support": "Global Support",
+            "commercial": "Strategic Partnerships",
+            "hq": "Tactical HQ",
+            "address": "Casablanca Finance City, MA"
+        }
+    },
+    "Blog": {
+        "title": "Sovereign Insights",
+        "subtitle": "Deep analysis of AI architecture, digital sovereignty, and high-frequency commerce.",
+        "badge": "Knowledge_Repository",
+        "read_more": "Decode_Full_Article",
+        "categories": "Intelligence_Streams"
     }
 }

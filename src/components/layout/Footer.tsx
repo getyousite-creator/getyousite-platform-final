@@ -2,6 +2,7 @@
 
 import { Github, Twitter, Linkedin, Server } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 
 export default function Footer() {
     const t = useTranslations('Footer');
@@ -24,8 +25,8 @@ export default function Footer() {
                         <ul className="space-y-3 text-sm text-zinc-500">
                             <li><a href="#services" className="hover:text-blue-400 transition-colors">{t('aiEngine') || "AI Engine"}</a></li>
                             <li><a href="#pricing" className="hover:text-blue-400 transition-colors">{t('pricing') || "Pricing"}</a></li>
-                            <li><a href="#showcase" className="hover:text-blue-400 transition-colors">Case Studies</a></li>
-                            <li><a href="#" className="hover:text-blue-400 transition-colors">Documentation</a></li>
+                            <li><Link href="/blog" className="hover:text-blue-400 transition-colors">Sovereign Blog</Link></li>
+                            <li><Link href="/contact" className="hover:text-blue-400 transition-colors">Contact Hub</Link></li>
                         </ul>
                     </div>
 
@@ -33,9 +34,9 @@ export default function Footer() {
                     <div>
                         <h4 className="font-semibold text-white mb-6">{t('legal')}</h4>
                         <ul className="space-y-3 text-sm text-zinc-500">
-                            <li><a href="/terms" className="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
-                            <li><a href="/terms" className="hover:text-blue-400 transition-colors">Terms of Service</a></li>
-                            <li><a href="/terms" className="hover:text-blue-400 transition-colors">GDPR Compliance</a></li>
+                            <li><Link href="/privacy" className="hover:text-blue-400 transition-colors">Privacy Protocol</Link></li>
+                            <li><Link href="/terms" className="hover:text-blue-400 transition-colors">Terms of Service</Link></li>
+                            <li><Link href="/privacy" className="hover:text-blue-400 transition-colors">GDPR Compliance</Link></li>
                         </ul>
                     </div>
 
