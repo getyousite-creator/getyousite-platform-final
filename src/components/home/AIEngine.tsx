@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Terminal, Brain, Sparkles } from "lucide-react";
+import { Terminal, Brain, Sparkles, Zap, Target, Search, Globe, Shield } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const codeSnippet = [
@@ -11,6 +11,15 @@ const codeSnippet = [
     "> OPTIMIZATION_LEVEL: MAXIMUM",
     "> Status: ONLINE",
     "> Ready to construct."
+];
+
+const features = [
+    { icon: Brain, text: "Self-Healing Codebase", color: "text-purple-500" },
+    { icon: Target, text: "Real-time A/B Testing", color: "text-blue-500" },
+    { icon: Search, text: "Semantic SEO Injection", color: "text-emerald-500" },
+    { icon: Globe, text: "Multi-Language Generation", color: "text-orange-500" },
+    { icon: Zap, text: "Lightning Fast Deployment", color: "text-yellow-500" },
+    { icon: Shield, text: "Enterprise Security", color: "text-red-500" },
 ];
 
 export default function AIEngine() {
@@ -72,15 +81,37 @@ export default function AIEngine() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.3 }}
-                            className="space-y-4"
+                            className="grid grid-cols-2 gap-4"
                         >
-                            {["Self-Healing Codebase", "Real-time AB Testing", "Semantic SEO Injection"].map((item) => (
-                                <li key={item} className="flex items-center gap-3 text-zinc-300">
-                                    <Sparkles className="w-5 h-5 text-purple-500" />
-                                    {item}
+                            {features.map((feature) => (
+                                <li key={feature.text} className="flex items-center gap-3 text-zinc-300">
+                                    <feature.icon className={`w-5 h-5 ${feature.color}`} />
+                                    <span>{feature.text}</span>
                                 </li>
                             ))}
                         </motion.ul>
+
+                        {/* Stats */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.4 }}
+                            className="grid grid-cols-3 gap-6 pt-6 border-t border-white/10"
+                        >
+                            <div>
+                                <div className="text-3xl font-black text-white">1500+</div>
+                                <div className="text-zinc-500 text-sm">Sites Created</div>
+                            </div>
+                            <div>
+                                <div className="text-3xl font-black text-white">98.5%</div>
+                                <div className="text-zinc-500 text-sm">Satisfaction Rate</div>
+                            </div>
+                            <div>
+                                <div className="text-3xl font-black text-white">15min</div>
+                                <div className="text-zinc-500 text-sm">Avg. Build Time</div>
+                            </div>
+                        </motion.div>
                     </div>
 
                     {/* Visualization */}
@@ -121,6 +152,33 @@ export default function AIEngine() {
 
                             {/* Grid Overlay */}
                             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
+                        </motion.div>
+
+                        {/* Floating badges */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.5 }}
+                            className="absolute -right-4 top-1/4 bg-zinc-900/80 backdrop-blur border border-white/10 rounded-lg p-3"
+                        >
+                            <div className="flex items-center gap-2">
+                                <Sparkles className="w-4 h-4 text-yellow-500" />
+                                <span className="text-xs font-mono text-white">GPT-4 Powered</span>
+                            </div>
+                        </motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.6 }}
+                            className="absolute -left-4 bottom-1/4 bg-zinc-900/80 backdrop-blur border border-white/10 rounded-lg p-3"
+                        >
+                            <div className="flex items-center gap-2">
+                                <Zap className="w-4 h-4 text-blue-500" />
+                                <span className="text-xs font-mono text-white">Edge Cached</span>
+                            </div>
                         </motion.div>
                     </div>
 

@@ -1,35 +1,27 @@
-@import "tailwindcss";
-
-@theme {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-
-  /* Animations for Marquee */
-  --animate-marquee: marquee 40s linear infinite;
-
-  @keyframes marquee {
-    0% {
-      transform: translateX(0);
-    }
-
-    100% {
-      transform: translateX(-50%);
-    }
-  }
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
   :root {
     /* Scientific Deep Space Palette */
+    --background: 2 6 23;
+    /* #020617 converted to HSL-ish or just custom props */
+    --foreground: 248 250 252;
+    /* We need to define standard CSS vars for ShadCN usually */
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    /* ... Revert to Shadcn standard variable definition later, 
+       but for now let's keep the HEX as used in the v4 file 
+       but inside :root without @theme block 
+    */
     --background: #020617;
-    /* Slate-950 */
     --foreground: #f8fafc;
     --card: #0f172a;
     --card-foreground: #f8fafc;
     --popover: #020617;
     --popover-foreground: #f8fafc;
     --primary: #3b82f6;
-    /* Scientific Blue */
     --primary-foreground: #f8fafc;
     --secondary: #1e293b;
     --secondary-foreground: #f8fafc;
@@ -48,21 +40,12 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-[#020617] text-[#f8fafc] antialiased;
     font-family: var(--font-inter);
     background-image:
       radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.05), transparent 40%),
       radial-gradient(circle at 100% 100%, rgba(30, 41, 59, 0.2), transparent 40%);
     background-attachment: fixed;
-  }
-
-  /* Structural Hardening */
-  .clinical-container {
-    @apply max-w-[1400px] mx-auto px-6 md:px-12 w-full;
-  }
-
-  .glass-card {
-    @apply bg-slate-900/40 backdrop-blur-2xl border border-white/5 rounded-[2rem];
   }
 }
 

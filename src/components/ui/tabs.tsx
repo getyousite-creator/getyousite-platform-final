@@ -20,16 +20,23 @@ const TabsContext = React.createContext<TabsContextProps>({})
 const Tabs = ({
     defaultValue,
     className,
-    children
+    children,
+    onValueChange
 }: {
     defaultValue: string,
     className?: string,
-    children: React.ReactNode
+    children: React.ReactNode,
+    onValueChange?: (value: string) => void
 }) => {
     const [value, setValue] = React.useState(defaultValue)
 
+    const handleValueChange = (newValue: string) => {
+        setValue(newValue)
+        onValueChange?.(newValue)
+    }
+
     return (
-        <TabsContext.Provider value={{ value, onValueChange: setValue }}>
+        <TabsContext.Provider value={{ value, onValueChange: handleValueChange }}>
             <div className={cn("w-full", className)}>{children}</div>
         </TabsContext.Provider>
     )

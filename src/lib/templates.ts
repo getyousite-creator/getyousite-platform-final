@@ -19,13 +19,20 @@ export interface TemplateCategory {
 
 // HELPERS TO CONSTRUCT BLUEPRINTS FROM USER ARCHITECTURE
 const constructBlueprint = (name: string, primary: string, sections: string[]): SiteBlueprint => ({
+    id: uuidv4(),
     name,
     description: `A battle-tested blueprint for ${name}.`,
     theme: {
         primary,
         secondary: "#a855f7",
+        accent: "#a855f7",
         fontFamily: "var(--font-inter)",
         mode: "quantum"
+    },
+    navigation: {
+        logo: name,
+        links: [],
+        transparent: false
     },
     layout: sections.map(type => ({
         id: uuidv4(),
@@ -33,8 +40,17 @@ const constructBlueprint = (name: string, primary: string, sections: string[]): 
         content: {
             headline: `${name} Architecture`,
             subheadline: "Optimized for extreme conversion and structural authority."
-        }
-    }))
+        },
+        styles: {},
+        animation: "fade-in"
+    })),
+    footer: {
+        copyright: ` 2024 ${name}. All rights reserved.`,
+        links: [],
+        social: {}
+    },
+    metadata: {},
+    timestamp: new Date().toISOString()
 });
 
 export const SITE_TEMPLATES: { categories: TemplateCategory[] } = {
@@ -148,53 +164,77 @@ export const SITE_TEMPLATES: { categories: TemplateCategory[] } = {
                 {
                     id: "s3-legal",
                     name: "Sovereign Law",
-                    image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=2070&auto=format&fit=crop",
-                    description: "Deep wood tones, classic serif fonts, absolute trust.",
-                    components: ["Traditional-Header", "Static-Classic-Hero", "Practice-Areas-Detailed", "Attorney-Profiles"],
-                    primaryColor: "#451a03",
-                    blueprint: constructBlueprint("Sovereign Law", "#451a03", ["hero", "features"])
-                },
-                {
-                    id: "s4-creative",
-                    name: "Studio X",
-                    image: "https://images.unsplash.com/photo-1493421416290-99a87240a79a",
-                    description: "Experimental layouts, big images, portfolio focused.",
-                    components: ["Hidden-Nav-Reveal", "Portfolio-Grid-Staggered", "About-Artist-Text", "Awards-Section"],
-                    primaryColor: "#000000",
-                    blueprint: constructBlueprint("Studio X", "#000000", ["hero", "gallery", "cta"])
+                    image: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73",
+                    description: "Marble textures, classic typography, trust and authority.",
+                    components: ["Classic-Top-Nav", "Authority-Hero-Stoic", "Practice-Areas-Grid", "Client-Logos-Legacy"],
+                    primaryColor: "#475569",
+                    blueprint: constructBlueprint("Sovereign Law", "#475569", ["hero", "features"])
                 }
             ]
         },
         {
-            id: "media-lifestyle",
-            name: "Media & Lifestyle",
+            id: "food-hospitality",
+            name: "Food & Hospitality",
             themes: [
                 {
-                    id: "m1-chronicle",
-                    name: "The Chronicle",
-                    image: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=2070&auto=format&fit=crop",
-                    description: "Classic newspaper aesthetic, serif fonts, high readability.",
-                    components: ["News-Ticker-Top", "Headlines-Grid-Hero", "Editor-Picks-Sidebar", "Newsletter-Inline"],
-                    primaryColor: "#000000",
-                    blueprint: constructBlueprint("The Chronicle", "#000000", ["hero", "features", "testimonials"])
-                },
-                {
-                    id: "m2-culinary",
+                    id: "f1-cinematic",
                     name: "Chef's Table",
-                    image: "https://images.unsplash.com/photo-1556910103-1c02745a30bf",
-                    description: "Warm tones, appetite-inducing layout, menu focused.",
-                    components: ["Hero-Video-Dish", "Menu-Tabs-Section", "Chef-Bio-Split", "Reservation-Floater"],
-                    primaryColor: "#ea580c",
-                    blueprint: constructBlueprint("Chef's Table", "#ea580c", ["hero", "gallery", "cta"])
+                    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2070&auto=format&fit=crop",
+                    description: "Cinematic food photography, elegant plating focus.",
+                    components: ["Video-Background-Hero", "Plating-Gallery", "Menu-Accordion", "Reservation-Sticky"],
+                    primaryColor: "#7c2d12",
+                    blueprint: constructBlueprint("Chef's Table", "#7c2d12", ["hero", "gallery", "features"])
                 },
                 {
-                    id: "m3-science",
-                    name: "Lab Zero",
-                    image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d",
-                    description: "Clinical white/blue, data visualization focus, clean lines.",
-                    components: ["Research-Abstract-Hero", "Data-Points-Grid", "Team-Labs-Grid", "Publication-List"],
-                    primaryColor: "#0284c7",
-                    blueprint: constructBlueprint("Lab Zero", "#0284c7", ["hero", "features", "custom"])
+                    id: "f2-street",
+                    name: "Night Market",
+                    image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=2072&auto=format&fit=crop",
+                    description: "Neon, urban, energetic. For bold street food brands.",
+                    components: ["Neon-Sign-Hero", "Food-Carousel-Dark", "Social-Grid-Urban", "Location-Map-Night"],
+                    primaryColor: "#facc15",
+                    blueprint: constructBlueprint("Night Market", "#facc15", ["hero", "gallery", "cta"])
+                },
+                {
+                    id: "f3-wine",
+                    name: "Vineyard Estate",
+                    image: "https://images.unsplash.com/photo-1516594915697-87eb3b1c14ea?q=80&w=2072&auto=format&fit=crop",
+                    description: "Moody, earthy tones. Sophisticated wine/cocktail bars.",
+                    components: ["Parallax-Vineyard-Hero", "Wine-List-Elegant", "Tasting-Events-Cards", "Club-Signup"],
+                    primaryColor: "#581c87",
+                    blueprint: constructBlueprint("Vineyard Estate", "#581c87", ["hero", "features", "testimonials"])
+                }
+            ]
+        },
+        {
+            id: "health-medicine",
+            name: "Health & Medicine",
+            themes: [
+                {
+                    id: "m1-clinic",
+                    name: "Apex Medical",
+                    image: "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?q=80&w=2194&auto=format&fit=crop",
+                    description: "Clean, sterile white/blue. High trust, clear CTA.",
+                    components: ["Emergency-Top-Bar", "Trust-Stats-Hero", "Symptom-Checker-Widget", "Doctor-Profiles"],
+                    primaryColor: "#2563eb",
+                    blueprint: constructBlueprint("Apex Medical", "#2563eb", ["hero", "features", "cta"])
+                },
+                {
+                    id: "m2-wellness",
+                    name: "Holistic Harmony",
+                    image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=2070&auto=format&fit=crop",
+                    description: "Natural greens, organic textures. For spas and wellness.",
+                    components: ["Zen-Hero-Video", "Treatment-Menu-Cards", "Booking-Form-Spa", "Instagram-Feed"],
+                    primaryColor: "#15803d",
+                    blueprint: constructBlueprint("Holistic Harmony", "#15803d", ["hero", "gallery", "testimonials"])
+                },
+                {
+                    id: "m3-pharma",
+                    name: "VitaLabs",
+                    image: "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=2069&auto=format&fit=crop",
+                    description: "Scientific, clinical, trustworthy. Pharmaceutical/Labs.",
+                    components: ["Product-Grid-Lab", "Clinical-Evidence-PDF", "Research-Accreditations", "Order-Form"],
+                    primaryColor: "#06b6d4",
+                    blueprint: constructBlueprint("VitaLabs", "#06b6d4", ["hero", "features", "cta"])
                 },
                 {
                     id: "m4-wellness",

@@ -1,0 +1,353 @@
+# GetYouSite CI/CD Pipeline
+# Version: 2.0.0
+
+name: CI/CD Pipeline
+
+on:
+    push:
+        branches: [main, develop]
+    pull_request:
+        branches: [main]
+    workflow_dispatch:
+
+env:
+    NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+    SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    DIRECT_URL: ${{ secrets.DIRECT_URL }}
+    OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    PAYPAL_CLIENT_ID: ${{ secrets.PAYPAL_CLIENT_ID }}
+    PAYPAL_CLIENT_SECRET: ${{ secrets.PAYPAL_CLIENT_SECRET }}
+    NEXT_PUBLIC_PAYPAL_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_PAYPAL_CLIENT_ID }}
+
+jobs:
+    # -------------------------------------------------------
+    # JOB 1: Lint and Type Check
+    # -------------------------------------------------------
+    lint:
+        name: Lint & Type Check
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+                  cache: 'npm'
+
+            - name: Install Dependencies
+              run: npm ci
+
+            - name: Run ESLint
+              run: npm run lint
+
+            - name: Run TypeScript Check
+              run: npx tsc --noEmit
+
+            - name: Check Formatting
+              run: npx prettier --check "src/**/*.{ts,tsx,js,jsx,json,css}"
+
+    # -------------------------------------------------------
+    # JOB 2: Unit Tests
+    # -------------------------------------------------------
+    test:
+        name: Unit Tests
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+                  cache: 'npm'
+
+            - name: Install Dependencies
+              run: npm ci
+
+            - name: Install Playwright
+              run: npx playwright install --with-deps chromium
+
+            - name: Run Unit Tests
+              run: npm test -- --coverage
+
+            - name: Upload Coverage Report
+              uses: codecov/codecov-action@v3
+              with:
+                  files: ./coverage/lcov.info
+                  fail_ci_if_error: true
+
+    # -------------------------------------------------------
+    # JOB 3: Security Audit
+    # -------------------------------------------------------
+    security:
+        name: Security Audit
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+                  cache: 'npm'
+
+            - name: Install Dependencies
+              run: npm ci
+
+            - name: Run npm Audit
+              run: npm audit --production --audit-level=high
+
+            - name: Check for Secrets
+              uses: trufflesecurity/trufflehog@main
+              with:
+                  base: main
+                  head: HEAD
+                  extra_args: --no-verification
+
+    # -------------------------------------------------------
+    # JOB 4: Build Application
+    # -------------------------------------------------------
+    build:
+        name: Build Application
+        runs-on: ubuntu-latest
+        needs: [lint, test, security]
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+                  cache: 'npm'
+
+            - name: Install Dependencies
+              run: npm ci
+
+            - name: Generate Prisma Client
+              run: npx prisma generate
+
+            - name: Build Next.js Application
+              run: npm run build
+              env:
+                  NEXT_TELEMETRY_DISABLED: 1
+
+            - name: Upload Build Artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                  name: nextjs-build
+                  path: |
+                      .next
+                      public
+                  retention-days: 7
+
+    # -------------------------------------------------------
+    # JOB 5: Database Migration
+    # -------------------------------------------------------
+    database:
+        name: Database Migration
+        runs-on: ubuntu-latest
+        environment: production
+        needs: build
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+                  cache: 'npm'
+
+            - name: Install Dependencies
+              run: npm ci
+
+            - name: Generate Prisma Client
+              run: npx prisma generate
+
+            - name: Run Database Migration
+              run: npx prisma migrate deploy
+              env:
+                  DATABASE_URL: ${{ secrets.DIRECT_URL }}
+
+            - name: Push Schema Changes (if needed)
+              run: npx prisma db push --accept-data-loss
+
+    # -------------------------------------------------------
+    # JOB 6: Deploy to Vercel (Preview)
+    # -------------------------------------------------------
+    deploy-preview:
+        name: Deploy to Vercel (Preview)
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Install Vercel CLI
+              run: npm i -g vercel@latest
+
+            - name: Pull Vercel Environment
+              run: vercel pull --environment=preview --yes
+
+            - name: Build Project Artifacts
+              run: vercel build
+
+            - name: Deploy to Vercel (Preview)
+              id: vercel-deploy
+              run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+
+            - name: Comment on PR
+              if: github.event_name == 'pull_request'
+              uses: actions/github-script@v6
+              with:
+                  script: |
+                      const body = `🚀 Deploy Preview Ready!\n\nPreview URL: ${process.env.PREVIEW_URL}`;
+                      github.rest.issues.createComment({
+                          issue_number: context.issue.number,
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          body: body
+                      });
+
+    # -------------------------------------------------------
+    # JOB 7: Deploy to Vercel (Production)
+    # -------------------------------------------------------
+    deploy-production:
+        name: Deploy to Vercel (Production)
+        runs-on: ubuntu-latest
+        needs: [database, deploy-preview]
+        if: github.ref == 'refs/heads/main'
+        environment: production
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Install Vercel CLI
+              run: npm i -g vercel@latest
+
+            - name: Pull Vercel Environment
+              run: vercel pull --environment=production --yes
+
+            - name: Build Project Artifacts
+              run: vercel build --prod
+
+            - name: Deploy to Vercel (Production)
+              id: vercel-deploy
+              run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+            - name: Notify Success
+              uses: slackapi/slack-github-action@v1.23.0
+              with:
+                  payload: |
+                      {
+                          "text": "🚀 GetYouSite Deployed to Production",
+                          "attachments": [{
+                              "color": "#36a64f",
+                              "fields": [
+                                  {"title": "Environment", "value": "Production", "short": true},
+                                  {"title": "URL", "value": "${{ steps.vercel-deploy.outputs.url }}", "short": true},
+                                  {"title": "Commit", "value": "${{ github.sha }}", "short": true}
+                              ]
+                          }]
+                      }
+              env:
+                  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+    # -------------------------------------------------------
+    # JOB 8: Performance Testing
+    # -------------------------------------------------------
+    performance:
+        name: Performance Testing
+        runs-on: ubuntu-latest
+        needs: deploy-preview
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+                  cache: 'npm'
+
+            - name: Install Lighthouse CI
+              run: npm i -g @lhci/cli
+
+            - name: Run Lighthouse CI
+              run: |
+                  lhci autorun --fail-on-budgets
+              env:
+                  LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+                  PREVIEW_URL: ${{ needs.deploy-preview.outputs.preview-url }}
+
+    # -------------------------------------------------------
+    # JOB 9: Backup Database
+    # -------------------------------------------------------
+    backup:
+        name: Backup Database
+        runs-on: ubuntu-latest
+        needs: deploy-production
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Setup PostgreSQL
+              uses: harmon758/postgresql-action@v1
+              with:
+                  postgresql version: '15'
+                  postgresql db: 'getyousite'
+                  postgresql user: 'postgres'
+                  postgresql password: 'postgres'
+
+            - name: Create Backup
+              run: |
+                  pg_dump ${{ secrets.DIRECT_URL }} > backup-$(date +%Y%m%d-%H%M%S).sql
+                  gzip backup-*.sql
+
+            - name: Upload Backup to S3
+              uses: jakejarvis/s3-sync-action@master
+              with:
+                  args: --acl private
+              env:
+                  AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+                  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    # -------------------------------------------------------
+    # JOB 10: Notify on Failure
+    # -------------------------------------------------------
+    notify-failure:
+        name: Notify on Failure
+        runs-on: ubuntu-latest
+        if: failure()
+        needs: [lint, test, security, build]
+        steps:
+            - name: Send Slack Notification
+              uses: slackapi/slack-github-action@v1.23.0
+              with:
+                  payload: |
+                      {
+                          "text": "❌ GetYouSite CI/CD Pipeline Failed",
+                          "attachments": [{
+                              "color": "#ff0000",
+                              "fields": [
+                                  {"title": "Job", "value": "${{ github.job }}", "short": true},
+                                  {"title": "Workflow", "value": "${{ github.workflow }}", "short": true},
+                                  {"title": "Commit", "value": "${{ github.sha }}", "short": true},
+                                  {"title": "Error", "value": "${{ github.event_name == 'pull_request' && 'View PR' || 'View Run' }}", "short": true}
+                              ]
+                          }]
+                      }
+              env:
+                  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

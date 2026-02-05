@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ComponentLibrary } from './ComponentLibrary';
 
@@ -10,7 +10,33 @@ interface PreviewProps {
 }
 
 export const LivePreview: React.FC<PreviewProps> = ({ config, isGenerating }) => {
-    // Logic Audit: If generating and no config, show skeleton
+    // 1. Logic Hardening: Analytics Ingestion
+    useEffect(() => {
+        if (config?.id || config?.site_id) {
+            const trackView = async () => {
+                try {
+                    await fetch('/api/dashboard/analytics', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            storeId: config.id || config.site_id,
+                            path: '/',
+                            metadata: {
+                                device: window.innerWidth < 768 ? 'mobile' : 'desktop',
+                                referrer: document.referrer,
+                                source: 'live_preview'
+                            }
+                        })
+                    });
+                } catch (e) {
+                    console.error("ANALYTICS_INGEST_FAIL:", e);
+                }
+            };
+            trackView();
+        }
+    }, [config?.id, config?.site_id]);
+
+    // 2. Generation Logic: If generating and no config, show skeleton
     if (isGenerating && !config) {
         return <GenerationSkeleton />;
     }

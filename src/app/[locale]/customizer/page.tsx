@@ -236,6 +236,7 @@ export default function CustomizerPage() {
                         activeStoreId={activeStoreId}
                         userId={userId}
                         onAssetUpload={handleAssetUpload}
+                        aiInsight={blueprint?.ai_insight}
                     />
 
                     {showPay && (

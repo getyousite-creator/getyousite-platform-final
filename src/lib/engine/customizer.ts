@@ -93,31 +93,31 @@ export const CustomizerEngine = {
 
         // 2. Deep Architectural Merge (Logic-First)
         const finalBlueprint: SiteBlueprint = {
-            id: `site_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`,
             ...template.blueprint, // Base DNA
-            name: userData.businessName, // User branding
-            description: userData.vision, // User vision
+            id: `site_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`,
+            name: userData.businessName,
+            description: userData.vision,
+            ai_insight: specializedContent.insight || `Focus on ${userData.niche.toLowerCase()} trends and local visibility for ${userData.businessName}.`,
             theme: {
                 ...template.blueprint.theme,
                 primary: template.blueprint.theme.primary,
-                secondary: "#a855f7",
+                secondary: template.blueprint.theme.secondary || "#1e293b",
             },
             layout: template.blueprint.layout.map(section => ({
                 ...section,
                 content: {
                     ...section.content,
-                    headline: section.type === 'hero'
-                        ? specializedContent.headline
-                        : section.content.headline,
+                    headline: section.type === 'hero' ? specializedContent.headline : section.content.headline,
                     subheadline: section.type === 'hero' ? specializedContent.subheadline : section.content.subheadline
                 }
             })),
             metadata: {
                 ...template.blueprint.metadata,
                 generated_at: new Date().toISOString(),
-                engine_version: "Sovereign-v1.2-Niche-Aware",
+                engine_version: "Sovereign-v1.3-Harden-Logic",
                 niche: userData.niche
-            }
+            },
+            timestamp: new Date().toISOString()
         };
 
         return finalBlueprint;

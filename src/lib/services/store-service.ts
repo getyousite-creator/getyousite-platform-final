@@ -40,6 +40,10 @@ export interface UpdateStoreData {
     status?: Store['status'];
     slug?: string;
     deployment_url?: string;
+    deployed_at?: Date | string;
+    paid_at?: Date | string;
+    payment_id?: string;
+    amount?: number;
 }
 
 export interface StoreServiceError {
@@ -290,6 +294,16 @@ export const StoreService = {
                 // Assuming top level import is fine.
                 await StorageService.deleteStoreAssets(user.data.id, id);
             }
+
+            const { error: analyticsError } = await supabase
+                .from('analytics')
+                .delete()
+                .eq('store_id', id);
+
+            const { error: seoError } = await supabase
+                .from('seo_audits')
+                .delete()
+                .eq('store_id', id);
 
             const { error } = await supabase
                 .from('stores')

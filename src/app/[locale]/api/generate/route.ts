@@ -1,68 +1,38 @@
-import { generateObject } from 'ai';
-import { openai } from '@ai-sdk/openai';
-import { SiteBlueprintSchema } from '@/lib/schemas';
+import { generateCompleteWebsite } from '@/lib/ai/multi-provider';
 
 export const runtime = 'edge';
 
 /**
- * GENERATIVE INTELLIGENCE API
- * Transforms user vision into a structured SiteBlueprint.
+ * GENERATIVE INTELLIGENCE API v3
+ * Multi-provider AI with OpenAI + Kimi/K2.5 fallback
+ * Generates complete websites from scratch
  */
 export async function POST(req: Request) {
     try {
-        const { businessName, niche, vision, locale } = await req.json();
+        const { businessName, niche, vision, locale, features } = await req.json();
 
-        const systemPrompt = `
-            You are the SOVEREIGN AI ARCHITECT. You do not just create websites; you build digital empires.
-            Your logic is flawless. Your designs are "Khurafi" (Legendary). 
-            
-            OBJECTIVE:
-            Surpass competitors like Wix by generating cleaner, faster, and more conversion-optimized architectures.
-            
-            DESIGN PRINCIPLES:
-            1. TYPOGRAPHY: Use bold, high-contrast headings and breathable body text.
-            2. SPACING: Ensure 80px to 120px vertical padding between major sections.
-            3. HIERARCHY: Hero -> Benefits (3-column) -> Features -> Social Proof -> FAQ -> CTA.
-            4. LOCALIZATION: If the locale is 'ar' or for a Moroccan business, use high-end Arabic marketing terminology (e.g., "أمانة", "إتقان", "جودة عالمية").
-            
-            SCHEMA REQUIREMENTS:
-            - Generate a full 'navigation' object.
-            - Generate a full 'footer' object.
-            - Use the new section types: 'benefits', 'trust_bar', 'faq', 'contact_map'.
-            - Include 'animation' properties for all sections.
-        `;
+        // Validate required fields
+        if (!businessName || !niche) {
+            return new Response(JSON.stringify({
+                error: 'Missing required fields: businessName and niche are required'
+            }), {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
 
-        const userPrompt = `
-            SYNTHESIS REQUEST:
-            Business Name: ${businessName}
-            Niche: ${niche}
-            User Vision: ${vision}
-            Locale: ${locale}
-            
-            INSTRUCTIONS:
-            1. Analyze the niche and vision.
-            2. Synthesize a 7-section high-performance layout.
-            3. Choose an 'accent' color that complements the 'primary' color.
-            4. Ensure the 'benefits' section specifically addresses 3 massive pain points.
-            5. Ensure 'trust_bar' includes realistic placeholder names for partners/clients.
-            
-            OUTPUT: Valid JSON following the SiteBlueprintSchema.
-        `;
+        console.log(`🚀 Generating website for: ${businessName} (${niche})`);
 
-        const { object: blueprint } = await generateObject({
-            model: openai('gpt-4o'),
-            schema: SiteBlueprintSchema,
-            system: systemPrompt,
-            prompt: userPrompt,
+        // Generate complete website using multi-provider AI
+        const blueprint = await generateCompleteWebsite({
+            businessName,
+            niche,
+            vision: vision || `Professional ${niche} website`,
+            locale: locale || 'en',
+            features: features || ['responsive', 'seo', 'multilingual']
         });
 
-        // Inject engine metadata
-        blueprint.metadata = {
-            generated_at: new Date().toISOString(),
-            engine: "Sovereign-GenAI-v2",
-            logic_secured: true,
-            version: "2.0.0-wix-killer"
-        };
+        console.log(`✅ Website generated successfully using: ${blueprint._meta?.generated_by || 'AI Engine'}`);
 
         return new Response(JSON.stringify(blueprint), {
             status: 200,
@@ -70,8 +40,12 @@ export async function POST(req: Request) {
         });
 
     } catch (error) {
-        console.error('GENERATIVE_ENGINE_FAILURE:', error);
-        return new Response(JSON.stringify({ error: 'Sovereign Engine Failure' }), {
+        console.error('❌ GENERATIVE_ENGINE_FAILURE:', error);
+        return new Response(JSON.stringify({
+            error: 'Sovereign Engine Failure',
+            details: (error as Error).message,
+            timestamp: new Date().toISOString()
+        }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }
         });

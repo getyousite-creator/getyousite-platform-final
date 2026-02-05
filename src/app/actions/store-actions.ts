@@ -65,17 +65,34 @@ export async function saveStoreAction(
 }
 
 /**
- * Update store status (e.g., after payment)
- * Note: Payment verification should ideally happen via webhook, 
- * but this is for client-initiated flow transitions if validated server-side.
+ * Update store status (e.g., after user initiates checkout)
+ * LOGIC HARDENING: Only non-critical status transitions are allowed via client actions.
+ * Statuses like 'paid', 'deploying', or 'deployed' MUST be set via server-side webhooks.
  */
 export async function updateStoreStatusAction(storeId: string, status: string): Promise<ActionResult> {
-    // This action should be restricted. For now, we rely on StoreService's internal checks
-    // verifying the user owns the store.
+    const ALLOWED_CLIENT_STATUSES = ['draft', 'pending_payment'];
 
     try {
+        const user = await AuthService.getCurrentUser();
+        if (!user.data) {
+            return { success: false, error: 'Unauthorized' };
+        }
+
+        // 1. Security Gate: Prevent status spoofing
+        if (!ALLOWED_CLIENT_STATUSES.includes(status)) {
+            console.error(`SECURITY_VIOLATION: User ${user.data.id} attempted to manually set status ${status} for store ${storeId}`);
+            return {
+                success: false,
+                error: 'Restricted transition. This status must be verified by a secure provider.'
+            };
+        }
+
+        // 2. Ownership Gate: Handled by StoreService.updateStore (Prisma RLS/Where)
         const result = await StoreService.updateStore(storeId, { status: status as any });
+
         if (result.error) return { success: false, error: result.error.message };
+
+        revalidatePath(`/dashboard`);
         revalidatePath(`/customizer`);
         return { success: true };
     } catch (error) {

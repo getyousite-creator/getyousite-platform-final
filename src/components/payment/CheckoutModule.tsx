@@ -197,15 +197,15 @@ export const CheckoutModule = ({ planId, siteType, currency, amount, onSuccess }
                             <ShieldCheck className="w-10 h-10 text-emerald-500" />
                         </div>
 
-                        {/* PAYPAL CONTAINER */}
-                        <div id="paypal-container-7CNRL6QR9UFM2" className="min-h-[150px] flex items-center justify-center border-2 border-dashed border-zinc-100 rounded-2xl bg-white">
-                            {!(window as any).paypal && <Loader2 className="w-6 h-6 animate-spin text-zinc-300" />}
+                        {/* PAYPAL PAY NOW BUTTON */}
+                        <div className="min-h-[150px] flex flex-col items-center justify-center border-2 border-dashed border-zinc-100 rounded-2xl bg-white p-6 space-y-4">
+                            <style>{`.pp-7CNRL6QR9UFM2{text-align:center;border:none;border-radius:0.25rem;min-width:11.625rem;padding:0 2rem;height:2.625rem;font-weight:bold;background-color:#FFD140;color:#000000;font-family:"Helvetica Neue",Arial,sans-serif;font-size:1rem;line-height:1.25rem;cursor:pointer;}`}</style>
+                            <form action="https://www.paypal.com/ncp/payment/7CNRL6QR9UFM2" method="post" target="_blank" style={{ display: 'inline-grid', justifyItems: 'center', alignContent: 'start', gap: '0.5rem' }}>
+                                <input className="pp-7CNRL6QR9UFM2" type="submit" value="شراء الآن" />
+                                <img src="https://www.paypalobjects.com/images/Debit_Credit.svg" alt="cards" />
+                                <section style={{ fontSize: '0.75rem' }}> مدعوم من <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style={{ height: '0.875rem', verticalAlign: 'middle' }} /></section>
+                            </form>
                         </div>
-
-                        <Script
-                            src={`https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&components=hosted-buttons&currency=USD`}
-                            onLoad={renderPayPalButtons}
-                        />
 
                         <p className="text-[10px] text-center text-zinc-400 font-medium">
                             Secured by PayPal Encryption. SSL Protected.

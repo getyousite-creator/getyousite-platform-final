@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { Search } from 'lucide-react';
 
 interface ComponentLibraryProps {
     type: string;
@@ -147,11 +148,30 @@ function PreviewCTA({ content, primaryColor }: any) {
 }
 
 function PreviewGallery({ content, primaryColor }: any) {
+    const images = content?.images || [
+        "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=800&q=80",
+        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80",
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80"
+    ];
+
     return (
         <section className="py-20 px-8 bg-white">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {[1, 2, 3, 4].map(i => (
-                    <div key={i} className="aspect-square bg-zinc-100 rounded-xl animate-pulse" />
+            <h2 className="text-3xl font-black text-center mb-12">Visual Perspective</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
+                {images.map((img: string, i: number) => (
+                    <div key={i} className="aspect-square relative group overflow-hidden rounded-2xl shadow-lg border border-black/5 bg-zinc-100">
+                        <img
+                            src={img}
+                            alt={`Gallery ${i}`}
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <div className="w-10 h-10 rounded-full border border-white/50 flex items-center justify-center">
+                                <Search className="w-4 h-4 text-white" />
+                            </div>
+                        </div>
+                    </div>
                 ))}
             </div>
         </section>

@@ -10,6 +10,9 @@ export const LeadSchema = z.object({
 export type LeadFormValues = z.infer<typeof LeadSchema>;
 
 // SOVEREIGN JSON BLUEPRINT SCHEMA
+// Note: All fields must be required for OpenAI strict JSON schema compatibility
+// Using additionalProperties: true for record/object types to avoid propertyNames issues
+
 export const SectionSchema = z.object({
     id: z.string(),
     type: z.enum([
@@ -26,23 +29,23 @@ export const SectionSchema = z.object({
         "custom"
     ]),
     content: z.record(z.string(), z.any()),
-    styles: z.record(z.string(), z.any()).optional(),
-    animation: z.enum(["fade-in", "slide-up", "zoom-in", "none"]).optional(),
+    styles: z.record(z.string(), z.any()),
+    animation: z.enum(["fade-in", "slide-up", "zoom-in", "none"]),
 });
 
 export const SiteBlueprintSchema = z.object({
-    id: z.string().optional(),
+    id: z.string(),
     name: z.string(),
     description: z.string(),
     navigation: z.object({
-        logo: z.string().optional(),
+        logo: z.string(),
         links: z.array(z.object({ label: z.string(), href: z.string() })),
-        transparent: z.boolean().optional(),
-    }).optional(),
+        transparent: z.boolean(),
+    }),
     theme: z.object({
         primary: z.string(),
         secondary: z.string(),
-        accent: z.string().optional(),
+        accent: z.string(),
         fontFamily: z.string(),
         mode: z.enum(["light", "dark", "quantum"]),
     }),
@@ -50,10 +53,11 @@ export const SiteBlueprintSchema = z.object({
     footer: z.object({
         copyright: z.string(),
         links: z.array(z.object({ label: z.string(), href: z.string() })),
-        social: z.record(z.string(), z.string()).optional(),
-    }).optional(),
-    metadata: z.record(z.string(), z.any()).optional(),
-    timestamp: z.string().optional(),
+        social: z.record(z.string(), z.string()),
+    }),
+    metadata: z.record(z.string(), z.any()),
+    ai_insight: z.string().optional(),
+    timestamp: z.string(),
 });
 
 export type Section = z.infer<typeof SectionSchema>;
