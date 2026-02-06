@@ -55,8 +55,11 @@ export async function captureLead(prevState: ActionState, formData: FormData): P
     try {
         console.log("ACTION_LOG: Initializing Sovereign Customization Sequence...");
 
+        // 0. AUTHENTICATION CHECK
+        const { AuthService } = await import("@/lib/services/auth-service");
+        const { data: user } = await AuthService.getCurrentUser();
+
         // 1. GENERATE FINAL BLUEPRINT VIA CUSTOMIZER ENGINE
-        // Defaulting to 't1-quantum' for hero generation if no template is pre-selected
         const finalBlueprint = await CustomizerEngine.generateFinalBlueprint({
             businessName: vision.split(' ').slice(0, 2).join(' '),
             niche: siteType === 'blog' ? 'Blogging & Content' : siteType === 'store' ? 'E-commerce & Retail' : 'Professional Business',
@@ -67,8 +70,11 @@ export async function captureLead(prevState: ActionState, formData: FormData): P
         // 2. PERSISTENCE BRIDGE (SUPABASE)
         await storeRepo.saveStore({
             id: uuidv4(),
+            user_id: user?.id || undefined, // Link to authenticated user if available
+            name: finalBlueprint.name, // Required by interface
             slug: `${vision.toLowerCase().replace(/\s+/g, '-')}-${Date.now().toString().slice(-4)}`,
             template_id: "sovereign-engine-v1",
+            status: 'pending_payment', // Require payment for activation
             settings: {
                 primaryColor: finalBlueprint.theme.primary,
                 secondaryColor: finalBlueprint.theme.secondary,
@@ -76,7 +82,7 @@ export async function captureLead(prevState: ActionState, formData: FormData): P
                 businessName: finalBlueprint.name,
                 businessDescription: finalBlueprint.description,
                 language: "en",
-                blueprint: finalBlueprint // Full Schema Authority
+                blueprint: finalBlueprint
             }
         });
 

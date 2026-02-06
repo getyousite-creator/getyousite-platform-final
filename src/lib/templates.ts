@@ -56,158 +56,206 @@ const constructBlueprint = (name: string, primary: string, sections: string[]): 
 export const SITE_TEMPLATES: { categories: TemplateCategory[] } = {
     categories: [
         {
-            id: "tech-agency",
-            name: "Tech & Agency",
+            id: "business",
+            name: "Business & Agency",
             themes: [
                 {
-                    id: "t1-quantum",
-                    name: "Quantum Tech",
-                    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop",
-                    description: "Dark mode, neon accents, high-frequency layout.",
+                    id: "creative-agency",
+                    name: "Neura Agency",
+                    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2426",
+                    description: "Next-gen design for digital empires and creative disruptors.",
                     components: ["Glassmorphism-Centered", "Video-Background-Dark", "Features-Grid", "Tech-Stack-Marquee"],
-                    primaryColor: "#00f2ff",
-                    blueprint: constructBlueprint("Quantum Tech", "#00f2ff", ["hero", "features", "pricing"])
-                },
-                {
-                    id: "t2-minimal",
-                    name: "Berlin Minimal",
-                    image: "https://images.unsplash.com/photo-1506097425191-7ad538b29cef?q=80&w=2340&auto=format&fit=crop",
-                    description: "White space, sans-serif typography, brutalist efficiency.",
-                    components: ["Simple-Left-Align", "Minimal-Text-Only", "Service-Cards-Flat", "Testimonial-Text"],
-                    primaryColor: "#1a1a1a",
-                    blueprint: constructBlueprint("Berlin Minimal", "#1a1a1a", ["hero", "features"])
-                },
-                {
-                    id: "t3-ai-agent",
-                    name: "Neural Agency",
-                    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2070&auto=format&fit=crop",
-                    description: "AI-focused, futuristic animations, interactive elements.",
-                    components: ["Floating-Nav", "Animated-Blob-Background", "AI-Capabilities-List", "Process-Steps-Vertical"],
                     primaryColor: "#8b5cf6",
-                    blueprint: constructBlueprint("Neural Agency", "#8b5cf6", ["hero", "features", "cta"])
+                    blueprint: constructBlueprint("Neura Agency", "#8b5cf6", ["hero", "features", "cta"])
+                },
+                {
+                    id: "sierra-industry",
+                    name: "Sierra Industrial",
+                    image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=2432",
+                    description: "Heavy-duty architecture for manufacturing and global logistics.",
+                    components: ["Industrial-Layout", "Resource-Grids", "Contact-Forms"],
+                    primaryColor: "#1a1a1a",
+                    blueprint: constructBlueprint("Sierra Industrial", "#1a1a1a", ["hero", "features"])
+                },
+                {
+                    id: "omega-pro",
+                    name: "Omega Corporate",
+                    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop",
+                    description: "Sophisticated infrastructure for large-scale enterprise firms.",
+                    components: ["Investor-Portals", "ESG-Dashboards", "Multi-Region Support"],
+                    primaryColor: "#1e40af",
+                    blueprint: constructBlueprint("Omega Corporate", "#1e40af", ["hero", "features", "testimonials"])
+                },
+                {
+                    id: "law-silo",
+                    name: "Lex Sileo",
+                    image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=2070&auto=format&fit=crop",
+                    description: "Prestige legal architecture for elite law firms and partners.",
+                    components: ["Marble-Textures", "Partner-Profiles", "Secure-Intake"],
+                    primaryColor: "#475569",
+                    blueprint: constructBlueprint("Lex Sileo", "#475569", ["hero", "features"])
+                },
+                {
+                    id: "tech-grid",
+                    name: "SyncSphere",
+                    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop",
+                    description: "High-frequency dashboard design for B2B tech platforms.",
+                    components: ["Data-Visuals", "Feature-Grids", "Client-Portals"],
+                    primaryColor: "#00f2ff",
+                    blueprint: constructBlueprint("SyncSphere", "#00f2ff", ["hero", "features", "pricing"])
+                },
+                {
+                    id: "boreal-estate",
+                    name: "Boreal Estates",
+                    image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=2070&auto=format&fit=crop",
+                    description: "Prestige real estate listings for luxury property markets.",
+                    components: ["Property-Search", "Agent-Profiles", "Virtual-Tours"],
+                    primaryColor: "#15803d",
+                    blueprint: constructBlueprint("Boreal Estates", "#15803d", ["hero", "features", "gallery"])
                 }
             ]
         },
         {
-            id: "luxury-ecommerce",
-            name: "Luxury E-Commerce",
+            id: "ecommerce",
+            name: "Luxe E-Commerce",
             themes: [
                 {
-                    id: "e1-vault",
-                    name: "The Vault",
-                    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2070&auto=format&fit=crop",
-                    description: "Gold & Black, parallax scrolling, high-res focus.",
+                    id: "luxe-cart",
+                    name: "Luxe E-Commerce",
+                    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=2430",
+                    description: "Premium shopping experiences for elite retail empires.",
                     components: ["Luxury-Slim-Nav", "Parallax-Image-FullWidth", "Product-Lookbook", "Storytelling-Section"],
                     primaryColor: "#d4af37",
-                    blueprint: constructBlueprint("The Vault", "#d4af37", ["hero", "gallery", "testimonials"])
+                    blueprint: constructBlueprint("Luxe E-Commerce", "#d4af37", ["hero", "gallery", "testimonials"])
                 },
                 {
-                    id: "e2-clean-cart",
-                    name: "Pure Commerce",
-                    image: "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?q=80&w=2070&auto=format&fit=crop",
-                    description: "Soft colors, focus on product details, fast checkout UI.",
-                    components: ["Search-Dominant-Nav", "Product-Slider-Auto", "Flash-Deals-Countdown", "Review-Stars-Grid"],
+                    id: "alpha-pro",
+                    name: "Alpha Store",
+                    image: "https://images.unsplash.com/photo-1522204538344-922f76eba0a4?q=80&w=2070&auto=format&fit=crop",
+                    description: "High-velocity retail with sub-50ms product interactions.",
+                    components: ["Live-Inventory", "Smart-Search", "Mobile-Mastery"],
                     primaryColor: "#f43f5e",
-                    blueprint: constructBlueprint("Pure Commerce", "#f43f5e", ["hero", "features"])
-                },
-                {
-                    id: "e4-artisan",
-                    name: "Artisan Hands",
-                    image: "https://images.unsplash.com/photo-1452860606245-08befc0ff44b?q=80&w=2340&auto=format&fit=crop",
-                    description: "Earth tones, hand-crafted feel, high trust score.",
-                    components: ["Centered-Logo-Classic", "Static-Image-Split", "Process-Video-Section", "Newsletter-Signup"],
-                    primaryColor: "#92400e",
-                    blueprint: constructBlueprint("Artisan Hands", "#92400e", ["hero", "features", "cta"])
+                    blueprint: constructBlueprint("Alpha Store", "#f43f5e", ["hero", "features"])
                 }
             ]
         },
         {
-            id: "professional-services",
-            name: "Professional Services",
+            id: "healthcare",
+            name: "Healthcare Elite",
             themes: [
                 {
                     id: "dr-khalil",
-                    name: "Dr. Khalil Dental",
+                    name: "Dr. Khalil V3",
                     image: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2070&auto=format&fit=crop",
-                    description: "High-fidelity clinical aesthetic, focus on dental excellence. German Engineering Style.",
+                    description: "The gold standard for medical and dental clinical excellence.",
                     components: ["Cinematic-Hero-Dental", "Service-Grid-Clinical", "Appointment-Portal-Sim", "Patient-Testimonials"],
                     primaryColor: "#0ea5e9",
                     blueprint: constructBlueprint("Dr. Khalil Dental", "#0ea5e9", ["hero", "features", "testimonials", "cta"])
                 },
                 {
-                    id: "s1-consult",
-                    name: "Global Advisor",
-                    image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2070&auto=format&fit=crop",
-                    description: "Blue & Grey tones, focus on authority and statistics.",
-                    components: ["Contact-Top-Bar", "Lead-Gen-Form-Hero", "Authority-Logos", "Services-Icons-Large"],
-                    primaryColor: "#1e40af",
-                    blueprint: constructBlueprint("Global Advisor", "#1e40af", ["hero", "features", "testimonials"])
-                },
-                {
-                    id: "s3-legal",
-                    name: "Sovereign Law",
-                    image: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=2070&auto=format&fit=crop",
-                    description: "Marble textures, classic typography, trust and authority.",
-                    components: ["Classic-Top-Nav", "Authority-Hero-Stoic", "Practice-Areas-Grid", "Client-Logos-Legacy"],
-                    primaryColor: "#475569",
-                    blueprint: constructBlueprint("Sovereign Law", "#475569", ["hero", "features"])
+                    id: "spa-wellness",
+                    name: "Zen Retreat",
+                    image: "https://images.unsplash.com/photo-1544161515-4ae6ce6ea858?q=80&w=2070&auto=format&fit=crop",
+                    description: "Tranquil design for beauty and wellness sanctuaries.",
+                    components: ["Therapy-Menu", "Soft-Visuals", "Calm-Booking"],
+                    primaryColor: "#f97316",
+                    blueprint: constructBlueprint("Zen Retreat", "#f97316", ["hero", "features", "cta"])
                 }
             ]
         },
         {
-            id: "food-hospitality",
-            name: "Food & Hospitality",
+            id: "restaurant",
+            name: "Dining & Hospitality",
             themes: [
                 {
-                    id: "f1-cinematic",
-                    name: "Chef's Table",
-                    image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2070&auto=format&fit=crop",
-                    description: "Cinematic food photography, elegant plating focus.",
+                    id: "zen-food",
+                    name: "Aurum & Ash",
+                    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=2430",
+                    description: "Cinematic dining experiences for Michelin-star restaurants.",
                     components: ["Video-Background-Hero", "Plating-Gallery", "Menu-Accordion", "Reservation-Sticky"],
                     primaryColor: "#7c2d12",
-                    blueprint: constructBlueprint("Chef's Table", "#7c2d12", ["hero", "gallery", "features"])
-                },
-                {
-                    id: "f2-street",
-                    name: "Night Market",
-                    image: "https://images.unsplash.com/photo-1561758033-d8f80400531d?q=80&w=2070&auto=format&fit=crop",
-                    description: "Neon, urban, energetic. For bold street food brands.",
-                    components: ["Neon-Sign-Hero", "Food-Carousel-Dark", "Social-Grid-Urban", "Location-Map-Night"],
-                    primaryColor: "#facc15",
-                    blueprint: constructBlueprint("Night Market", "#facc15", ["hero", "gallery", "cta"])
+                    blueprint: constructBlueprint("Aurum & Ash", "#7c2d12", ["hero", "gallery", "features"])
                 }
             ]
         },
         {
-            id: "health-medicine",
-            name: "Health & Medicine",
+            id: "creative",
+            name: "Creative & Education",
             themes: [
                 {
-                    id: "m1-clinic",
-                    name: "Apex Medical",
-                    image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2070&auto=format&fit=crop",
-                    description: "Clean, sterile white/blue. High trust, clear CTA.",
-                    components: ["Emergency-Top-Bar", "Trust-Stats-Hero", "Symptom-Checker-Widget", "Doctor-Profiles"],
+                    id: "studio-zero",
+                    name: "Studio Zero",
+                    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2426",
+                    description: "Visual-heavy portfolios for creative disruptors.",
+                    components: ["Masonry-Grid", "Cinematic-Reels", "Vision-Matrices"],
+                    primaryColor: "#a855f7",
+                    blueprint: constructBlueprint("Studio Zero", "#a855f7", ["hero", "gallery", "features"])
+                },
+                {
+                    id: "elite-lms",
+                    name: "Elite Academia",
+                    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=2067&auto=format&fit=crop",
+                    description: "Masterclass architecture for education empires.",
+                    components: ["Course-Matrix", "Student-Dashboard", "Learning-Paths"],
+                    primaryColor: "#8b5cf6",
+                    blueprint: constructBlueprint("Elite Academia", "#8b5cf6", ["hero", "features", "cta"])
+                },
+                {
+                    id: "news-silo",
+                    name: "Dispatch Engine",
+                    image: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=2070&auto=format&fit=crop",
+                    description: "Editorial excellence for news and magazine empires.",
+                    components: ["News-Grid", "Reader-Focus", "Article-Matrix"],
+                    primaryColor: "#18181b",
+                    blueprint: constructBlueprint("Dispatch Engine", "#18181b", ["hero", "features", "cta"])
+                },
+                {
+                    id: "fitness-neon",
+                    name: "Kinetic Lab",
+                    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop",
+                    description: "High-energy, dark-neon engine for athletic performance.",
+                    components: ["Program-Matrices", "Trainer-Profiles", "Progress-Tracking"],
+                    primaryColor: "#22c55e",
+                    blueprint: constructBlueprint("Kinetic Lab", "#22c55e", ["hero", "features", "cta"])
+                }
+            ]
+        },
+        {
+            id: "finance",
+            name: "Finance & Legal",
+            themes: [
+                {
+                    id: "law-silo",
+                    name: "Lex Sileo",
+                    image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=2070&auto=format&fit=crop",
+                    description: "Prestige legal architecture for elite law firms.",
+                    components: ["Marble-Textures", "Partner-Profiles", "Secure-Intake"],
+                    primaryColor: "#475569",
+                    blueprint: constructBlueprint("Lex Sileo", "#475569", ["hero", "features"])
+                },
+                {
+                    id: "financial-core",
+                    name: "Ledger Pro",
+                    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2011&auto=format&fit=crop",
+                    description: "Premium accounting and tax logic for fintech.",
+                    components: ["Automated-Ledger", "Tax-Compliance", "Invoicing-Engine"],
+                    primaryColor: "#0d9488",
+                    blueprint: constructBlueprint("Ledger Pro", "#0d9488", ["hero", "features", "cta"])
+                }
+            ]
+        },
+        {
+            id: "internal",
+            name: "Internal Tools",
+            themes: [
+                {
+                    id: "internal-engine",
+                    name: "Operational Shell",
+                    image: "https://images.unsplash.com/photo-1551288049-bbbda536339a?q=80&w=2070&auto=format&fit=crop",
+                    description: "Production-ready internal tools for heavy logic.",
+                    components: ["CRM-Logic", "Inventory-Matrices", "System-Logs"],
                     primaryColor: "#2563eb",
-                    blueprint: constructBlueprint("Apex Medical", "#2563eb", ["hero", "features", "cta"])
-                },
-                {
-                    id: "m2-wellness",
-                    name: "Holistic Harmony",
-                    image: "https://images.unsplash.com/photo-1544367563-12123d8965cd?q=80&w=2070&auto=format&fit=crop",
-                    description: "Natural greens, organic textures. For spas and wellness.",
-                    components: ["Zen-Hero-Video", "Treatment-Menu-Cards", "Booking-Form-Spa", "Instagram-Feed"],
-                    primaryColor: "#15803d",
-                    blueprint: constructBlueprint("Holistic Harmony", "#15803d", ["hero", "gallery", "testimonials"])
-                },
-                {
-                    id: "m4-wellness",
-                    name: "Zenith Yoga",
-                    image: "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?q=80&w=2069&auto=format&fit=crop",
-                    description: "Soft pastels, breathing space, calming typography.",
-                    components: ["Full-Screen-Breath-Hero", "Class-Schedule-Table", "Instructor-Cards-Soft", "Membership-Tiers-Simple"],
-                    primaryColor: "#57534e",
-                    blueprint: constructBlueprint("Zenith Yoga", "#57534e", ["hero", "features", "gallery"])
+                    blueprint: constructBlueprint("Operational Shell", "#2563eb", ["hero", "features"])
                 }
             ]
         }

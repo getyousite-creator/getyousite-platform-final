@@ -56,6 +56,11 @@ export const SiteBlueprintSchema = z.object({
         social: z.record(z.string(), z.string()),
     }),
     metadata: z.record(z.string(), z.any()),
+    economic_impact: z.object({
+        estimated_savings: z.string(),
+        valuation: z.number().optional(),
+        logic_verified: z.boolean().default(true)
+    }).optional(),
     ai_insight: z.string().optional(),
     timestamp: z.string(),
 });

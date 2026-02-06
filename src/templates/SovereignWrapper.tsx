@@ -6,7 +6,7 @@ import { useTemplateEditor } from "@/hooks/use-template-editor";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
 import { SiteBlueprint, Section } from "@/lib/schemas";
 import styles from "@/styles/isolation.module.css";
-import { Shield, CloudCheck, HardDrive, LucideIcon } from "lucide-react";
+import { Shield, CloudCheck, HardDrive, TrendingUp, LucideIcon } from "lucide-react";
 
 interface SovereignWrapperProps {
     children?: (props: {
@@ -63,6 +63,18 @@ export default function SovereignWrapper({ children }: SovereignWrapperProps) {
                         >
                             <CloudCheck className="w-3 h-3" />
                             <span>Cloud_Sync: Synchronized</span>
+                        </motion.div>
+                    )}
+
+                    {blueprint?.economic_impact && (
+                        <motion.div
+                            initial={{ x: 20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: 0.15 }}
+                            className="flex items-center gap-3 px-4 py-2 bg-blue-500/10 backdrop-blur-md border border-blue-500/20 rounded-full text-[10px] font-black uppercase tracking-widest text-blue-400 shadow-2xl"
+                        >
+                            <TrendingUp className="w-3 h-3" />
+                            <span>Asset_Valuation: {blueprint.economic_impact.estimated_savings}</span>
                         </motion.div>
                     )}
 

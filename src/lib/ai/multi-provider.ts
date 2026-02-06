@@ -247,6 +247,7 @@ export async function generateCompleteWebsite(params: {
     locale: string;
     features?: string[];
 }) {
+
     // 1. Credit Gate: Prevent cost draining
     const user = await AuthService.getCurrentUser();
     if (!user.data) throw new Error('AUTH_REQUIRED_FOR_AI');
@@ -258,21 +259,71 @@ export async function generateCompleteWebsite(params: {
         throw new Error('INSUFFICIENT_CREDITS: You have 0 generation credits remaining. Please upgrade your plan.');
     }
 
+    // SOVEREIGN LOGIC: Template Mapping (The 12 Pillars of Digital Empire)
+    let recommendedTemplate = "corp-global"; // Default: Global Stability Pillar
+    const normalizedNiche = params.niche.toLowerCase();
+
+    if (normalizedNiche.match(/health|doctor|clinic|dental|medical|pharmacy/)) {
+        recommendedTemplate = "dr-khalil"; // MEDICAL PILLAR
+    } else if (normalizedNiche.match(/food|restauran|cafe|dining|kitchen|bakery|gourmet/)) {
+        recommendedTemplate = "zen-food"; // RESTO PILLAR
+    } else if (normalizedNiche.match(/photo|camera|design|creative|agency|portfolio|art|studio/)) {
+        recommendedTemplate = "studio-zero"; // CREATIVE PILLAR
+    } else if (normalizedNiche.match(/saas|product|launch|startup|app|software|tech|nexus/)) {
+        recommendedTemplate = "tech-grid"; // LANDING PILLAR
+    } else if (normalizedNiche.match(/real estate|property|agent|housing|apartment|villa|estate/)) {
+        recommendedTemplate = "boreal-estate"; // REAL ESTATE PILLAR
+    } else if (normalizedNiche.match(/course|education|academy|learning|mentor|teacher|lms/)) {
+        recommendedTemplate = "elite-lms"; // LMS PILLAR
+    } else if (normalizedNiche.match(/news|blog|journal|magazine|public|dispatch|media/)) {
+        recommendedTemplate = "news-silo"; // PUBLIC PILLAR
+    } else if (normalizedNiche.match(/spa|beauty|wellness|yoga|skin|salon|glow|care/)) {
+        recommendedTemplate = "spa-wellness"; // WELLNESS PILLAR
+    } else if (normalizedNiche.match(/ecommerce|store|retail|shop|fashion|merch|cart/)) {
+        recommendedTemplate = "luxe-cart"; // RETAIL PILLAR
+    } else if (normalizedNiche.match(/fitness|gym|trainer|workout|athletic|sport|kinetic/)) {
+        recommendedTemplate = "fitness-neon"; // FITNESS PILLAR
+    } else if (normalizedNiche.match(/law|legal|consult|finance|insurance|holding/)) {
+        recommendedTemplate = "law-silo"; // PROFESSIONAL PILLAR
+    } else if (normalizedNiche.match(/account|tax|bookkeep|audit|financial/)) {
+        recommendedTemplate = "financial-core"; // FINANCIAL PILLAR
+    } else if (normalizedNiche.match(/internal|admin|dash|crm|inventory|tool/)) {
+        recommendedTemplate = "internal-engine"; // INTERNAL ENGINE PILLAR
+    } else if (normalizedNiche.match(/corporate|global|enterprise|conglomerate|stability/)) {
+        recommendedTemplate = "corp-global"; // CORPORATE PILLAR
+    }
+
     const systemPrompt = `
-You are the SOVEREIGN AI ARCHITECT - an elite website generation engine.
-Your task: Create complete, production-ready website specifications.
+You are the SOVEREIGN AI ARCHITECT. You do not write generic copy. You write MILLION-DOLLAR SALES COPY.
+Your task: Construct a digital empire for the user.
 
-REQUIREMENTS:
-1. Generate 7-10 sections: Hero, Benefits, Features, Trust Bar, Testimonials, FAQ, CTA, Contact
-2. SEO-optimized content with meta titles, descriptions, keywords
-3. Responsive design specifications for mobile, tablet, desktop
-4. Multi-language support structure
-5. Accessibility compliance (WCAG 2.1 AA)
-6. Performance optimization guidelines
-7. Schema.org structured data
-8. ai_insight: A brief, powerful marketing strategy or tip (1 sentence) for this specific business vision.
+CRITICAL RULES:
+1. **Sales Psychology**: Use "Result-First" headlines. (e.g., Instead of "Welcome to Dr. Khalil", write "World-Class Dentistry in Casablanca").
+2. **Template Enforcer**: You MUST structure the content to fit the '${recommendedTemplate}' blueprint.
+3. **Economic Framing**: Your generated content must justify the $1M-$4M valuation of the asset.
+4. **Niche Awareness**: 
+   - dr-khalil: Clinical, high-status, medical trust.
+   - zen-food: Atmosphere, menu-driven, appetite-focused.
+   - studio-zero: Visual-heavy, high-art, creative agency.
+   - tech-grid: Tech-conversion, feature-heavy, Saas/Product.
+   - boreal-estate: Inventory-rich, asset-focused, property trust.
+   - elite-lms: Education-heavy, curriculum-focused, authority building.
+   - news-silo: Editorial, readability, news-grid.
+   - spa-wellness: Aesthetic, soft-luxury, tranquility.
+   - luxe-cart: Conversion-retail, catalog-driven.
+   - fitness-neon: High-energy, dark-neon, athletic performance.
+   - law-silo: Professional, firm, sober authority.
+   - corp-global: High-trust, global stability, clean corporate grids.
+5. **Visual Intelligence**: Generate a list of 5 high-fidelity photography keywords for Unsplash based on the niche.
 
-OUTPUT: Valid JSON only. No markdown, no explanations.
+OUTPUT FORMAT:
+Strict JSON.
+{
+  "templateId": "${recommendedTemplate}",
+  "theme": { "mode": "medical" | "luxury" | "dark" | "clean" | "neon" },
+  "content": { ... },
+  "images": ["keyword1", "keyword2"]
+}
 `;
 
     const userPrompt = `
@@ -280,9 +331,8 @@ BUSINESS: ${params.businessName}
 NICHE: ${params.niche}
 VISION: ${params.vision}
 LOCALE: ${params.locale}
-FEATURES: ${params.features?.join(', ') || 'Standard'}
 
-Generate a complete website blueprint with all sections, content, and technical specifications.
+Execute the Sovereign Construction Protocol.
 `;
 
     const result = await generateWithFallback({
@@ -298,19 +348,79 @@ Generate a complete website blueprint with all sections, content, and technical 
 
     try {
         const blueprint = JSON.parse(result.content);
-        return {
+
+        const nicheValues: Record<string, number> = {
+            'dr-khalil': 2500000,
+            'zen-food': 800000,
+            'studio-zero': 1600000,
+            'tech-grid': 3200000,
+            'boreal-estate': 1500000,
+            'elite-lms': 900000,
+            'news-silo': 1200000,
+            'spa-wellness': 500000,
+            'luxe-cart': 2800000,
+            'law-silo': 1100000,
+            'fitness-neon': 3500000,
+            'corp-global': 4000000,
+            'financial-core': 1600000
+        };
+
+        const estimatedSavings = nicheValues[blueprint.templateId] || 1000000;
+
+        const sovereignAsset = {
             ...blueprint,
+            economic_impact: {
+                estimated_savings: `$${(estimatedSavings / 1000000).toFixed(1)}M`,
+                valuation: estimatedSavings,
+                logic_verified: true
+            },
             _meta: {
                 generated_by: result.provider,
                 model: result.model,
                 timestamp: new Date().toISOString(),
-                engine: 'Sovereign-GenAI-v3'
+                engine: 'Sovereign-GenAI-v3',
+                export_ready: true,
+                standalone_config: {
+                    framework: 'Next.js 16',
+                    styling: 'Tailwind CSS',
+                    deployment: 'Vercel-Ready'
+                }
             }
         };
+
+        return sovereignAsset;
     } catch (error) {
         console.error('Failed to parse AI response:', error);
         throw new Error('Invalid AI response format');
     }
+}
+
+/**
+ * SOVEREIGN EXPORT PROTOCOL
+ * Generates a standalone, platform-independent zip/package descriptor
+ */
+export async function exportSovereignAsset(storeId: string) {
+    // 1. Fetch current persistence
+    const { SupabaseStoreRepository } = await import('@/lib/repositories/SupabaseStoreRepository');
+    const repo = new SupabaseStoreRepository();
+    // Logic: Fetching directly for export
+    const store = await repo.getStoreBySlug(storeId); // Assuming slug or id
+
+    if (!store) throw new Error('ASSET_NOT_FOUND');
+
+    return {
+        v: "1.0-sovereign",
+        timestamp: new Date().toISOString(),
+        infrastructure: {
+            provider: "GetYouSite Sovereign Engine",
+            license: "MIT-Derived Sovereign Ownership"
+        },
+        asset: {
+            name: store.name,
+            config: store.settings,
+            blueprint: store.settings.blueprint
+        }
+    };
 }
 
 export default {

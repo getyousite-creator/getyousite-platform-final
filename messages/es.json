@@ -13,7 +13,7 @@
     },
     "Hero": {
         "badge": "Sistema en Línea • v2.0 Listo",
-        "headline": "Arquitectura de <gradient>Imperios Digitales</gradient> en 48 Horas.",
+        "headline": "Arquitectura de Imperios Digitales en 48 Horas.",
         "subheadline": "Ecosistemas de alto rendimiento. IA integrada. Ingeniería alemana. Ingrese su visión a continuación y deje que nuestro Motor Cuántico construya el plan.",
         "placeholder": "Describa su plataforma soñada...",
         "generate": "Generar",
@@ -52,34 +52,6 @@
         "growth": {
             "title": "Reactores de Crecimiento",
             "desc": "Esquemas SEO integrados y embudos de conversión diseñados para escalar su tráfico exponencialmente."
-        }
-    },
-    "LaunchModal": {
-        "init_sequence": "Iniciar Secuencia",
-        "title": "Lanza Tu Imperio Digital",
-        "desc": "Confirma tu visión profesional e inicia el protocolo de despliegue soberano.",
-        "email_label": "Enlace de Comunicación (Email)",
-        "email_placeholder": "comandante@getyousite.com",
-        "type_label": "¿Qué estás construyendo?",
-        "type_options": {
-            "blog": "Presencia Personal / Blog",
-            "business": "Sitio de Negocios Profesional",
-            "store": "Tienda en Línea / E-commerce"
-        },
-        "vision_label": "Matriz de Visión (Descripción)",
-        "vision_placeholder": "Ecosistema impulsado por IA para bienes raíces de lujo...",
-        "tier_label": "Nivel de Servicio",
-        "tier_options": {
-            "starter": "Starter - Presencia Personal",
-            "pro": "Pro - Imperio Profesional",
-            "business": "Negocios - Infraestructura Escalable",
-            "enterprise": "Empresa - Soberanía Personalizada"
-        },
-        "submit": "Lanzar Protocolo",
-        "submitting": "Orquestando...",
-        "success": {
-            "title": "Transmisión Recibida",
-            "desc": "Tu sitio soberano está activo. Inicializando UI..."
         }
     },
     "Testimonials": {
@@ -158,7 +130,7 @@
             "blog": "Blog / Personal",
             "business": "Negocios / Médico",
             "store": "Tienda / E-commerce",
-            "agency": "Agencias / Multi"
+            "agency": "Agencies / Multi"
         },
         "starter": "Inicial",
         "pro": "Profesional",
@@ -325,6 +297,34 @@
         "mission_text": "Simplificar el proceso de construir una presencia digital para empresas globalmente, aprovechando la IA para entregar alta calidad en tiempo récord.",
         "vision_title": "Nuestra Visión",
         "vision_text": "Ser la plataforma líder que permita a cualquier persona crear y gestionar su sitio web profesional sin necesitar experiencia técnica compleja."
+    },
+    "LaunchModal": {
+        "init_sequence": "Iniciar Secuencia",
+        "title": "Lanza Tu Imperio Digital",
+        "desc": "Confirma tu visión profesional e inicia el protocolo de desploiement soberano.",
+        "email_label": "Enlace de Comunicación (Email)",
+        "email_placeholder": "comandante@getyousite.com",
+        "type_label": "¿Qué estás construyendo?",
+        "type_options": {
+            "blog": "Presencia Personal / Blog",
+            "business": "Sitio de Negocios Profesional",
+            "store": "Tienda en Línea / E-commerce"
+        },
+        "vision_label": "Matriz de Visión (Descripción)",
+        "vision_placeholder": "Ecosistema impulsado por IA para bienes raíces de lujo...",
+        "tier_label": "Nivel de Servicio",
+        "tier_options": {
+            "starter": "Starter - Presencia Personal",
+            "pro": "Pro - Imperio Profesional",
+            "business": "Negocios - Infraestructura Escalable",
+            "enterprise": "Empresa - Soberanía Personalizada"
+        },
+        "submit": "Lanzar Protocolo",
+        "submitting": "Orquestando...",
+        "success": {
+            "title": "Transmisión Recibida",
+            "desc": "Tu sitio soberano está activo. Inicializando UI..."
+        }
     },
     "Help": {
         "title": "Centro de Ayuda",

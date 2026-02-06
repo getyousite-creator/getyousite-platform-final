@@ -174,6 +174,13 @@ export class PaymentService {
                 admin_notes: 'System Activated: RAZANETEST'
             });
 
+            // SOVEREIGN SYNC: Promote all pending_payment stores for this user to 'paid'
+            await supabase
+                .from('stores')
+                .update({ status: 'paid', paid_at: new Date().toISOString() })
+                .eq('user_id', userId)
+                .eq('status', 'pending_payment');
+
             return { success: true };
         } catch (e) {
             return { success: false, error: (e as Error).message };
@@ -216,6 +223,13 @@ export class PaymentService {
                 currency_code: 'USD',
                 status: 'approved'
             });
+
+            // SOVEREIGN SYNC: Promote all pending_payment stores for this user to 'paid'
+            await supabase
+                .from('stores')
+                .update({ status: 'paid', paid_at: new Date().toISOString() })
+                .eq('user_id', userId)
+                .eq('status', 'pending_payment');
 
             return { success: true };
         } catch (e) {

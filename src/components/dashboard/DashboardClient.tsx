@@ -7,13 +7,13 @@ import {
     Plus, ExternalLink, Edit, Shield, AlertCircle,
     TrendingUp, Users, Eye, MousePointer, Globe, Search,
     Clock, Calendar, ChevronRight, BarChart3, SearchCheck,
-    Zap, Target, ArrowUpRight, ArrowDownRight
+    Zap, Target, ArrowUpRight, ArrowDownRight, Download
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 // LOGIC UNIFICATION: Direct Payment Integration
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { CheckoutModule } from "@/components/payment/CheckoutModule";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'; // Keep existing imports if needed
 
@@ -81,6 +81,25 @@ export default function DashboardClient() {
         fetchDashboardData();
     };
 
+
+    const handleExport = async (storeId: string, storeName: string) => {
+        try {
+            const response = await fetch(`/api/export?id=${storeId}`);
+            const data = await response.json();
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${storeName.replace(/\s+/g, '-').toLowerCase()}-sovereign-asset.json`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (error) {
+            console.error('EXPORT_ERROR', error);
+        }
+    };
 
     useEffect(() => {
         fetchDashboardData();
@@ -347,6 +366,20 @@ export default function DashboardClient() {
                                                             >
                                                                 <Zap className="w-3.5 h-3.5 mr-2" />
                                                                 Activate
+                                                            </Button>
+                                                        )}
+                                                        {store.status === 'deployed' && (
+                                                            <Button
+                                                                variant="outline"
+                                                                size="sm"
+                                                                className="border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 text-blue-400 font-bold"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleExport(store.id, store.name);
+                                                                }}
+                                                            >
+                                                                <Download size={14} className="mr-2" />
+                                                                Export Asset
                                                             </Button>
                                                         )}
                                                         <Button

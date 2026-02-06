@@ -54,34 +54,6 @@
             "desc": "Optimisation automatique pour que votre site soit mieux classé dans les résultats de recherche."
         }
     },
-    "LaunchModal": {
-        "init_sequence": "Initialiser la Séquence",
-        "title": "Lancez Votre Empire Numérique",
-        "desc": "Confirmez votre vision professionnelle et lancez le protocole de déploiement souverain.",
-        "email_label": "Lien de Comm (Email)",
-        "email_placeholder": "commandant@getyousite.com",
-        "type_label": "Que construisez-vous ?",
-        "type_options": {
-            "blog": "Présence Personnelle / Blog",
-            "business": "Site Professionnel",
-            "store": "E-commerce / Boutique en Ligne"
-        },
-        "vision_label": "Matrice de Vision (Description)",
-        "vision_placeholder": "Écosystème propulsé par l'IA pour l'immobilier de luxe...",
-        "tier_label": "Niveau de Service",
-        "tier_options": {
-            "starter": "Starter - Présence Personnelle",
-            "pro": "Pro - Empire Professionnel",
-            "business": "Business - Infrastructure Évolutive",
-            "enterprise": "Entreprise - Personnalisation Souveraine"
-        },
-        "submit": "Lancer le Protocole",
-        "submitting": "Orchestration...",
-        "success": {
-            "title": "Transmission Reçue",
-            "desc": "Votre site souverain est actif. Initialisation de l'interface..."
-        }
-    },
     "Testimonials": {
         "title": "Témoignages Clients",
         "subtitle": "Rejoignez des milliers de personnes qui ont construit leurs sites avec nous",
@@ -132,6 +104,22 @@
             "fashion": {
                 "title": "Elite Fashion",
                 "desc": "Boutique de mode minimaliste axée sur la conversion."
+            },
+            "portfolio": {
+                "title": "Neon Dreams",
+                "desc": "Système de design minimaliste avec interactions WebGL."
+            },
+            "medical": {
+                "title": "Clinique Nova",
+                "desc": "Portail patient sécurisé avec système de rendez-vous."
+            },
+            "restaurant": {
+                "title": "Aurum & Ash",
+                "desc": "Expérience culinaire de luxe avec moteur de réservation."
+            },
+            "tech": {
+                "title": "SyncSphere",
+                "desc": "Plateforme de collaboration B2B avec identité visuelle isométrique."
             }
         }
     },
@@ -309,6 +297,34 @@
         "mission_text": "Simplifier le processus de création d'une présence numérique pour les entreprises en utilisant l'IA pour offrir une haute qualité en un temps record.",
         "vision_title": "Notre Vision",
         "vision_text": "Être la plateforme leader qui permet à quiconque de créer et de gérer son site professionnel sans expertise technique complexe."
+    },
+    "LaunchModal": {
+        "init_sequence": "Initialiser la Séquence",
+        "title": "Lancez Votre Empire Numérique",
+        "desc": "Confirmez votre vision professionnelle et lancez le protocole de déploiement souverain.",
+        "email_label": "Lien de Comm (Email)",
+        "email_placeholder": "commandant@getyousite.com",
+        "type_label": "Que construisez-vous ?",
+        "type_options": {
+            "blog": "Présence Personnelle / Blog",
+            "business": "Site Professionnel",
+            "store": "E-commerce / Boutique en Ligne"
+        },
+        "vision_label": "Matrice de Vision (Description)",
+        "vision_placeholder": "Écosystème propulsé par l'IA pour l'immobilier de luxe...",
+        "tier_label": "Niveau de Service",
+        "tier_options": {
+            "starter": "Starter - Présence Personnelle",
+            "pro": "Pro - Empire Professionnel",
+            "business": "Business - Infrastructure Évolutive",
+            "enterprise": "Entreprise - Personnalisation Souveraine"
+        },
+        "submit": "Lancer le Protocole",
+        "submitting": "Orchestration...",
+        "success": {
+            "title": "Transmission Reçue",
+            "desc": "Votre site souverain est actif. Initialisation de l'interface..."
+        }
     },
     "Help": {
         "title": "Centre d'Aide",

@@ -54,34 +54,6 @@
             "desc": "Automatic optimization for your site to rank higher in search results."
         }
     },
-    "LaunchModal": {
-        "init_sequence": "Initialize Sequence",
-        "title": "Launch Your Digital Empire",
-        "desc": "Confirm your professional vision and initiate the Sovereign Protocol deployment.",
-        "email_label": "Comm_Link (Email)",
-        "email_placeholder": "commander@getyousite.com",
-        "type_label": "What are you building?",
-        "type_options": {
-            "blog": "Personal / Blog Presence",
-            "business": "Professional Business Site",
-            "store": "E-commerce / Online Store"
-        },
-        "vision_label": "Vision_Matrix (Description)",
-        "vision_placeholder": "AI-powered ecosystem for luxury real estate...",
-        "tier_label": "Service_Tier",
-        "tier_options": {
-            "starter": "Starter - Personal Presence",
-            "pro": "Pro - Professional Empire",
-            "business": "Business - Scalable Infrastructure",
-            "enterprise": "Enterprise - Sovereign Custom"
-        },
-        "submit": "Launch Protocol",
-        "submitting": "Orchestrating...",
-        "success": {
-            "title": "Transmission Received",
-            "desc": "Your sovereign site is active. Initializing UI..."
-        }
-    },
     "Testimonials": {
         "title": "Client Testimonials",
         "subtitle": "Join thousands who built their sites with us",
@@ -132,6 +104,22 @@
             "fashion": {
                 "title": "Elite Fashion",
                 "desc": "Minimalist fashion store focused on product conversion."
+            },
+            "portfolio": {
+                "title": "Neon Dreams",
+                "desc": "Minimalist design system with WebGL interactions."
+            },
+            "medical": {
+                "title": "Clínica Nova",
+                "desc": "Secure patient portal with a scheduling core."
+            },
+            "restaurant": {
+                "title": "Aurum & Ash",
+                "desc": "Luxury dining experience with a reservation engine."
+            },
+            "tech": {
+                "title": "SyncSphere",
+                "desc": "B2B collaboration platform with an isometric visual identity."
             }
         }
     },
@@ -309,6 +297,34 @@
         "mission_text": "To simplify the process of building a digital presence for businesses globally by leveraging AI to deliver high quality in record time.",
         "vision_title": "Our Vision",
         "vision_text": "To be the leading platform that enables anyone to create and manage their professional website without needing complex technical expertise."
+    },
+    "LaunchModal": {
+        "init_sequence": "Initialize Sequence",
+        "title": "Launch Your Digital Empire",
+        "desc": "Confirm your professional vision and initiate the Sovereign Protocol deployment.",
+        "email_label": "Comm_Link (Email)",
+        "email_placeholder": "commander@getyousite.com",
+        "type_label": "What are you building?",
+        "type_options": {
+            "blog": "Personal / Blog Presence",
+            "business": "Professional Business Site",
+            "store": "E-commerce / Online Store"
+        },
+        "vision_label": "Vision_Matrix (Description)",
+        "vision_placeholder": "AI-powered ecosystem for luxury real estate...",
+        "tier_label": "Service_Tier",
+        "tier_options": {
+            "starter": "Starter - Personal Presence",
+            "pro": "Pro - Professional Empire",
+            "business": "Business - Scalable Infrastructure",
+            "enterprise": "Enterprise - Sovereign Custom"
+        },
+        "submit": "Launch Protocol",
+        "submitting": "Orchestrating...",
+        "success": {
+            "title": "Transmission Received",
+            "desc": "Your sovereign site is active. Initializing UI..."
+        }
     },
     "Help": {
         "title": "Help Center",

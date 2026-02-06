@@ -12,6 +12,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { categories, templates, Template } from "@/data/template-data";
 import CategoryFilter from "./CategoryFilter";
 
@@ -19,6 +20,7 @@ export default function ShowcaseGallery() {
     const t = useTranslations('Showcase');
     const { updateBlueprint } = useTemplateEditor();
     const onOpen = useLaunchModal((state) => state.onOpen);
+    const router = useRouter();
     const [featuredSites, setFeaturedSites] = useState<any[]>([]);
     const [activeCategory, setActiveCategory] = useState("all");
 
@@ -65,6 +67,18 @@ export default function ShowcaseGallery() {
         }
     };
 
+    const handleEdit = (themeId: string) => {
+        const allThemes = SITE_TEMPLATES.categories.flatMap(c => c.themes);
+        const theme = allThemes.find(t => t.id === themeId);
+
+        if (theme) {
+            updateBlueprint(theme.blueprint);
+            router.push('/customizer');
+        } else {
+            onOpen(themeId);
+        }
+    };
+
     return (
         <div className="space-y-32">
             {/* CATEGORY NAV - WIX STYLE */}
@@ -99,8 +113,14 @@ export default function ShowcaseGallery() {
                                 <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent" />
 
                                 {template.badge && (
-                                    <div className="absolute top-6 right-6 px-4 py-1.5 bg-blue-600 rounded-full text-[9px] font-black uppercase tracking-widest text-white shadow-xl">
+                                    <div className="absolute top-6 left-6 px-4 py-1.5 bg-blue-600 rounded-full text-[9px] font-black uppercase tracking-widest text-white shadow-xl z-20">
                                         {template.badge}
+                                    </div>
+                                )}
+
+                                {template.estimatedSavings && (
+                                    <div className="absolute top-6 right-6 px-4 py-1.5 bg-emerald-500/90 backdrop-blur-md rounded-full text-[9px] font-black uppercase tracking-widest text-white shadow-xl z-20 border border-emerald-400/30">
+                                        {template.estimatedSavings}
                                     </div>
                                 )}
 
@@ -114,7 +134,7 @@ export default function ShowcaseGallery() {
                                             {t('preview')}
                                         </Button>
                                         <Button
-                                            onClick={() => onOpen(template.title)}
+                                            onClick={() => handleEdit(template.id)}
                                             variant="outline"
                                             className="bg-black/50 border-white/20 text-white hover:bg-white hover:text-black font-black uppercase tracking-widest text-[10px] px-10 py-7 rounded-2xl backdrop-blur-md transition-all active:scale-95"
                                         >

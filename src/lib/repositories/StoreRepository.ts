@@ -10,12 +10,18 @@ export interface TemplateSettings {
 
 export interface Store {
     id: string;
+    user_id?: string;
+    name: string;
     slug: string;
+    description?: string;
     template_id: string;
+    status: 'draft' | 'pending_payment' | 'paid' | 'deploying' | 'deployed' | 'failed';
     settings: TemplateSettings;
     created_at?: string;
     updated_at?: string;
-    user_id?: string;
+    paid_at?: string;
+    payment_id?: string;
+    amount?: number;
 }
 
 export abstract class StoreRepository {

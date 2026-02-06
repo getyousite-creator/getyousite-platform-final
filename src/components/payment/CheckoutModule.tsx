@@ -102,7 +102,9 @@ export const CheckoutModule = ({ siteId, planId, siteType, currency, amount, onS
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
-                                    orderId: data.orderID
+                                    orderId: data.orderID,
+                                    planId,
+                                    siteType
                                 })
                             });
 

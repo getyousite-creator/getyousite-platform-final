@@ -79,6 +79,24 @@ export default function FloatingChat() {
                             setMessages(prev =>
                                 prev.map(m => m.id === assistantMsgId ? { ...m, content: accumulatedContent } : m)
                             );
+                        } else if (type === '9') {
+                            const toolCall = JSON.parse(content);
+                            setMessages(prev =>
+                                prev.map(m => m.id === assistantMsgId ? {
+                                    ...m,
+                                    toolInvocations: [...((m as any).toolInvocations || []), toolCall]
+                                } : m)
+                            );
+                        } else if (type === 'a') {
+                            const toolResult = JSON.parse(content);
+                            setMessages(prev =>
+                                prev.map(m => m.id === assistantMsgId ? {
+                                    ...m,
+                                    toolInvocations: ((m as any).toolInvocations || []).map((ti: any) =>
+                                        ti.toolCallId === toolResult.toolCallId ? { ...ti, result: toolResult.result } : ti
+                                    )
+                                } : m)
+                            );
                         }
                     } catch (e) {
                         console.warn('STREAM_PARSE_RECOVERABLE_ERROR:', e);
@@ -132,30 +150,59 @@ export default function FloatingChat() {
                                 </div>
                             )}
                             {messages.map((m) => (
-                                <motion.div
-                                    key={m.id}
-                                    initial={{ opacity: 0, x: m.role === 'user' ? 10 : -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    className={cn(
-                                        "flex gap-3",
-                                        m.role === 'user' ? (isRTL ? "flex-row" : "flex-row-reverse") : (isRTL ? "flex-row-reverse" : "flex-row")
-                                    )}
-                                >
-                                    <div className={cn(
-                                        "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
-                                        m.role === 'user' ? "bg-slate-800" : "bg-blue-600/20 text-blue-400"
-                                    )}>
-                                        {m.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
-                                    </div>
-                                    <div className={cn(
-                                        "p-3 rounded-2xl text-sm leading-relaxed",
-                                        m.role === 'user'
-                                            ? "bg-slate-900 text-slate-200"
-                                            : "bg-blue-600/5 text-slate-300 border border-blue-500/10"
-                                    )} dir={isRTL ? "rtl" : "ltr"}>
-                                        {m.content}
-                                    </div>
-                                </motion.div>
+                                <div key={m.id} className="space-y-4">
+                                    <motion.div
+                                        initial={{ opacity: 0, x: m.role === 'user' ? 10 : -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        className={cn(
+                                            "flex gap-3",
+                                            m.role === 'user' ? (isRTL ? "flex-row" : "flex-row-reverse") : (isRTL ? "flex-row-reverse" : "flex-row")
+                                        )}
+                                    >
+                                        <div className={cn(
+                                            "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
+                                            m.role === 'user' ? "bg-slate-800" : "bg-blue-600/20 text-blue-400"
+                                        )}>
+                                            {m.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+                                        </div>
+                                        <div className={cn(
+                                            "p-3 rounded-2xl text-sm leading-relaxed",
+                                            m.role === 'user'
+                                                ? "bg-slate-900 text-white font-medium"
+                                                : "bg-blue-600/5 text-slate-300 border border-blue-500/10"
+                                        )} dir={isRTL ? "rtl" : "ltr"}>
+                                            {m.content}
+                                        </div>
+                                    </motion.div>
+
+                                    {/* TOOL INVOCATION VISUALS (Logic Layer) */}
+                                    {(m as any).toolInvocations?.map((toolInvocation: any) => {
+                                        const toolCallId = toolInvocation.toolCallId;
+                                        const addResult = 'result' in toolInvocation;
+
+                                        return (
+                                            <div key={toolCallId} className="px-11">
+                                                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between group">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className={cn(
+                                                            "w-2 h-2 rounded-full animate-pulse",
+                                                            addResult ? "bg-emerald-500" : "bg-amber-500"
+                                                        )} />
+                                                        <div>
+                                                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Neural_Action</p>
+                                                            <p className="text-xs font-bold text-white uppercase italic">
+                                                                {toolInvocation.toolName.replace(/_/g, ' ')}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    {addResult && (
+                                                        <div className="text-[9px] font-black text-emerald-500 uppercase">Success</div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
                             ))}
                             <div ref={chatEndRef} />
                         </div>
