@@ -11,6 +11,7 @@ import AuthModalManager from "@/components/auth/AuthModalManager";
 import FloatingChat from "@/components/chat/FloatingChat";
 import { Toaster } from "@/components/ui/sonner";
 import { AnalyticsProvider } from "@/components/providers/AnalyticsProvider";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 // LOGIC UPDATE: Use system fonts to prevent build blocking on external fetch
 const inter = { variable: "--font-inter" };
@@ -59,14 +60,22 @@ export default async function LocaleLayout({
                 "bg-background text-foreground antialiased font-sans transition-colors duration-500"
             )}>
                 <NextIntlClientProvider messages={messages}>
-                    <AnalyticsProvider>
-                        <JsonLd />
-                        <LaunchModal />
-                        <AuthModalManager />
-                        {children}
-                        <FloatingChat />
-                        <Toaster />
-                    </AnalyticsProvider>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="dark"
+                        enableSystem={false}
+                        disableTransitionOnChange
+                        themes={["light", "dark", "medical", "luxury"]}
+                    >
+                        <AnalyticsProvider>
+                            <JsonLd />
+                            <LaunchModal />
+                            <AuthModalManager />
+                            {children}
+                            <FloatingChat />
+                            <Toaster />
+                        </AnalyticsProvider>
+                    </ThemeProvider>
                 </NextIntlClientProvider>
             </body>
         </html>

@@ -4,48 +4,111 @@
 
 @layer base {
   :root {
-    /* Scientific Deep Space Palette */
-    --background: 2 6 23;
-    /* #020617 converted to HSL-ish or just custom props */
-    --foreground: 248 250 252;
-    /* We need to define standard CSS vars for ShadCN usually */
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    /* ... Revert to Shadcn standard variable definition later, 
-       but for now let's keep the HEX as used in the v4 file 
-       but inside :root without @theme block 
-    */
-    --background: #020617;
-    --foreground: #f8fafc;
-    --card: #0f172a;
-    --card-foreground: #f8fafc;
-    --popover: #020617;
-    --popover-foreground: #f8fafc;
-    --primary: #3b82f6;
-    --primary-foreground: #f8fafc;
-    --secondary: #1e293b;
-    --secondary-foreground: #f8fafc;
-    --muted: #1e293b;
-    --muted-foreground: #94a3b8;
-    --accent: #1e293b;
-    --accent-foreground: #f8fafc;
-    --destructive: #ef4444;
-    --destructive-foreground: #f8fafc;
-    --border: #1e293b;
-    --input: #1e293b;
-    --ring: #3b82f6;
-
+    /* SHARED VARS */
+    --radius: 0.5rem;
     --font-inter: "Inter", sans-serif;
     --font-noto-arabic: "Noto Sans Arabic", sans-serif;
+
+    /* DEFAULT (DARK / DEEP SPACE) */
+    --background: 222 47% 11%;
+    /* #0f172a (Slightly lighter than pure void) */
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217 91% 60%;
+    /* Blue 500 */
+    --primary-foreground: 222 47.4% 11.2%;
+
+    --secondary: 217 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 32.6% 17.5%;
+    --input: 217 32.6% 17.5%;
+    --ring: 224 76.3% 48%;
+  }
+
+  /* MEDICAL THEME (CLEAN / CLINICAL) */
+  .medical {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 199 89% 48%;
+    /* Sky 600 */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 199 89% 48%;
+  }
+
+  /* LUXURY THEME (GOLD / DARK) */
+  .luxury {
+    --background: 0 0% 0%;
+    --foreground: 45 93% 47%;
+    /* Gold */
+
+    --card: 0 0% 3%;
+    --card-foreground: 45 93% 47%;
+
+    --popover: 0 0% 3%;
+    --popover-foreground: 45 93% 47%;
+
+    --primary: 45 93% 47%;
+    /* Gold */
+    --primary-foreground: 0 0% 0%;
+
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 45 93% 47%;
+
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 40%;
+
+    --accent: 0 0% 10%;
+    --accent-foreground: 45 93% 47%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 45 93% 47%;
+
+    --border: 45 93% 47%;
+    --input: 0 0% 10%;
+    --ring: 45 93% 47%;
   }
 
   body {
-    @apply bg-[#020617] text-[#f8fafc] antialiased;
+    @apply bg-background text-foreground antialiased;
     font-family: var(--font-inter);
-    background-image:
-      radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.05), transparent 40%),
-      radial-gradient(circle at 100% 100%, rgba(30, 41, 59, 0.2), transparent 40%);
-    background-attachment: fixed;
   }
 }
 
@@ -55,14 +118,14 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #000;
+  background: hsl(var(--background));
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: hsl(var(--muted-foreground));
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: hsl(var(--primary));
 }
