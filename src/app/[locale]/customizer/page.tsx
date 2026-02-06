@@ -31,7 +31,7 @@ export default function CustomizerPage() {
 
     const [isLoadingStore, setIsLoadingStore] = useState(false);
     const [activeStoreId, setActiveStoreId] = useState<string | null>(null);
-    const [userId, setUserId] = useState<string>(""); // Sovereign State: Needed for RLS storage paths
+    const [userId, setUserId] = useState<string>(""); // User State: Needed for RLS storage paths
     const [showAuthModal, setShowAuthModal] = useState(false);
 
     // 2. Auto-Save Integration
@@ -149,7 +149,7 @@ export default function CustomizerPage() {
             updatedBlueprint.metadata.heroImage = url;
         }
 
-        // Sovereign Cleanup: Delete old asset if it exists and is from our storage
+        // Asset Cleanup: Delete old asset if it exists and is from our storage
         if (oldUrl && oldUrl.includes("site-assets") && oldUrl !== url) {
             console.log("Purging old asset:", oldUrl);
             // We fire and forget the delete to not block UI, or we could await if critical

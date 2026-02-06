@@ -50,11 +50,10 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1, duration: 0.8, ease: "easeOut" }}
-                    className="text-6xl md:text-8xl lg:text-[10rem] font-black tracking-[-0.04em] text-white mb-10 max-w-6xl leading-[0.8] uppercase italic"
+                    className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white mb-10 max-w-6xl leading-[0.9] uppercase italic"
                 >
-                    <span className="block">{t.raw('headline').split(' ')[0]}</span>
-                    <span className="block text-transparent bg-clip-text bg-gradient-to-b from-blue-400 to-blue-700">
-                        {t.raw('headline').split(' ').slice(1).join(' ')}
+                    <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">
+                        {t('headline')}
                     </span>
                 </motion.h1>
 

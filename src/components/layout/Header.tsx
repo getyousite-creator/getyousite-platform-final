@@ -92,7 +92,7 @@ export default function Header() {
                             className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-white"
                             onClick={() => router.push('/login')}
                         >
-                            Log_In
+                            {t('login')}
                         </Button>
                         <Button
                             variant="glow"
@@ -123,7 +123,7 @@ export default function Header() {
                             <Link href="/blog" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Blog</Link>
                             <Link href="/contact" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Contact</Link>
                             <div className="flex flex-col gap-3 pt-4 border-t border-white/5">
-                                <Button variant="outline" className="w-full border-white/10 text-[10px] font-black uppercase tracking-[0.3em]" onClick={() => router.push('/login')}>{t('login') || 'Log_In'}</Button>
+                                <Button variant="outline" className="w-full border-white/10 text-[10px] font-black uppercase tracking-[0.3em]" onClick={() => router.push('/login')}>{t('login')}</Button>
                                 <Button className="w-full bg-blue-600 text-[10px] font-black uppercase tracking-[0.3em]" onClick={() => router.push('/signup')}>{t('launch')}</Button>
                             </div>
 

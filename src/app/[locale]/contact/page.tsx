@@ -22,7 +22,7 @@ export default function ContactPage() {
         // Logical Simulation of Transmission
         await new Promise(resolve => setTimeout(resolve, 2000));
 
-        toast.success("Signal Received. Alignment in progress.");
+        toast.success(t('form.success'));
         setIsSubmitting(false);
         (e.target as HTMLFormElement).reset();
     };
@@ -79,8 +79,8 @@ export default function ContactPage() {
                                         <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">{t('form.name')}</label>
                                         <Input
                                             required
-                                            className="bg-slate-950/50 border-white/5 h-14 rounded-xl focus:ring-blue-500/50 focus:border-blue-500/50 transition-all"
-                                            placeholder="Alpha_User"
+                                            className="bg-slate-950/50 border-white/5 h-14 rounded-xl focus:ring-blue-500/50 focus:border-blue-500/50 transition-all text-start"
+                                            placeholder={t('form.name_placeholder')}
                                         />
                                     </div>
                                     <div className="space-y-3">
@@ -88,8 +88,8 @@ export default function ContactPage() {
                                         <Input
                                             required
                                             type="email"
-                                            className="bg-slate-950/50 border-white/5 h-14 rounded-xl focus:ring-blue-500/50 focus:border-blue-500/50 transition-all"
-                                            placeholder="commander@nexus.io"
+                                            className="bg-slate-950/50 border-white/5 h-14 rounded-xl focus:ring-blue-500/50 focus:border-blue-500/50 transition-all text-start"
+                                            placeholder={t('form.email_placeholder')}
                                         />
                                     </div>
                                 </div>
@@ -97,16 +97,16 @@ export default function ContactPage() {
                                     <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">{t('form.subject')}</label>
                                     <Input
                                         required
-                                        className="bg-slate-950/50 border-white/5 h-14 rounded-xl focus:ring-blue-500/50 focus:border-blue-500/50 transition-all"
-                                        placeholder="Strategic_Alignment"
+                                        className="bg-slate-950/50 border-white/5 h-14 rounded-xl focus:ring-blue-500/50 focus:border-blue-500/50 transition-all text-start"
+                                        placeholder={t('form.subject_placeholder')}
                                     />
                                 </div>
                                 <div className="space-y-3">
                                     <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">{t('form.message')}</label>
                                     <Textarea
                                         required
-                                        className="bg-slate-950/50 border-white/5 min-h-[160px] rounded-xl focus:ring-blue-500/50 focus:border-blue-500/50 transition-all resize-none"
-                                        placeholder="Detailed technical specifications or inquiry..."
+                                        className="bg-slate-950/50 border-white/5 min-h-[160px] rounded-xl focus:ring-blue-500/50 focus:border-blue-500/50 transition-all resize-none text-start"
+                                        placeholder={t('form.message_placeholder')}
                                     />
                                 </div>
                                 <Button
@@ -114,7 +114,7 @@ export default function ContactPage() {
                                     className="w-full h-16 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-lg font-black uppercase tracking-widest shadow-2xl transition-all active:scale-95 group/btn"
                                 >
                                     {isSubmitting ? t('form.sending') : t('form.send')}
-                                    <Send className="ml-3 w-5 h-5 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                                    <Send className="mx-3 w-5 h-5 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
                                 </Button>
                             </form>
                         </motion.div>
@@ -160,7 +160,7 @@ export default function ContactPage() {
                                 className="pt-12 border-t border-white/5 space-y-6"
                             >
                                 <a
-                                    href="https://wa.me/212600000000"
+                                    href="https://wa.me/212661000000"
                                     target="_blank"
                                     className="flex items-center justify-between p-6 rounded-2xl bg-green-500/5 border border-green-500/10 hover:bg-green-500/10 transition-all group"
                                 >
@@ -169,11 +169,11 @@ export default function ContactPage() {
                                             <MessageSquare className="w-6 h-6 text-green-500" />
                                         </div>
                                         <div>
-                                            <p className="text-[10px] font-black uppercase tracking-widest text-green-500/70 mb-1">High-Priority WhatsApp</p>
-                                            <p className="text-lg font-bold">Direct Architect Link</p>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-green-500/70 mb-1">{t('whatsapp.title')}</p>
+                                            <p className="text-lg font-bold">{t('whatsapp.label')}</p>
                                         </div>
                                     </div>
-                                    <ArrowRight className="w-6 h-6 text-green-500 group-hover:translate-x-2 transition-transform" />
+                                    <ArrowRight className="w-6 h-6 text-green-500 group-hover:translate-x-2 transition-transform rtl:rotate-180" />
                                 </a>
                             </motion.div>
                         </div>

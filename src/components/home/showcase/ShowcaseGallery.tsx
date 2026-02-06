@@ -11,14 +11,22 @@ import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
+import { useTranslations } from "next-intl";
 import { categories, templates, Template } from "@/data/template-data";
 import CategoryFilter from "./CategoryFilter";
 
 export default function ShowcaseGallery() {
+    const t = useTranslations('Showcase');
     const { updateBlueprint } = useTemplateEditor();
     const onOpen = useLaunchModal((state) => state.onOpen);
     const [featuredSites, setFeaturedSites] = useState<any[]>([]);
     const [activeCategory, setActiveCategory] = useState("all");
+
+    // Localize categories
+    const localizedCategories = categories.map(cat => ({
+        ...cat,
+        label: t(`tabs.${cat.id}`)
+    }));
 
     useEffect(() => {
         const fetchFeatured = async () => {
@@ -62,7 +70,7 @@ export default function ShowcaseGallery() {
             {/* CATEGORY NAV - WIX STYLE */}
             <div className="flex flex-col items-center space-y-8 mb-16">
                 <CategoryFilter
-                    categories={categories}
+                    categories={localizedCategories}
                     activeCategory={activeCategory}
                     onCategoryChange={setActiveCategory}
                 />
@@ -103,14 +111,14 @@ export default function ShowcaseGallery() {
                                             onClick={() => handlePreview(template.id)}
                                             className="bg-white text-black hover:bg-zinc-100 font-black uppercase tracking-widest text-[10px] px-10 py-7 rounded-2xl shadow-2xl transition-transform active:scale-95"
                                         >
-                                            View Demo Site
+                                            {t('preview')}
                                         </Button>
                                         <Button
                                             onClick={() => onOpen(template.title)}
                                             variant="outline"
                                             className="bg-black/50 border-white/20 text-white hover:bg-white hover:text-black font-black uppercase tracking-widest text-[10px] px-10 py-7 rounded-2xl backdrop-blur-md transition-all active:scale-95"
                                         >
-                                            Edit This Site
+                                            {t('edit')}
                                         </Button>
                                     </div>
                                 </div>
@@ -143,8 +151,8 @@ export default function ShowcaseGallery() {
                         <div className="w-20 h-20 bg-blue-600/10 rounded-[32px] flex items-center justify-center border border-blue-600/20 mb-4">
                             <Layers className="w-10 h-10 text-blue-400" />
                         </div>
-                        <h3 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter italic">Live Masterpieces</h3>
-                        <p className="text-zinc-500 text-sm font-bold uppercase tracking-[0.3em]">The Sovereignty of Real Businesses</p>
+                        <h3 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter italic">{t('live_title')}</h3>
+                        <p className="text-zinc-500 text-sm font-bold uppercase tracking-[0.3em]">{t('live_subtitle')}</p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

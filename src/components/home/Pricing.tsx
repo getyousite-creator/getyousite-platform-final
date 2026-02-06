@@ -68,7 +68,9 @@ export default function Pricing() {
 
                     {/* Currency Toggle */}
                     <div className="flex items-center justify-center gap-4 mt-8">
-                        <span className={cn("text-xs font-black uppercase tracking-widest transition-colors", currency === 'MAD' ? "text-blue-500" : "text-slate-500")}>Morocco (DH)</span>
+                        <span className={cn("text-[10px] font-black uppercase tracking-widest transition-colors", currency === 'MAD' ? "text-blue-500" : "text-slate-500")}>
+                            {currency === 'MAD' ? "Morocco (DH)" : "International (USD)"}
+                        </span>
                         <button
                             onClick={() => setCurrency(currency === 'MAD' ? 'USD' : 'MAD')}
                             className="w-14 h-7 bg-slate-800 rounded-full relative p-1 transition-all"
@@ -78,11 +80,10 @@ export default function Pricing() {
                                 className="w-5 h-5 bg-white rounded-full shadow-lg"
                             />
                         </button>
-                        <span className={cn("text-xs font-black uppercase tracking-widest transition-colors", currency === 'USD' ? "text-blue-500" : "text-slate-500")}>International (USD)</span>
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 rtl:flex-row-reverse">
                     {plans.map((plan, index) => (
                         <motion.div
                             key={plan.id}
@@ -90,15 +91,15 @@ export default function Pricing() {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
                             className={cn(
-                                "relative p-8 rounded-[2.5rem] border transition-all duration-500 group flex flex-col",
+                                "relative p-8 rounded-[2.5rem] border transition-all duration-500 group flex flex-col text-start",
                                 plan.highlight
                                     ? "bg-white border-white shadow-[0_40px_80px_-15px_rgba(0,0,0,0.3)]"
                                     : "bg-slate-900/40 border-slate-800/50 hover:border-slate-700"
                             )}
                         >
                             {plan.popular && (
-                                <div className="absolute -top-4 left-10 px-4 py-1.5 rounded-full bg-blue-600 text-[8px] font-black tracking-widest text-white">
-                                    MOST POPULAR
+                                <div className="absolute -top-4 ltr:left-10 rtl:right-10 px-4 py-1.5 rounded-full bg-blue-600 text-[8px] font-black tracking-widest text-white">
+                                    {t('most_popular')}
                                 </div>
                             )}
 
@@ -145,7 +146,7 @@ export default function Pricing() {
 
                 {currency === 'MAD' && (
                     <p className="text-center mt-12 text-[10px] font-black uppercase tracking-[0.4em] text-slate-500">
-                        * Pay via CIH / Barid Bank to get immediate activation with 0% processing fees
+                        * {t('payment_notice')}
                     </p>
                 )}
             </div>

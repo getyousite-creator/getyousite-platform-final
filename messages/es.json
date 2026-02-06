@@ -4,7 +4,10 @@
         "pricing": "Precios",
         "aiEngine": "Motor IA",
         "portfolio": "Portafolio",
-        "launch": "Lanzar Imperio"
+        "blog": "Blog",
+        "contact": "Contacto",
+        "launch": "Lanzar Imperio",
+        "login": "Iniciar Sesión"
     },
     "Hero": {
         "badge": "Sistema en Línea • v2.0 Listo",
@@ -44,6 +47,32 @@
             "desc": "Esquemas SEO integrados y embudos de conversión diseñados para escalar su tráfico exponencialmente."
         }
     },
+    "Testimonials": {
+        "title": "Testimonios de Clientes",
+        "subtitle": "Únase a los miles que construyeron sus sitios con nosotros",
+        "items": [
+            {
+                "name": "Omar El Saqli",
+                "role": "Comerciante, Casablanca",
+                "content": "Migré mi tienda a GetYouSite y ahorré 2000 MAD mensuales en comisiones. La velocidad es irreal y el soporte siempre está a tiempo."
+            },
+            {
+                "name": "Sarah Jenkins",
+                "role": "Directora Creativa, Nueva York",
+                "content": "El hosting profesional no es broma. La latencia bajó a cero globalmente. La opción más lógica para agencias profesionales."
+            },
+            {
+                "name": "Yassine Alami",
+                "role": "Fundador, TechRabat",
+                "content": "Construí el sitio de mi empresa en menos de 48 horas. La precisión en el diseño y rendimiento no tiene comparación. Orgulloso de un producto global marroquí."
+            },
+            {
+                "name": "Marcus Vohl",
+                "role": "CTO, HyperScale",
+                "content": "Dominio absoluto en la construcción de sitios. El motor de IA escribe código preciso. Cero errores, ejecución estricta."
+            }
+        ]
+    },
     "Showcase": {
         "title": "Prueba <span class=\"text-blue-500\">Visual</span>",
         "subtitle": "Explore nuestra biblioteca de arquitecturas listas para producción. Filtre por industria.",
@@ -56,6 +85,9 @@
             "food": "Hostelería"
         },
         "preview": "Vista Previa",
+        "edit": "Editar Sitio",
+        "live_title": "Proyectos Recientes",
+        "live_subtitle": "Sitios profesionales construidos para nuestros clientes",
         "view_archive": "Ver Biblioteca Completa",
         "projects": {
             "saas": {
@@ -97,6 +129,8 @@
         "pro": "Profesional",
         "business": "Negocios IA",
         "enterprise": "Empresarial",
+        "most_popular": "Más Popular",
+        "payment_notice": "Pague vía CIH / Barid Bank para activación inmediata sin comisiones extra",
         "desc": {
             "starter": "Comience su viaje digital hoy. Dedicado a blogs personales y currículums.",
             "pro": "Gire su negocio hacia el profesionalismo absoluto. Especializado para empresas, clínicas y oficinas.",
@@ -136,32 +170,132 @@
     "Footer": {
         "tagline": "Arquitectura del futuro digital. Construimos ecosistemas de alto rendimiento integrados con IA para visionarios.",
         "platform": "Plataforma",
+        "aiEngine": "Motor IA",
+        "pricing": "Precios",
+        "blog": "Blog",
+        "contact": "Contacto",
+        "company": "Empresa",
+        "about": "Sobre Nosotros",
+        "help": "Centro de Ayuda",
+        "privacy": "Política de Privacidad",
+        "terms": "Términos de Servicio",
         "legal": "Legal",
         "system": "Estado del Sistema",
         "operational": "Todos los Sistemas Operativos",
-        "hosted": "Alojado en Frankfurt, DE",
-        "copyright": "© 2026 Plataforma GetYouSite. Todos los derechos reservados."
+        "hosted": "Alojado de Forma Segura",
+        "copyright": "© 2026 GetYouSite. Todos los derechos reservados."
     },
     "Metadata": {
         "title": "GetYouSite | Arquitectura de Imperios Digitales",
         "description": "Construya su sitio soñado en 48 horas con precisión impulsada por IA. La única plataforma capaz de construir ecosistemas digitales soberanos."
     },
     "Auth": {
-        "signin_title": "Autorizar Acceso",
-        "signup_title": "Registro de Arquitecto",
-        "subtitle": "Protocolo de Identidad Soberana",
+        "signin_title": "Iniciar Sesión",
+        "signup_title": "Crear Cuenta",
+        "subtitle": "Bienvenido a GetYouSite",
         "google": "Continuar con Google",
         "apple": "Continuar con Apple",
         "microsoft": "Continuar con Microsoft",
-        "or_divider": "O_ORQUESTAR_DIRECTAMENTE",
-        "email_label": "Enlace_Identidad",
-        "password_label": "Clave_Acceso",
-        "email_placeholder": "commander@getyousite.com",
+        "or_divider": "o vía Email",
+        "email_label": "Correo Electrónico",
+        "password_label": "Contraseña",
+        "email_placeholder": "usuario@ejemplo.com",
         "continue": "Continuar",
-        "login_button": "Autorizar_Acceso",
-        "signup_button": "Finalizar_Registro",
-        "have_account": "¿Ya tiene una cuenta? Iniciar sesión",
-        "no_account": "¿Le falta acceso? Registrese",
-        "terms": "Al iniciar sesión, acepta los T&C y la Política de Privacidad."
+        "login_button": "Entrar",
+        "signup_button": "Crear Cuenta",
+        "have_account": "¿Ya tiene una cuenta? Inicie sesión",
+        "no_account": "¿No tiene cuenta? Regístrese",
+        "terms": "Al registrarse, acepta nuestros Términos de Servicio y Política de Privacidad."
+    },
+    "Contact": {
+        "title": "Contáctenos",
+        "subtitle": "Estamos aquí para ayudarle. Contáctenos y le responderemos lo antes posible.",
+        "badge": "Centro de Comunicación",
+        "form": {
+            "name": "Nombre Completo",
+            "name_placeholder": "Ingrese su nombre",
+            "email": "Correo Electrónico",
+            "email_placeholder": "ejemplo@dominio.com",
+            "subject": "Asunto",
+            "subject_placeholder": "¿Cómo podemos ayudarle?",
+            "message": "Mensaje",
+            "message_placeholder": "Describa los detalles de su solicitud...",
+            "send": "Enviar Mensaje",
+            "sending": "Enviando...",
+            "success": "¡Su mensaje ha sido enviado con éxito! Nuestro equipo le contactará pronto."
+        },
+        "info": {
+            "title": "Información de Contacto",
+            "support": "Soporte Técnico",
+            "commercial": "Asociaciones",
+            "hq": "Sede Central",
+            "address": "Casablanca, Marruecos"
+        },
+        "whatsapp": {
+            "title": "Soporte Rápido WhatsApp",
+            "label": "Chat directo con nuestro equipo"
+        }
+    },
+    "Blog": {
+        "title": "Blog de GetYouSite",
+        "subtitle": "Ideas y consejos sobre diseño web, IA y crecimiento empresarial.",
+        "badge": "Centro de Conocimiento",
+        "read_more": "Leer Más",
+        "categories": "Categorías",
+        "posts": {
+            "post1": {
+                "title": "IA en E-Commerce: El Futuro es Ahora",
+                "excerpt": "Cómo la inteligencia artificial está revolucionando las tiendas en línea y transformando la experiencia del usuario.",
+                "author": "Equipo GetYouSite",
+                "category": "Inteligencia Artificial",
+                "date": "05 Feb 2026"
+            },
+            "post2": {
+                "title": "Estrategias SEO Efectivas para 2026",
+                "excerpt": "Últimas técnicas de optimización en motores de búsqueda para aumentar la visibilidad de su sitio en Google.",
+                "author": "Experto SEO",
+                "category": "Optimización SEO",
+                "date": "03 Feb 2026"
+            },
+            "post3": {
+                "title": "La Psicología del Diseño Minimalista",
+                "excerpt": "¿Por qué ganan los diseños simples? La ciencia detrás de las interfaces de usuario modernas y efectivas.",
+                "author": "Diseñador UX/UI",
+                "category": "Diseño UX",
+                "date": "30 Ene 2026"
+            }
+        },
+        "newsletter": {
+            "title": "Suscríbase a Nuestro Boletín",
+            "subtitle": "Reciba consejos semanales sobre desarrollo web y crecimiento de e-commerce.",
+            "placeholder": "Ingrese su email",
+            "button": "Suscribirse"
+        },
+        "articles": {
+            "ai-future": {
+                "title": "IA: El Futuro del Comercio Digital",
+                "excerpt": "Por qué el e-commerce tradicional está fallando y cómo la infraestructura impulsada por IA está redistribuyendo el poder del mercado.",
+                "content": "<p class='text-xl text-slate-300 font-medium leading-relaxed mb-8'>En la última década, hemos visto el auge de plataformas centralizadas que dictan los términos de la existencia digital. Desde altas comisiones hasta plantillas rígidas, el 'viejo internet' se ha convertido en una jaula para los visionarios.</p><h2 class='text-3xl font-black italic uppercase tracking-tightest mt-12 mb-6'>La Muerte de las Plantillas Estándar</h2><p class='text-slate-400 mb-6 leading-relaxed'>Las plantillas estándar ya no son suficientes. El consumidor moderno exige una experiencia dinámica que se sienta viva. Ahí es donde entra la IA. No solo muestra contenido; orquesta un ecosistema.</p><blockquote class='border-l-4 border-blue-600 pl-10 my-12 py-4 italic text-2xl font-black text-white'>\"La soberanía digital no es un lujo; es el requisito fundamental para el comercio de alta frecuencia en 2026.\"</blockquote><h2 class='text-3xl font-black italic uppercase tracking-tightest mt-12 mb-6'>Ingeniería para el Éxito</h2><p class='text-slate-400 mb-6 leading-relaxed'>Al aprovechar el renderizado del lado del servidor y la computación en el borde, plataformas como GetYouSite aseguran que su imperio digital nunca esté fuera de línea ni sea lento. Estamos pasando de 'sitios web' a 'organismos digitales'.</p>",
+                "author": "Equipo GetYouSite",
+                "category": "Inteligencia Artificial",
+                "date": "05 Feb 2026"
+            }
+        }
+    },
+    "About": {
+        "title": "Sobre Nosotros",
+        "subtitle": "Somos un equipo dedicado a empoderar a los dueños de negocios con soluciones digitales innovadoras y fáciles de usar.",
+        "badge": "Nuestra Historia",
+        "mission_title": "Nuestra Misión",
+        "mission_text": "Simplificar el proceso de construir una presencia digital para empresas globalmente, aprovechando la IA para entregar alta calidad en tiempo récord.",
+        "vision_title": "Nuestra Visión",
+        "vision_text": "Ser la plataforma líder que permita a cualquier persona crear y gestionar su sitio web profesional sin necesitar experiencia técnica compleja."
+    },
+    "Help": {
+        "title": "Centro de Ayuda",
+        "subtitle": "Todo lo que necesita para comenzar y gestionar su sitio con éxito.",
+        "badge": "Centro de Soporte",
+        "faq_title": "Preguntas Frecuentes",
+        "contact_support": "Contactar Soporte Técnico"
     }
 }

@@ -2,91 +2,107 @@
     "Header": {
         "services": "Services",
         "pricing": "Pricing",
-        "aiEngine": "AI Engine",
-        "portfolio": "Portfolio",
-        "launch": "Launch Empire"
+        "aiEngine": "Smart Builder",
+        "portfolio": "Templates",
+        "blog": "Blog",
+        "contact": "Contact",
+        "launch": "Get Started",
+        "login": "Login"
     },
     "Hero": {
-        "badge": "System Online • v2.0 Ready",
-        "headline": "Architecting <gradient>Digital Empires</gradient> in 48 Hours.",
-        "subheadline": "High-Performance Ecosystems. AI Integrated. German Engineered. Input your vision below and let our Quantum Engine construct the blueprint.",
-        "placeholder": "Describe your dream platform...",
-        "generate": "Generate",
-        "gdpr": "GDPR Compliant",
+        "badge": "System Ready • v2.0 Live",
+        "headline": "Create Your Professional Website in 48 Hours.",
+        "subheadline": "Smart websites. Modern designs. High performance. Start building your premium digital presence today.",
+        "placeholder": "Describe your website idea here...",
+        "generate": "Get Started",
+        "gdpr": "Security Standard Compliant",
         "uptime": "99.9% Uptime",
-        "aiCore": "AI-Driven Core"
+        "aiCore": "AI-Driven Design"
     },
     "Services": {
-        "title": "Quantum Capabilities",
-        "subtitle": "Beyond standard web development. We engineer digital organisms that live, breathe, and evolve.",
+        "title": "Our Features",
+        "subtitle": "We use the latest technologies to build fast, secure, and responsive websites for all devices.",
         "velocity": {
-            "title": "Velocity Architecture",
-            "desc": "Server-side rendering optimized for <50ms Time-to-First-Byte. Speed is our religion."
+            "title": "Ultra-Fast Performance",
+            "desc": "Our websites load in less than a second. Speed is the key to your success."
         },
         "ai": {
-            "title": "AI Neural Core",
-            "desc": "Integrated LLM agents that handle customer support and dynamic content generation 24/7."
+            "title": "Integrated AI Tools",
+            "desc": "AI-powered tools to help you create content and serve your customers effectively."
         },
         "cdn": {
-            "title": "Global CDN Mesh",
-            "desc": "Content duplicated across 300+ edge nodes. Your empire is accessible from Tokyo to New York instantly."
+            "title": "Global Performance",
+            "desc": "Your website is available at high speeds all around the world."
         },
         "security": {
-            "title": "Sovereign Security",
-            "desc": "Enterprise-grade DDOS protection, automated SSL, and military-standard encryption protocols."
+            "title": "Security & Protection",
+            "desc": "Advanced protection against attacks and full encryption for your data."
         },
         "responsive": {
-            "title": "Liquid Responsive",
-            "desc": "Designs that flow like water across every device class, from 8k walls to smartwatches."
+            "title": "Responsive Design",
+            "desc": "Designs that look perfect on phones, tablets, and computers."
         },
         "growth": {
-            "title": "Growth Reactors",
-            "desc": "Built-in SEO schematics and conversion funnels designed to scale your traffic exponentially."
+            "title": "SEO Optimized",
+            "desc": "Automatic optimization for your site to rank higher in search results."
         }
     },
+    "Testimonials": {
+        "title": "Client Testimonials",
+        "subtitle": "Join thousands who built their sites with us",
+        "items": [
+            {
+                "name": "Omar El Saqli",
+                "role": "Merchant, Casablanca",
+                "content": "I moved my store to GetYouSite and saved 2000 MAD monthly in commissions. The speed is unreal and support is always on time."
+            },
+            {
+                "name": "Sarah Jenkins",
+                "role": "Creative Director, New York",
+                "content": "Professional hosting is not a joke. Latency dropped to zero globally. The most logical choice for professional agencies."
+            },
+            {
+                "name": "Yassine Alami",
+                "role": "Founder, TechRabat",
+                "content": "I built my company site in less than 48 hours. The precision in design and performance is incomparable. Proud of a global Moroccan product."
+            },
+            {
+                "name": "Marcus Vohl",
+                "role": "CTO, HyperScale",
+                "content": "Absolute dominance in site building. The AI engine writes precise code. Zero errors, strict execution."
+            }
+        ]
+    },
     "Showcase": {
-        "title": "Visual <span class=\"text-blue-500\">Proof</span>",
-        "subtitle": "Explore our library of production-ready architectures. Filter by industry.",
+        "title": "Our <span class=\"text-blue-500\">Portfolio</span>",
+        "subtitle": "Explore our library of professional templates ready for your new project.",
         "tabs": {
-            "all": "All Architectures",
-            "business": "Business & SaaS",
+            "all": "All",
+            "business": "Business & Agency",
             "creative": "Creative & Portfolio",
             "ecommerce": "E-Commerce",
-            "medical": "Medical & Health",
-            "food": "Hospitality"
+            "medical": "Healthcare",
+            "food": "Restaurant & Food"
         },
-        "preview": "Live Preview",
-        "view_archive": "View Full Library",
+        "preview": "View Demo",
+        "edit": "Edit This Site",
+        "live_title": "Recent Projects",
+        "live_subtitle": "Professional websites built for our clients",
+        "view_archive": "View All Templates",
         "projects": {
             "saas": {
-                "title": "SaaS Analytics Pro",
-                "desc": "Real-time data visualization complex with sub-50ms latency updates."
+                "title": "Smart Analytics",
+                "desc": "Real-time data visualization system with a modern look."
             },
             "fashion": {
-                "title": "Maison Élite",
-                "desc": "Minimalist fashion platform optimizing LCP for high-conversion retail."
-            },
-            "portfolio": {
-                "title": "Neon Dreams",
-                "desc": "Brutalist design system with WebGL-powered interactions."
-            },
-            "medical": {
-                "title": "Nova Clinic",
-                "desc": "HIPAA-compliant patient portal with appointment scheduling core."
-            },
-            "restaurant": {
-                "title": "Aurum & Ash",
-                "desc": "Luxury dining experience with reservation engine and dynamic menu."
-            },
-            "tech": {
-                "title": "SyncSphere",
-                "desc": "B2B collaboration platform with isometric visual identity."
+                "title": "Elite Fashion",
+                "desc": "Minimalist fashion store focused on product conversion."
             }
         }
     },
     "Pricing": {
-        "title": "Strategic Investment",
-        "subtitle": "Choose the reactor core that fits your trajectory. Transparent pricing, maximum yield.",
+        "title": "Pricing Plans",
+        "subtitle": "Choose the right plan for your business. Clear pricing with no hidden fees.",
         "niche": {
             "blog": "Blog / Personal",
             "business": "Business / Medical",
@@ -95,100 +111,175 @@
         },
         "starter": "Starter",
         "pro": "Professional",
-        "business": "Business AI",
+        "business": "Business",
         "enterprise": "Enterprise",
+        "most_popular": "Most Popular",
+        "payment_notice": "Pay via CIH / Barid Bank for immediate activation with 0% processing fees",
         "desc": {
-            "starter": "Start your digital journey today. Dedicated to personal blogs and resumes.",
-            "pro": "Pivot your business toward absolute professionalism. Specialized for companies, clinics, and offices.",
-            "business": "The selling machine that never stops. Integrated e-commerce with inventory management.",
-            "enterprise": "Total digital sovereignty without limits. Direct technical support and custom solutions."
+            "starter": "Perfect for personal blogs and digital resumes.",
+            "pro": "The best choice for businesses, clinics, and professional offices.",
+            "business": "Full e-commerce store with integrated inventory management.",
+            "enterprise": "Custom solutions for large projects with direct technical support."
         },
-        "price_custom": "Custom",
+        "price_custom": "Custom Quote",
         "per_project": "/project",
         "choose": "Choose Plan",
         "features": {
-            "single_page": "Single Page App",
-            "basic_seo": "Basic SEO",
+            "single_page": "Single Page Website",
+            "basic_seo": "Basic SEO Optimization",
             "mobile": "Mobile Responsive",
-            "delivery": "48h Delivery",
-            "pages": "5 Page Ecosystem",
-            "cms": "CMS Integration",
+            "delivery": "48-Hour Delivery",
+            "pages": "5-Page System",
+            "cms": "Integrated Content Manager",
             "analytics": "Analytics Dashboard",
             "support": "Priority Support",
             "domain_free": "Free .com Domain",
-            "ecommerce": "Full E-commerce",
+            "ecommerce": "Full E-commerce Store",
             "inventory": "Inventory Management",
             "reports": "Sales Reports",
-            "chatbot": "AI Chatbot Integration",
-            "multilingual": "Multilingual Support",
-            "animations": "Custom Animations",
-            "monitoring": "24/7 Monitoring",
-            "team": "Dedicated Team",
+            "chatbot": "AI Assistant Bundle",
+            "multilingual": "Multi-language Support",
+            "animations": "Custom Micro-animations",
+            "monitoring": "24/7 Uptime Monitoring",
+            "team": "Dedicated Project Team",
             "whitelabel": "White-label Solutions",
             "whatsapp_support": "Direct WhatsApp Support",
             "high_security": "Military-grade Security",
             "unlimited": "Unlimited Projects",
-            "custom_ai": "Custom AI Models",
+            "custom_ai": "Custom AI Tools",
             "sla": "SLA Guarantee",
-            "onpremise": "On-premise Options"
+            "onpremise": "Private Hosting Options"
         }
     },
     "Footer": {
-        "tagline": "Architecting the digital future. We build high-performance, AI-integrated ecosystems for visionaries.",
+        "tagline": "We design your digital future. Building professional websites powered by AI.",
         "platform": "Platform",
+        "aiEngine": "AI Engine",
+        "pricing": "Pricing",
+        "blog": "Blog",
+        "contact": "Contact",
+        "company": "Company",
+        "about": "About Us",
+        "help": "Help Center",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service",
         "legal": "Legal",
         "system": "System Status",
         "operational": "All Systems Operational",
-        "hosted": "Hosted in Frankfurt, DE",
-        "copyright": "© 2026 GetYouSite Platform. All rights reserved."
+        "hosted": "Securely Hosted",
+        "copyright": "© 2026 GetYouSite. All rights reserved."
     },
     "Metadata": {
-        "title": "GetYouSite | Architecting Digital Empires",
-        "description": "Build your dream website in 48 hours with AI-driven precision. The only platform capable of constructing sovereign digital ecosystems."
+        "title": "GetYouSite | Create Your Professional Website Easily",
+        "description": "Build your premium website in 48 hours with AI precision. The best platform for professional web design."
     },
     "Auth": {
-        "signin_title": "Authorize Access",
-        "signup_title": "Architect Registration",
-        "subtitle": "Sovereign Identity Protocol",
+        "signin_title": "Login",
+        "signup_title": "Sign Up",
+        "subtitle": "Welcome to GetYouSite",
         "google": "Continue with Google",
         "apple": "Continue with Apple",
         "microsoft": "Continue with Microsoft",
-        "or_divider": "OR_ORCHESTRATE_DIRECTLY",
-        "email_label": "Identity_Link",
-        "password_label": "Access_Key",
-        "email_placeholder": "commander@getyousite.com",
+        "or_divider": "or via Email",
+        "email_label": "Email Address",
+        "password_label": "Password",
+        "email_placeholder": "you@example.com",
         "continue": "Continue",
-        "login_button": "Authorize_Access",
-        "signup_button": "Finalize_Registration",
-        "have_account": "Already have an account? Sign in",
-        "no_account": "Missing Access? Register",
-        "terms": "By signing in, you accept the T&C and Privacy Policy."
+        "login_button": "Login",
+        "signup_button": "Create Account",
+        "have_account": "Already have an account? Login",
+        "no_account": "Don't have an account? Sign up",
+        "terms": "By signing in, you agree to our Terms of Service and Privacy Policy."
     },
     "Contact": {
-        "title": "Contact Hub",
-        "subtitle": "Direct communication protocol with the Sovereign architects. Expect clinical precision in response.",
-        "badge": "Transmission Center",
+        "title": "Contact Us",
+        "subtitle": "We are here to help. Reach out and we'll get back to you as soon as possible.",
+        "badge": "Communication Center",
         "form": {
-            "name": "Identity",
-            "email": "Signal_Link",
-            "subject": "Target_Objective",
-            "message": "Transmission_Data",
-            "send": "Execute Transmission",
-            "sending": "Transmitting..."
+            "name": "Full Name",
+            "name_placeholder": "Enter your name",
+            "email": "Email Address",
+            "email_placeholder": "example@domain.com",
+            "subject": "Subject",
+            "subject_placeholder": "How can we help?",
+            "message": "Message",
+            "message_placeholder": "Describe your project details...",
+            "send": "Send Message",
+            "sending": "Sending...",
+            "success": "Your message has been sent successfully! Our team will contact you soon."
         },
         "info": {
-            "title": "Strategic Nodes",
-            "support": "Global Support",
-            "commercial": "Strategic Partnerships",
-            "hq": "Tactical HQ",
-            "address": "Casablanca Finance City, MA"
+            "title": "Contact Info",
+            "support": "Tech Support",
+            "commercial": "Partnerships",
+            "hq": "Headquarters",
+            "address": "Casablanca, Morocco"
+        },
+        "whatsapp": {
+            "title": "Fast WhatsApp Support",
+            "label": "Direct chat with our team"
         }
     },
     "Blog": {
-        "title": "Sovereign Insights",
-        "subtitle": "Deep analysis of AI architecture, digital sovereignty, and high-frequency commerce.",
-        "badge": "Knowledge_Repository",
-        "read_more": "Decode_Full_Article",
-        "categories": "Intelligence_Streams"
+        "title": "GetYouSite Blog",
+        "subtitle": "Insights and tips on web design, AI, and business growth.",
+        "badge": "Knowledge Hub",
+        "read_more": "Read More",
+        "categories": "Categories",
+        "posts": {
+            "post1": {
+                "title": "AI in E-Commerce: The Future is Now",
+                "excerpt": "How artificial intelligence is revolutionizing online stores and transforming user experience.",
+                "author": "GetYouSite Team",
+                "category": "Artificial Intelligence",
+                "date": "Feb 05, 2026"
+            },
+            "post2": {
+                "title": "Effective SEO Strategies for 2026",
+                "excerpt": "Latest search engine optimization techniques to boost your website's visibility on Google.",
+                "author": "SEO Expert",
+                "category": "Search Engine Optimization",
+                "date": "Feb 03, 2026"
+            },
+            "post3": {
+                "title": "The Psychology of Minimalist Design",
+                "excerpt": "Why simple designs win: The science behind modern and effective user interfaces.",
+                "author": "UX/UI Designer",
+                "category": "User Experience Design",
+                "date": "Jan 30, 2026"
+            }
+        },
+        "newsletter": {
+            "title": "Subscribe to Our Newsletter",
+            "subtitle": "Get weekly tips on web development and e-commerce growth.",
+            "placeholder": "Enter your email",
+            "button": "Subscribe"
+        },
+        "articles": {
+            "ai-future": {
+                "title": "AI: The Future of Digital Commerce",
+                "excerpt": "Why traditional e-commerce is failing and how AI-powered infrastructure is redistributing market power.",
+                "content": "<p class='text-xl text-slate-300 font-medium leading-relaxed mb-8'>In the past decade, we have seen the rise of centralized platforms that dictate the terms of digital existence. From high commissions to rigid templates, the 'old internet' has become a cage for visionaries.</p><h2 class='text-3xl font-black italic uppercase tracking-tightest mt-12 mb-6'>The Death of Standard Templates</h2><p class='text-slate-400 mb-6 leading-relaxed'>Standard templates are no longer enough. The modern consumer demands a dynamic experience that feels alive. That's where AI comes in. It doesn't just display content; it orchestrates an ecosystem.</p><blockquote class='border-l-4 border-blue-600 pl-10 my-12 py-4 italic text-2xl font-black text-white'>\"Digital sovereignty is not a luxury; it is the fundamental requirement for high-frequency commerce in 2026.\"</blockquote><h2 class='text-3xl font-black italic uppercase tracking-tightest mt-12 mb-6'>Engineered for Success</h2><p class='text-slate-400 mb-6 leading-relaxed'>By leveraging server-side rendering and edge computation, platforms like GetYouSite ensure that your digital empire is never offline and never slow. We are moving from 'websites' to 'digital organisms'.</p>",
+                "author": "GetYouSite Team",
+                "category": "Artificial Intelligence",
+                "date": "Feb 05, 2026"
+            }
+        }
+    },
+    "About": {
+        "title": "About Us",
+        "subtitle": "We are a team dedicated to empowering business owners with innovative and easy-to-use digital solutions.",
+        "badge": "Our Story",
+        "mission_title": "Our Mission",
+        "mission_text": "To simplify the process of building a digital presence for businesses globally by leveraging AI to deliver high quality in record time.",
+        "vision_title": "Our Vision",
+        "vision_text": "To be the leading platform that enables anyone to create and manage their professional website without needing complex technical expertise."
+    },
+    "Help": {
+        "title": "Help Center",
+        "subtitle": "Everything you need to get started and manage your site successfully.",
+        "badge": "Support Hub",
+        "faq_title": "Frequently Asked Questions",
+        "contact_support": "Contact Technical Support"
     }
 }

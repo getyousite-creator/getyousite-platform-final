@@ -23,20 +23,21 @@ export default function Footer() {
                     <div>
                         <h4 className="font-semibold text-white mb-6">{t('platform')}</h4>
                         <ul className="space-y-3 text-sm text-zinc-500">
-                            <li><a href="#services" className="hover:text-blue-400 transition-colors">{t('aiEngine') || "AI Engine"}</a></li>
-                            <li><a href="#pricing" className="hover:text-blue-400 transition-colors">{t('pricing') || "Pricing"}</a></li>
-                            <li><Link href="/blog" className="hover:text-blue-400 transition-colors">Sovereign Blog</Link></li>
-                            <li><Link href="/contact" className="hover:text-blue-400 transition-colors">Contact Hub</Link></li>
+                            <li><a href="#services" className="hover:text-blue-400 transition-colors">{t('aiEngine')}</a></li>
+                            <li><a href="#pricing" className="hover:text-blue-400 transition-colors">{t('pricing')}</a></li>
+                            <li><Link href="/blog" className="hover:text-blue-400 transition-colors">{t('blog')}</Link></li>
+                            <li><Link href="/contact" className="hover:text-blue-400 transition-colors">{t('contact')}</Link></li>
                         </ul>
                     </div>
 
                     {/* Legal */}
                     <div>
-                        <h4 className="font-semibold text-white mb-6">{t('legal')}</h4>
+                        <h4 className="font-semibold text-white mb-6">{t('company')}</h4>
                         <ul className="space-y-3 text-sm text-zinc-500">
-                            <li><Link href="/privacy" className="hover:text-blue-400 transition-colors">Privacy Protocol</Link></li>
-                            <li><Link href="/terms" className="hover:text-blue-400 transition-colors">Terms of Service</Link></li>
-                            <li><Link href="/privacy" className="hover:text-blue-400 transition-colors">GDPR Compliance</Link></li>
+                            <li><Link href="/about" className="hover:text-blue-400 transition-colors">{t('about')}</Link></li>
+                            <li><Link href="/help" className="hover:text-blue-400 transition-colors">{t('help')}</Link></li>
+                            <li><Link href="/privacy" className="hover:text-blue-400 transition-colors">{t('privacy')}</Link></li>
+                            <li><Link href="/terms" className="hover:text-blue-400 transition-colors">{t('terms')}</Link></li>
                         </ul>
                     </div>
 

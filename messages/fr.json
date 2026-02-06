@@ -2,193 +2,284 @@
     "Header": {
         "services": "Services",
         "pricing": "Tarifs",
-        "aiEngine": "Moteur IA",
-        "portfolio": "Portfolio",
-        "launch": "Lancer l'Empire"
+        "aiEngine": "Concepteur Intelligent",
+        "portfolio": "Templates",
+        "blog": "Blog",
+        "contact": "Contact",
+        "launch": "Commencer",
+        "login": "Connexion"
     },
     "Hero": {
-        "badge": "Système en ligne • v2.0 Prêt",
-        "headline": "Architecturer des <gradient>Empires Numériques</gradient> en 48 Heures.",
-        "subheadline": "Écosystèmes haute performance. IA intégrée. Ingénierie allemande. Saisissez votre vision ci-dessous et laissez notre Quantum Engine construire le plan.",
-        "placeholder": "Décrivez votre plateforme de rêve...",
-        "generate": "Générer",
-        "gdpr": "Conforme RGPD",
-        "uptime": "99.9% Uptime",
-        "aiCore": "Cœur piloté par IA"
+        "badge": "Système Prêt • v2.0 Live",
+        "headline": "Créez Votre Site Professionnel en 48 Heures.",
+        "subheadline": "Sites intelligents. Designs modernes. Haute performance. Commencez à construire votre présence numérique premium dès aujourd'hui.",
+        "placeholder": "Décrivez votre idée de site ici...",
+        "generate": "Commencer",
+        "gdpr": "Conforme aux Normes de Sécurité",
+        "uptime": "99.9% de Disponibilité",
+        "aiCore": "Design Piloté par l'IA"
     },
     "Services": {
-        "title": "Capacités Quantiques",
-        "subtitle": "Au-delà du développement web standard. Nous concevons des organismes numériques qui vivent, respirent et évoluent.",
+        "title": "Nos Fonctionnalités",
+        "subtitle": "Nous utilisons les dernières technologies pour construire des sites rapides, sécurisés et réactifs pour tous les appareils.",
         "velocity": {
-            "title": "Architecture Vélocité",
-            "desc": "Rendu côté serveur optimisé pour <50ms TTFB. La vitesse est notre religion."
+            "title": "Performance Ultra-Rapide",
+            "desc": "Nos sites se chargent en moins d'une seconde. La vitesse est la clé de votre succès."
         },
         "ai": {
-            "title": "Cœur Neural IA",
-            "desc": "Agents LLM intégrés gérant le support client et la génération de contenu dynamique 24/7."
+            "title": "Outils IA Intégrés",
+            "desc": "Des outils alimentés par l'IA pour vous aider à créer du contenu et servir vos clients efficacement."
         },
         "cdn": {
-            "title": "Maillage CDN Global",
-            "desc": "Contenu dupliqué sur 300+ nœuds. Votre empire est accessible de Tokyo à New York instantanément."
+            "title": "Performance Mondiale",
+            "desc": "Votre site est disponible à haute vitesse partout dans le monde."
         },
         "security": {
-            "title": "Sécurité Souveraine",
-            "desc": "Protection DDOS niveau entreprise, SSL automatisé et protocoles de chiffrement militaire."
+            "title": "Sécurité & Protection",
+            "desc": "Protection avancée contre les attaques et cryptage complet de vos données."
         },
         "responsive": {
-            "title": "Responsive Liquide",
-            "desc": "Des designs qui coulent comme de l'eau sur chaque appareil, des murs 8k aux montres connectées."
+            "title": "Design Réactif",
+            "desc": "Des designs qui s'adaptent parfaitement aux téléphones, tablettes et ordinateurs."
         },
         "growth": {
-            "title": "Réacteurs de Croissance",
-            "desc": "Schémas SEO intégrés et tunnels de conversion conçus pour faire croître votre trafic de manière exponentielle."
+            "title": "Optimisé pour le SEO",
+            "desc": "Optimisation automatique pour que votre site soit mieux classé dans les résultats de recherche."
         }
     },
+    "Testimonials": {
+        "title": "Témoignages Clients",
+        "subtitle": "Rejoignez des milliers de personnes qui ont construit leurs sites avec nous",
+        "items": [
+            {
+                "name": "Omar El Saqli",
+                "role": "Commerçant, Casablanca",
+                "content": "J'ai transféré ma boutique vers GetYouSite et économisé 2000 MAD par mois en commissions. La vitesse est irréelle et le support est toujours au rendez-vous."
+            },
+            {
+                "name": "Sarah Jenkins",
+                "role": "Directrice Créative, New York",
+                "content": "L'hébergement professionnel n'est pas une blague. La latence est tombée à zéro mondialement. Le choix le plus logique pour les agences professionnelles."
+            },
+            {
+                "name": "Yassine Alami",
+                "role": "Fondateur, TechRabat",
+                "content": "J'ai construit le site de mon entreprise en moins de 48 heures. La précision du design et des performances est incomparable. Fier d'un produit marocain mondial."
+            },
+            {
+                "name": "Marcus Vohl",
+                "role": "CTO, HyperScale",
+                "content": "Domination absolue dans la création de sites. Le moteur IA écrit un code précis. Zéro erreur, exécution stricte."
+            }
+        ]
+    },
     "Showcase": {
-        "title": "Preuve <span class=\"text-blue-500\">Visuelle</span>",
-        "subtitle": "Explorez notre bibliothèque d'architectures prêtes pour la production. Filtrez par industrie.",
+        "title": "Notre <span class=\"text-blue-500\">Portfolio</span>",
+        "subtitle": "Explorez notre bibliothèque de templates professionnels prêts pour votre nouveau projet.",
         "tabs": {
-            "all": "Toutes",
-            "business": "Business & SaaS",
-            "creative": "Créatif",
+            "all": "Tous",
+            "business": "Business & Agence",
+            "creative": "Créatif & Portfolio",
             "ecommerce": "E-Commerce",
             "medical": "Santé",
-            "food": "Hôtellerie"
+            "food": "Restaurant & Food"
         },
-        "preview": "Aperçu Live",
-        "view_archive": "Voir Toute la Bibliothèque",
+        "preview": "Voir Démo",
+        "edit": "Modifier le Site",
+        "live_title": "Projets Récents",
+        "live_subtitle": "Sites professionnels conçus pour nos clients",
+        "view_archive": "Voir Tous les Templates",
         "projects": {
             "saas": {
-                "title": "SaaS Analytics Pro",
-                "desc": "Complexe de visualisation de données temps réel avec latence <50ms."
+                "title": "Analyses Intelligentes",
+                "desc": "Système de visualisation de données en temps réel avec un look moderne."
             },
             "fashion": {
-                "title": "Maison Élite",
-                "desc": "Plateforme mode minimaliste optimisée pour la conversion retail."
-            },
-            "portfolio": {
-                "title": "Neon Dreams",
-                "desc": "Système de design brutaliste avec interactions WebGL."
-            },
-            "medical": {
-                "title": "Clinique Nova",
-                "desc": "Portail patient sécurisé avec noyau de prise de rendez-vous."
-            },
-            "restaurant": {
-                "title": "Aurum & Ash",
-                "desc": "Expérience gastronomique de luxe avec moteur de réservation."
-            },
-            "tech": {
-                "title": "SyncSphere",
-                "desc": "Plateforme de collaboration B2B avec identité isométrique."
+                "title": "Elite Fashion",
+                "desc": "Boutique de mode minimaliste axée sur la conversion."
             }
         }
     },
     "Pricing": {
-        "title": "Investissement Stratégique",
-        "subtitle": "Choisissez le cœur de réacteur adapté à votre trajectoire. Prix transparents, rendement maximal.",
+        "title": "Plans de Tarification",
+        "subtitle": "Choisissez le bon plan pour votre entreprise. Des tarifs clairs sans frais cachés.",
         "niche": {
             "blog": "Blog / Personnel",
             "business": "Business / Médical",
             "store": "Boutique / E-commerce",
-            "agency": "Agences / Multi"
+            "agency": "Agence / Entreprise"
         },
-        "starter": "Démarrage",
+        "starter": "Débutant",
         "pro": "Professionnel",
-        "business": "Business IA",
+        "business": "Business",
         "enterprise": "Entreprise",
+        "most_popular": "Plus Populaire",
+        "payment_notice": "Payez via CIH / Barid Bank pour une activation immédiate sans frais de dossier",
         "desc": {
-            "starter": "Commencez votre voyage numérique dès aujourd'hui. Dédié aux blogs personnels et CV.",
-            "pro": "Pivotez votre entreprise vers le professionnalisme absolu. Spécialisé pour entreprises, cliniques et bureaux.",
-            "business": "La machine de vente qui ne s'arrête jamais. E-commerce intégré avec gestion des stocks.",
-            "enterprise": "Souveraineté numérique totale sans limites. Support technique direct et solutions personnalisées."
+            "starter": "Parfait pour les blogs personnels et les CV numériques.",
+            "pro": "Le meilleur choix pour les entreprises, les cliniques et les cabinets professionnels.",
+            "business": "Boutique e-commerce complète avec gestion intégrée des stocks.",
+            "enterprise": "Solutions sur mesure pour les grands projets avec un support prioritaire direct."
         },
-        "price_custom": "Sur mesure",
+        "price_custom": "Sur Devis",
         "per_project": "/projet",
-        "choose": "Choisir ce plan",
+        "choose": "Choisir le Plan",
         "features": {
-            "single_page": "App Page Unique",
-            "basic_seo": "SEO Basique",
+            "single_page": "Site d'une Page",
+            "basic_seo": "Optimisation SEO de Base",
             "mobile": "Responsive Mobile",
-            "delivery": "Livraison 48h",
-            "pages": "Écosystème 5 Pages",
-            "cms": "Intégration CMS",
-            "analytics": "Tableau de Bord Analytics",
+            "delivery": "Livraison en 48h",
+            "pages": "Système de 5 Pages",
+            "cms": "Gestionnaire de Contenu Intégré",
+            "analytics": "Tableau de Bord Analytique",
             "support": "Support Prioritaire",
             "domain_free": "Domaine .com Gratuit",
-            "ecommerce": "E-commerce Complet",
-            "inventory": "Gestion de Stock",
+            "ecommerce": "Boutique E-commerce Complète",
+            "inventory": "Gestion des Stocks",
             "reports": "Rapports de Ventes",
-            "chatbot": "Intégration Chatbot IA",
+            "chatbot": "Pack Assistant IA",
             "multilingual": "Support Multilingue",
-            "animations": "Animations Personnalisées",
-            "monitoring": "Monitoring 24/7",
-            "team": "Équipe Dédiée",
+            "animations": "Micro-animations Personnalisées",
+            "monitoring": "Surveillance 24/7",
+            "team": "Équipe Projet Dédiée",
             "whitelabel": "Solutions Marque Blanche",
             "whatsapp_support": "Support WhatsApp Direct",
-            "high_security": "Sécurité Militaire",
+            "high_security": "Sécurité de Niveau Militaire",
             "unlimited": "Projets Illimités",
-            "custom_ai": "Modèles IA Personnalisés",
+            "custom_ai": "Outils IA Sur Mesure",
             "sla": "Garantie SLA",
-            "onpremise": "Options Sur Site"
+            "onpremise": "Options d'Hébergement Privé"
         }
     },
     "Footer": {
-        "tagline": "Architecturer le futur numérique. Nous bâtissons des écosystèmes haute performance intégrés à l'IA pour les visionnaires.",
+        "tagline": "Nous concevons votre avenir numérique. Construction de sites web professionnels propulsés par l'IA.",
         "platform": "Plateforme",
+        "aiEngine": "Moteur IA",
+        "pricing": "Tarifs",
+        "blog": "Blog",
+        "contact": "Contact",
+        "company": "Entreprise",
+        "about": "À Propos",
+        "help": "Centre d'Aide",
+        "privacy": "Politique de Confidentialité",
+        "terms": "Conditions d'Utilisation",
         "legal": "Légal",
         "system": "État du Système",
-        "operational": "Tous les Systèmes Opérationnels",
-        "hosted": "Hébergé à Francfort, DE",
-        "copyright": "© 2026 Plateforme GetYouSite. Tous droits réservés."
+        "operational": "Tous les Systèmes Sont Opérationnels",
+        "hosted": "Hébergé en Toute Sécurité",
+        "copyright": "© 2026 GetYouSite. Tous droits réservés."
     },
     "Metadata": {
-        "title": "GetYouSite | Architecturer des Empires Numériques",
-        "description": "Construisez votre site de rêve en 48 heures avec une précision pilotée par l'IA. La seule plateforme capable de construire des écosystèmes numériques souverains."
+        "title": "GetYouSite | Créez Votre Site Professionnel Facilement",
+        "description": "Construisez votre site premium en 48 heures avec la précision de l'IA. La meilleure plateforme pour le design web professionnel."
     },
     "Auth": {
-        "signin_title": "Autoriser l'Accès",
-        "signup_title": "Inscription Architecte",
-        "subtitle": "Protocole d'Identité Souveraine",
+        "signin_title": "Connexion",
+        "signup_title": "Inscription",
+        "subtitle": "Bienvenue sur GetYouSite",
         "google": "Continuer avec Google",
         "apple": "Continuer avec Apple",
         "microsoft": "Continuer avec Microsoft",
-        "or_divider": "OU_ORCHESTRER_DIRECTEMENT",
-        "email_label": "Lien_Identité",
-        "password_label": "Clé_Accès",
-        "email_placeholder": "commander@getyousite.com",
+        "or_divider": "ou via Email",
+        "email_label": "Adresse Email",
+        "password_label": "Mot de Passe",
+        "email_placeholder": "vous@exemple.com",
         "continue": "Continuer",
-        "login_button": "Autoriser_Accès",
-        "signup_button": "Finaliser_Inscription",
-        "have_account": "Vous avez déjà un compte ? Se connecter",
-        "no_account": "Accès manquant ? S'inscrire",
-        "terms": "En vous connectant, vous acceptez les CGU et la Politique de Confidentialité."
+        "login_button": "Connexion",
+        "signup_button": "Créer un Compte",
+        "have_account": "Déjà un compte ? Connectez-vous",
+        "no_account": "Pas encore de compte ? Inscrivez-vous",
+        "terms": "En vous connectant, vous acceptez nos Conditions d'Utilisation et notre Politique de Confidentialité."
     },
     "Contact": {
-        "title": "Hub de Contact",
-        "subtitle": "Protocole de communication directe avec les architectes Souverains. Attendez-vous à une précision clinique.",
-        "badge": "Centre de Transmission",
+        "title": "Contactez-Nous",
+        "subtitle": "Nous sommes là pour vous aider. Contactez-nous et nous vous répondrons dès que possible.",
+        "badge": "Centre de Communication",
         "form": {
-            "name": "Identité",
-            "email": "Lien_Signal",
-            "subject": "Objectif_Cible",
-            "message": "Données_Transmission",
-            "send": "Exécuter Transmission",
-            "sending": "Transmission en cours..."
+            "name": "Nom Complet",
+            "name_placeholder": "Entrez votre nom",
+            "email": "Adresse Email",
+            "email_placeholder": "exemple@domaine.com",
+            "subject": "Sujet",
+            "subject_placeholder": "Comment pouvons-nous vous aider ?",
+            "message": "Message",
+            "message_placeholder": "Décrivez les détails de votre projet...",
+            "send": "Envoyer le Message",
+            "sending": "Envoi en cours...",
+            "success": "Votre message a été envoyé avec succès ! Notre équipe vous contactera bientôt."
         },
         "info": {
-            "title": "Nœuds Stratégiques",
-            "support": "Support Global",
-            "commercial": "Partenariats Stratégiques",
-            "hq": "QG Tactique",
-            "address": "Casablanca Finance City, MA"
+            "title": "Infos de Contact",
+            "support": "Support Technique",
+            "commercial": "Partenariats",
+            "hq": "Siège Social",
+            "address": "Casablanca, Maroc"
+        },
+        "whatsapp": {
+            "title": "Support WhatsApp Rapide",
+            "label": "Chat direct avec notre équipe"
         }
     },
     "Blog": {
-        "title": "Perspectives Souveraines",
-        "subtitle": "Analyse approfondie de l'architecture IA, de la souveraineté numérique et du commerce haute fréquence.",
-        "badge": "Répertoire_Savoir",
-        "read_more": "Décoder_Article",
-        "categories": "Flux_Intelligence"
+        "title": "Blog GetYouSite",
+        "subtitle": "Analyses et conseils sur le design web, l'IA et la croissance des entreprises.",
+        "badge": "Centre de Connaissances",
+        "read_more": "En Savoir Plus",
+        "categories": "Catégories",
+        "posts": {
+            "post1": {
+                "title": "L'IA dans le E-Commerce : L'Avenir est Maintenant",
+                "excerpt": "Comment l'intelligence artificielle révolutionne les boutiques en ligne et transforme l'expérience utilisateur.",
+                "author": "Équipe GetYouSite",
+                "category": "Intelligence Artificielle",
+                "date": "05 Fév 2026"
+            },
+            "post2": {
+                "title": "Stratégies SEO Efficaces pour 2026",
+                "excerpt": "Dernières techniques d'optimisation des moteurs de recherche pour améliorer la visibilité de votre site sur Google.",
+                "author": "Expert SEO",
+                "category": "Optimisation pour les Moteurs de Recherche",
+                "date": "03 Fév 2026"
+            },
+            "post3": {
+                "title": "La Psychologie du Design Minimaliste",
+                "excerpt": "Pourquoi les designs simples gagnent : La science derrière les interfaces utilisateur modernes et efficaces.",
+                "author": "Designer UX/UI",
+                "category": "Design d'Expérience Utilisateur",
+                "date": "30 Jan 2026"
+            }
+        },
+        "newsletter": {
+            "title": "Abonnez-vous à Notre Newsletter",
+            "subtitle": "Recevez des conseils hebdomadaires sur le développement web et la croissance e-commerce.",
+            "placeholder": "Entrez votre email",
+            "button": "S'abonner"
+        },
+        "articles": {
+            "ai-future": {
+                "title": "IA : L'Avenir du Commerce Numérique",
+                "excerpt": "Pourquoi le e-commerce traditionnel échoue et comment l'infrastructure alimentée par l'IA redistribue le pouvoir du marché.",
+                "content": "<p class='text-xl text-slate-300 font-medium leading-relaxed mb-8'>Au cours de la dernière décennie, nous avons vu la montée de plateformes centralisées qui dictent les termes de l'existence numérique. Des commissions élevées aux modèles rigides, « l'ancien internet » est devenu une cage pour les visionnaires.</p><h2 class='text-3xl font-black italic uppercase tracking-tightest mt-12 mb-6'>La Mort des Modèles Standard</h2><p class='text-slate-400 mb-6 leading-relaxed'>Les modèles standard ne suffisent plus. Le consommateur moderne exige une expérience dynamique qui se sent vivante. C'est là qu'intervient l'IA. Elle ne se contente pas d'afficher du contenu ; elle orchestre un écosystème.</p><blockquote class='border-l-4 border-blue-600 pl-10 my-12 py-4 italic text-2xl font-black text-white'>\"La souveraineté numérique n'est pas un luxe ; c'est l'exigence fondamentale pour le commerce à haute fréquence en 2026.\"</blockquote><h2 class='text-3xl font-black italic uppercase tracking-tightest mt-12 mb-6'>Conçu pour le Succès</h2><p class='text-slate-400 mb-6 leading-relaxed'>En tirant parti du rendu côté serveur et du calcul de périphérie, des plateformes comme GetYouSite garantissent que votre empire numérique n'est jamais hors ligne et jamais lent. Nous passons des « sites web » aux « organismes numériques ».</p>",
+                "author": "Équipe GetYouSite",
+                "category": "Intelligence Artificielle",
+                "date": "05 Fév 2026"
+            }
+        }
+    },
+    "About": {
+        "title": "À Propos",
+        "subtitle": "Nous sommes une équipe dédiée à l'autonomisation des propriétaires d'entreprise avec des solutions numériques innovantes.",
+        "badge": "Notre Histoire",
+        "mission_title": "Notre Mission",
+        "mission_text": "Simplifier le processus de création d'une présence numérique pour les entreprises en utilisant l'IA pour offrir une haute qualité en un temps record.",
+        "vision_title": "Notre Vision",
+        "vision_text": "Être la plateforme leader qui permet à quiconque de créer et de gérer son site professionnel sans expertise technique complexe."
+    },
+    "Help": {
+        "title": "Centre d'Aide",
+        "subtitle": "Tout ce dont vous avez besoin pour commencer et gérer votre site avec succès.",
+        "badge": "Hub de Support",
+        "faq_title": "Questions Fréquentes",
+        "contact_support": "Contacter le Support Technique"
     }
 }
