@@ -12,7 +12,11 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+// LOGIC UNIFICATION: Direct Payment Integration
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { CheckoutModule } from "@/components/payment/CheckoutModule";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'; // Keep existing imports if needed
+
 
 // Types for dashboard data
 interface DashboardStore {
@@ -61,6 +65,22 @@ export default function DashboardClient() {
     const [data, setData] = useState<DashboardData | null>(null);
     const [loading, setLoading] = useState(true);
     const [selectedStore, setSelectedStore] = useState<string | null>(null);
+    const [showCheckout, setShowCheckout] = useState(false);
+    const [activeStoreId, setActiveStoreId] = useState<string | null>(null);
+
+    const handleActivation = (storeId: string) => {
+        setActiveStoreId(storeId);
+        setShowCheckout(true);
+    };
+
+    const handlePaymentSuccess = () => {
+        setShowCheckout(false);
+        setActiveStoreId(null);
+        // FORCE REFRESH DASHBOARD LOGIC
+        setLoading(true);
+        fetchDashboardData();
+    };
+
 
     useEffect(() => {
         fetchDashboardData();
@@ -316,6 +336,19 @@ export default function DashboardClient() {
                                                         </div>
                                                     </div>
                                                     <div className="flex items-center gap-2">
+                                                        {store.status === 'pending_payment' && (
+                                                            <Button
+                                                                size="sm"
+                                                                className="bg-amber-500 hover:bg-amber-600 text-black font-black uppercase tracking-widest text-[9px] shadow-[0_0_20px_rgba(245,158,11,0.3)] animate-pulse"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleActivation(store.id);
+                                                                }}
+                                                            >
+                                                                <Zap className="w-3.5 h-3.5 mr-2" />
+                                                                Activate
+                                                            </Button>
+                                                        )}
                                                         <Button
                                                             variant="outline"
                                                             size="sm"
@@ -327,18 +360,6 @@ export default function DashboardClient() {
                                                                 Edit
                                                             </Link>
                                                         </Button>
-                                                        {store.status === 'deployed' && store.deployment_url && (
-                                                            <Button
-                                                                size="sm"
-                                                                className="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/20"
-                                                                asChild
-                                                            >
-                                                                <a href={store.deployment_url} target="_blank" rel="noopener noreferrer">
-                                                                    <ExternalLink size={14} className="mr-2" />
-                                                                    Visit
-                                                                </a>
-                                                            </Button>
-                                                        )}
                                                     </div>
                                                 </div>
                                             </motion.div>
@@ -499,6 +520,21 @@ export default function DashboardClient() {
                         </CardContent>
                     </Card>
                 )}
+                {/* LOGIC UNIFICATION: CHECKOUT DIALOG */}
+                <Dialog open={showCheckout} onOpenChange={setShowCheckout}>
+                    <DialogContent className="max-w-2xl bg-transparent border-none p-0">
+                        {activeStoreId && (
+                            <CheckoutModule
+                                siteId={activeStoreId}
+                                planId="pro" // Defaulting to Pro for now, or fetch from store metadata
+                                siteType="business"
+                                currency="USD"
+                                amount="49.00"
+                                onSuccess={handlePaymentSuccess}
+                            />
+                        )}
+                    </DialogContent>
+                </Dialog>
             </div>
         </div>
     );

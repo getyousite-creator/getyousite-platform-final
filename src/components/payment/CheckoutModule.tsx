@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CreditCard, Landmark, DollarSign, ShieldCheck, Upload, CheckCircle2, Loader2, Info } from "lucide-react";
+import { CreditCard, Landmark, ShieldCheck, Upload, CheckCircle2, Loader2, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import Script from "next/script";
 import { submitPaymentProofAction } from "@/app/actions/payment-actions";
 
 interface CheckoutModuleProps {
+    siteId: string; // SOVEREIGN LINK: Connects payment to asset
     planId: "starter" | "pro" | "business" | "enterprise";
     siteType: "blog" | "business" | "store";
     currency: "MAD" | "USD";
@@ -49,33 +49,84 @@ const BankPortal = ({ name, account, rib }: { name: string, account: string, rib
     );
 };
 
-export const CheckoutModule = ({ planId, siteType, currency, amount, onSuccess }: CheckoutModuleProps) => {
+export const CheckoutModule = ({ siteId, planId, siteType, currency, amount, onSuccess }: CheckoutModuleProps) => {
     const [method, setMethod] = useState<"card" | "local">(currency === "MAD" ? "local" : "card");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isUploaded, setIsUploaded] = useState(false);
     const [couponCode, setCouponCode] = useState("");
-    const [discount, setDiscount] = useState(0);
     const [isCouponApplied, setIsCouponApplied] = useState(false);
 
-    // PAYPAL INTEGRATION (Dynamic Environment Logic)
-    const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "BAAQAqL5S1GSIIaFYyUFHc1spAUiiwg2iQT2tfIvyNhtLOXQj5RBD9nhPNPlIhwl2XTlNoovU6U_Vmq2Zc";
-    const HOSTED_BUTTON_ID = process.env.NEXT_PUBLIC_PAYPAL_HOSTED_BUTTON_ID || "7CNRL6QR9UFM2";
+    // Dynamic Amount Logic
+    const rawAmount = isCouponApplied ? "0.00" : amount;
+    const finalAmount = rawAmount;
 
     useEffect(() => {
-        // Force re-render of PayPal button when method changes to 'card'
+        // RENDER SMART BUTTONS (API DRIVEN)
         if (method === 'card' && (window as any).paypal) {
             renderPayPalButtons();
         }
-    }, [method]);
+    }, [method, finalAmount]);
 
     const renderPayPalButtons = () => {
-        const container = document.getElementById("paypal-container-7CNRL6QR9UFM2");
+        const container = document.getElementById("paypal-button-container");
         if (container) {
-            container.innerHTML = ""; // Clear
+            container.innerHTML = ""; // Clean slate
+
             if ((window as any).paypal) {
-                (window as any).paypal.HostedButtons({
-                    hostedButtonId: HOSTED_BUTTON_ID,
-                }).render("#paypal-container-7CNRL6QR9UFM2");
+                (window as any).paypal.Buttons({
+                    // 1. CREATE ORDER (Server-Side)
+                    createOrder: async (data: any, actions: any) => {
+                        try {
+                            const response = await fetch('/api/paypal/create-order', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    siteId,
+                                    amount: finalAmount
+                                })
+                            });
+
+                            const order = await response.json();
+                            if (order.id) return order.id;
+                            throw new Error("Order Creation Failed");
+                        } catch (err) {
+                            console.error("PAYMENT_IGNITION_ERROR", err);
+                            toast.error("Payment Initialization Failed");
+                        }
+                    },
+
+                    // 2. CAPTURE ORDER (Server-Side)
+                    onApprove: async (data: any, actions: any) => {
+                        try {
+                            const response = await fetch('/api/paypal/capture-order', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    orderId: data.orderID
+                                })
+                            });
+
+                            const result = await response.json();
+
+                            if (result.success) {
+                                toast.success("SOVEREIGN_ASSET_DEPLOYED");
+                                onSuccess();
+                            } else {
+                                toast.error("Payment Capture Failed");
+                            }
+                        } catch (err) {
+                            console.error("PAYMENT_CAPTURE_ERROR", err);
+                            toast.error("Transaction Failed");
+                        }
+                    },
+
+                    style: {
+                        layout: 'vertical',
+                        color: 'gold',
+                        shape: 'rect',
+                        label: 'pay'
+                    }
+                }).render("#paypal-button-container");
             }
         }
     };
@@ -97,7 +148,6 @@ export const CheckoutModule = ({ planId, siteType, currency, amount, onSuccess }
 
             // Logic: Submit Payment Request to Supabase via Server Action
             const result = await submitPaymentProofAction(planId, siteType, 'cih', 'https://placeholder-receipt.com'); // Placeholder URL for now
-            // ...
 
             if (result.success) {
                 setIsUploaded(true);
@@ -115,15 +165,12 @@ export const CheckoutModule = ({ planId, siteType, currency, amount, onSuccess }
 
     const handleApplyCoupon = () => {
         if (couponCode.toUpperCase() === 'RAZANETEST') {
-            setDiscount(1.0);
             setIsCouponApplied(true);
             toast.success("COUPON_RAZANE_ACTIVATED: 100% Discount Applied");
         } else {
             toast.error("INVALID_COUPON: Authentication Breach");
         }
     };
-
-    const finalAmount = isCouponApplied ? "0.00" : amount;
 
     return (
         <div className="bg-white rounded-3xl border border-zinc-100 p-8 shadow-2xl max-w-xl mx-auto overflow-hidden">
@@ -197,15 +244,8 @@ export const CheckoutModule = ({ planId, siteType, currency, amount, onSuccess }
                             <ShieldCheck className="w-10 h-10 text-emerald-500" />
                         </div>
 
-                        {/* PAYPAL PAY NOW BUTTON */}
-                        <div className="min-h-[150px] flex flex-col items-center justify-center border-2 border-dashed border-zinc-100 rounded-2xl bg-white p-6 space-y-4">
-                            <style>{`.pp-7CNRL6QR9UFM2{text-align:center;border:none;border-radius:0.25rem;min-width:11.625rem;padding:0 2rem;height:2.625rem;font-weight:bold;background-color:#FFD140;color:#000000;font-family:"Helvetica Neue",Arial,sans-serif;font-size:1rem;line-height:1.25rem;cursor:pointer;}`}</style>
-                            <form action="https://www.paypal.com/ncp/payment/7CNRL6QR9UFM2" method="post" target="_blank" style={{ display: 'inline-grid', justifyItems: 'center', alignContent: 'start', gap: '0.5rem' }}>
-                                <input className="pp-7CNRL6QR9UFM2" type="submit" value="شراء الآن" />
-                                <img src="https://www.paypalobjects.com/images/Debit_Credit.svg" alt="cards" />
-                                <section style={{ fontSize: '0.75rem' }}> مدعوم من <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style={{ height: '0.875rem', verticalAlign: 'middle' }} /></section>
-                            </form>
-                        </div>
+                        {/* PAYPAL SMART CONTAINER */}
+                        <div id="paypal-button-container" className="min-h-[150px] flex flex-col items-center justify-center p-4"></div>
 
                         <p className="text-[10px] text-center text-zinc-400 font-medium">
                             Secured by PayPal Encryption. SSL Protected.
