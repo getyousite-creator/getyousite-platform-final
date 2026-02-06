@@ -17,7 +17,12 @@
         "generate": "Generar",
         "gdpr": "Cumple RGPD",
         "uptime": "99.9% Uptime",
-        "aiCore": "Núcleo impulsado por IA"
+        "aiCore": "Núcleo impulsado por IA",
+        "badges": {
+            "delivery": "Entrega Soberana",
+            "core": "Núcleo IA Genio",
+            "logic": "Lógica Innovadora"
+        }
     },
     "Services": {
         "title": "Capacidades Cuánticas",
@@ -45,6 +50,34 @@
         "growth": {
             "title": "Reactores de Crecimiento",
             "desc": "Esquemas SEO integrados y embudos de conversión diseñados para escalar su tráfico exponencialmente."
+        }
+    },
+    "LaunchModal": {
+        "init_sequence": "Iniciar Secuencia",
+        "title": "Lanza Tu Imperio Digital",
+        "desc": "Confirma tu visión profesional e inicia el protocolo de despliegue soberano.",
+        "email_label": "Enlace de Comunicación (Email)",
+        "email_placeholder": "comandante@getyousite.com",
+        "type_label": "¿Qué estás construyendo?",
+        "type_options": {
+            "blog": "Presencia Personal / Blog",
+            "business": "Sitio de Negocios Profesional",
+            "store": "Tienda en Línea / E-commerce"
+        },
+        "vision_label": "Matriz de Visión (Descripción)",
+        "vision_placeholder": "Ecosistema impulsado por IA para bienes raíces de lujo...",
+        "tier_label": "Nivel de Servicio",
+        "tier_options": {
+            "starter": "Starter - Presencia Personal",
+            "pro": "Pro - Imperio Profesional",
+            "business": "Negocios - Infraestructura Escalable",
+            "enterprise": "Empresa - Soberanía Personalizada"
+        },
+        "submit": "Lanzar Protocolo",
+        "submitting": "Orquestando...",
+        "success": {
+            "title": "Transmisión Recibida",
+            "desc": "Tu sitio soberano está activo. Inicializando UI..."
         }
     },
     "Testimonials": {

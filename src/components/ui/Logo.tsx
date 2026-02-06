@@ -31,7 +31,6 @@ export default function Logo({ className, showText = true, ...props }: LogoProps
             {showText && (
                 <div className="flex flex-col -space-y-1.5 pt-0.5">
                     <span className="text-2xl font-black tracking-[-0.05em] text-white leading-none">GETYOUSITE</span>
-                    <span className="text-[8px] font-black tracking-[0.5em] text-blue-500/60 uppercase">Scientific Architecture</span>
                 </div>
             )}
         </div>

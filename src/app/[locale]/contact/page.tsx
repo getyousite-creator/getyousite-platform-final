@@ -160,7 +160,7 @@ export default function ContactPage() {
                                 className="pt-12 border-t border-white/5 space-y-6"
                             >
                                 <a
-                                    href="https://wa.me/212661000000"
+                                    href="https://wa.me/212630597101"
                                     target="_blank"
                                     className="flex items-center justify-between p-6 rounded-2xl bg-green-500/5 border border-green-500/10 hover:bg-green-500/10 transition-all group"
                                 >

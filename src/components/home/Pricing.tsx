@@ -83,7 +83,7 @@ export default function Pricing() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 rtl:flex-row-reverse">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {plans.map((plan, index) => (
                         <motion.div
                             key={plan.id}

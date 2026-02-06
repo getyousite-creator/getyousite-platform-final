@@ -103,15 +103,15 @@ export default function Hero() {
                 >
                     <div className="flex items-center gap-3 hover:text-white transition-colors cursor-default group">
                         <Zap className="w-4 h-4 text-blue-500 group-hover:scale-125 transition-transform" />
-                        <span>Sovereign Delivery</span>
+                        <span>{t('badges.delivery')}</span>
                     </div>
                     <div className="flex items-center gap-3 hover:text-white transition-colors cursor-default group">
                         <Cpu className="w-4 h-4 text-purple-500 group-hover:scale-125 transition-transform" />
-                        <span>Genius AI Core</span>
+                        <span>{t('badges.core')}</span>
                     </div>
                     <div className="flex items-center gap-3 hover:text-white transition-colors cursor-default group">
                         <Sparkles className="w-4 h-4 text-yellow-500 group-hover:scale-125 transition-transform" />
-                        <span>Innovative Logic</span>
+                        <span>{t('badges.logic')}</span>
                     </div>
                 </motion.div>
             </div>

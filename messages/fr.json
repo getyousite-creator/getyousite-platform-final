@@ -17,7 +17,12 @@
         "generate": "Commencer",
         "gdpr": "Conforme aux Normes de Sécurité",
         "uptime": "99.9% de Disponibilité",
-        "aiCore": "Design Piloté par l'IA"
+        "aiCore": "Design Piloté par l'IA",
+        "badges": {
+            "delivery": "Livraison Souveraine",
+            "core": "Noyau IA Génie",
+            "logic": "Logique Innovante"
+        }
     },
     "Services": {
         "title": "Nos Fonctionnalités",
@@ -45,6 +50,34 @@
         "growth": {
             "title": "Optimisé pour le SEO",
             "desc": "Optimisation automatique pour que votre site soit mieux classé dans les résultats de recherche."
+        }
+    },
+    "LaunchModal": {
+        "init_sequence": "Initialiser la Séquence",
+        "title": "Lancez Votre Empire Numérique",
+        "desc": "Confirmez votre vision professionnelle et lancez le protocole de déploiement souverain.",
+        "email_label": "Lien de Comm (Email)",
+        "email_placeholder": "commandant@getyousite.com",
+        "type_label": "Que construisez-vous ?",
+        "type_options": {
+            "blog": "Présence Personnelle / Blog",
+            "business": "Site Professionnel",
+            "store": "E-commerce / Boutique en Ligne"
+        },
+        "vision_label": "Matrice de Vision (Description)",
+        "vision_placeholder": "Écosystème propulsé par l'IA pour l'immobilier de luxe...",
+        "tier_label": "Niveau de Service",
+        "tier_options": {
+            "starter": "Starter - Présence Personnelle",
+            "pro": "Pro - Empire Professionnel",
+            "business": "Business - Infrastructure Évolutive",
+            "enterprise": "Entreprise - Personnalisation Souveraine"
+        },
+        "submit": "Lancer le Protocole",
+        "submitting": "Orchestration...",
+        "success": {
+            "title": "Transmission Reçue",
+            "desc": "Votre site souverain est actif. Initialisation de l'interface..."
         }
     },
     "Testimonials": {

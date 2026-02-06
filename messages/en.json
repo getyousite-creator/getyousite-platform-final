@@ -17,7 +17,12 @@
         "generate": "Get Started",
         "gdpr": "Security Standard Compliant",
         "uptime": "99.9% Uptime",
-        "aiCore": "AI-Driven Design"
+        "aiCore": "AI-Driven Design",
+        "badges": {
+            "delivery": "Sovereign Delivery",
+            "core": "Genius AI Core",
+            "logic": "Innovative Logic"
+        }
     },
     "Services": {
         "title": "Our Features",
@@ -45,6 +50,34 @@
         "growth": {
             "title": "SEO Optimized",
             "desc": "Automatic optimization for your site to rank higher in search results."
+        }
+    },
+    "LaunchModal": {
+        "init_sequence": "Initialize Sequence",
+        "title": "Launch Your Digital Empire",
+        "desc": "Confirm your professional vision and initiate the Sovereign Protocol deployment.",
+        "email_label": "Comm_Link (Email)",
+        "email_placeholder": "commander@getyousite.com",
+        "type_label": "What are you building?",
+        "type_options": {
+            "blog": "Personal / Blog Presence",
+            "business": "Professional Business Site",
+            "store": "E-commerce / Online Store"
+        },
+        "vision_label": "Vision_Matrix (Description)",
+        "vision_placeholder": "AI-powered ecosystem for luxury real estate...",
+        "tier_label": "Service_Tier",
+        "tier_options": {
+            "starter": "Starter - Personal Presence",
+            "pro": "Pro - Professional Empire",
+            "business": "Business - Scalable Infrastructure",
+            "enterprise": "Enterprise - Sovereign Custom"
+        },
+        "submit": "Launch Protocol",
+        "submitting": "Orchestrating...",
+        "success": {
+            "title": "Transmission Received",
+            "desc": "Your sovereign site is active. Initializing UI..."
         }
     },
     "Testimonials": {
