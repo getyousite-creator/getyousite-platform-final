@@ -7,7 +7,9 @@
         "blog": "Blog",
         "contact": "Contact",
         "launch": "Get Started",
-        "login": "Login"
+        "login": "Login",
+        "backHome": "Back to Home",
+        "sovereign_access": "Sovereign Access Unlocked"
     },
     "Hero": {
         "badge": "System Ready • v2.0 Live",

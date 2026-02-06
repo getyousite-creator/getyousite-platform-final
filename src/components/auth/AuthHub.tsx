@@ -91,7 +91,7 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
                     >
                         <Sparkles className="w-3.5 h-3.5 text-amber-500 group-hover:animate-pulse" />
                         <span className="text-[10px] font-black uppercase tracking-widest text-amber-500">
-                            Sovereign_Access_Unlocked
+                            {t('sovereign_access')}
                         </span>
                     </motion.div>
 
@@ -208,8 +208,8 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
                         {t('terms')}
                     </p>
                 </div>
-            </motion.div>
-        </div>
+            </motion.div >
+        </div >
     );
 }
 

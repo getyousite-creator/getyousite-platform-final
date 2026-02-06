@@ -71,7 +71,7 @@ export const SITE_TEMPLATES: { categories: TemplateCategory[] } = {
                 {
                     id: "t2-minimal",
                     name: "Berlin Minimal",
-                    image: "https://images.unsplash.com/photo-1497215728101-856f4ea42174",
+                    image: "https://images.unsplash.com/photo-1506097425191-7ad538b29cef?q=80&w=2340&auto=format&fit=crop",
                     description: "White space, sans-serif typography, brutalist efficiency.",
                     components: ["Simple-Left-Align", "Minimal-Text-Only", "Service-Cards-Flat", "Testimonial-Text"],
                     primaryColor: "#1a1a1a",
@@ -80,20 +80,11 @@ export const SITE_TEMPLATES: { categories: TemplateCategory[] } = {
                 {
                     id: "t3-ai-agent",
                     name: "Neural Agency",
-                    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995",
+                    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2070&auto=format&fit=crop",
                     description: "AI-focused, futuristic animations, interactive elements.",
                     components: ["Floating-Nav", "Animated-Blob-Background", "AI-Capabilities-List", "Process-Steps-Vertical"],
                     primaryColor: "#8b5cf6",
                     blueprint: constructBlueprint("Neural Agency", "#8b5cf6", ["hero", "features", "cta"])
-                },
-                {
-                    id: "t4-cloud",
-                    name: "SaaS Matrix",
-                    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa",
-                    description: "Data-driven, conversion-optimized, trust-focused.",
-                    components: ["Double-Layer-Nav", "Dashboard-Mockup-Hero", "Stats-Counter", "Bento-Grid-Showcase"],
-                    primaryColor: "#3b82f6",
-                    blueprint: constructBlueprint("SaaS Matrix", "#3b82f6", ["hero", "features", "pricing", "cta"])
                 }
             ]
         },
@@ -113,25 +104,16 @@ export const SITE_TEMPLATES: { categories: TemplateCategory[] } = {
                 {
                     id: "e2-clean-cart",
                     name: "Pure Commerce",
-                    image: "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a",
+                    image: "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?q=80&w=2070&auto=format&fit=crop",
                     description: "Soft colors, focus on product details, fast checkout UI.",
                     components: ["Search-Dominant-Nav", "Product-Slider-Auto", "Flash-Deals-Countdown", "Review-Stars-Grid"],
                     primaryColor: "#f43f5e",
                     blueprint: constructBlueprint("Pure Commerce", "#f43f5e", ["hero", "features"])
                 },
                 {
-                    id: "e3-modern-beast",
-                    name: "Urban Beast",
-                    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
-                    description: "Bold fonts, vibrant colors, Gen-Z oriented.",
-                    components: ["Side-Burger-Menu", "Video-Loop-Short", "Trending-Now-List", "Influencer-Testimonials"],
-                    primaryColor: "#10b981",
-                    blueprint: constructBlueprint("Urban Beast", "#10b981", ["hero", "gallery", "cta"])
-                },
-                {
                     id: "e4-artisan",
                     name: "Artisan Hands",
-                    image: "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a",
+                    image: "https://images.unsplash.com/photo-1452860606245-08befc0ff44b?q=80&w=2340&auto=format&fit=crop",
                     description: "Earth tones, hand-crafted feel, high trust score.",
                     components: ["Centered-Logo-Classic", "Static-Image-Split", "Process-Video-Section", "Newsletter-Signup"],
                     primaryColor: "#92400e",
@@ -144,27 +126,27 @@ export const SITE_TEMPLATES: { categories: TemplateCategory[] } = {
             name: "Professional Services",
             themes: [
                 {
+                    id: "dr-khalil",
+                    name: "Dr. Khalil Dental",
+                    image: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2070&auto=format&fit=crop",
+                    description: "High-fidelity clinical aesthetic, focus on dental excellence. German Engineering Style.",
+                    components: ["Cinematic-Hero-Dental", "Service-Grid-Clinical", "Appointment-Portal-Sim", "Patient-Testimonials"],
+                    primaryColor: "#0ea5e9",
+                    blueprint: constructBlueprint("Dr. Khalil Dental", "#0ea5e9", ["hero", "features", "testimonials", "cta"])
+                },
+                {
                     id: "s1-consult",
                     name: "Global Advisor",
-                    image: "https://images.unsplash.com/photo-1454165833767-027ffea9e778",
+                    image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2070&auto=format&fit=crop",
                     description: "Blue & Grey tones, focus on authority and statistics.",
                     components: ["Contact-Top-Bar", "Lead-Gen-Form-Hero", "Authority-Logos", "Services-Icons-Large"],
                     primaryColor: "#1e40af",
                     blueprint: constructBlueprint("Global Advisor", "#1e40af", ["hero", "features", "testimonials"])
                 },
                 {
-                    id: "dr-khalil",
-                    name: "Dr. Khalil Dental",
-                    image: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2070&auto=format&fit=crop",
-                    description: "High-fidelity clinical aesthetic, focus on dental excellence.",
-                    components: ["Cinematic-Hero-Dental", "Service-Grid-Clinical", "Appointment-Portal-Sim", "Patient-Testimonials"],
-                    primaryColor: "#0ea5e9",
-                    blueprint: constructBlueprint("Dr. Khalil Dental", "#0ea5e9", ["hero", "features", "testimonials", "cta"])
-                },
-                {
                     id: "s3-legal",
                     name: "Sovereign Law",
-                    image: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73",
+                    image: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=2070&auto=format&fit=crop",
                     description: "Marble textures, classic typography, trust and authority.",
                     components: ["Classic-Top-Nav", "Authority-Hero-Stoic", "Practice-Areas-Grid", "Client-Logos-Legacy"],
                     primaryColor: "#475569",
@@ -179,7 +161,7 @@ export const SITE_TEMPLATES: { categories: TemplateCategory[] } = {
                 {
                     id: "f1-cinematic",
                     name: "Chef's Table",
-                    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2070&auto=format&fit=crop",
+                    image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2070&auto=format&fit=crop",
                     description: "Cinematic food photography, elegant plating focus.",
                     components: ["Video-Background-Hero", "Plating-Gallery", "Menu-Accordion", "Reservation-Sticky"],
                     primaryColor: "#7c2d12",
@@ -188,20 +170,11 @@ export const SITE_TEMPLATES: { categories: TemplateCategory[] } = {
                 {
                     id: "f2-street",
                     name: "Night Market",
-                    image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=2072&auto=format&fit=crop",
+                    image: "https://images.unsplash.com/photo-1561758033-d8f80400531d?q=80&w=2070&auto=format&fit=crop",
                     description: "Neon, urban, energetic. For bold street food brands.",
                     components: ["Neon-Sign-Hero", "Food-Carousel-Dark", "Social-Grid-Urban", "Location-Map-Night"],
                     primaryColor: "#facc15",
                     blueprint: constructBlueprint("Night Market", "#facc15", ["hero", "gallery", "cta"])
-                },
-                {
-                    id: "f3-wine",
-                    name: "Vineyard Estate",
-                    image: "https://images.unsplash.com/photo-1516594915697-87eb3b1c14ea?q=80&w=2072&auto=format&fit=crop",
-                    description: "Moody, earthy tones. Sophisticated wine/cocktail bars.",
-                    components: ["Parallax-Vineyard-Hero", "Wine-List-Elegant", "Tasting-Events-Cards", "Club-Signup"],
-                    primaryColor: "#581c87",
-                    blueprint: constructBlueprint("Vineyard Estate", "#581c87", ["hero", "features", "testimonials"])
                 }
             ]
         },
@@ -212,7 +185,7 @@ export const SITE_TEMPLATES: { categories: TemplateCategory[] } = {
                 {
                     id: "m1-clinic",
                     name: "Apex Medical",
-                    image: "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?q=80&w=2194&auto=format&fit=crop",
+                    image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2070&auto=format&fit=crop",
                     description: "Clean, sterile white/blue. High trust, clear CTA.",
                     components: ["Emergency-Top-Bar", "Trust-Stats-Hero", "Symptom-Checker-Widget", "Doctor-Profiles"],
                     primaryColor: "#2563eb",
@@ -221,25 +194,16 @@ export const SITE_TEMPLATES: { categories: TemplateCategory[] } = {
                 {
                     id: "m2-wellness",
                     name: "Holistic Harmony",
-                    image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=2070&auto=format&fit=crop",
+                    image: "https://images.unsplash.com/photo-1544367563-12123d8965cd?q=80&w=2070&auto=format&fit=crop",
                     description: "Natural greens, organic textures. For spas and wellness.",
                     components: ["Zen-Hero-Video", "Treatment-Menu-Cards", "Booking-Form-Spa", "Instagram-Feed"],
                     primaryColor: "#15803d",
                     blueprint: constructBlueprint("Holistic Harmony", "#15803d", ["hero", "gallery", "testimonials"])
                 },
                 {
-                    id: "m3-pharma",
-                    name: "VitaLabs",
-                    image: "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=2069&auto=format&fit=crop",
-                    description: "Scientific, clinical, trustworthy. Pharmaceutical/Labs.",
-                    components: ["Product-Grid-Lab", "Clinical-Evidence-PDF", "Research-Accreditations", "Order-Form"],
-                    primaryColor: "#06b6d4",
-                    blueprint: constructBlueprint("VitaLabs", "#06b6d4", ["hero", "features", "cta"])
-                },
-                {
                     id: "m4-wellness",
                     name: "Zenith Yoga",
-                    image: "https://images.unsplash.com/photo-1545205597-3d9d02c29597",
+                    image: "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?q=80&w=2069&auto=format&fit=crop",
                     description: "Soft pastels, breathing space, calming typography.",
                     components: ["Full-Screen-Breath-Hero", "Class-Schedule-Table", "Instructor-Cards-Soft", "Membership-Tiers-Simple"],
                     primaryColor: "#57534e",

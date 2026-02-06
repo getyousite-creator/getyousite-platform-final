@@ -7,7 +7,9 @@
         "blog": "Blog",
         "contact": "Contact",
         "launch": "Commencer",
-        "login": "Connexion"
+        "login": "Connexion",
+        "backHome": "Retour à l'accueil",
+        "sovereign_access": "Accès Souverain Déverrouillé"
     },
     "Hero": {
         "badge": "Système Prêt • v2.0 Live",

@@ -28,6 +28,8 @@ export function ComponentLibrary({ type, content, primaryColor }: ComponentLibra
             return <PreviewFAQ content={content} primaryColor={primaryColor} />;
         case 'cta':
             return <PreviewCTA content={content} primaryColor={primaryColor} />;
+        case 'testimonials':
+            return <PreviewTestimonials content={content} primaryColor={primaryColor} />;
         case 'gallery':
             return <PreviewGallery content={content} primaryColor={primaryColor} />;
         default:
@@ -39,6 +41,36 @@ export function ComponentLibrary({ type, content, primaryColor }: ComponentLibra
                 </div>
             );
     }
+}
+
+function PreviewTestimonials({ content, primaryColor }: any) {
+    const reviews = content?.reviews || [
+        { name: "Dr. Sarah L.", role: "Clinic Director", text: "The architectural precision increased our patient trust by 200%." },
+        { name: "James K.", role: "CEO", text: "Sovereign execution. The definition of excellence." },
+        { name: "Amira B.", role: "Founder", text: "A truly transformative digital experience." }
+    ];
+
+    return (
+        <section className="py-24 px-8 bg-zinc-900 text-white relative overflow-hidden">
+            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+                {reviews.map((review: any, i: number) => (
+                    <div key={i} className="p-8 bg-white/5 border border-white/10 rounded-2xl relative group hover:bg-white/10 transition-colors">
+                        <div className="text-4xl text-white/20 font-serif absolute top-4 left-6">"</div>
+                        <p className="text-lg text-zinc-300 mb-6 relative z-10 leading-relaxed">
+                            {review.text}
+                        </p>
+                        <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white/20 to-transparent" />
+                            <div>
+                                <h4 className="font-bold text-sm tracking-wide">{review.name}</h4>
+                                <span className="text-[10px] uppercase tracking-widest text-zinc-500">{review.role}</span>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
 }
 
 function PreviewBenefits({ content, primaryColor }: any) {
