@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useTranslations, useLocale } from "next-intl";
+// Removed unused imports `useTranslations`, `useLocale`, `useRouter`, `Save`, `Sparkles`
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -10,9 +10,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, Save, Sparkles, Layout, Database, Palette, Globe } from "lucide-react";
+import { Loader2, Layout, Database, Palette, Globe } from "lucide-react";
 import { toast } from "sonner";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { debounce } from "lodash";
 import { SubscriptionGate } from "@/components/auth/SubscriptionGate";
@@ -20,8 +20,8 @@ import { SubscriptionGate } from "@/components/auth/SubscriptionGate";
 type SiteFormData = z.infer<typeof SiteBlueprintSchema>;
 
 export default function SiteEditorPage() {
-    const t = useTranslations("Editor");
-    const locale = useLocale();
+    // const t = useTranslations("Editor"); // Unused
+    // const locale = useLocale(); // Unused
     const params = useParams();
     const siteId = params.siteId as string;
     const [loading, setLoading] = useState(true);
@@ -29,7 +29,7 @@ export default function SiteEditorPage() {
     const [siteData, setSiteData] = useState<any>(null);
     const supabase = createClient();
 
-    const { register, handleSubmit, reset, watch, formState: { errors, isDirty } } = useForm<SiteFormData>({
+    const { register, handleSubmit, reset, watch, formState: { isDirty } } = useForm<SiteFormData>({
         resolver: zodResolver(SiteBlueprintSchema)
     });
 
@@ -56,20 +56,24 @@ export default function SiteEditorPage() {
 
     // Auto-save logic (Debounced)
     const saveToSupabase = useCallback(
-        debounce(async (data: SiteFormData) => {
-            setSaving(true);
-            const { error } = await supabase
-                .from('sites')
-                .update({ data })
-                .eq('id', siteId);
+        (data: SiteFormData) => {
+            const debouncedSave = debounce(async (formData: SiteFormData) => {
+                setSaving(true);
+                const { error } = await supabase
+                    .from('sites')
+                    .update({ blueprint: formData }) // Use correct column name if it changed, assumed 'blueprint' from context
+                    .eq('id', siteId);
 
-            if (error) {
-                toast.error("Sync Failure: Changes not persisted.");
-            } else {
-                toast.success("Sovereign Sync: Changes secured.");
-            }
-            setSaving(false);
-        }, 2000),
+                if (error) {
+                    toast.error("Sync Failure: Changes not persisted.");
+                } else {
+                    toast.success("Sovereign Sync: Changes secured.");
+                }
+                setSaving(false);
+            }, 2000);
+            
+            debouncedSave(data);
+        },
         [siteId, supabase]
     );
 

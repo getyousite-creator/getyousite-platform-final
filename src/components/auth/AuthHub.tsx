@@ -50,7 +50,8 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
         setError(null);
         try {
             await signInWithOAuthAction(provider);
-        } catch (_err) {
+        } catch (err) {
+            console.error(err);
             setError("Authentication failed. Please try again.");
             setLoading(false);
         }

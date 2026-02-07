@@ -7,7 +7,8 @@
 
 'use server';
 
-import { AuthService, SignUpData, SignInData } from '@/lib/services/auth-service';
+import { AuthService } from '@/lib/services/auth-service';
+// import { SignUpData, SignInData } from '@/lib/services/auth-service'; // Unused types removed
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 

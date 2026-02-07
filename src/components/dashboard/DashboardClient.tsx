@@ -7,9 +7,8 @@ import { IntelligenceDashboard } from './IntelligenceDashboard';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import {
-    Plus, ExternalLink, Edit, Shield, AlertCircle,
-    TrendingUp, Users, Eye, MousePointer, Globe, Search,
-    Clock, Calendar, ChevronRight, BarChart3, SearchCheck,
+    Plus, Edit, TrendingUp, Users, Eye, Globe, Search,
+    Clock, Calendar, BarChart3, SearchCheck, Shield,
     Zap, Target, ArrowUpRight, ArrowDownRight, Download
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -20,7 +19,8 @@ import { Badge } from '@/components/ui/badge';
 // LOGIC UNIFICATION: Direct Payment Integration
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { CheckoutModule } from "@/components/payment/CheckoutModule";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'; // Keep existing imports if needed
+// Tabs removed from imports as they were unused in this scope
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 
 // Types for dashboard data

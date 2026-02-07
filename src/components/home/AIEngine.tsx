@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Terminal, Brain, Sparkles, Zap, Target, Search, Globe, Shield } from "lucide-react";
+import { Brain, Zap, Target, Search, Globe, Shield, Sparkles } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const codeSnippet = [

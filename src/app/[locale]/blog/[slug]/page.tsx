@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Calendar, User, Share2, Shield, Sparkles } from "lucide-react";
+import { ArrowLeft, Calendar, User, Share2, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";

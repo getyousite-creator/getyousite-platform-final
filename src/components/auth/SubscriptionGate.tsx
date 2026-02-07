@@ -4,6 +4,7 @@ import { useAuth } from "@/components/providers/SupabaseProvider";
 import { Button } from "@/components/ui/button";
 import { Lock } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 interface SubscriptionGateProps {
     children: React.ReactNode;
