@@ -1,4 +1,6 @@
 import { AuthService } from "@/lib/services/auth-service";
+import { searchUnsplashImages } from "@/lib/images/unsplash";
+import { Section } from "@/lib/schemas";
 
 /**
  * Multi-Provider AI System
@@ -441,6 +443,59 @@ Execute the Sovereign Construction Protocol.
 
     try {
         const blueprint = JSON.parse(result.content);
+
+        // SOVEREIGN IMAGE INJECTION (Unsplash Standard Layer)
+        if (blueprint.images && Array.isArray(blueprint.images) && blueprint.images.length > 0) {
+            try {
+                // Use the first 2 keywords for a rich search
+                const query = blueprint.images.slice(0, 2).join(" ");
+                console.log(`🖼️ Sovereign Engine: Fetching visuals for [${query}]`);
+
+                const visuals = await searchUnsplashImages(query, 10);
+
+                if (visuals.length > 0) {
+                    let visualIndex = 0;
+
+                    // Inject visuals into layout sections
+                    blueprint.layout = blueprint.layout.map((section: Section) => {
+                        // Only inject if the section type supports images and doesn't have one hardcoded
+                        const needsImage = ["hero", "about", "gallery", "cta", "split"].includes(
+                            section.type,
+                        );
+
+                        if (needsImage && section.content) {
+                            // Cycle through visuals
+                            const visual = visuals[visualIndex % visuals.length];
+
+                            // Hero Strategy
+                            if (section.type === "hero") {
+                                section.content.image = visual.url;
+                                section.content.alt = visual.alt;
+                            }
+
+                            // About Strategy
+                            if (section.type === "about") {
+                                section.content.image = visual.url;
+                                section.content.imageAlt = visual.alt;
+                            }
+
+                            // Gallery Strategy - Inject multiple
+                            if (section.type === "gallery" && !section.content.images) {
+                                section.content.images = visuals
+                                    .slice(0, 4)
+                                    .map((v) => ({ src: v.url, alt: v.alt }));
+                            }
+
+                            visualIndex++;
+                        }
+                        return section;
+                    });
+                }
+            } catch (imgError) {
+                console.warn("⚠️ Image Injection Failed:", imgError);
+                // Proceed without crashing, user gets placeholders or templates default
+            }
+        }
 
         const nicheValues: Record<string, number> = {
             "dr-khalil": 2500000,
