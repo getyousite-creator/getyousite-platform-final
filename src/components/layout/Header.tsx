@@ -8,6 +8,10 @@ import { cn } from "@/lib/utils";
 import { useTranslations, useLocale } from "next-intl";
 import { usePathname, useRouter, Link } from "@/i18n/routing";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
+import { useSupabase } from "@/components/providers/SupabaseProvider";
+import { signOutAction } from "@/app/actions/auth-actions";
+import { toast } from "sonner";
+import { LogOut, User as UserIcon } from "lucide-react";
 
 const languages = [
     { code: "en", label: "English", flag: "🇺🇸" },
@@ -28,6 +32,7 @@ export default function Header() {
     const onOpenLaunch = useLaunchModal((state) => state.onOpen);
     const onOpenAuth = useAuthModal((state) => state.onOpen);
 
+    const { user, loading } = useSupabase();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -87,20 +92,46 @@ export default function Header() {
                             </div>
                         </div>
 
-                        <Button
-                            variant="ghost"
-                            className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-white"
-                            onClick={() => router.push('/login')}
-                        >
-                            {t('login')}
-                        </Button>
-                        <Button
-                            variant="glow"
-                            className="bg-blue-600 hover:bg-blue-500 text-white border-0 h-10 px-6 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(37,99,235,0.2)]"
-                            onClick={() => router.push('/signup')}
-                        >
-                            {t('launch')}
-                        </Button>
+                        {!loading && user ? (
+                            <div className="flex items-center gap-4">
+                                <Link
+                                    href="/dashboard"
+                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 flex items-center gap-2 hover:text-blue-300 transition-colors"
+                                >
+                                    <UserIcon className="w-3.5 h-3.5" />
+                                    {t('dashboard')}
+                                </Link>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 hover:text-red-400 gap-2 h-9"
+                                    onClick={async () => {
+                                        await signOutAction();
+                                        toast.success("Security sequence: Session Terminated.");
+                                    }}
+                                >
+                                    <LogOut className="w-3.5 h-3.5" />
+                                    {t('signout')}
+                                </Button>
+                            </div>
+                        ) : (
+                            <>
+                                <Button
+                                    variant="ghost"
+                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-white"
+                                    onClick={() => router.push('/login')}
+                                >
+                                    {t('login')}
+                                </Button>
+                                <Button
+                                    variant="glow"
+                                    className="bg-blue-600 hover:bg-blue-500 text-white border-0 h-10 px-6 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(37,99,235,0.2)]"
+                                    onClick={() => router.push('/signup')}
+                                >
+                                    {t('launch')}
+                                </Button>
+                            </>
+                        )}
                     </div>
 
                     {/* Mobile Toggle */}

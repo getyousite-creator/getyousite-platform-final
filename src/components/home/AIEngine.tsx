@@ -5,9 +5,9 @@ import { Terminal, Brain, Sparkles, Zap, Target, Search, Globe, Shield } from "l
 import { useState, useEffect } from "react";
 
 const codeSnippet = [
-    "> Initializing Neural Core...",
-    "> Loading modules: [Vision, NLP, Analytics]...",
-    "> Connecting to Quantum Mesh...",
+    "> Initializing Engine Core...",
+    "> Loading modules: [Design, Content, Analytics]...",
+    "> Connecting to High-Perf Mesh...",
     "> OPTIMIZATION_LEVEL: MAXIMUM",
     "> Status: ONLINE",
     "> Ready to construct."
@@ -68,12 +68,12 @@ export default function AIEngine() {
 
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
+                            whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.2 }}
                             className="text-zinc-400 text-lg leading-relaxed"
                         >
-                            Forget drag-and-drop. Our AI analyzes your intent, studies your competitors, and generates a conversion-optimized architecture in seconds. It writes code, writes copy, and optimizes images autonomously.
+                            Our automated design system analyzes your niche and generates a conversion-optimized architecture in seconds. It coordinates layout, copy, and performance parameters for maximum business impact.
                         </motion.p>
 
                         <motion.ul
@@ -100,16 +100,16 @@ export default function AIEngine() {
                             className="grid grid-cols-3 gap-6 pt-6 border-t border-white/10"
                         >
                             <div>
-                                <div className="text-3xl font-black text-white">1500+</div>
-                                <div className="text-zinc-500 text-sm">Sites Created</div>
+                                <div className="text-3xl font-black text-white">Lighthouse</div>
+                                <div className="text-zinc-500 text-sm">95+ Performance</div>
                             </div>
                             <div>
-                                <div className="text-3xl font-black text-white">98.5%</div>
-                                <div className="text-zinc-500 text-sm">Satisfaction Rate</div>
+                                <div className="text-3xl font-black text-white">Global</div>
+                                <div className="text-zinc-500 text-sm">CDN Edge Ready</div>
                             </div>
                             <div>
-                                <div className="text-3xl font-black text-white">15min</div>
-                                <div className="text-zinc-500 text-sm">Avg. Build Time</div>
+                                <div className="text-3xl font-black text-white">ISO</div>
+                                <div className="text-zinc-500 text-sm">Safety Standard</div>
                             </div>
                         </motion.div>
                     </div>
@@ -127,7 +127,7 @@ export default function AIEngine() {
                                 <div className="w-3 h-3 rounded-full bg-red-500" />
                                 <div className="w-3 h-3 rounded-full bg-yellow-500" />
                                 <div className="w-3 h-3 rounded-full bg-green-500" />
-                                <div className="ml-4 text-xs text-zinc-500 font-mono">quantum_core.exe</div>
+                                <div className="ml-4 text-xs text-zinc-500 font-mono">engine_core.exe</div>
                             </div>
 
                             {/* Terminal Body */}

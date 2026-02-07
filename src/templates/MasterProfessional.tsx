@@ -21,8 +21,8 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
     const featuresSection = blueprint?.layout?.find((s: Section) => s.type === 'features');
     const features = (featuresSection?.content?.features as any[]) || [
         { title: "Strategic Security", icon: Shield, desc: "End-to-end encryption for all corporate assets." },
-        { title: "Neural Delivery", icon: Zap, desc: "High-performance infrastructure with 99.9% uptime." },
-        { title: "Global Expansion", icon: Globe, desc: "Ready for international market dominance." }
+        { title: "Edge Delivery", icon: Zap, desc: "High-performance infrastructure with 99.9% uptime." },
+        { title: "Global Expansion", icon: Globe, desc: "Ready for international market growth." }
     ];
 
     return (
@@ -69,7 +69,7 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
                             >
                                 <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 rtl:flex-row-reverse">
                                     <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: primaryColor }} />
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Sovereign Intelligence Active</span>
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Engine Infrastructure Active</span>
                                 </div>
 
                                 <h1 className="text-6xl md:text-8xl font-black leading-[0.85] mb-8 tracking-tighter uppercase whitespace-pre-line">
@@ -82,11 +82,11 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
 
                                 <div className="flex flex-wrap items-center gap-6 rtl:flex-row-reverse">
                                     <button
-                                        onClick={() => onOpen("Initiate Protocol")}
+                                        onClick={() => onOpen("Start Project")}
                                         className="h-16 px-10 rounded-2xl font-black text-xs uppercase tracking-widest text-zinc-950 flex items-center gap-3 transition-all hover:scale-105 shadow-2xl shadow-blue-500/20"
                                         style={{ backgroundColor: primaryColor }}
                                     >
-                                        Initiate_Protocol <ArrowRight className="w-4 h-4" />
+                                        Start Your Project <ArrowRight className="w-4 h-4" />
                                     </button>
                                     <div className="flex items-center gap-4 px-6 border border-white/5 bg-white/5 rounded-2xl backdrop-blur-xl">
                                         <div className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Efficiency_Index: 99.4%</div>
@@ -178,7 +178,7 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
 
                             <div className="relative z-10 max-w-4xl mx-auto space-y-10">
                                 <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85]">
-                                    Secure your <br /><span style={{ color: primaryColor }}>Digital Empire.</span>
+                                    Secure your <br /><span style={{ color: primaryColor }}>Business Asset.</span>
                                 </h2>
                                 <p className="text-zinc-400 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
                                     Join the elite network of architects who trust Sovereign Professional infrastructure for their mission-critical operations.
@@ -208,7 +208,7 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
                             <span>Legal</span>
                             <span>Dossier</span>
                         </div>
-                        <p className="text-[10px] text-zinc-800 font-bold uppercase tracking-[0.5em] mt-10">© 2026 Sovereign Professional Architecture. All Logic Verified.</p>
+                        <p className="text-[10px] text-zinc-800 font-bold uppercase tracking-[0.5em] mt-10">© 2026 Professional Industrial Architecture. All Systems Verified.</p>
                     </footer>
                 </div>
             )}

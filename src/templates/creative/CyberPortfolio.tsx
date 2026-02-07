@@ -39,13 +39,13 @@ export default function CyberPortfolio({ settings, blueprint }: SovereignTemplat
                     CYBER.
                 </div>
                 <div className="flex items-center gap-12 text-[10px] font-bold uppercase tracking-[0.5em] text-zinc-500">
-                    <span className="hover:text-white cursor-crosshair transition-colors">Manifesto</span>
-                    <span className="hover:text-white cursor-crosshair transition-colors">Lab_Works</span>
+                    <span className="hover:text-white cursor-crosshair transition-colors">Philosophy</span>
+                    <span className="hover:text-white cursor-crosshair transition-colors">Selected_Works</span>
                     <button
                         onClick={() => onOpen("Cyber Connect")}
                         className="px-8 py-3 bg-white text-black font-black hover:invert transition-all"
                     >
-                        Terminal_Access
+                        Sign_Up
                     </button>
                 </div>
             </nav>
@@ -73,13 +73,13 @@ export default function CyberPortfolio({ settings, blueprint }: SovereignTemplat
                                 <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
                                     <ArrowDownRight className="w-5 h-5" />
                                 </div>
-                                Explore Operations
+                                View Portfolio
                             </button>
                         </div>
                         <div className="flex flex-col gap-8 opacity-40 text-[10px] font-mono tracking-widest">
-                            <div>[STATUS: OPTIMAL]</div>
-                            <div>[CORE: ACTIVATED]</div>
-                            <div>[ENCRYPTION: RSA-4096]</div>
+                            <div>[STATUS: VERIFIED]</div>
+                            <div>[UPTIME: 99.9%]</div>
+                            <div>[SYSTEM: ISO-27001]</div>
                         </div>
                     </div>
                 </div>
@@ -98,9 +98,9 @@ export default function CyberPortfolio({ settings, blueprint }: SovereignTemplat
             {/* CORE CAPABILITIES */}
             <section className="bg-white text-black py-40 px-10">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-20">
-                    <CapItem icon={Cpu} title="NEURAL LOGIC" desc="Architecting interfaces that learn from human interaction patterns." />
-                    <CapItem icon={Globe} title="GLOBAL PROTOCOL" desc="Universal deployment infrastructures for high-fidelity digital assets." />
-                    <CapItem icon={Zap} title="FORCE_SYNC" desc="Real-time data orchestration at the speed of thought (0ms)." />
+                    <CapItem icon={Cpu} title="ADAPTIVE LOGIC" desc="Architecting interfaces that align with human interaction patterns." />
+                    <CapItem icon={Globe} title="GLOBAL INFRASTRUCTURE" desc="Standardized deployment infrastructures for professional digital assets." />
+                    <CapItem icon={Zap} title="STREAM_SYNC" desc="Real-time data synchronization at sub-100ms speeds." />
                 </div>
             </section>
         </motion.div>

@@ -12,6 +12,8 @@ import FloatingChat from "@/components/chat/FloatingChat";
 import { Toaster } from "@/components/ui/sonner";
 import { AnalyticsProvider } from "@/components/providers/AnalyticsProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import SupabaseProvider from "@/components/providers/SupabaseProvider";
+import { PwaProvider } from "@/components/providers/PwaProvider";
 
 // LOGIC UPDATE: Use system fonts to prevent build blocking on external fetch
 const inter = { variable: "--font-inter" };
@@ -24,6 +26,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     return {
         title: t('title'),
         description: t('description'),
+        manifest: '/manifest.json',
+        themeColor: '#000000',
         openGraph: {
             title: t('title'),
             description: t('description'),
@@ -67,14 +71,18 @@ export default async function LocaleLayout({
                         disableTransitionOnChange
                         themes={["light", "dark", "medical", "luxury"]}
                     >
-                        <AnalyticsProvider>
-                            <JsonLd />
-                            <LaunchModal />
-                            <AuthModalManager />
-                            {children}
-                            <FloatingChat />
-                            <Toaster />
-                        </AnalyticsProvider>
+                        <SupabaseProvider>
+                            <PwaProvider>
+                                <AnalyticsProvider>
+                                    <JsonLd />
+                                    <LaunchModal />
+                                    <AuthModalManager />
+                                    {children}
+                                    <FloatingChat />
+                                    <Toaster />
+                                </AnalyticsProvider>
+                            </PwaProvider>
+                        </SupabaseProvider>
                     </ThemeProvider>
                 </NextIntlClientProvider>
             </body>

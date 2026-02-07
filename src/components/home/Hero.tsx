@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Zap, Cpu } from "lucide-react";
+import { ArrowRight, Zap, Cpu, Shield, Globe, Activity } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
@@ -23,7 +23,7 @@ export default function Hero() {
     };
 
     return (
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-slate-950">
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-background">
             {/* Wix-Style INNOVATIVE BACKGROUND */}
             <div className="absolute inset-0 z-0">
                 {/* Dynamic Mesh Gradients */}
@@ -41,7 +41,7 @@ export default function Hero() {
                     animate={{ opacity: 1, y: 0 }}
                     className="mb-8 inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl"
                 >
-                    <Sparkles className="w-3.5 h-3.5 text-blue-400 animate-spin-slow" />
+                    <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
                     <span className="text-[10px] font-black text-white/70 tracking-[0.3em] uppercase">{t('badge')}</span>
                 </motion.div>
 
@@ -110,7 +110,7 @@ export default function Hero() {
                         <span>{t('badges.core')}</span>
                     </div>
                     <div className="flex items-center gap-3 hover:text-white transition-colors cursor-default group">
-                        <Sparkles className="w-4 h-4 text-yellow-500 group-hover:scale-125 transition-transform" />
+                        <Shield className="w-4 h-4 text-yellow-500 group-hover:scale-125 transition-transform" />
                         <span>{t('badges.logic')}</span>
                     </div>
                 </motion.div>

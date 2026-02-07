@@ -39,10 +39,10 @@ export default function MasterRetail(props: SovereignTemplateProps) {
 
     const productsSection = blueprint?.layout?.find((s) => s.type === 'features');
     const products = (productsSection?.content?.products as Product[]) || [
-        { name: "Sovereign Essential", price: "$120", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=2099&auto=format&fit=crop" },
-        { name: "Quantum Wear", price: "$450", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2430" },
-        { name: "Astra Core", price: "$890", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2430" },
-        { name: "Neon Shift", price: "$65", img: "https://images.unsplash.com/photo-1583394838336-acd977736f90?q=80&w=2430" }
+        { name: "Industrial Essential", price: "$120", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=2099&auto=format&fit=crop" },
+        { name: "Classic Performance", price: "$450", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2430" },
+        { name: "Core Asset", price: "$890", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2430" },
+        { name: "Shift 01", price: "$65", img: "https://images.unsplash.com/photo-1583394838336-acd977736f90?q=80&w=2430" }
     ];
 
     const onOpen = useLaunchModal((state) => state.onOpen);
@@ -135,7 +135,7 @@ export default function MasterRetail(props: SovereignTemplateProps) {
                         <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 border-y border-zinc-100 py-10">
                             {[
                                 { icon: Truck, title: "Global Logistics", desc: "Express delivery protocol to 180+ countries." },
-                                { icon: Shield, title: "Sovereign Security", desc: "Identity protection via end-to-end encryption." },
+                                { icon: Shield, title: "Secure Checkout", desc: "Identity protection via end-to-end encryption." },
                                 { icon: CheckCircle2, title: "Quality Audit", desc: "Every asset hand-verified for engineering truth." }
                             ].map((item, i) => (
                                 <div key={i} className="flex gap-4 items-start">
@@ -209,7 +209,7 @@ export default function MasterRetail(props: SovereignTemplateProps) {
                             <span>Sustainability</span>
                             <span>Legal</span>
                         </div>
-                        <p className="text-[10px] text-zinc-300 font-bold uppercase tracking-widest mt-10">© 2026 Sovereign Retail Architecture.</p>
+                        <p className="text-[10px] text-zinc-300 font-bold uppercase tracking-widest mt-10">© 2026 Professional Retail Infrastructure.</p>
                     </footer>
                 </div>
             )}

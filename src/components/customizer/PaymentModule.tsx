@@ -1,53 +1,22 @@
 "use client";
 
-import { PayPalButtons } from "@paypal/react-paypal-js";
-import { motion } from "framer-motion";
-import { useRouter } from "@/i18n/routing";
+import React from 'react';
+import { CheckoutModule } from '../payment/CheckoutModule';
 
-interface PaymentModuleProps {
-    siteId: string;
-}
-
-export function PaymentModule({ siteId }: PaymentModuleProps) {
-    const router = useRouter();
-
+export function PaymentModule({ siteId }: { siteId: string }) {
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="space-y-4 pt-8 border-t border-white/5"
-        >
-            <div className="p-6 bg-blue-600/5 rounded-2xl border border-blue-500/20 backdrop-blur-sm">
-                <p className="text-[9px] text-zinc-400 uppercase tracking-widest font-black mb-4 text-center">
-                    Secure Sovereign Payment
-                </p>
-                <div className="overflow-hidden rounded-xl">
-                    <PayPalButtons
-                        style={{ layout: 'vertical', shape: 'rect', label: 'pay' }}
-                        createOrder={async () => {
-                            const res = await fetch('/api/paypal/create-order', {
-                                method: 'POST',
-                                body: JSON.stringify({ siteId })
-                            });
-                            const data = await res.json();
-                            return data.id;
-                        }}
-                        onApprove={async (data) => {
-                            const res = await fetch('/api/paypal/capture-order', {
-                                method: 'POST',
-                                body: JSON.stringify({ orderId: data.orderID })
-                            });
-                            const result = await res.json();
-                            if (result.success) {
-                                router.push(`/success/${result.siteId}`);
-                            }
-                        }}
-                    />
-                </div>
+        <div className="mt-6 border-t border-white/5 pt-8">
+            <div className="mb-6">
+                <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-2">Publishing Infrastructure</h4>
+                <p className="text-[10px] text-zinc-600">Your site is in draft mode. Activate the Sovereign node to go live.</p>
             </div>
-            <p className="text-[9px] text-zinc-500 text-center uppercase tracking-widest font-bold">
-                Instant AI Infrastructure Activation
-            </p>
-        </motion.div>
+            <CheckoutModule
+                siteId={siteId}
+                planId="pro"
+                amount="49.00"
+                currency="USD"
+                siteType="business"
+            />
+        </div>
     );
 }

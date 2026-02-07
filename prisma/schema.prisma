@@ -16,12 +16,28 @@ datasource db {
 // --------------------------------------------------------
 // [CORE] IDENTITY MODULE
 // --------------------------------------------------------
+model Profile {
+  id                  String    @id
+  full_name           String?
+  avatar_url          String?
+  phone               String?
+  
+  // Stripe Integration (Mission 3.2)
+  stripe_customer_id  String?   @unique
+  subscription_status String?   // active, trialing, past_due, canceled
+  plan_id             String?
+  subscription_id     String?
+  
+  // Relations
+  user          User      @relation(fields: [id], references: [id])
+  sites         Site[]
+
+  @@map("profiles")
+}
+
 model User {
   id            String    @id @default(uuid())
   email         String    @unique
-  full_name     String?
-  avatar_url    String?
-  phone         String?
   
   // Subscription Logic
   tier          String    @default("starter") // starter, pro, business, unlimited
@@ -38,7 +54,9 @@ model User {
   updated_at    DateTime  @updatedAt
   
   // Relations
+  profile       Profile?
   stores        Store[]
+  sites         Site[]
   subscriptions Subscription[]
   payments      Payment[]
   
@@ -99,6 +117,32 @@ model Payment {
 // --------------------------------------------------------
 // [CORE] EMPIRE MODULE (Stores/Sites)
 // --------------------------------------------------------
+// --------------------------------------------------------
+// [CORE] SITE GENERATION MODULE (Mission 2.1)
+// --------------------------------------------------------
+model Site {
+  id            String    @id @default(uuid())
+  user_id       String
+  profile_id    String?   
+  name          String
+  subdomain     String    @unique // Must be unique
+  custom_domain String?   @unique // Optional, must be unique
+  
+  template_id   String
+  data          Json      @default("{}") // The JSONB field for flexibility
+  published     Boolean   @default(false)
+  
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+
+  // Relations
+  user          User      @relation(fields: [user_id], references: [id])
+  profile       Profile?  @relation(fields: [profile_id], references: [id])
+  template      Template  @relation(fields: [template_id], references: [id])
+
+  @@map("sites")
+}
+
 model Store {
   id            String    @id @default(uuid())
   user_id       String
@@ -309,6 +353,7 @@ model Template {
   name          String
   slug          String    @unique
   description   String?
+  preview_image_url String? // Renamed thumbnail_url to preview_image_url as per mission
   
   // Categorization
   category      String    // business, restaurant, portfolio, ecommerce, saas, etc.
@@ -317,7 +362,6 @@ model Template {
   
   // Template Data
   blueprint     Json      // The template blueprint
-  thumbnail_url String?
   preview_url   String?
   
   // Features
@@ -337,6 +381,9 @@ model Template {
   
   created_at    DateTime  @default(now())
   updated_at    DateTime  @updatedAt
+
+  // Relations
+  sites         Site[]
   
   @@map("templates")
 }

@@ -196,7 +196,7 @@ export default function ShowcaseGallery() {
                                         <div className="flex items-center justify-between">
                                             <div>
                                                 <h4 className="text-xl font-bold text-white uppercase tracking-tight italic">{site.name}</h4>
-                                                <p className="text-blue-400 text-[10px] font-black uppercase tracking-widest">{site.site_type || "Sovereign Deployment"}</p>
+                                                <p className="text-blue-400 text-[10px] font-black uppercase tracking-widest">{site.site_type || "Production Architecture"}</p>
                                             </div>
                                             <Button
                                                 onClick={() => window.open(`https://${site.slug}.getyousite.com`, '_blank')}

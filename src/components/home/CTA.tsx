@@ -20,7 +20,7 @@ export default function CTA() {
                     viewport={{ once: true }}
                     className="text-4xl md:text-7xl font-bold text-white mb-8 tracking-tighter"
                 >
-                    Ready to <span className="text-blue-500">Dominate?</span>
+                    Ready to <span className="text-blue-500">Scale?</span>
                 </motion.h2>
 
                 <motion.p
@@ -30,8 +30,8 @@ export default function CTA() {
                     transition={{ delay: 0.1 }}
                     className="text-xl text-zinc-300 mb-10 max-w-2xl mx-auto"
                 >
-                    The Quantum Engine is idling. Your competitors are still using drag-and-drop.
-                    Launch your digital empire today and leave them in the dust.
+                    High-performance infrastructure is ready. Move beyond simple builders.
+                    Launch your professional business asset today.
                 </motion.p>
 
                 <motion.div
@@ -46,7 +46,7 @@ export default function CTA() {
                         size="lg"
                         className="text-lg px-12 py-8 rounded-full shadow-[0_0_50px_rgba(37,99,235,0.5)] transition-all hover:scale-105 active:scale-95"
                     >
-                        Ignite Protocol <ArrowRight className="ml-2 w-5 h-5" />
+                        Start Your Project <ArrowRight className="ml-2 w-5 h-5" />
                     </Button>
                 </motion.div>
             </div>

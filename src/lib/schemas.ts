@@ -47,7 +47,7 @@ export const SiteBlueprintSchema = z.object({
         secondary: z.string(),
         accent: z.string(),
         fontFamily: z.string(),
-        mode: z.enum(["light", "dark", "quantum"]),
+        mode: z.enum(["light", "dark", "industrial"]),
     }),
     layout: z.array(SectionSchema),
     footer: z.object({
@@ -60,7 +60,7 @@ export const SiteBlueprintSchema = z.object({
         estimated_savings: z.string(),
         valuation: z.number().optional(),
         logic_verified: z.boolean().default(true)
-    }).optional(),
+    }),
     ai_insight: z.string().optional(),
     timestamp: z.string(),
 });

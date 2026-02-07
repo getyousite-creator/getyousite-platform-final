@@ -2,28 +2,30 @@
     "Header": {
         "services": "Services",
         "pricing": "Pricing",
-        "aiEngine": "Smart Builder",
+        "aiEngine": "Engine",
         "portfolio": "Templates",
         "blog": "Blog",
         "contact": "Contact",
-        "launch": "Get Started",
+        "launch": "Sign Up",
         "login": "Login",
+        "signout": "Sign Out",
+        "dashboard": "Dashboard",
         "backHome": "Back to Home",
-        "sovereign_access": "Sovereign Access Unlocked"
+        "sovereign_access": "Secure Access Active"
     },
     "Hero": {
-        "badge": "System Ready • v2.0 Live",
-        "headline": "Create Your Professional Website in 48 Hours.",
-        "subheadline": "Smart websites. Modern designs. High performance. Start building your premium digital presence today.",
-        "placeholder": "Describe your website idea here...",
-        "generate": "Get Started",
-        "gdpr": "Security Standard Compliant",
-        "uptime": "99.9% Uptime",
-        "aiCore": "AI-Driven Design",
+        "badge": "Industrial Standard • v2.0",
+        "headline": "High-Performance Professional Websites.",
+        "subheadline": "Precision engineering for digital business assets. Intelligent design, global speed, and absolute reliability.",
+        "placeholder": "Describe your business niche...",
+        "generate": "Build My Site",
+        "gdpr": "GDPR & Security Compliant",
+        "uptime": "99.9% Uptime SLA",
+        "aiCore": "AI Infrastructure",
         "badges": {
-            "delivery": "Sovereign Delivery",
-            "core": "Genius AI Core",
-            "logic": "Innovative Logic"
+            "delivery": "Fast Deployment",
+            "core": "AI Design Engine",
+            "logic": "Business Logic"
         }
     },
     "Services": {
@@ -81,15 +83,17 @@
         ]
     },
     "Showcase": {
-        "title": "Our <span class=\"text-blue-500\">Portfolio</span>",
+        "title": "Our <span class='text-blue-500'>Portfolio</span>",
         "subtitle": "Explore our library of professional templates ready for your new project.",
         "tabs": {
             "all": "All",
             "business": "Business & Agency",
-            "creative": "Creative & Portfolio",
             "ecommerce": "E-Commerce",
-            "medical": "Healthcare",
-            "food": "Restaurant & Food"
+            "healthcare": "Healthcare",
+            "restaurant": "Restaurant & Food",
+            "creative": "Creative & Portfolio",
+            "finance": "Finance & Legal",
+            "internal": "Internal Tools"
         },
         "preview": "View Demo",
         "edit": "Edit This Site",
@@ -115,7 +119,7 @@
             },
             "restaurant": {
                 "title": "Aurum & Ash",
-                "desc": "Luxury dining experience with a reservation engine."
+                "desc": "Industrial dining experience with a reservation engine."
             },
             "tech": {
                 "title": "SyncSphere",
@@ -139,10 +143,10 @@
         "most_popular": "Most Popular",
         "payment_notice": "Pay via CIH / Barid Bank for immediate activation with 0% processing fees",
         "desc": {
-            "starter": "Perfect for personal blogs and digital resumes.",
-            "pro": "The best choice for businesses, clinics, and professional offices.",
-            "business": "Full e-commerce store with integrated inventory management.",
-            "enterprise": "Custom solutions for large projects with direct technical support."
+            "starter": "Industrial-grade entry point for blogs and personal platforms.",
+            "pro": "The standard for businesses, clinics, and professional offices.",
+            "business": "Full e-commerce infrastructure with integrated inventory management.",
+            "enterprise": "Custom infrastructure for large-scale projects with direct engineering support."
         },
         "price_custom": "Custom Quote",
         "per_project": "/project",
@@ -212,6 +216,22 @@
         "signup_button": "Create Account",
         "have_account": "Already have an account? Login",
         "no_account": "Don't have an account? Sign up",
+        "forgot_password_link": "Forgot password?",
+        "forgot_password_title": "Identify Retrieval",
+        "reset_password_title": "Reset Security Key",
+        "new_password_placeholder": "Enter New Security Key",
+        "update_password_button": "Update Identity",
+        "secure_session_active": "Secure Identity Sequence Active",
+        "security_link_msg": "Enter your email for security link",
+        "reset_success_msg": "Reset instructions sent to your email.",
+        "update_success_msg": "Identity Updated. Redirecting to login...",
+        "signup_success_msg": "Account created. Please check your email to verify.",
+        "error_invalid_email": "Please enter a valid email address.",
+        "error_user_exists": "This email is already registered.",
+        "error_invalid_credentials": "Invalid email or password.",
+        "error_password_too_short": "Security Mandate: Password must be at least 8 characters.",
+        "error_generic": "Authentication failed. Please try again.",
+        "recall_identity": "Return to Login",
         "terms": "By signing in, you agree to our Terms of Service and Privacy Policy."
     },
     "Contact": {
@@ -272,6 +292,9 @@
                 "date": "Jan 30, 2026"
             }
         },
+        "share_node": "Share Node",
+        "apply_insights": "Apply Insights",
+        "back_to_streams": "Back to Intelligence Streams",
         "newsletter": {
             "title": "Subscribe to Our Newsletter",
             "subtitle": "Get weekly tips on web development and e-commerce growth.",
@@ -299,31 +322,31 @@
         "vision_text": "To be the leading platform that enables anyone to create and manage their professional website without needing complex technical expertise."
     },
     "LaunchModal": {
-        "init_sequence": "Initialize Sequence",
-        "title": "Launch Your Digital Empire",
-        "desc": "Confirm your professional vision and initiate the Sovereign Protocol deployment.",
-        "email_label": "Comm_Link (Email)",
-        "email_placeholder": "commander@getyousite.com",
+        "init_sequence": "Start Building",
+        "title": "Launch Your Project",
+        "desc": "Confirm your business details to initiate the automated design sequence.",
+        "email_label": "Contact Email",
+        "email_placeholder": "info@yourdomain.com",
         "type_label": "What are you building?",
         "type_options": {
-            "blog": "Personal / Blog Presence",
-            "business": "Professional Business Site",
-            "store": "E-commerce / Online Store"
+            "blog": "Personal / Blog",
+            "business": "Professional Business",
+            "store": "E-commerce Store"
         },
-        "vision_label": "Vision_Matrix (Description)",
-        "vision_placeholder": "AI-powered ecosystem for luxury real estate...",
-        "tier_label": "Service_Tier",
+        "vision_label": "Business Description",
+        "vision_placeholder": "B2B consulting firm focusing on logistics...",
+        "tier_label": "Service Plan",
         "tier_options": {
-            "starter": "Starter - Personal Presence",
-            "pro": "Pro - Professional Empire",
-            "business": "Business - Scalable Infrastructure",
-            "enterprise": "Enterprise - Sovereign Custom"
+            "starter": "Starter Plan",
+            "pro": "Professional Plan",
+            "business": "Business Infrastructure",
+            "enterprise": "Enterprise Solution"
         },
-        "submit": "Launch Protocol",
-        "submitting": "Orchestrating...",
+        "submit": "Launch Site",
+        "submitting": "Processing...",
         "success": {
-            "title": "Transmission Received",
-            "desc": "Your sovereign site is active. Initializing UI..."
+            "title": "Project Initiated",
+            "desc": "Your site infrastructure is ready. Redirecting to workspace..."
         }
     },
     "Help": {
@@ -332,5 +355,62 @@
         "badge": "Support Hub",
         "faq_title": "Frequently Asked Questions",
         "contact_support": "Contact Technical Support"
+    },
+    "Editor": {
+        "title": "Site Editor",
+        "syncing": "Syncing Data...",
+        "secured": "Changes Secured",
+        "publish": "Publish Site",
+        "basics": "Basics",
+        "content": "Content",
+        "design": "Design",
+        "domain": "Domain"
+    },
+    "Common": {
+        "upgrade": "Upgrade Access",
+        "share": "Share Project",
+        "loading": "Loading Interface...",
+        "error": "Critical Failure",
+        "back": "Return",
+        "save": "Secure Changes"
+    },
+    "Footer": {
+        "tagline": "The sovereign infrastructure for the next generation of digital commerce. Built for speed, engineered for dominance.",
+        "platform": "Platform",
+        "company": "Company",
+        "system": "System Status",
+        "aiEngine": "AI Engine",
+        "pricing": "Pricing",
+        "blog": "Intelligence",
+        "contact": "Contact",
+        "about": "About Us",
+        "help": "Help Center",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service",
+        "operational": "All Systems Operational",
+        "hosted": "Securely Hosted",
+        "copyright": "© 2026 GetYouSite. All rights reserved."
+    },
+    "Dashboard": {
+        "title": "Command Center",
+        "subtitle": "Monitor and manage your digital empire",
+        "launch_new": "Launch New Empire",
+        "total_views": "Total Views",
+        "unique_visitors": "Unique Visitors",
+        "conversion_rate": "Conversion Rate",
+        "avg_session": "Avg. Session",
+        "assets": "Your Assets",
+        "assets_desc": "Manage your deployed and draft sites",
+        "no_assets": "No Assets Found",
+        "no_assets_desc": "You haven't initialized any sovereign infrastructure yet.",
+        "create_first": "Create First Asset",
+        "seo_health": "SEO Health",
+        "quick_actions": "Quick Actions",
+        "add_domain": "Add Custom Domain",
+        "run_audit": "Run SEO Audit",
+        "view_analytics": "View Analytics",
+        "recent_activity": "Recent Activity",
+        "vs_last_month": "vs last month",
+        "syncing": "SYNCING_DASHBOARD..."
     }
 }

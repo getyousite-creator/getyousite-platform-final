@@ -1,6 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import { IntelligenceDashboard } from './IntelligenceDashboard';
+
+// Inside DashboardClient return, under the header section or as a new tab
+// I'll add it as a new section above the sites list to provide immediate "Truth"
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import {
@@ -9,6 +12,8 @@ import {
     Clock, Calendar, ChevronRight, BarChart3, SearchCheck,
     Zap, Target, ArrowUpRight, ArrowDownRight, Download
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -62,6 +67,7 @@ interface DashboardData {
 }
 
 export default function DashboardClient() {
+    const t = useTranslations("Dashboard");
     const [data, setData] = useState<DashboardData | null>(null);
     const [loading, setLoading] = useState(true);
     const [selectedStore, setSelectedStore] = useState<string | null>(null);
@@ -165,7 +171,7 @@ export default function DashboardClient() {
             <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
                 <div className="text-center">
                     <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                    <p className="text-zinc-400 font-mono">LOADING_DASHBOARD...</p>
+                    <p className="text-zinc-400 font-mono">{t('syncing')}</p>
                 </div>
             </div>
         );
@@ -182,17 +188,20 @@ export default function DashboardClient() {
                             animate={{ opacity: 1, y: 0 }}
                             className="text-3xl font-black text-white uppercase tracking-tighter"
                         >
-                            Command Center
+                            {t('title')}
                         </motion.h1>
-                        <p className="text-zinc-400 mt-1">Monitor and manage your digital empire</p>
+                        <p className="text-zinc-400 mt-1">{t('subtitle')}</p>
                     </div>
                     <Button asChild className="bg-blue-600 hover:bg-blue-500 text-white font-bold">
                         <Link href="/ar/customizer">
                             <Plus size={16} className="mr-2" />
-                            Launch New Empire
+                            {t('launch_new')}
                         </Link>
                     </Button>
                 </div>
+
+                {/* INTELLIGENCE HUB */}
+                <IntelligenceDashboard />
 
                 {/* STATS GRID */}
                 {data && data.analytics && (
@@ -206,7 +215,7 @@ export default function DashboardClient() {
                                 <CardContent className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-zinc-500 text-sm font-medium">Total Views</p>
+                                            <p className="text-zinc-500 text-sm font-medium">{t('total_views')}</p>
                                             <p className="text-3xl font-black text-white mt-1">
                                                 {formatNumber(data.analytics.totalViews)}
                                             </p>
@@ -218,7 +227,7 @@ export default function DashboardClient() {
                                     <div className="flex items-center mt-4 text-emerald-500 text-sm">
                                         <ArrowUpRight size={16} className="mr-1" />
                                         <span>+12.5%</span>
-                                        <span className="text-zinc-500 ml-2">vs last month</span>
+                                        <span className="text-zinc-500 ml-2">{t('vs_last_month')}</span>
                                     </div>
                                 </CardContent>
                             </Card>
@@ -233,7 +242,7 @@ export default function DashboardClient() {
                                 <CardContent className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-zinc-500 text-sm font-medium">Unique Visitors</p>
+                                            <p className="text-zinc-500 text-sm font-medium">{t('unique_visitors')}</p>
                                             <p className="text-3xl font-black text-white mt-1">
                                                 {formatNumber(data.analytics.uniqueVisitors)}
                                             </p>
@@ -260,7 +269,7 @@ export default function DashboardClient() {
                                 <CardContent className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-zinc-500 text-sm font-medium">Conversion Rate</p>
+                                            <p className="text-zinc-500 text-sm font-medium">{t('conversion_rate')}</p>
                                             <p className="text-3xl font-black text-white mt-1">
                                                 {(Math.random() * 5 + 2).toFixed(1)}%
                                             </p>
@@ -287,7 +296,7 @@ export default function DashboardClient() {
                                 <CardContent className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-zinc-500 text-sm font-medium">Avg. Session</p>
+                                            <p className="text-zinc-500 text-sm font-medium">{t('avg_session')}</p>
                                             <p className="text-3xl font-black text-white mt-1">
                                                 {Math.floor(data.analytics.avgSessionDuration / 60)}:{(data.analytics.avgSessionDuration % 60).toString().padStart(2, '0')}
                                             </p>
@@ -315,9 +324,9 @@ export default function DashboardClient() {
                             <CardHeader>
                                 <CardTitle className="text-white flex items-center gap-2">
                                     <Shield className="w-5 h-5 text-blue-500" />
-                                    Your Assets
+                                    {t('assets')}
                                 </CardTitle>
-                                <CardDescription>Manage your deployed and draft sites</CardDescription>
+                                <CardDescription>{t('assets_desc')}</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 {data && data.stores.length > 0 ? (
@@ -403,12 +412,12 @@ export default function DashboardClient() {
                                         <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
                                             <Shield className="w-8 h-8 text-zinc-600" />
                                         </div>
-                                        <h3 className="text-lg font-bold text-white mb-2">No Assets Found</h3>
+                                        <h3 className="text-lg font-bold text-white mb-2">{t('no_assets')}</h3>
                                         <p className="text-zinc-500 mb-6 max-w-sm mx-auto">
-                                            You haven't initialized any sovereign infrastructure yet.
+                                            {t('no_assets_desc')}
                                         </p>
                                         <Button asChild className="bg-blue-600 hover:bg-blue-500">
-                                            <Link href="/ar/customizer">Create First Asset</Link>
+                                            <Link href="/ar/customizer">{t('create_first')}</Link>
                                         </Button>
                                     </div>
                                 )}
@@ -424,7 +433,7 @@ export default function DashboardClient() {
                                 <CardHeader>
                                     <CardTitle className="text-white flex items-center gap-2">
                                         <SearchCheck className="w-5 h-5 text-yellow-500" />
-                                        SEO Health
+                                        {t('seo_health')}
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
@@ -473,25 +482,25 @@ export default function DashboardClient() {
                             <CardHeader>
                                 <CardTitle className="text-white flex items-center gap-2">
                                     <Zap className="w-5 h-5 text-orange-500" />
-                                    Quick Actions
+                                    {t('quick_actions')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2">
                                 <Button variant="outline" className="w-full justify-start border-white/10 bg-white/5 hover:bg-white/10">
                                     <Globe className="w-4 h-4 mr-2" />
-                                    Add Custom Domain
+                                    {t('add_domain')}
                                 </Button>
                                 <Button variant="outline" className="w-full justify-start border-white/10 bg-white/5 hover:bg-white/10">
                                     <Search className="w-4 h-4 mr-2" />
-                                    Run SEO Audit
+                                    {t('run_audit')}
                                 </Button>
                                 <Button variant="outline" className="w-full justify-start border-white/10 bg-white/5 hover:bg-white/10">
                                     <BarChart3 className="w-4 h-4 mr-2" />
-                                    View Analytics
+                                    {t('view_analytics')}
                                 </Button>
                                 <Button variant="outline" className="w-full justify-start border-white/10 bg-white/5 hover:bg-white/10">
                                     <Calendar className="w-4 h-4 mr-2" />
-                                    Schedule Report
+                                    {t('schedule_report')}
                                 </Button>
                             </CardContent>
                         </Card>
@@ -501,7 +510,7 @@ export default function DashboardClient() {
                             <CardHeader>
                                 <CardTitle className="text-white flex items-center gap-2">
                                     <Clock className="w-5 h-5 text-blue-500" />
-                                    Recent Activity
+                                    {t('recent_activity')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-3">

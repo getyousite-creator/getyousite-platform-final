@@ -9,6 +9,7 @@ import { ArrowLeft, Calendar, User, Share2, Shield, Sparkles } from "lucide-reac
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 // REDUNDANT BUT LOGICAL REPRODUCTION OF MOCK DATA
 const POSTS = [
@@ -40,6 +41,7 @@ const POSTS = [
 ];
 
 export default function BlogPostPage() {
+    const t = useTranslations("Blog");
     const params = useParams();
     const slug = params.slug as string;
 
@@ -62,7 +64,7 @@ export default function BlogPostPage() {
                         className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 hover:text-white transition-all mb-16 group"
                     >
                         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-2 transition-transform" />
-                        Back to Intelligence_Streams
+                        {t('back_to_streams')}
                     </Link>
 
                     {/* ARTICLE HEADER */}
@@ -110,10 +112,10 @@ export default function BlogPostPage() {
                             </div>
                             <div className="flex items-center gap-4">
                                 <Button className="h-14 px-8 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all font-black uppercase tracking-widest">
-                                    <Share2 className="mr-2 w-4 h-4" /> Share_Node
+                                    <Share2 className="mr-2 w-4 h-4" /> {t('share_node')}
                                 </Button>
                                 <Button className="h-14 px-8 rounded-xl bg-blue-600 hover:bg-blue-500 transition-all font-black uppercase tracking-widest">
-                                    Apply_Insights
+                                    {t('apply_insights')}
                                 </Button>
                             </div>
                         </div>

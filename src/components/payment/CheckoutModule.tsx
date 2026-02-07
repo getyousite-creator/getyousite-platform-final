@@ -1,362 +1,117 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { CreditCard, Landmark, ShieldCheck, Upload, CheckCircle2, Loader2, Info } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import React from 'react';
+import { PayPalButtons } from "@paypal/react-paypal-js";
+import { createPayPalOrder, capturePayPalOrder } from "@/app/actions/paypal-actions";
+import { useAuth } from "@/components/providers/SupabaseProvider";
 import { toast } from "sonner";
-import { submitPaymentProofAction } from "@/app/actions/payment-actions";
+import { Shield, Zap } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface CheckoutModuleProps {
-    siteId: string; // SOVEREIGN LINK: Connects payment to asset
-    planId: "starter" | "pro" | "business" | "enterprise";
-    siteType: "blog" | "business" | "store";
-    currency: "MAD" | "USD";
+    siteId: string;
+    planId: string;
+    siteType: string;
     amount: string;
-    onSuccess: () => void;
+    currency: string;
+    onSuccess?: () => void;
 }
 
-const BankPortal = ({ name, account, rib }: { name: string, account: string, rib: string }) => {
-    const handleCopy = (text: string, label: string) => {
-        navigator.clipboard.writeText(text);
-        toast.success(`${label} Copied to Clipboard`);
-    };
+export function CheckoutModule({ siteId, planId, amount, onSuccess }: CheckoutModuleProps) {
+    const { profile } = useAuth();
+    const [provider, setProvider] = React.useState<'paypal' | 'stripe'>('paypal');
 
     return (
-        <div className="bg-white/5 p-5 rounded-2xl border border-white/5 space-y-3 group hover:border-white/10 transition-colors">
-            <div className="flex justify-between items-center">
-                <span className="text-[9px] font-black uppercase text-zinc-500 tracking-widest">{name}</span>
-                <div className="flex gap-2">
-                    <button
-                        onClick={() => handleCopy(account, 'Account Number')}
-                        className="text-[8px] font-black uppercase tracking-tighter text-blue-400 hover:text-blue-300 transition-colors bg-blue-500/10 px-2 py-1 rounded-md"
-                    >
-                        Copy_Acc
-                    </button>
-                    <button
-                        onClick={() => handleCopy(rib, 'RIB')}
-                        className="text-[8px] font-black uppercase tracking-tighter text-emerald-400 hover:text-emerald-300 transition-colors bg-emerald-500/10 px-2 py-1 rounded-md"
-                    >
-                        Copy_RIB
-                    </button>
+        <div className="p-8 rounded-[40px] bg-zinc-900 border border-white/5 space-y-8 max-w-lg mx-auto shadow-2xl">
+            <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center">
+                    <Shield className="w-6 h-6 text-blue-500" />
+                </div>
+                <div>
+                    <h3 className="text-xl font-black uppercase tracking-tightest text-white">Secure Activation</h3>
+                    <p className="text-xs text-zinc-500 uppercase tracking-widest">Protocol: PayPal Sovereign Cloud</p>
                 </div>
             </div>
-            <div className="flex flex-col">
-                <span className="text-[10px] font-mono font-bold text-zinc-300 select-all">{rib}</span>
-                <span className="text-[8px] text-zinc-600 font-bold uppercase mt-1">Acc: {account}</span>
+
+            <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/5">
+                <div className="flex justify-between items-center mb-4">
+                    <span className="text-zinc-500 uppercase text-[10px] font-bold">Service Plan</span>
+                    <span className="text-white font-black uppercase text-xs">{planId}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                    <span className="text-zinc-500 uppercase text-[10px] font-bold">Atomic Cost</span>
+                    <span className="text-2xl font-black text-white">${amount} <span className="text-[10px] text-zinc-600">USD</span></span>
+                </div>
+            </div>
+
+            <div className="flex gap-4">
+                <Button
+                    onClick={() => setProvider('paypal')}
+                    variant={provider === 'paypal' ? 'glow' : 'outline'}
+                    className="flex-1 text-[10px] font-black uppercase tracking-widest h-12"
+                >
+                    PayPal
+                </Button>
+                <Button
+                    onClick={() => setProvider('stripe')}
+                    variant={provider === 'stripe' ? 'glow' : 'outline'}
+                    className="flex-1 text-[10px] font-black uppercase tracking-widest h-12"
+                >
+                    Stripe
+                </Button>
+            </div>
+
+            {provider === 'paypal' ? (
+                <PayPalButtons
+                    style={{
+                        layout: "vertical",
+                        color: "blue",
+                        shape: "pill",
+                        label: "pay",
+                        height: 54
+                    }}
+                    createOrder={() => createPayPalOrder(planId, amount).then(res => res.orderID)}
+                    onApprove={async (data) => {
+                        if (!profile?.id) {
+                            toast.error("Auth Required.");
+                            return;
+                        }
+                        const res = await capturePayPalOrder(data.orderID, profile.id, planId);
+                        if (res?.success) {
+                            toast.success("Security Secured. Node Activated.");
+                            if (onSuccess) onSuccess();
+                        } else {
+                            toast.error(res?.error || "Bridge Error.");
+                        }
+                    }}
+                />
+            ) : (
+                <Button
+                    onClick={async () => {
+                        const { createStripeCheckoutAction } = await import("@/app/actions/stripe-actions");
+                        // Mapping planId to mock Stripe Price IDs for simulation
+                        const priceMap: Record<string, string> = {
+                            'starter': 'price_starter_mock',
+                            'pro': 'price_pro_mock',
+                            'business': 'price_business_mock'
+                        };
+                        const res = await createStripeCheckoutAction(priceMap[planId.toLowerCase()] || 'price_default', siteId);
+                        if (res.url) {
+                            window.location.href = res.url;
+                        } else {
+                            toast.error(res.error || "Stripe Bridge Error.");
+                        }
+                    }}
+                    className="w-full h-14 bg-[#635BFF] hover:bg-[#5851e5] text-white font-black uppercase tracking-widest text-[11px] rounded-full shadow-lg"
+                >
+                    Activate with Stripe
+                </Button>
+            )}
+
+            <div className="flex justify-center items-center gap-2">
+                <Zap className="w-3 h-3 text-zinc-700" />
+                <span className="text-[8px] text-zinc-700 uppercase font-black tracking-widest">Encrypted via Sovereign Monetization Bridge</span>
             </div>
         </div>
     );
-};
-
-export const CheckoutModule = ({ siteId, planId, siteType, currency, amount, onSuccess }: CheckoutModuleProps) => {
-    const [method, setMethod] = useState<"card" | "local">(currency === "MAD" ? "local" : "card");
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isUploaded, setIsUploaded] = useState(false);
-    const [couponCode, setCouponCode] = useState("");
-    const [isCouponApplied, setIsCouponApplied] = useState(false);
-
-    // Dynamic Amount Logic
-    const rawAmount = isCouponApplied ? "0.00" : amount;
-    const finalAmount = rawAmount;
-
-    useEffect(() => {
-        // RENDER SMART BUTTONS (API DRIVEN)
-        if (method === 'card' && (window as any).paypal) {
-            renderPayPalButtons();
-        }
-    }, [method, finalAmount]);
-
-    const renderPayPalButtons = () => {
-        const container = document.getElementById("paypal-button-container");
-        if (container) {
-            container.innerHTML = ""; // Clean slate
-
-            if ((window as any).paypal) {
-                (window as any).paypal.Buttons({
-                    // 1. CREATE ORDER (Server-Side)
-                    createOrder: async (data: any, actions: any) => {
-                        try {
-                            const response = await fetch('/api/paypal/create-order', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    siteId,
-                                    amount: finalAmount
-                                })
-                            });
-
-                            const order = await response.json();
-                            if (order.id) return order.id;
-                            throw new Error("Order Creation Failed");
-                        } catch (err) {
-                            console.error("PAYMENT_IGNITION_ERROR", err);
-                            toast.error("Payment Initialization Failed");
-                        }
-                    },
-
-                    // 2. CAPTURE ORDER (Server-Side)
-                    onApprove: async (data: any, actions: any) => {
-                        try {
-                            const response = await fetch('/api/paypal/capture-order', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    orderId: data.orderID,
-                                    planId,
-                                    siteType
-                                })
-                            });
-
-                            const result = await response.json();
-
-                            if (result.success) {
-                                toast.success("SOVEREIGN_ASSET_DEPLOYED");
-                                onSuccess();
-                            } else {
-                                toast.error("Payment Capture Failed");
-                            }
-                        } catch (err) {
-                            console.error("PAYMENT_CAPTURE_ERROR", err);
-                            toast.error("Transaction Failed");
-                        }
-                    },
-
-                    style: {
-                        layout: 'vertical',
-                        color: 'gold',
-                        shape: 'rect',
-                        label: 'pay'
-                    }
-                }).render("#paypal-button-container");
-            }
-        }
-    };
-
-    const handleLocalSubmit = async () => {
-        setIsSubmitting(true);
-        try {
-            if (isCouponApplied) {
-                const { activateInstantSubscriptionAction } = await import("@/app/actions/payment-actions");
-                const result = await activateInstantSubscriptionAction(planId, siteType);
-                if (result.success) {
-                    toast.success("SOVEREIGN_ACCESS_ACTIVATED: Welcome Architect.");
-                    onSuccess();
-                } else {
-                    toast.error(result.error || "Activation Failure");
-                }
-                return;
-            }
-
-            // Logic: Submit Payment Request to Supabase via Server Action
-            const result = await submitPaymentProofAction(planId, siteType, 'cih', 'https://placeholder-receipt.com'); // Placeholder URL for now
-
-            if (result.success) {
-                setIsUploaded(true);
-                toast.success("Reçu envoyé avec succès. Validation en cours.");
-                onSuccess();
-            } else {
-                toast.error(result.error || "Failed to submit request.");
-            }
-        } catch (error) {
-            toast.error("An error occurred during submission.");
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-
-    const handleApplyCoupon = () => {
-        if (couponCode.toUpperCase() === 'RAZANETEST') {
-            setIsCouponApplied(true);
-            toast.success("COUPON_RAZANE_ACTIVATED: 100% Discount Applied");
-        } else {
-            toast.error("INVALID_COUPON: Authentication Breach");
-        }
-    };
-
-    return (
-        <div className="bg-white rounded-3xl border border-zinc-100 p-8 shadow-2xl max-w-xl mx-auto overflow-hidden">
-            <div className="flex items-center justify-between mb-10">
-                <h2 className="text-2xl font-black italic tracking-tight">SOVEREIGN CHECKOUT</h2>
-                <div className="px-4 py-1.5 bg-zinc-950 text-white text-[10px] font-bold uppercase rounded-full">
-                    {planId} TIERS
-                </div>
-            </div>
-
-            {/* METHOD SELECTOR */}
-            <div className="grid grid-cols-2 gap-4 mb-8">
-                <button
-                    onClick={() => setMethod("card")}
-                    className={`flex items-center justify-center gap-3 p-4 rounded-2xl border-2 transition-all ${method === "card" ? "border-zinc-950 bg-zinc-950 text-white shadow-xl" : "border-zinc-100 text-zinc-400 hover:border-zinc-200"
-                        }`}
-                >
-                    <CreditCard className="w-5 h-5" />
-                    <span className="text-xs font-bold uppercase tracking-widest">Card / PayPal</span>
-                </button>
-                <button
-                    onClick={() => setMethod("local")}
-                    className={`flex items-center justify-center gap-3 p-4 rounded-2xl border-2 transition-all ${method === "local" ? "border-zinc-950 bg-zinc-950 text-white shadow-xl" : "border-zinc-100 text-zinc-400 hover:border-zinc-200"
-                        }`}
-                >
-                    <Landmark className="w-5 h-5" />
-                    <span className="text-xs font-bold uppercase tracking-widest">Morocco Local</span>
-                </button>
-            </div>
-
-            {/* COUPON INPUT */}
-            {!isCouponApplied && (
-                <div className="flex gap-2 mb-8">
-                    <input
-                        type="text"
-                        placeholder="ENTER_COUPON"
-                        value={couponCode}
-                        onChange={(e) => setCouponCode(e.target.value)}
-                        className="flex-1 bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 text-xs font-bold uppercase tracking-widest focus:outline-none focus:border-zinc-300 transition-colors"
-                    />
-                    <Button
-                        onClick={handleApplyCoupon}
-                        variant="ghost"
-                        className="bg-zinc-950 text-white hover:bg-zinc-800 text-[10px] font-black uppercase tracking-widest px-6 rounded-xl"
-                    >
-                        APPLY
-                    </Button>
-                </div>
-            )}
-            {isCouponApplied && (
-                <div className="mb-8 p-4 bg-emerald-50 border border-emerald-100 rounded-2xl flex items-center justify-between">
-                    <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Coupon_Active: RAZANETEST (-100%)</span>
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                </div>
-            )}
-
-            <AnimatePresence mode="wait">
-                {method === "card" ? (
-                    <motion.div
-                        key="card"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="space-y-6"
-                    >
-                        <div className="p-6 bg-zinc-50 rounded-2xl flex items-center justify-between">
-                            <div>
-                                <div className="text-[10px] font-black uppercase text-zinc-400 tracking-widest mb-1">Total_Amount</div>
-                                <div className="text-3xl font-black">{finalAmount} {currency}</div>
-                            </div>
-                            <ShieldCheck className="w-10 h-10 text-emerald-500" />
-                        </div>
-
-                        {/* PAYPAL SMART CONTAINER */}
-                        <div id="paypal-button-container" className="min-h-[150px] flex flex-col items-center justify-center p-4"></div>
-
-                        <p className="text-[10px] text-center text-zinc-400 font-medium">
-                            Secured by PayPal Encryption. SSL Protected.
-                        </p>
-                    </motion.div>
-                ) : (
-                    <motion.div
-                        key="local"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="space-y-6"
-                    >
-                        {/* LOCAL BANK DETAILS */}
-                        <div className="p-6 bg-zinc-950 text-white rounded-3xl space-y-6 relative overflow-hidden border border-white/5 shadow-2xl">
-                            <div className="relative z-10">
-                                <div className="flex items-center justify-between mb-6">
-                                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500">Official_Financial_Channels</h3>
-                                    <ShieldCheck className="w-4 h-4 text-emerald-500/50" />
-                                </div>
-                                <div className="space-y-5">
-                                    <BankPortal
-                                        name="CIH BANK"
-                                        account="4682850211031600"
-                                        rib="230022468285021103160034"
-                                    />
-                                    <BankPortal
-                                        name="BARID BANK"
-                                        account="1762740"
-                                        rib="350810000000000176274005"
-                                    />
-                                    <div className="flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/5">
-                                        <div className="space-y-1">
-                                            <span className="text-[8px] font-black uppercase text-zinc-500 tracking-widest">CashPlus_Transfer</span>
-                                            <div className="text-[11px] font-black text-white uppercase italic">REDA EL MOURADI</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* Decorative background accent */}
-                            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-blue-600/10 blur-[80px] rounded-full" />
-                        </div>
-
-                        {/* WARNING: IDENTITY TAGGING */}
-                        <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex gap-3">
-                            <Info className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                            <p className="text-[9px] text-amber-200/80 font-bold uppercase tracking-tight leading-relaxed font-arabic">
-                                <span className="text-amber-500">تحذير:</span> يجب وضع اسم المستخدم أو البريد الإلكتروني في وصف التحويل لضمان تفعيل حسابك.
-                                <br />
-                                <span className="text-amber-400">NOTE:</span> Always include your Email in the transfer description.
-                            </p>
-                        </div>
-
-                        {/* PROOF UPLOAD PROTOCOL (Bypassed if Coupon Applied) */}
-                        {!isCouponApplied && (
-                            <div className="space-y-4">
-                                <div className="border-2 border-dashed border-zinc-200 rounded-3xl p-8 text-center bg-zinc-50 hover:bg-zinc-100/50 transition-all cursor-pointer group" onClick={() => setIsUploaded(true)}>
-                                    {isUploaded ? (
-                                        <div className="space-y-2 py-2">
-                                            <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto text-emerald-600">
-                                                <CheckCircle2 className="w-6 h-6" />
-                                            </div>
-                                            <h4 className="text-[11px] font-black uppercase tracking-tight">Receipt_Uploaded</h4>
-                                        </div>
-                                    ) : (
-                                        <div className="space-y-3 py-2">
-                                            <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mx-auto text-zinc-400 group-hover:scale-110 transition-transform">
-                                                <Upload className="w-6 h-6" />
-                                            </div>
-                                            <h4 className="text-[11px] font-black uppercase tracking-widest">Step 1: Upload_Receipt</h4>
-                                            <p className="text-[9px] text-zinc-400 font-bold uppercase">Click to browse files</p>
-                                        </div>
-                                    )}
-                                </div>
-
-                                <motion.div
-                                    className="p-5 bg-zinc-950 rounded-2xl border border-white/10 shadow-xl"
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                >
-                                    <div className="flex gap-4 items-start">
-                                        <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center shrink-0 border border-blue-600/30">
-                                            <span className="text-blue-500 text-[10px] font-black">2</span>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <h4 className="text-[10px] font-black text-white uppercase tracking-widest leading-none">Express_Activation (30-min)</h4>
-                                            <p className="text-[9px] text-zinc-400 font-bold leading-relaxed uppercase tracking-tight">
-                                                Forward your receipt image to <span className="text-blue-400 select-all">GETYOUSITE@GMAIL.COM</span> for rapid validation protocol.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            </div>
-                        )}
-
-                        <Button
-                            className="w-full h-16 rounded-2xl bg-zinc-950 text-white font-black uppercase tracking-[0.2em] text-[11px] hover:scale-[1.01] transition-all shadow-[0_20px_40px_rgba(0,0,0,0.2)]"
-                            onClick={handleLocalSubmit}
-                            disabled={(!isUploaded && !isCouponApplied) || isSubmitting}
-                        >
-                            {isSubmitting ? (
-                                <Loader2 className="w-5 h-5 animate-spin" />
-                            ) : (
-                                isCouponApplied ? "ACTIVATE_FREE_TRIAL" : "ACTIVATE_SOVEREIGN_PROTOCOL"
-                            )}
-                        </Button>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </div>
-    );
-};
+}

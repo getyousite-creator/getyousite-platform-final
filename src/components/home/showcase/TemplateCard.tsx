@@ -32,7 +32,7 @@ export default function TemplateCard({ template, onClick }: TemplateCardProps) {
                         <div className="w-2.5 h-2.5 rounded-full bg-slate-800 transition-colors group-hover:bg-green-500/30" />
                     </div>
                     <div className="px-3 py-1 bg-white/5 rounded-full border border-white/5">
-                        <span className="text-[8px] font-black uppercase tracking-widest text-slate-500">{template.id}.deploy_reactor</span>
+                        <span className="text-[8px] font-black uppercase tracking-widest text-slate-500">{template.id}.blueprint_manifest</span>
                     </div>
                 </div>
 
@@ -53,13 +53,13 @@ export default function TemplateCard({ template, onClick }: TemplateCardProps) {
                             onClick={() => window.open(template.demoUrl, '_blank')}
                             className="flex-1 h-12 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 transition-all"
                         >
-                            <ExternalLink className="w-3.5 h-3.5" /> LIVE_REACTION
+                            <ExternalLink className="w-3.5 h-3.5" /> LIVE PREVIEW
                         </Button>
                         <Button
                             onClick={() => router.push('/signup')}
                             className="flex-1 h-12 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 shadow-xl transition-all"
                         >
-                            <CheckCircle className="w-3.5 h-3.5" /> SELECT_BLUEPRINT
+                            <CheckCircle className="w-3.5 h-3.5" /> SELECT INDUSTRIAL PILLAR
                         </Button>
                     </div>
                 </div>

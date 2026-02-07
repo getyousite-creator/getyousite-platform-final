@@ -10,7 +10,7 @@ import {
     Plus,
     ChevronRight,
     ChefHat,
-    Beverage,
+    Coffee,
     Pizza,
     IceCream,
     CalendarCheck,
@@ -41,7 +41,7 @@ export default function MasterResto(props: SovereignTemplateProps) {
     const heroImg = (heroSection?.content?.image as string) || "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2070&auto=format&fit=crop";
 
     const menuItems = (menuSection?.content?.menu as MenuItem[]) || [
-        { name: "Sovereign Signature", price: "$42", description: "Aged Wagyu, truffle essence, gold leaf.", img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=2080&auto=format&fit=crop" },
+        { name: "Chef's Signature", price: "$42", description: "Aged Wagyu, truffle essence, wild marrow.", img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=2080&auto=format&fit=crop" },
         { name: "Atlas Platter", price: "$28", description: "Mediterranean heritage selection.", img: "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=1974&auto=format&fit=crop" },
         { name: "Neon Spice", price: "$19", description: "South-East Asian high-intensity fusion.", img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1974&auto=format&fit=crop" }
     ];
@@ -58,7 +58,7 @@ export default function MasterResto(props: SovereignTemplateProps) {
                             <span className="text-2xl font-black tracking-tighter uppercase italic font-sans">{blueprint?.name || "THE_KITCHEN"}</span>
                             <div className="hidden lg:flex items-center gap-8 text-[10px] font-black uppercase tracking-[0.3em] text-stone-400 font-sans">
                                 <span className="hover:text-stone-900 cursor-pointer transition-colors">Menû</span>
-                                <span className="hover:text-stone-900 cursor-pointer transition-colors">Sovereign_Table</span>
+                                <span className="hover:text-stone-900 cursor-pointer transition-colors">Private_Table</span>
                                 <span className="hover:text-stone-900 cursor-pointer transition-colors">Philosophy</span>
                             </div>
                         </div>
@@ -88,7 +88,7 @@ export default function MasterResto(props: SovereignTemplateProps) {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 1 }}
                             >
-                                <span className="text-white text-[10px] font-black uppercase tracking-[0.5em] mb-8 block font-sans">Sovereign Culinary Standards</span>
+                                <span className="text-white text-[10px] font-black uppercase tracking-[0.5em] mb-8 block font-sans">Excellence Culinary Standards</span>
                                 <h1 className="text-white text-7xl md:text-9xl font-black uppercase tracking-tighter leading-[0.85] mb-10 drop-shadow-2xl font-serif italic text-balance">
                                     {heroHeadline}
                                 </h1>
@@ -113,7 +113,7 @@ export default function MasterResto(props: SovereignTemplateProps) {
                             </p>
                             <div className="flex flex-col gap-6 pt-10">
                                 {[
-                                    { icon: ChefHat, title: "Sovereign Chefs", desc: "Mastery directed by tradition and innovation." },
+                                    { icon: ChefHat, title: "Executive Chefs", desc: "Mastery directed by tradition and innovation." },
                                     { icon: UtensilsCrossed, title: "Zero-Waste Logic", desc: "Sustainability integrated into every recipe." }
                                 ].map((item, i) => (
                                     <div key={i} className="flex gap-4 items-start border-l-2 border-stone-100 pl-6">
@@ -152,7 +152,7 @@ export default function MasterResto(props: SovereignTemplateProps) {
                             <div className="flex flex-col md:flex-row items-baseline justify-between mb-24 gap-4">
                                 <div>
                                     <h2 className="text-6xl font-black uppercase tracking-tighter italic">L'Archive Menû.</h2>
-                                    <p className="text-[10px] font-black uppercase tracking-[0.5em] text-stone-500 mt-4 font-sans">Seasonal Sovereign Selections</p>
+                                    <p className="text-[10px] font-black uppercase tracking-[0.5em] text-stone-500 mt-4 font-sans">Seasonal Chef Selections</p>
                                 </div>
                                 <div className="flex gap-6 text-[10px] font-black uppercase tracking-widest text-stone-600 font-sans">
                                     <span className="text-white border-b border-white pb-2 cursor-pointer">Starters</span>
@@ -198,7 +198,7 @@ export default function MasterResto(props: SovereignTemplateProps) {
                                         <MapPin className="w-8 h-8 text-stone-300" />
                                         <div className="font-sans">
                                             <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest mb-1">Location</p>
-                                            <p className="text-lg font-bold">12 Sovereign District, Casablanca, MA</p>
+                                            <p className="text-lg font-bold">12 Central District, Casablanca, MA</p>
                                         </div>
                                     </div>
                                     <div className="flex gap-6 items-center">
@@ -233,7 +233,7 @@ export default function MasterResto(props: SovereignTemplateProps) {
                     {/* FOOTER */}
                     <footer className="py-20 border-t border-stone-100 flex flex-col items-center gap-8 font-sans">
                         <span className="text-2xl font-black tracking-tighter uppercase italic">{blueprint?.name}</span>
-                        <p className="text-[10px] text-stone-400 font-bold uppercase tracking-[0.6em]">© 2026 Sovereign Kitchen Architecture. Logic Verified.</p>
+                        <p className="text-[10px] text-stone-400 font-bold uppercase tracking-[0.6em]">© 2026 Professional Kitchen Architecture. All Systems Verified.</p>
                     </footer>
                 </div>
             )}

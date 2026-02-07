@@ -182,58 +182,105 @@ function generateMockResponse(request: AIGenerationRequest): AIGenerationRespons
  * Intelligent mock generation based on request context
  */
 function generateIntelligentMock(prompt: string): string {
-    // Detect if this is a website generation request
-    if (prompt.toLowerCase().includes('website') || prompt.toLowerCase().includes('site') || prompt.includes('موقع')) {
-        return JSON.stringify({
-            id: `site-${Date.now()}`,
-            name: 'Generated Website',
-            description: 'AI-generated professional website',
-            navigation: {
-                logo: 'Brand Logo',
-                links: [
-                    { label: 'Home', href: '#home' },
-                    { label: 'Services', href: '#services' },
-                    { label: 'About', href: '#about' },
-                    { label: 'Contact', href: '#contact' }
-                ],
-                transparent: true
-            },
-            theme: {
-                primary: '#3b82f6',
-                secondary: '#1e293b',
-                accent: '#10b981',
-                fontFamily: 'Inter',
-                mode: 'light'
-            },
-            layout: [
-                {
-                    id: 'hero-1',
-                    type: 'hero',
-                    content: {
-                        headline: 'Welcome to Our Platform',
-                        subheadline: 'Professional solutions for your business',
-                        cta: 'Get Started'
-                    },
-                    styles: { bg: 'gradient', textAlign: 'center' },
-                    animation: 'fade-in'
-                }
+    const isArabic = prompt.includes('موقع') || prompt.includes('عربي');
+    
+    // Default fallback (Generic)
+    const baseStructure = {
+        id: `site-${Date.now()}`,
+        name: 'Generated Website',
+        description: 'AI-generated professional website',
+        navigation: {
+            logo: 'Brand Logo',
+            links: [
+                { label: 'Home', href: '#home' },
+                { label: 'Services', href: '#features' },
+                { label: 'About', href: '#about' },
+                { label: 'Pricing', href: '#pricing' },
+                { label: 'Contact', href: '#contact' }
             ],
-            footer: {
-                copyright: '© 2026 All Rights Reserved',
-                links: [
-                    { label: 'Privacy', href: '/privacy' },
-                    { label: 'Terms', href: '/terms' }
-                ],
-                social: { twitter: '@brand', instagram: '@brand' }
+            transparent: true
+        },
+        theme: {
+            primary: '#3b82f6',
+            secondary: '#1e293b',
+            accent: '#10b981',
+            fontFamily: 'Inter',
+            mode: 'light'
+        },
+        footer: {
+            copyright: '© 2026 All Rights Reserved',
+            links: [
+                { label: 'Privacy', href: '/privacy' },
+                { label: 'Terms', href: '/terms' }
+            ],
+            social: { twitter: '@brand', instagram: '@brand' }
+        },
+        metadata: { version: '2.0', generated_by: 'mock_engine_v2_enhanced' },
+        timestamp: new Date().toISOString()
+    };
+
+    // Construct Layout based on Niche (Simplified Heuristics)
+    const layouts = [
+        {
+            id: 'hero-1',
+            type: 'hero',
+            content: {
+                headline: isArabic ? 'مستقبل أعمالك يبدأ هنا' : 'Your Digital Future Starts Here',
+                subheadline: isArabic ? 'نقدم لك أفضل الحلول التقنية' : 'We provide world-class tech solutions for your business growth.',
+                cta: isArabic ? 'ابدأ الآن' : 'Get Started Now'
             },
-            metadata: { version: '2.0', generated_by: 'mock_engine' },
-            timestamp: new Date().toISOString()
-        });
-    }
+            styles: { bg: 'white', textAlign: 'center' }
+        },
+        {
+            id: 'features-1',
+            type: 'features',
+            content: {
+                title: isArabic ? 'مميزاتنا' : 'Our Features',
+                items: [
+                    { title: isArabic ? 'سرعة فائقة' : 'High Speed', description: isArabic ? 'تحميل فوري للصفحات' : 'Instant page loading globally.' },
+                    { title: isArabic ? 'حماية وأمان' : 'Secure Core', description: isArabic ? 'حماية من الهجمات الإلكترونية' : 'Enterprise-grade security standards.' },
+                    { title: isArabic ? 'تصميم عصري' : 'Modern Design', description: isArabic ? 'واجهات مستخدم جذابة' : 'Award-winning UI/UX architecture.' }
+                ]
+            }
+        },
+        {
+            id: 'about-1',
+            type: 'about',
+            content: {
+                title: isArabic ? 'من نحن' : 'About Us',
+                description: isArabic ? 'نحن فريق من الخبراء نسعى لتقديم الأفضل.' : 'We are a team of dedicated experts building the next generation of digital tools.',
+                stat1_value: '500+',
+                stat1_label: 'Clients',
+                stat2_value: '99%',
+                stat2_label: 'Satisfaction'
+            }
+        },
+        {
+            id: 'pricing-1',
+            type: 'pricing',
+            content: {
+                title: isArabic ? 'خطط الأسعار' : 'Pricing Plans',
+                subtitle: isArabic ? 'اختر الخطة المناسبة لك' : 'Choose the plan that fits you best.',
+                plans: [
+                    { name: 'Starter', price: '$29', features: ['Basic Access', 'Email Support', '1 Project'], featured: false },
+                    { name: 'Pro', price: '$99', features: ['Full Access', 'Priority Support', 'Unlimited Projects'], featured: true },
+                    { name: 'Enterprise', price: '$299', features: ['Dedicated Team', 'Custom Solutions', 'SLA'], featured: false }
+                ]
+            }
+        },
+        {
+            id: 'contact-1',
+            type: 'contact',
+            content: {
+                title: isArabic ? 'تواصل معنا' : 'Get in Touch',
+                description: isArabic ? 'نحن هنا للإجابة على استفساراتك' : 'We are here to answer all your questions.'
+            }
+        }
+    ];
 
     return JSON.stringify({
-        response: 'This is a mock response. AI providers are currently unavailable.',
-        timestamp: new Date().toISOString()
+        ...baseStructure,
+        layout: layouts
     });
 }
 

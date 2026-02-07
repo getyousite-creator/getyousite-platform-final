@@ -11,83 +11,147 @@ export async function seedLegendarySitesAction() {
 
     const legendarySites = [
         {
-            name: "L'Artisan de Marrakech",
-            slug: "artisan-marrakech",
-            description: "High-end artisanal furniture and decor. A masterpiece of Moroccan craftsmanship and digital authority.",
+            name: "Dr. Khalil Medical",
+            slug: "dr-khalil",
+            description: "High-performance clinical architecture for medical excellence.",
             status: "deployed",
             is_featured: true,
-            blueprint: {
-                name: "L'Artisan",
-                theme: { primary: "#92400e", secondary: "#1a1a1a", mode: "quantum" },
-                layout: [
-                    { type: "hero", content: { headline: "Artisan Tradition, Digital Excellence", subheadline: "Exquisite craftsmanship, architected for the global market." } },
-                    { type: "gallery", content: { items: ["Furniture", "Ceramics", "Textiles"] } }
-                ]
-            }
+            site_type: "Medical Pillar",
+            blueprint: { id: "dr-khalil", name: "Dr. Khalil Medical", theme: { primary: "#0ea5e9", mode: "industrial" } }
         },
         {
-            name: "Neural Agency Casa",
-            slug: "neural-casa",
-            description: "AI-First workflow automation for industrial sectors. Clean, futuristic, and conversion-optimized.",
+            name: "Luxe E-Commerce",
+            slug: "luxe-cart",
+            description: "Premium retail infrastructure for global commerce.",
             status: "deployed",
             is_featured: true,
-            blueprint: {
-                name: "Neural Agency",
-                theme: { primary: "#8b5cf6", secondary: "#000000", mode: "quantum" },
-                layout: [
-                    { type: "hero", content: { headline: "Intelligent Architectures", subheadline: "We don't build sites. We deploy neural agents." } },
-                    { type: "features", content: { items: ["AI Integration", "Process Automation"] } }
-                ]
-            }
+            site_type: "Retail Pillar",
+            blueprint: { id: "luxe-cart", name: "Luxe E-Commerce", theme: { primary: "#d4af37", mode: "industrial" } }
         },
         {
-            name: "Atlas Peak Real Estate",
-            slug: "atlas-peak",
-            description: "Luxury property listings in the Atlas mountains. Absolute visual power and sub-100ms performance.",
+            name: "Lex Sileo Legal",
+            slug: "law-silo",
+            description: "Prestige legal architecture for elite law firms.",
             status: "deployed",
             is_featured: true,
-            blueprint: {
-                name: "Atlas Peak",
-                theme: { primary: "#1e1e1e", secondary: "#ffcc00", mode: "quantum" },
-                layout: [
-                    { type: "hero", content: { headline: "Luxury Above the Clouds", subheadline: "Sovereign living, redefined by architectural precision." } },
-                    { type: "gallery", content: { items: ["The Villa", "The Spa", "The Peak"] } }
-                ]
-            }
+            site_type: "Professional Pillar",
+            blueprint: { id: "law-silo", name: "Lex Sileo Legal", theme: { primary: "#475569", mode: "industrial" } }
         },
         {
-            name: "CyberPort Tangier",
-            slug: "cyberport",
-            description: "Tech recruitment and logistics hub. High-frequency layout for the modern enterprise.",
+            name: "Sierra Industrial",
+            slug: "sierra-industry",
+            description: "Heavy-duty architecture for manufacturing and logistics.",
             status: "deployed",
             is_featured: true,
-            blueprint: {
-                name: "CyberPort",
-                theme: { primary: "#00f2ff", secondary: "#0f172a", mode: "quantum" },
-                layout: [
-                    { type: "hero", content: { headline: "The Gate of High Tech", subheadline: "Connecting global talent with the Mediterranean's tech hub." } },
-                    { type: "features", content: { items: ["Full-Stack", "Logistics", "AI Ops"] } }
-                ]
-            }
+            site_type: "Professional Pillar",
+            blueprint: { id: "sierra-industry", name: "Sierra Industrial", theme: { primary: "#1a1a1a", mode: "industrial" } }
         },
         {
-            name: "Zina Beauty Lab",
-            slug: "zina-beauty",
-            description: "Boutique skincare e-commerce. Soft aesthetics meet clinical performance logic.",
+            name: "Aurum & Ash Dining",
+            slug: "zen-food",
+            description: "Industrial-grade dining experience with a reservation engine.",
             status: "deployed",
             is_featured: true,
-            blueprint: {
-                name: "Zina Beauty",
-                theme: { primary: "#f43f5e", secondary: "#fff1f2", mode: "quantum" },
-                layout: [
-                    { type: "hero", content: { headline: "Pure Science, Pure Beauty", subheadline: "Handcrafted formulas, deployed with technical precision." } },
-                    { type: "gallery", content: { items: ["Serum", "Cream", "Rituals"] } }
-                ]
-            }
+            site_type: "Resto Pillar",
+            blueprint: { id: "zen-food", name: "Aurum & Ash Dining", theme: { primary: "#7c2d12", mode: "industrial" } }
+        },
+        {
+            name: "Studio Zero Creative",
+            slug: "studio-zero",
+            description: "Visual-heavy architecture for creative industrial use.",
+            status: "deployed",
+            is_featured: true,
+            site_type: "Creative Pillar",
+            blueprint: { id: "studio-zero", name: "Studio Zero Creative", theme: { primary: "#a855f7", mode: "industrial" } }
+        },
+        {
+            name: "SyncSphere Tech",
+            slug: "tech-grid",
+            description: "High-frequency landing pages for industrial SaaS.",
+            status: "deployed",
+            is_featured: true,
+            site_type: "Landing Pillar",
+            blueprint: { id: "tech-grid", name: "SyncSphere Tech", theme: { primary: "#00f2ff", mode: "industrial" } }
+        },
+        {
+            name: "Boreal Real Estate",
+            slug: "boreal-estate",
+            description: "Prestige listings for industrial property markets.",
+            status: "deployed",
+            is_featured: true,
+            site_type: "Real Estate Pillar",
+            blueprint: { id: "boreal-estate", name: "Boreal Real Estate", theme: { primary: "#15803d", mode: "industrial" } }
+        },
+        {
+            name: "Elite Academia LMS",
+            slug: "elite-lms",
+            description: "Industrial learning management architecture.",
+            status: "deployed",
+            is_featured: true,
+            site_type: "LMS Pillar",
+            blueprint: { id: "elite-lms", name: "Elite Academia LMS", theme: { primary: "#8b5cf6", mode: "industrial" } }
+        },
+        {
+            name: "Dispatch News Engine",
+            slug: "news-silo",
+            description: "Industrial-grade editorial architecture.",
+            status: "deployed",
+            is_featured: true,
+            site_type: "Public Pillar",
+            blueprint: { id: "news-silo", name: "Dispatch News Engine", theme: { primary: "#18181b", mode: "industrial" } }
+        },
+        {
+            name: "Zen Wellness",
+            slug: "spa-wellness",
+            description: "Industrial wellness and beauty architecture.",
+            status: "deployed",
+            is_featured: true,
+            site_type: "Wellness Pillar",
+            blueprint: { id: "spa-wellness", name: "Zen Wellness", theme: { primary: "#f97316", mode: "industrial" } }
+        },
+        {
+            name: "Kinetic Fitness Lab",
+            slug: "fitness-neon",
+            description: "Industrial-grade athletic performance engine.",
+            status: "deployed",
+            is_featured: true,
+            site_type: "Fitness Pillar",
+            blueprint: { id: "fitness-neon", name: "Kinetic Fitness Lab", theme: { primary: "#22c55e", mode: "industrial" } }
+        },
+        {
+            name: "Global Corporate",
+            slug: "corp-global",
+            description: "Industrial architecture for international enterprise.",
+            status: "deployed",
+            is_featured: true,
+            site_type: "Corporate Pillar",
+            blueprint: { id: "corp-global", name: "Global Corporate", theme: { primary: "#1e40af", mode: "industrial" } }
+        },
+        {
+            name: "Ledger Accounting",
+            slug: "financial-core",
+            description: "Industrial financial and tax logic architecture.",
+            status: "deployed",
+            is_featured: true,
+            site_type: "Financial Pillar",
+            blueprint: { id: "financial-core", name: "Ledger Accounting", theme: { primary: "#0d9488", mode: "industrial" } }
+        },
+        {
+            name: "Operational Internal",
+            slug: "internal-engine",
+            description: "Industrial-grade internal tools and operations hub.",
+            status: "deployed",
+            is_featured: true,
+            site_type: "Internal Pillar",
+            blueprint: { id: "internal-engine", name: "Operational Internal", theme: { primary: "#2563eb", mode: "industrial" } }
         }
     ];
 
     try {
+        // Purge old featured sites that don't match our slugs
+        const slugs = legendarySites.map(s => s.slug);
+        await supabase.from('stores').update({ is_featured: false }).not('slug', 'in', `(${slugs.join(',')})`);
+
         for (const site of legendarySites) {
             const { error } = await supabase.from('stores').upsert(site, { onConflict: 'slug' });
             if (error) console.error(`Failed to seed ${site.name}:`, error.message);

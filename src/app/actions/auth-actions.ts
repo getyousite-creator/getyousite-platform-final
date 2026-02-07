@@ -175,3 +175,28 @@ export async function resetPasswordAction(email: string): Promise<ActionResult> 
         };
     }
 }
+/**
+ * Update user password (fulfillment)
+ */
+export async function updatePasswordAction(password: string): Promise<ActionResult> {
+    try {
+        const result = await AuthService.updatePassword(password);
+
+        if (result.error) {
+            return {
+                success: false,
+                error: result.error.message,
+            };
+        }
+
+        revalidatePath('/', 'layout');
+        return {
+            success: true,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Unknown error',
+        };
+    }
+}

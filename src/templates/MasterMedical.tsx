@@ -67,7 +67,7 @@ export default function MasterMedical(props: SovereignTemplateProps) {
                                     <MainIcon className="text-white w-6 h-6" />
                                 </div>
                                 <span className="text-xl font-black text-slate-900 tracking-tight uppercase">
-                                    {blueprint?.name?.split(' ')[0] || "Sovereign"} <span style={{ color: primaryColor }}>{blueprint?.name?.split(' ')[1] || NickName}</span>
+                                    {blueprint?.name?.split(' ')[0] || "Professional"} <span style={{ color: primaryColor }}>{blueprint?.name?.split(' ')[1] || NickName}</span>
                                 </span>
                             </div>
                             <div className="hidden md:flex items-center gap-8 text-xs font-bold text-slate-500 uppercase tracking-widest rtl:flex-row-reverse">
@@ -201,7 +201,7 @@ export default function MasterMedical(props: SovereignTemplateProps) {
                                 <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter leading-none">
                                     Initiate your <br /><span style={{ color: primaryColor }}>Clinical Success</span>
                                 </h2>
-                                <p className="text-slate-400 text-lg md:text-xl font-medium">Join thousands of patients who have experienced the Sovereign standard of care.</p>
+                                <p className="text-slate-400 text-lg md:text-xl font-medium">Join thousands of patients who have experienced our professional standard of care.</p>
                                 <button className="h-16 px-12 bg-white text-slate-900 rounded-full font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-2xl flex items-center justify-center gap-3 mx-auto">
                                     Book_Now <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                                 </button>
@@ -217,7 +217,7 @@ export default function MasterMedical(props: SovereignTemplateProps) {
                             </div>
                             <span className="font-black text-slate-900 uppercase tracking-tight">{blueprint?.name}</span>
                         </div>
-                        <p className="text-slate-400 text-[10px] uppercase tracking-widest">© 2026 GetYouSite Platform. Absolute Engineering Superiority.</p>
+                        <p className="text-slate-400 text-[10px] uppercase tracking-widest">© 2026 GetYouSite Platform. Professional Engineering Infrastructure.</p>
                     </footer>
                 </div>
             )}

@@ -31,18 +31,17 @@ export default function Showcase() {
                             whileInView={{ opacity: 1, x: 0 }}
                             className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-blue-400 text-[10px] font-black uppercase tracking-[0.2em] mb-8"
                         >
-                            <Sparkles className="w-3 h-3" />
-                            Sovereign Architecture Library
+                            Professional Architecture Library
                         </motion.div>
                         <motion.h2
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             className="text-5xl md:text-8xl font-black text-white mb-10 leading-[0.85] tracking-tighter uppercase"
                         >
-                            Architectures of <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500">Pure Power</span>
+                            Engineered for <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500">Peak Performance</span>
                         </motion.h2>
                         <p className="text-slate-500 text-xl leading-relaxed max-w-xl font-medium">
-                            Every site is a battle-tested blueprint. Optimized for sub-100ms delivery, and ready to be deployed as your private digital empire.
+                            Every template is a battle-tested industrial blueprint. Optimized for global speed and ready to be deployed as a high-performance business asset.
                         </p>
                     </div>
                     <Button

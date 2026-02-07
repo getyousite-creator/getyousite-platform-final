@@ -3,12 +3,19 @@ import Hero from "@/components/home/Hero";
 import Services from "@/components/home/Services";
 import AIEngine from "@/components/home/AIEngine";
 import Showcase from "@/components/home/Showcase";
-import Pricing from "@/components/home/Pricing";
+import PricingEngine from "@/components/payment/PricingEngine";
 import Testimonials from "@/components/home/Testimonials";
 import CTA from "@/components/home/CTA";
 import Footer from "@/components/layout/Footer";
+import MaintenanceProtocol from "@/components/home/MaintenanceProtocol";
 
 export default function Home() {
+    const isMaintenanceMode = process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'true';
+
+    if (isMaintenanceMode) {
+        return <MaintenanceProtocol />;
+    }
+
     return (
         <main className="bg-black min-h-screen selection:bg-blue-500/30">
             <Header />
@@ -16,7 +23,7 @@ export default function Home() {
             <Services />
             <AIEngine />
             <Showcase />
-            <Pricing />
+            <PricingEngine />
             <Testimonials />
             <CTA />
             <Footer />

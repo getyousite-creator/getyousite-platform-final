@@ -63,10 +63,10 @@ export default function NeuraAgency({ settings, blueprint }: { settings: any, bl
                                         className="px-10 h-16 rounded-2xl font-black text-xs uppercase tracking-widest text-zinc-950 flex items-center gap-3 transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]"
                                         style={{ backgroundColor: primary }}
                                     >
-                                        Launch Operation <ArrowRight className="w-4 h-4" />
+                                        Start Project <ArrowRight className="w-4 h-4" />
                                     </button>
-                                    <button onClick={() => onOpen("View Dossier")} className="px-10 h-16 rounded-2xl font-black text-xs uppercase tracking-widest border border-white/10 bg-white/5 hover:bg-white/10 transition-colors">
-                                        View Dossier
+                                    <button onClick={() => onOpen("View Case Study")} className="px-10 h-16 rounded-2xl font-black text-xs uppercase tracking-widest border border-white/10 bg-white/5 hover:bg-white/10 transition-colors">
+                                        View Case Study
                                     </button>
                                 </motion.div>
                             </div>
@@ -106,8 +106,8 @@ export default function NeuraAgency({ settings, blueprint }: { settings: any, bl
                                             className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-50"
                                         />
                                         <div className="flex items-center justify-between mb-6">
-                                            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-500">Neural Sync</span>
-                                            <span className="text-[10px] font-mono text-blue-400">92.4% MATCH</span>
+                                            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-500">System Sync</span>
+                                            <span className="text-[10px] font-mono text-blue-400">92.4% PERFORMANCE</span>
                                         </div>
                                         <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
                                             <motion.div

@@ -3,20 +3,20 @@
 import dynamic from 'next/dynamic';
 import { useTemplateEditor } from '@/hooks/use-template-editor';
 
-const MasterMedical = dynamic(() => import('./MasterMedical'), { ssr: false });
-const MasterRetail = dynamic(() => import('./MasterRetail'), { ssr: false });
-const MasterProfessional = dynamic(() => import('./MasterProfessional'), { ssr: false });
-const MasterResto = dynamic(() => import('./MasterResto'), { ssr: false });
-const MasterCreative = dynamic(() => import('./MasterCreative'), { ssr: false });
-const MasterLanding = dynamic(() => import('./MasterLanding'), { ssr: false });
-const MasterRealEstate = dynamic(() => import('./MasterRealEstate'), { ssr: false });
-const MasterLMS = dynamic(() => import('./MasterLMS'), { ssr: false });
-const MasterPublic = dynamic(() => import('./MasterPublic'), { ssr: false });
-const MasterWellness = dynamic(() => import('./MasterWellness'), { ssr: false });
-const MasterFitness = dynamic(() => import('./MasterFitness'), { ssr: false });
-const MasterCorporate = dynamic(() => import('./MasterCorporate'), { ssr: false });
-const MasterAccounting = dynamic(() => import('./MasterAccounting'), { ssr: false });
-const MasterInternal = dynamic(() => import('./MasterInternal'), { ssr: false });
+const MasterMedical = dynamic(() => import('./MasterMedical'));
+const MasterRetail = dynamic(() => import('./MasterRetail'));
+const MasterProfessional = dynamic(() => import('./MasterProfessional'));
+const MasterResto = dynamic(() => import('./MasterResto'));
+const MasterCreative = dynamic(() => import('./MasterCreative'));
+const MasterLanding = dynamic(() => import('./MasterLanding'));
+const MasterRealEstate = dynamic(() => import('./MasterRealEstate'));
+const MasterLMS = dynamic(() => import('./MasterLMS'));
+const MasterPublic = dynamic(() => import('./MasterPublic'));
+const MasterWellness = dynamic(() => import('./MasterWellness'));
+const MasterFitness = dynamic(() => import('./MasterFitness'));
+const MasterCorporate = dynamic(() => import('./MasterCorporate'));
+const MasterAccounting = dynamic(() => import('./MasterAccounting'));
+const MasterInternal = dynamic(() => import('./MasterInternal'));
 
 import { SovereignTemplateProps } from "@/lib/types/template";
 
@@ -92,12 +92,15 @@ const templateMap: Record<string, React.ComponentType<SovereignTemplateProps>> =
     'data-nexus': MasterInternal,
 };
 
-export default function TemplateRenderer({ templateId }: { templateId: string }) {
+export default function TemplateRenderer({ templateId, blueprint: overrideBlueprint }: { templateId: string, blueprint?: any }) {
     const Template = templateMap[templateId as keyof typeof templateMap] || MasterProfessional;
 
-    const settings = useTemplateEditor(state => state.settings);
-    const blueprint = useTemplateEditor(state => state.blueprint);
+    const editorSettings = useTemplateEditor(state => state.settings);
+    const editorBlueprint = useTemplateEditor(state => state.blueprint);
+
+    // If overrideBlueprint is provided (from the renderer), use it. Otherwise use editor state.
+    const activeBlueprint = overrideBlueprint || editorBlueprint;
 
     // Sovereign Update: Inject full architecture metadata
-    return <Template settings={settings} blueprint={blueprint} />;
+    return <Template settings={editorSettings} blueprint={activeBlueprint} />;
 }

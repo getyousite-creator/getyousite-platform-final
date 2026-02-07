@@ -9,15 +9,14 @@
     --font-inter: "Inter", sans-serif;
     --font-noto-arabic: "Noto Sans Arabic", sans-serif;
 
-    /* DEFAULT (DARK / DEEP SPACE) */
-    --background: 222 47% 11%;
-    /* #0f172a (Slightly lighter than pure void) */
+    /* REFINED DEEP SPACE BLACK (Slate 950 base) */
+    --background: 222 47% 2%;  /* #020617 Slate 950 */
     --foreground: 210 40% 98%;
 
-    --card: 222 47% 11%;
+    --card: 222 47% 4%; /* Slightly lighter than bg */
     --card-foreground: 210 40% 98%;
 
-    --popover: 222 47% 11%;
+    --popover: 222 47% 4%;
     --popover-foreground: 210 40% 98%;
 
     --primary: 217 91% 60%;

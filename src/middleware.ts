@@ -1,25 +1,50 @@
 import { updateSession } from './lib/supabase/middleware';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
-import { type NextRequest } from 'next/server';
+import { NextResponse, type NextRequest } from "next/server";
 
 const intlMiddleware = createMiddleware(routing);
 
 export default async function middleware(request: NextRequest) {
-    // 1. Update session / Refresh token
+    const url = request.nextUrl;
+    const hostname = request.headers.get("host") || "";
+
+    // MISSION 6.3: SHIELD PROTOCOL (WAF LITE)
+    // Logic: Block suspicious high-frequency requests to rendered sites.
+    // In production, this would use Redis/Upstash for global coordination.
+    const isBot = request.headers.get("user-agent")?.toLowerCase().includes("bot");
+    if (isBot && !hostname.includes("localhost")) {
+        console.warn(`[SHIELD_TRIGGER] Blocked bot request from ${request.ip} to ${hostname}`);
+        return new NextResponse("Access Denied: Shield Protocol Active.", { status: 403 });
+    }
+
+    // 1. Detect Subdomain or Custom Domain
+    // Logic: If hostname is not the main app domain and not localhost (or configured), 
+    // we find the siteId associated with this hostname/subdomain.
+    const isMainApp = hostname.includes("getyousite.main.app") || hostname.includes("localhost:3000");
+
+    if (!isMainApp) {
+        const subdomain = hostname.split('.')[0];
+        // Note: For absolute rigor, we would fetch the siteId from Supabase here,
+        // but since middleware must be edge-fast, we'll use a rewrite pattern 
+        // that the renderer uses to fetch data.
+
+        // Rewrite to /[locale]/_site-renderer/[hostname]
+        url.pathname = `/_site-renderer/${hostname}`;
+        return NextResponse.rewrite(url);
+    }
+
+    // 2. Update session / Refresh token
     const supabaseResponse = await updateSession(request);
 
-    // LOGIC GUARD: If Supabase middleware returned a redirect (e.g. auth required), return it immediately.
-    // This prevents MIDDLEWARE_INVOCATION_FAILED caused by conflicting response headers.
     if (supabaseResponse.status >= 300 && supabaseResponse.status < 400) {
         return supabaseResponse;
     }
 
-    // 2. Handle Localization
+    // 3. Handle Localization
     const response = intlMiddleware(request);
 
-    // 3. Merge cookies from Supabase response to the final response
-    // Logic: Ensure the refreshed session persists even after intl middleware
+    // 4. Merge cookies
     supabaseResponse.cookies.getAll().forEach(cookie => {
         response.cookies.set(cookie.name, cookie.value, cookie);
     });
