@@ -1,7 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Stethoscope, ShieldCheck, Clock, Users2, Calendar, Phone, MapPin, ChevronRight, CheckCircle2, Star, LucideIcon, HeartPulse, Building2 } from "lucide-react";
+import {
+    Stethoscope,
+    ShieldCheck,
+    Clock,
+    Users2,
+    Phone,
+    ChevronRight,
+    CheckCircle2,
+    Star,
+    LucideIcon,
+    HeartPulse,
+} from "lucide-react";
 import SovereignWrapper from "./SovereignWrapper";
 import type { Section } from "@/lib/schemas";
 import type { SovereignTemplateProps } from "@/lib/types/template";
@@ -27,7 +38,9 @@ function ServiceCard({ icon: Icon, title, desc, primaryColor }: ServiceCardProps
             >
                 <Icon className="w-7 h-7" style={{ color: primaryColor }} />
             </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-sky-600 transition-colors">{title}</h3>
+            <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-sky-600 transition-colors">
+                {title}
+            </h3>
             <p className="text-slate-500 text-sm leading-relaxed rtl:text-right">{desc}</p>
         </div>
     );
@@ -38,18 +51,20 @@ export default function MasterMedical(props: SovereignTemplateProps) {
     const { headline, subheadline, primaryColor = "#0ea5e9" } = settings;
 
     // Modular Extraction from Blueprint
-    const heroSection = blueprint?.layout?.find((s: Section) => s.type === 'hero');
-    const featuresSection = blueprint?.layout?.find((s: Section) => s.type === 'features');
+    const heroSection = blueprint?.layout?.find((s: Section) => s.type === "hero");
+    const featuresSection = blueprint?.layout?.find((s: Section) => s.type === "features");
 
     // Niche Detection Logic
-    const isDental = blueprint?.name?.toLowerCase().includes('dental') || blueprint?.description?.toLowerCase().includes('dental');
+    const isDental =
+        blueprint?.name?.toLowerCase().includes("dental") ||
+        blueprint?.description?.toLowerCase().includes("dental");
     const NickName = isDental ? "Dental" : "Medical";
     const MainIcon = isDental ? Stethoscope : HeartPulse;
 
     const DEFAULT_IMAGES = [
         "https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2070&auto=format&fit=crop",
         "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=1974&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=2080&auto=format&fit=crop"
+        "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=2080&auto=format&fit=crop",
     ];
 
     return (
@@ -62,20 +77,29 @@ export default function MasterMedical(props: SovereignTemplateProps) {
                             <div className="flex items-center gap-3">
                                 <div
                                     className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg transition-transform hover:scale-110"
-                                    style={{ background: `linear-gradient(135deg, ${primaryColor}, ${primaryColor}dd)` }}
+                                    style={{
+                                        background: `linear-gradient(135deg, ${primaryColor}, ${primaryColor}dd)`,
+                                    }}
                                 >
                                     <MainIcon className="text-white w-6 h-6" />
                                 </div>
                                 <span className="text-xl font-black text-slate-900 tracking-tight uppercase">
-                                    {blueprint?.name?.split(' ')[0] || "Professional"} <span style={{ color: primaryColor }}>{blueprint?.name?.split(' ')[1] || NickName}</span>
+                                    {blueprint?.name?.split(" ")[0] || "Professional"}{" "}
+                                    <span style={{ color: primaryColor }}>
+                                        {blueprint?.name?.split(" ")[1] || NickName}
+                                    </span>
                                 </span>
                             </div>
                             <div className="hidden md:flex items-center gap-8 text-xs font-bold text-slate-500 uppercase tracking-widest rtl:flex-row-reverse">
-                                <a href="#services" className="hover:opacity-70 transition-opacity">Services</a>
-                                <a href="#about" className="hover:opacity-70 transition-opacity">Experience</a>
+                                <a href="#services" className="hover:opacity-70 transition-opacity">
+                                    Services
+                                </a>
+                                <a href="#about" className="hover:opacity-70 transition-opacity">
+                                    Experience
+                                </a>
                                 <button
                                     className="px-8 py-3 text-white rounded-full transition-all active:scale-95 duration-300 shadow-lg"
-                                    style={{ backgroundColor: '#1a1a1a' }}
+                                    style={{ backgroundColor: "#1a1a1a" }}
                                 >
                                     Book_Appointment
                                 </button>
@@ -91,7 +115,7 @@ export default function MasterMedical(props: SovereignTemplateProps) {
                         />
                         <div
                             className="absolute bottom-0 left-0 w-[500px] h-[500px] blur-[120px] rounded-full mix-blend-multiply pointer-events-none opacity-10"
-                            style={{ backgroundColor: '#2563eb' }}
+                            style={{ backgroundColor: "#2563eb" }}
                         />
 
                         <div className="container mx-auto grid lg:grid-cols-2 gap-16 items-center rtl:flex-row-reverse">
@@ -103,7 +127,9 @@ export default function MasterMedical(props: SovereignTemplateProps) {
                             >
                                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-100 shadow-sm mb-8 rtl:flex-row-reverse">
                                     <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
-                                    <span className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em]">Clinical Excellence Certified</span>
+                                    <span className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em]">
+                                        Clinical Excellence Certified
+                                    </span>
                                 </div>
 
                                 <h1 className="text-6xl md:text-7xl lg:text-8xl font-black text-slate-900 leading-[0.9] mb-8 uppercase tracking-tighter">
@@ -127,8 +153,12 @@ export default function MasterMedical(props: SovereignTemplateProps) {
                                             <Phone className="w-5 h-5 text-slate-600" />
                                         </div>
                                         <div className="rtl:text-right">
-                                            <div className="text-[10px] uppercase font-black text-slate-400 tracking-wider">Emergency_Line</div>
-                                            <div className="text-sm font-bold text-slate-900 font-mono">+212 5XX XX XX XX</div>
+                                            <div className="text-[10px] uppercase font-black text-slate-400 tracking-wider">
+                                                Emergency_Line
+                                            </div>
+                                            <div className="text-sm font-bold text-slate-900 font-mono">
+                                                +212 5XX XX XX XX
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -142,8 +172,8 @@ export default function MasterMedical(props: SovereignTemplateProps) {
                             >
                                 <div className="relative aspect-[4/5] rounded-[40px] overflow-hidden shadow-2xl border-8 border-white">
                                     <Image
-                                        src={DEFAULT_IMAGES[0]}
-                                        alt="Clinical Environment"
+                                        src={heroSection?.content?.image || DEFAULT_IMAGES[0]}
+                                        alt={heroSection?.content?.alt || "Clinical Environment"}
                                         fill
                                         className="object-cover scale-105 hover:scale-110 transition-transform duration-1000"
                                         priority
@@ -161,31 +191,68 @@ export default function MasterMedical(props: SovereignTemplateProps) {
                     <section id="services" className="py-32 bg-white relative">
                         <div className="container mx-auto px-6">
                             <div className="text-center mb-20 space-y-4">
-                                <span className="font-black uppercase tracking-[0.2em] text-xs" style={{ color: primaryColor }}>{blueprint?.name} Capabilities</span>
+                                <span
+                                    className="font-black uppercase tracking-[0.2em] text-xs"
+                                    style={{ color: primaryColor }}
+                                >
+                                    {blueprint?.name} Capabilities
+                                </span>
                                 <h2 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter">
-                                    Our Specialist <span className="underline decoration-4 underline-offset-8" style={{ textDecorationColor: `${primaryColor}40` }}>Services</span>
+                                    Our Specialist{" "}
+                                    <span
+                                        className="underline decoration-4 underline-offset-8"
+                                        style={{ textDecorationColor: `${primaryColor}40` }}
+                                    >
+                                        Services
+                                    </span>
                                 </h2>
                             </div>
 
                             <div className="grid md:grid-cols-3 gap-8 rtl:flex-row-reverse">
-                                <ServiceCard
-                                    icon={Users2}
-                                    title="Patient Portals"
-                                    desc="Seamless digital experience for managing your health history and appointments."
-                                    primaryColor={primaryColor}
-                                />
-                                <ServiceCard
-                                    icon={ShieldCheck}
-                                    title="Secure Treatment"
-                                    desc="Advanced safety protocols and hospital-grade sterilization for every procedure."
-                                    primaryColor={primaryColor}
-                                />
-                                <ServiceCard
-                                    icon={Clock}
-                                    title="24/7 Response"
-                                    desc="Always available for emergency clinical support and immediate consultations."
-                                    primaryColor={primaryColor}
-                                />
+                                {featuresSection?.content?.items &&
+                                featuresSection.content.items.length > 0 ? (
+                                    featuresSection.content.items.map(
+                                        (
+                                            feature: { title: string; description: string },
+                                            idx: number,
+                                        ) => (
+                                            <ServiceCard
+                                                key={idx}
+                                                icon={
+                                                    idx === 0
+                                                        ? Users2
+                                                        : idx === 1
+                                                          ? ShieldCheck
+                                                          : Clock
+                                                }
+                                                title={feature.title}
+                                                desc={feature.description}
+                                                primaryColor={primaryColor}
+                                            />
+                                        ),
+                                    )
+                                ) : (
+                                    <>
+                                        <ServiceCard
+                                            icon={Users2}
+                                            title="Patient Portals"
+                                            desc="Seamless digital experience for managing your health history and appointments."
+                                            primaryColor={primaryColor}
+                                        />
+                                        <ServiceCard
+                                            icon={ShieldCheck}
+                                            title="Secure Treatment"
+                                            desc="Advanced safety protocols and hospital-grade sterilization for every procedure."
+                                            primaryColor={primaryColor}
+                                        />
+                                        <ServiceCard
+                                            icon={Clock}
+                                            title="24/7 Response"
+                                            desc="Always available for emergency clinical support and immediate consultations."
+                                            primaryColor={primaryColor}
+                                        />
+                                    </>
+                                )}
                             </div>
                         </div>
                     </section>
@@ -194,14 +261,21 @@ export default function MasterMedical(props: SovereignTemplateProps) {
                     <section className="py-20 px-6">
                         <div className="container mx-auto bg-slate-900 rounded-[3rem] p-12 md:p-24 relative overflow-hidden text-center">
                             <div className="absolute top-0 left-0 w-full h-full opacity-10">
-                                <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-[150px]" style={{ backgroundColor: primaryColor }} />
+                                <div
+                                    className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-[150px]"
+                                    style={{ backgroundColor: primaryColor }}
+                                />
                             </div>
 
                             <div className="relative z-10 max-w-3xl mx-auto space-y-8">
                                 <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter leading-none">
-                                    Initiate your <br /><span style={{ color: primaryColor }}>Clinical Success</span>
+                                    Initiate your <br />
+                                    <span style={{ color: primaryColor }}>Clinical Success</span>
                                 </h2>
-                                <p className="text-slate-400 text-lg md:text-xl font-medium">Join thousands of patients who have experienced our professional standard of care.</p>
+                                <p className="text-slate-400 text-lg md:text-xl font-medium">
+                                    Join thousands of patients who have experienced our professional
+                                    standard of care.
+                                </p>
                                 <button className="h-16 px-12 bg-white text-slate-900 rounded-full font-black text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-2xl flex items-center justify-center gap-3 mx-auto">
                                     Book_Now <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                                 </button>
@@ -212,12 +286,19 @@ export default function MasterMedical(props: SovereignTemplateProps) {
                     {/* FOOTER */}
                     <footer className="py-12 text-center border-t border-slate-100 bg-white">
                         <div className="flex items-center justify-center gap-2 mb-4">
-                            <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ backgroundColor: primaryColor }}>
+                            <div
+                                className="w-6 h-6 rounded-lg flex items-center justify-center"
+                                style={{ backgroundColor: primaryColor }}
+                            >
                                 <MainIcon className="text-white w-4 h-4" />
                             </div>
-                            <span className="font-black text-slate-900 uppercase tracking-tight">{blueprint?.name}</span>
+                            <span className="font-black text-slate-900 uppercase tracking-tight">
+                                {blueprint?.name}
+                            </span>
                         </div>
-                        <p className="text-slate-400 text-[10px] uppercase tracking-widest">© 2026 GetYouSite Platform. Professional Engineering Infrastructure.</p>
+                        <p className="text-slate-400 text-[10px] uppercase tracking-widest">
+                            © 2026 GetYouSite Platform. Professional Engineering Infrastructure.
+                        </p>
                     </footer>
                 </div>
             )}
