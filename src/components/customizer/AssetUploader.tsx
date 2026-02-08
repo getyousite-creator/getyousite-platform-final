@@ -53,7 +53,7 @@ export function AssetUploader({ userId, storeId, currentImageUrl, onUploadComple
     return (
         <div className="space-y-2">
             <div className="flex items-center justify-between">
-                <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">{label}</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{label}</span>
                 {previewUrl && (
                     <button
                         onClick={() => { setPreviewUrl(""); onUploadComplete(""); }}
@@ -66,8 +66,8 @@ export function AssetUploader({ userId, storeId, currentImageUrl, onUploadComple
 
             <div
                 className={`relative group border border-dashed rounded-xl transition-all overflow-hidden ${previewUrl
-                    ? 'border-white/10 bg-zinc-900/50 h-32'
-                    : 'border-white/10 hover:border-blue-500/50 hover:bg-white/5 h-20 cursor-pointer'
+                    ? 'border-border bg-card/10 h-32'
+                    : 'border-border hover:border-primary/50 hover:bg-card/10 h-20 cursor-pointer'
                     }`}
                 onClick={() => !previewUrl && fileInputRef.current?.click()}
             >
@@ -82,7 +82,7 @@ export function AssetUploader({ userId, storeId, currentImageUrl, onUploadComple
 
                 {/* State: Uploading */}
                 {isUploading && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-zinc-950/80 z-10">
+                    <div className="absolute inset-0 flex items-center justify-center bg-card/80 z-10">
                         <Loader2 className="w-5 h-5 text-blue-500 animate-spin" />
                     </div>
                 )}
@@ -97,10 +97,10 @@ export function AssetUploader({ userId, storeId, currentImageUrl, onUploadComple
                             className="object-cover"
                         />
                         {/* Overlay Actions */}
-                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                        <div className="absolute inset-0 bg-background/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                             <button
                                 onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
-                                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white"
+                                className="p-2 rounded-full bg-secondary/10 hover:bg-secondary/20 text-foreground"
                             >
                                 <Upload size={14} />
                             </button>
@@ -108,7 +108,7 @@ export function AssetUploader({ userId, storeId, currentImageUrl, onUploadComple
                     </div>
                 ) : (
                     /* State: Empty */
-                    <div className="w-full h-full flex flex-col items-center justify-center gap-1 text-zinc-500 group-hover:text-zinc-300">
+                    <div className="w-full h-full flex flex-col items-center justify-center gap-1 text-muted-foreground group-hover:text-foreground">
                         <Upload size={16} />
                         <span className="text-[10px] uppercase font-bold">Click to Upload</span>
                     </div>

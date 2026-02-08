@@ -168,17 +168,17 @@ export default function DashboardClient() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+            <div className="min-h-screen bg-background flex items-center justify-center">
                 <div className="text-center">
-                    <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                    <p className="text-zinc-400 font-mono">{t('syncing')}</p>
+                    <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                    <p className="text-muted-foreground font-mono">{t('syncing')}</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-zinc-950 p-8">
+        <div className="min-h-screen bg-background p-8">
             <div className="max-w-7xl mx-auto space-y-8">
                 {/* HEADER */}
                 <div className="flex items-center justify-between">
@@ -186,13 +186,13 @@ export default function DashboardClient() {
                         <motion.h1
                             initial={{ opacity: 0, y: -20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="text-3xl font-black text-white uppercase tracking-tighter"
+                            className="text-3xl font-black text-foreground uppercase tracking-tighter"
                         >
                             {t('title')}
                         </motion.h1>
-                        <p className="text-zinc-400 mt-1">{t('subtitle')}</p>
+                        <p className="text-muted-foreground mt-1">{t('subtitle')}</p>
                     </div>
-                    <Button asChild className="bg-blue-600 hover:bg-blue-500 text-white font-bold">
+                    <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold">
                         <Link href="/ar/customizer">
                             <Plus size={16} className="mr-2" />
                             {t('launch_new')}
@@ -211,24 +211,24 @@ export default function DashboardClient() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 }}
                         >
-                            <Card className="bg-zinc-900/50 border-white/5">
+                            <Card className="bg-card border-border shadow-sm">
                                 <CardContent className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-zinc-500 text-sm font-medium">{t('total_views')}</p>
-                                            <p className="text-3xl font-black text-white mt-1">
+                                            <p className="text-muted-foreground text-sm font-medium">{t('total_views')}</p>
+                                            <p className="text-3xl font-bold text-foreground mt-1">
                                                 {formatNumber(data.analytics.totalViews)}
                                             </p>
                                         </div>
-                                        <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                                            <Eye className="w-6 h-6 text-blue-500" />
+                                        <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                                            <Eye className="w-6 h-6 text-primary" />
                                         </div>
                                     </div>
-                                    <div className="flex items-center mt-4 text-emerald-500 text-sm">
-                                        <ArrowUpRight size={16} className="mr-1" />
-                                        <span>+12.5%</span>
-                                        <span className="text-zinc-500 ml-2">{t('vs_last_month')}</span>
-                                    </div>
+                                        <div className="flex items-center mt-4 text-emerald-500 text-sm">
+                                            <ArrowUpRight size={16} className="mr-1" />
+                                            <span>+12.5%</span>
+                                            <span className="text-muted-foreground ml-2">{t('vs_last_month')}</span>
+                                        </div>
                                 </CardContent>
                             </Card>
                         </motion.div>
@@ -238,12 +238,12 @@ export default function DashboardClient() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2 }}
                         >
-                            <Card className="bg-zinc-900/50 border-white/5">
+                            <Card className="bg-card border-border shadow-sm">
                                 <CardContent className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-zinc-500 text-sm font-medium">{t('unique_visitors')}</p>
-                                            <p className="text-3xl font-black text-white mt-1">
+                                            <p className="text-muted-foreground text-sm font-medium">{t('unique_visitors')}</p>
+                                            <p className="text-3xl font-bold text-foreground mt-1">
                                                 {formatNumber(data.analytics.uniqueVisitors)}
                                             </p>
                                         </div>
@@ -254,7 +254,7 @@ export default function DashboardClient() {
                                     <div className="flex items-center mt-4 text-emerald-500 text-sm">
                                         <ArrowUpRight size={16} className="mr-1" />
                                         <span>+8.3%</span>
-                                        <span className="text-zinc-500 ml-2">vs last month</span>
+                                        <span className="text-muted-foreground ml-2">vs last month</span>
                                     </div>
                                 </CardContent>
                             </Card>
@@ -265,12 +265,12 @@ export default function DashboardClient() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3 }}
                         >
-                            <Card className="bg-zinc-900/50 border-white/5">
+                            <Card className="bg-card border-border shadow-sm">
                                 <CardContent className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-zinc-500 text-sm font-medium">{t('conversion_rate')}</p>
-                                            <p className="text-3xl font-black text-white mt-1">
+                                            <p className="text-muted-foreground text-sm font-medium">{t('conversion_rate')}</p>
+                                            <p className="text-3xl font-black text-foreground mt-1">
                                                 {(Math.random() * 5 + 2).toFixed(1)}%
                                             </p>
                                         </div>
@@ -281,7 +281,7 @@ export default function DashboardClient() {
                                     <div className="flex items-center mt-4 text-emerald-500 text-sm">
                                         <ArrowUpRight size={16} className="mr-1" />
                                         <span>+2.1%</span>
-                                        <span className="text-zinc-500 ml-2">vs last month</span>
+                                        <span className="text-muted-foreground ml-2">vs last month</span>
                                     </div>
                                 </CardContent>
                             </Card>
@@ -292,12 +292,12 @@ export default function DashboardClient() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4 }}
                         >
-                            <Card className="bg-zinc-900/50 border-white/5">
+                            <Card className="bg-card border-border shadow-sm">
                                 <CardContent className="p-6">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-zinc-500 text-sm font-medium">{t('avg_session')}</p>
-                                            <p className="text-3xl font-black text-white mt-1">
+                                            <p className="text-muted-foreground text-sm font-medium">{t('avg_session')}</p>
+                                            <p className="text-3xl font-black text-foreground mt-1">
                                                 {Math.floor(data.analytics.avgSessionDuration / 60)}:{(data.analytics.avgSessionDuration % 60).toString().padStart(2, '0')}
                                             </p>
                                         </div>
@@ -308,7 +308,7 @@ export default function DashboardClient() {
                                     <div className="flex items-center mt-4 text-red-500 text-sm">
                                         <ArrowDownRight size={16} className="mr-1" />
                                         <span>-1.2%</span>
-                                        <span className="text-zinc-500 ml-2">vs last month</span>
+                                        <span className="text-muted-foreground ml-2">vs last month</span>
                                     </div>
                                 </CardContent>
                             </Card>
@@ -320,13 +320,13 @@ export default function DashboardClient() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* STORES LIST */}
                     <div className="lg:col-span-2">
-                        <Card className="bg-zinc-900/50 border-white/5">
+                        <Card className="bg-card border-border shadow-sm">
                             <CardHeader>
-                                <CardTitle className="text-white flex items-center gap-2">
-                                    <Shield className="w-5 h-5 text-blue-500" />
+                                <CardTitle className="text-foreground flex items-center gap-2">
+                                    <Shield className="w-5 h-5 text-primary" />
                                     {t('assets')}
                                 </CardTitle>
-                                <CardDescription>{t('assets_desc')}</CardDescription>
+                                <CardDescription className="text-muted-foreground">{t('assets_desc')}</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 {data && data.stores.length > 0 ? (
@@ -336,18 +336,18 @@ export default function DashboardClient() {
                                                 key={store.id}
                                                 initial={{ opacity: 0, x: -20 }}
                                                 animate={{ opacity: 1, x: 0 }}
-                                                className="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition-all cursor-pointer group"
+                                                className="p-4 rounded-xl bg-secondary/10 border border-border hover:border-primary/20 transition-all cursor-pointer group"
                                                 onClick={() => setSelectedStore(store.id === selectedStore ? null : store.id)}
                                             >
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex-1">
                                                         <div className="flex items-center gap-3">
-                                                            <h3 className="text-white font-bold">{store.name}</h3>
+                                                            <h3 className="text-foreground font-bold">{store.name}</h3>
                                                             <Badge
                                                                 variant="outline"
                                                                 className={`
                                                                     ${store.status === 'deployed' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : ''}
-                                                                    ${store.status === 'draft' ? 'bg-zinc-500/10 text-zinc-400 border-zinc-500/20' : ''}
+                                                                    ${store.status === 'draft' ? 'bg-secondary/10 text-muted-foreground border-border' : ''}
                                                                     ${store.status === 'pending_payment' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' : ''}
                                                                     uppercase tracking-widest text-[10px] font-bold px-2 py-0.5
                                                                 `}
@@ -356,9 +356,9 @@ export default function DashboardClient() {
                                                             </Badge>
                                                         </div>
                                                         {store.description && (
-                                                            <p className="text-zinc-500 text-sm mt-1">{store.description}</p>
+                                                            <p className="text-muted-foreground text-sm mt-1">{store.description}</p>
                                                         )}
-                                                        <div className="flex items-center gap-4 mt-2 text-xs text-zinc-600">
+                                                        <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
                                                             <span>ID: {store.id.slice(0, 8)}...</span>
                                                             <span>Created: {new Date(store.created_at).toLocaleDateString()}</span>
                                                         </div>
@@ -381,7 +381,7 @@ export default function DashboardClient() {
                                                             <Button
                                                                 variant="outline"
                                                                 size="sm"
-                                                                className="border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 text-blue-400 font-bold"
+                                                                className="border-primary/20 bg-primary/5 hover:bg-primary/10 text-primary font-bold"
                                                                 onClick={(e) => {
                                                                     e.stopPropagation();
                                                                     handleExport(store.id, store.name);
@@ -394,7 +394,7 @@ export default function DashboardClient() {
                                                         <Button
                                                             variant="outline"
                                                             size="sm"
-                                                            className="border-white/10 bg-white/5 hover:bg-white/10 text-zinc-300"
+                                                            className="border-border bg-secondary/10 hover:bg-secondary/20 text-muted-foreground"
                                                             asChild
                                                         >
                                                             <Link href={`/ar/customizer?id=${store.id}`}>
@@ -409,11 +409,11 @@ export default function DashboardClient() {
                                     </div>
                                 ) : (
                                     <div className="text-center py-12">
-                                        <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                                            <Shield className="w-8 h-8 text-zinc-600" />
+                                        <div className="w-16 h-16 bg-card/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                                            <Shield className="w-8 h-8 text-muted-foreground" />
                                         </div>
-                                        <h3 className="text-lg font-bold text-white mb-2">{t('no_assets')}</h3>
-                                        <p className="text-zinc-500 mb-6 max-w-sm mx-auto">
+                                        <h3 className="text-lg font-bold text-foreground mb-2">{t('no_assets')}</h3>
+                                        <p className="text-muted-foreground mb-6 max-w-sm mx-auto">
                                             {t('no_assets_desc')}
                                         </p>
                                         <Button asChild className="bg-blue-600 hover:bg-blue-500">
@@ -429,9 +429,9 @@ export default function DashboardClient() {
                     <div className="space-y-6">
                         {/* SEO SCORE CARD */}
                         {data && data.seo && (
-                            <Card className="bg-zinc-900/50 border-white/5">
+                            <Card className="bg-card border-border">
                                 <CardHeader>
-                                    <CardTitle className="text-white flex items-center gap-2">
+                                    <CardTitle className="text-foreground flex items-center gap-2">
                                         <SearchCheck className="w-5 h-5 text-yellow-500" />
                                         {t('seo_health')}
                                     </CardTitle>
@@ -445,14 +445,14 @@ export default function DashboardClient() {
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-3">
-                                        <div className="p-3 rounded-lg bg-white/5">
-                                            <p className="text-zinc-500 text-xs">SEO Score</p>
+                                        <div className="p-3 rounded-lg bg-card/5">
+                                            <p className="text-muted-foreground text-xs">SEO Score</p>
                                             <p className={`text-lg font-bold ${getScoreColor(data.seo.seoScore)}`}>
                                                 {data.seo.seoScore}
                                             </p>
                                         </div>
-                                        <div className="p-3 rounded-lg bg-white/5">
-                                            <p className="text-zinc-500 text-xs">Performance</p>
+                                        <div className="p-3 rounded-lg bg-card/5">
+                                            <p className="text-muted-foreground text-xs">Performance</p>
                                             <p className={`text-lg font-bold ${getScoreColor(data.seo.performanceScore)}`}>
                                                 {data.seo.performanceScore}
                                             </p>
@@ -464,13 +464,13 @@ export default function DashboardClient() {
                                                 {data.seo.issues.length} Issues Found
                                             </p>
                                             {data.seo.issues.slice(0, 3).map((issue, i) => (
-                                                <p key={i} className="text-zinc-400 text-xs mb-1">
+                                                <p key={i} className="text-muted-foreground text-xs mb-1">
                                                     • {issue.message}
                                                 </p>
                                             ))}
                                         </div>
                                     )}
-                                    <Button variant="outline" className="w-full border-white/10 bg-white/5 hover:bg-white/10">
+                                    <Button variant="outline" className="w-full border-border bg-card/5 hover:bg-card/10">
                                         View Full Audit
                                     </Button>
                                 </CardContent>
@@ -478,27 +478,27 @@ export default function DashboardClient() {
                         )}
 
                         {/* QUICK ACTIONS */}
-                        <Card className="bg-zinc-900/50 border-white/5">
+                        <Card className="bg-card border-border">
                             <CardHeader>
-                                <CardTitle className="text-white flex items-center gap-2">
+                                <CardTitle className="text-foreground flex items-center gap-2">
                                     <Zap className="w-5 h-5 text-orange-500" />
                                     {t('quick_actions')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2">
-                                <Button variant="outline" className="w-full justify-start border-white/10 bg-white/5 hover:bg-white/10">
+                                <Button variant="outline" className="w-full justify-start border-border bg-card/5 hover:bg-card/10">
                                     <Globe className="w-4 h-4 mr-2" />
                                     {t('add_domain')}
                                 </Button>
-                                <Button variant="outline" className="w-full justify-start border-white/10 bg-white/5 hover:bg-white/10">
+                                <Button variant="outline" className="w-full justify-start border-border bg-card/5 hover:bg-card/10">
                                     <Search className="w-4 h-4 mr-2" />
                                     {t('run_audit')}
                                 </Button>
-                                <Button variant="outline" className="w-full justify-start border-white/10 bg-white/5 hover:bg-white/10">
+                                <Button variant="outline" className="w-full justify-start border-border bg-card/5 hover:bg-card/10">
                                     <BarChart3 className="w-4 h-4 mr-2" />
                                     {t('view_analytics')}
                                 </Button>
-                                <Button variant="outline" className="w-full justify-start border-white/10 bg-white/5 hover:bg-white/10">
+                                <Button variant="outline" className="w-full justify-start border-border bg-card/5 hover:bg-card/10">
                                     <Calendar className="w-4 h-4 mr-2" />
                                     {t('schedule_report')}
                                 </Button>
@@ -506,22 +506,22 @@ export default function DashboardClient() {
                         </Card>
 
                         {/* RECENT ACTIVITY */}
-                        <Card className="bg-zinc-900/50 border-white/5">
+                        <Card className="bg-card border-border">
                             <CardHeader>
-                                <CardTitle className="text-white flex items-center gap-2">
+                                <CardTitle className="text-foreground flex items-center gap-2">
                                     <Clock className="w-5 h-5 text-blue-500" />
                                     {t('recent_activity')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-3">
                                 {data && data.recentActivity.map((activity, i) => (
-                                    <div key={i} className="flex items-start gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors">
+                                    <div key={i} className="flex items-start gap-3 p-2 rounded-lg hover:bg-card/5 transition-colors">
                                         <div className={`w-2 h-2 rounded-full mt-1.5 ${activity.type === 'success' ? 'bg-emerald-500' :
                                             activity.type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'
                                             }`} />
                                         <div>
-                                            <p className="text-zinc-300 text-sm">{activity.message}</p>
-                                            <p className="text-zinc-600 text-xs mt-1">
+                                            <p className="text-muted-foreground text-sm">{activity.message}</p>
+                                            <p className="text-muted-foreground text-xs mt-1">
                                                 {new Date(activity.date).toLocaleDateString()}
                                             </p>
                                         </div>
@@ -534,9 +534,9 @@ export default function DashboardClient() {
 
                 {/* TRAFFIC CHART PLACEHOLDER */}
                 {data && data.analytics && data.analytics.viewsOverTime.length > 0 && (
-                    <Card className="bg-zinc-900/50 border-white/5">
+                    <Card className="bg-card border-border">
                         <CardHeader>
-                            <CardTitle className="text-white flex items-center gap-2">
+                            <CardTitle className="text-foreground flex items-center gap-2">
                                 <TrendingUp className="w-5 h-5 text-emerald-500" />
                                 Traffic Overview
                             </CardTitle>
@@ -553,7 +553,7 @@ export default function DashboardClient() {
                                                 minHeight: day.views > 0 ? '4px' : '0'
                                             }}
                                         />
-                                        <span className="text-xs text-zinc-600">
+                                        <span className="text-xs text-muted-foreground">
                                             {new Date(day.date).getDate()}
                                         </span>
                                     </div>

@@ -37,10 +37,10 @@ export default function Testimonials() {
     ];
 
     return (
-        <section className="py-24 bg-black overflow-hidden relative">
+        <section className="py-24 bg-background overflow-hidden relative">
             <div className="container mx-auto px-6 mb-16 text-center">
-                <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">{t('title')}</h2>
-                <p className="text-zinc-400">{t('subtitle')}</p>
+                <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">{t('title')}</h2>
+                <p className="text-muted-foreground">{t('subtitle')}</p>
             </div>
 
             {/* Marquee Container */}
@@ -49,16 +49,16 @@ export default function Testimonials() {
                     {[...testimonials, ...testimonials, ...testimonials].map((testimonial, i) => (
                         <div
                             key={i}
-                            className="inline-block w-[350px] bg-zinc-900/50 border border-white/5 rounded-2xl p-8 hover:bg-zinc-900 transition-colors whitespace-normal"
+                            className="inline-block w-[350px] bg-card border border-border rounded-2xl p-8 hover:shadow-lg transition-shadow whitespace-normal"
                         >
                             <div className="flex items-center gap-1 mb-4">
                                 {[1, 2, 3, 4, 5].map((star) => (
                                     <Star key={star} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
                                 ))}
                             </div>
-                            <p className="text-zinc-300 mb-6 italic leading-relaxed">"{testimonial.content}"</p>
+                            <p className="text-muted-foreground mb-6 italic leading-relaxed">"{testimonial.content}"</p>
                             <div className="flex items-center gap-4">
-                                <div className="relative w-10 h-10 rounded-full overflow-hidden border border-white/10">
+                                <div className="relative w-10 h-10 rounded-full overflow-hidden border border-border">
                                     <Image
                                         src={testimonial.image}
                                         alt={testimonial.name}
@@ -67,8 +67,8 @@ export default function Testimonials() {
                                     />
                                 </div>
                                 <div>
-                                    <h4 className="text-white font-semibold text-sm">{testimonial.name}</h4>
-                                    <p className="text-zinc-500 text-xs">{testimonial.role}</p>
+                                    <h4 className="text-foreground font-semibold text-sm">{testimonial.name}</h4>
+                                    <p className="text-muted-foreground text-xs">{testimonial.role}</p>
                                 </div>
                             </div>
                         </div>

@@ -24,14 +24,14 @@ export default function CategoryFilter({ categories, activeCategory, onCategoryC
                     className={cn(
                         "relative px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300",
                         activeCategory === category.id
-                            ? "text-white"
-                            : "text-zinc-500 hover:text-zinc-300 hover:bg-white/5"
+                            ? "text-primary-foreground"
+                            : "text-muted-foreground hover:text-foreground hover:bg-secondary"
                     )}
                 >
                     {activeCategory === category.id && (
                         <motion.div
                             layoutId="active-category"
-                            className="absolute inset-0 bg-blue-600 rounded-full -z-10 shadow-[0_0_20px_rgba(37,99,235,0.4)]"
+                            className="absolute inset-0 bg-primary rounded-full -z-10 shadow-lg"
                             transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                         />
                     )}

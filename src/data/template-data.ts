@@ -163,6 +163,116 @@ export const templates = [
         "badge": "Aesthetic",
         "estimatedSavings": "~ 0.5M savings",
         "features": ["Therapy Menu", "Soft Visuals", "Calm Booking"]
+    },
+    {
+        "id": "urban-retail",
+        "title": "Urban Retail",
+        "desc": "Contemporary streetwear storefront for the modern age.",
+        "category": "ecommerce",
+        "image": "https://images.unsplash.com/photo-1555529771-835f59fc5efe?q=80&w=2070&auto=format&fit=crop",
+        "demoUrl": "/demo/urban-retail",
+        "badge": "Trend",
+        "estimatedSavings": "~ 2.1M savings",
+        "features": ["Quick Look", "Size Guide", "Street Vibes"]
+    },
+    {
+        "id": "prime-law",
+        "title": "Prime Partners",
+        "desc": "Authoritative presence for elite legal counsel.",
+        "category": "finance",
+        "image": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2071&auto=format&fit=crop",
+        "demoUrl": "/demo/prime-law",
+        "badge": "Legal",
+        "estimatedSavings": "~ 3.8M savings",
+        "features": ["Attorney Profiles", "Practice Areas", "Consultation"]
+    },
+    {
+        "id": "fusion-bistro",
+        "title": "Fusion Bistro",
+        "desc": "Modern culinary showcase for fusion cuisine.",
+        "category": "restaurant",
+        "image": "https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=1974&auto=format&fit=crop",
+        "demoUrl": "/demo/fusion-bistro",
+        "badge": "Taste",
+        "estimatedSavings": "~ 1.2M savings",
+        "features": ["Seasonal Menu", "Chef's Table", "Event Booking"]
+    },
+    {
+        "id": "venture-cap",
+        "title": "Venture One",
+        "desc": "Strategic investment portfolio for VC firms.",
+        "category": "finance",
+        "image": "https://images.unsplash.com/photo-1553729459-efe14ef6055d?q=80&w=2070&auto=format&fit=crop",
+        "demoUrl": "/demo/venture-cap",
+        "badge": "Capital",
+        "estimatedSavings": "~ 5.5M savings",
+        "features": ["Portfolio Grid", "Investment Thesis", "Team Focus"]
+    },
+    {
+        "id": "dental-plus",
+        "title": "Dental Plus",
+        "desc": "Friendly, clean aesthetic for family dentistry.",
+        "category": "healthcare",
+        "image": "https://images.unsplash.com/photo-1588776814546-1b44fbbc0f52?q=80&w=2071&auto=format&fit=crop",
+        "demoUrl": "/demo/dental-plus",
+        "badge": "Care",
+        "estimatedSavings": "~ 1.9M savings",
+        "features": ["Smile Gallery", "Patient Forms", "Emergency Info"]
+    },
+    {
+        "id": "yoga-flow",
+        "title": "Yoga Flow",
+        "desc": "Minimalist calm for yoga and pilates studios.",
+        "category": "creative",
+        "image": "https://images.unsplash.com/photo-1599447421405-075adf15ca28?q=80&w=2070&auto=format&fit=crop",
+        "demoUrl": "/demo/yoga-flow",
+        "badge": "Wellness",
+        "estimatedSavings": "~ 1.1M savings",
+        "features": ["Class Schedule", "Instructor Bio", "New Student Offer"]
+    },
+    {
+        "id": "tech-nova",
+        "title": "Nova Tech",
+        "desc": "Innovative showcase for emerging tech solutions.",
+        "category": "business",
+        "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop",
+        "demoUrl": "/demo/tech-nova",
+        "badge": "Innovation",
+        "estimatedSavings": "~ 4.2M savings",
+        "features": ["Tech Stack", "Case Studies", "Integration API"]
+    },
+    {
+        "id": "estate-prime",
+        "title": "Prime Estate",
+        "desc": "Premium residential listings for top agents.",
+        "category": "business",
+        "image": "https://images.unsplash.com/photo-1582407947304-fd86f028f716?q=80&w=2096&auto=format&fit=crop",
+        "demoUrl": "/demo/estate-prime",
+        "badge": "Realty",
+        "estimatedSavings": "~ 2.6M savings",
+        "features": ["Neighborhood Guide", "Buying Guide", "Mortgage Calc"]
+    },
+    {
+        "id": "news-daily",
+        "title": "Daily News",
+        "desc": "Fast-paced news feed for modern publishers.",
+        "category": "creative",
+        "image": "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=2070&auto=format&fit=crop",
+        "demoUrl": "/demo/news-daily",
+        "badge": "Press",
+        "estimatedSavings": "~ 1.8M savings",
+        "features": ["Breaking News", "Trending Topics", "Newsletter"]
+    },
+    {
+        "id": "lms-pro",
+        "title": "Pro Learn",
+        "desc": "Professional training platform for corporate skills.",
+        "category": "creative",
+        "image": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop",
+        "demoUrl": "/demo/lms-pro",
+        "badge": "Training",
+        "estimatedSavings": "~ 1.4M savings",
+        "features": ["Skill Track", "Certification", "Team Access"]
     }
 ];
 

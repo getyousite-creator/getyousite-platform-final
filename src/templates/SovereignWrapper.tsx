@@ -131,8 +131,8 @@ function BlueprintSectionRenderer({ section }: { section: Section }) {
             return <DynamicContact content={section.content} />;
         default:
             return (
-                <div className="p-20 text-center border-2 border-dashed border-zinc-900/10 rounded-3xl m-10">
-                    <span className="text-zinc-500 font-mono text-xs uppercase tracking-widest">
+                <div className="p-20 text-center border-2 border-dashed border-border rounded-3xl m-10">
+                    <span className="text-muted-foreground font-mono text-xs uppercase tracking-widest">
                         [{section.type}] Implementation Pending...
                     </span>
                 </div>
@@ -144,10 +144,10 @@ function BlueprintSectionRenderer({ section }: { section: Section }) {
 function DynamicHero({ content }: { content: Record<string, any> }) {
     return (
         <section className="py-24 px-6 md:px-10 text-center max-w-7xl mx-auto">
-            <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight text-slate-900">{content.headline}</h1>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">{content.subheadline}</p>
+            <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight text-foreground">{content.headline}</h1>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">{content.subheadline}</p>
             {content.cta && (
-                 <button className="mt-8 px-8 py-4 bg-slate-900 text-white rounded-full font-bold hover:scale-105 transition-transform">
+                 <button className="mt-8 px-8 py-4 bg-primary text-primary-foreground rounded-full font-bold hover:scale-105 transition-transform">
                     {content.cta}
                  </button>
             )}

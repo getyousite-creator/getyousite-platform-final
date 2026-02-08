@@ -18,18 +18,18 @@ const POSTS = [
         title: "Sovereign AI: The Future of Digital Commerce",
         excerpt: "Why traditional e-commerce is failing and how the new AI-orchestrated infrastructure is decentralizing market power.",
         content: `
-            <p className="text-xl text-slate-300 font-medium leading-relaxed mb-8">
+            <p className="text-xl text-muted-foreground font-medium leading-relaxed mb-8">
                 In the last decade, we have seen the rise of centralized platforms that dictate the terms of digital existence. From high commissions to rigid templates, the 'old' internet has become a cage for visionaries.
             </p>
             <h2 className="text-3xl font-black italic uppercase italic tracking-tightest mt-12 mb-6">The Death of Standard Templates</h2>
-            <p className="text-slate-400 mb-6 leading-relaxed">
+            <p className="text-muted-foreground mb-6 leading-relaxed">
                 Standard templates are no longer enough. The modern consumer demands a dynamic experience that feels alive. That's where Sovereign AI comes in. It doesn't just display content; it orchestrates an ecosystem.
             </p>
-            <blockquote className="border-l-4 border-blue-600 pl-10 my-12 py-4 italic text-2xl font-black text-white">
+            <blockquote className="border-l-4 border-primary pl-10 my-12 py-4 italic text-2xl font-black text-foreground">
                 "Digital sovereignty is not a luxury; it is the fundamental requirement for high-frequency commerce in 2026."
             </blockquote>
             <h2 className="text-3xl font-black italic uppercase italic tracking-tightest mt-12 mb-6">Engineered for Success</h2>
-            <p className="text-slate-400 mb-6 leading-relaxed">
+            <p className="text-muted-foreground mb-6 leading-relaxed">
                 By leveraging server-side rendering and edge computation, platforms like GetYouSite ensure that your digital empire is never offline and never slow. We are moving from 'websites' to 'digital organisms'.
             </p>
         `,
@@ -53,7 +53,7 @@ export default function BlogPostPage() {
     }
 
     return (
-        <div className="min-h-screen bg-slate-950 text-white selection:bg-blue-600 selection:text-white">
+        <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
             <Header />
 
             <main className="pt-32 pb-24">
@@ -61,7 +61,7 @@ export default function BlogPostPage() {
                     {/* BACK NAVIGATION */}
                     <Link
                         href="/blog"
-                        className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 hover:text-white transition-all mb-16 group"
+                        className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground hover:text-foreground transition-all mb-16 group"
                     >
                         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-2 transition-transform" />
                         {t('back_to_streams')}
@@ -69,17 +69,17 @@ export default function BlogPostPage() {
 
                     {/* ARTICLE HEADER */}
                     <div className="space-y-10 mb-20">
-                        <div className="flex flex-wrap items-center gap-8 text-[10px] font-black uppercase tracking-widest text-blue-500">
-                            <span className="flex items-center gap-2 px-3 py-1 rounded bg-blue-600/10 border border-blue-500/20">{post.category}</span>
-                            <span className="flex items-center gap-2 text-slate-400"><Calendar className="w-3 h-3" /> {post.date}</span>
-                            <span className="flex items-center gap-2 text-slate-400"><User className="w-3 h-3" /> {post.author}</span>
+                        <div className="flex flex-wrap items-center gap-8 text-[10px] font-black uppercase tracking-widest text-primary">
+                            <span className="flex items-center gap-2 px-3 py-1 rounded bg-primary/10 border border-primary/20">{post.category}</span>
+                            <span className="flex items-center gap-2 text-muted-foreground"><Calendar className="w-3 h-3" /> {post.date}</span>
+                            <span className="flex items-center gap-2 text-muted-foreground"><User className="w-3 h-3" /> {post.author}</span>
                         </div>
 
                         <h1 className="text-5xl md:text-7xl font-black tracking-tightest italic uppercase leading-[0.9]">
                             {post.title}
                         </h1>
 
-                        <div className="relative aspect-[21/9] rounded-[2rem] overflow-hidden border border-white/5">
+                        <div className="relative aspect-[21/9] rounded-[2rem] overflow-hidden border border-border">
                             <Image
                                 src={post.image}
                                 alt={post.title}
@@ -91,9 +91,9 @@ export default function BlogPostPage() {
 
                     {/* DYNAMIC CONTENT CLUSTER */}
                     <div
-                        className="prose prose-invert prose-2xl max-w-none text-slate-300 font-medium leading-relaxed
-                            prose-headings:text-white prose-headings:font-black prose-headings:italic prose-headings:uppercase prose-headings:tracking-tighter
-                            prose-strong:text-white prose-blockquote:border-blue-600 prose-blockquote:bg-blue-600/5 prose-blockquote:p-10 prose-blockquote:rounded-3xl
+                        className="prose prose-2xl max-w-none text-muted-foreground font-medium leading-relaxed
+                            prose-headings:text-foreground prose-headings:font-black prose-headings:italic prose-headings:uppercase prose-headings:tracking-tighter
+                            prose-strong:text-foreground prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:p-10 prose-blockquote:rounded-3xl
                         "
                         dangerouslySetInnerHTML={{ __html: post.content }}
                     />

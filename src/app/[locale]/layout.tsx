@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         title: t('title'),
         description: t('description'),
         manifest: '/manifest.json',
-        themeColor: '#000000',
+        themeColor: '#ffffff',
         openGraph: {
             title: t('title'),
             description: t('description'),
@@ -66,7 +66,7 @@ export default async function LocaleLayout({
                 <NextIntlClientProvider messages={messages}>
                     <ThemeProvider
                         attribute="class"
-                        defaultTheme="dark"
+                        defaultTheme="light"
                         enableSystem={false}
                         disableTransitionOnChange
                         themes={["light", "dark", "medical", "luxury"]}

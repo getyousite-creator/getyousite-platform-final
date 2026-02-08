@@ -43,7 +43,7 @@ export default function BlogPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-slate-950 text-white selection:bg-blue-600 selection:text-white">
+        <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
             <Header />
 
             <main className="pt-32 pb-24">
@@ -53,7 +53,7 @@ export default function BlogPage() {
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-600/10 border border-blue-500/20 text-[10px] font-black uppercase tracking-[0.4em] text-blue-400 mb-8"
+                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-black uppercase tracking-[0.4em] text-primary mb-8"
                         >
                             {t('badge')}
                         </motion.div>
@@ -68,7 +68,7 @@ export default function BlogPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 }}
-                            className="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto font-medium"
+                            className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto font-medium"
                         >
                             {t('subtitle')}
                         </motion.p>
@@ -84,35 +84,35 @@ export default function BlogPage() {
                                 transition={{ delay: index * 0.1 }}
                                 className="group relative"
                             >
-                                <div className="relative aspect-[16/10] rounded-3xl overflow-hidden mb-8 border border-white/5">
+                                <div className="relative aspect-[16/10] rounded-3xl overflow-hidden mb-8 border border-border">
                                     <Image
                                         src={post.image}
                                         alt={post.title}
                                         fill
                                         className="object-cover transition-transform duration-700 group-hover:scale-110"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent opacity-60" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-60" />
                                     <div className="absolute top-4 left-4">
-                                        <div className="px-3 py-1 rounded-full bg-blue-600 text-[9px] font-black uppercase tracking-widest">
+                                        <div className="px-3 py-1 rounded-full bg-primary text-[9px] font-black uppercase tracking-widest text-primary-foreground">
                                             {post.category}
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="space-y-4">
-                                    <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-widest text-slate-500">
-                                        <span className="flex items-center gap-2"><Calendar className="w-3 h-3 text-blue-500" /> {post.date}</span>
-                                        <span className="flex items-center gap-2"><User className="w-3 h-3 text-slate-400" /> {post.author}</span>
+                                    <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                                        <span className="flex items-center gap-2"><Calendar className="w-3 h-3 text-primary" /> {post.date}</span>
+                                        <span className="flex items-center gap-2"><User className="w-3 h-3 text-muted-foreground" /> {post.author}</span>
                                     </div>
-                                    <h2 className="text-3xl font-black italic tracking-tighter leading-tight group-hover:text-blue-400 transition-colors">
+                                    <h2 className="text-3xl font-black italic tracking-tighter leading-tight group-hover:text-primary transition-colors">
                                         {post.title}
                                     </h2>
-                                    <p className="text-slate-400 text-sm leading-relaxed line-clamp-2">
+                                    <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">
                                         {post.excerpt}
                                     </p>
                                     <Link
                                         href={`/blog/${post.slug}`}
-                                        className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-white hover:text-blue-400 transition-all pt-4 group/btn"
+                                        className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-primary hover:text-primary/80 transition-all pt-4 group/btn"
                                     >
                                         {t('read_more')}
                                         <ArrowUpRight className="w-4 h-4 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
@@ -127,24 +127,24 @@ export default function BlogPage() {
                         initial={{ opacity: 0, y: 40 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="mt-32 p-12 rounded-[3rem] bg-blue-600 relative overflow-hidden group"
+                        className="mt-32 p-12 rounded-[3rem] bg-primary relative overflow-hidden group"
                     >
                         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 contrast-150" />
                         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
                             <div className="max-w-xl">
-                                <h2 className="text-4xl md:text-5xl font-black italic tracking-tighter uppercase text-white mb-6">
+                                <h2 className="text-4xl md:text-5xl font-black italic tracking-tighter uppercase text-primary-foreground mb-6">
                                     {t('newsletter.title')}
                                 </h2>
-                                <p className="text-blue-100/80 font-medium">
+                                <p className="text-primary-foreground/80 font-medium">
                                     {t('newsletter.subtitle')}
                                 </p>
                             </div>
                             <div className="w-full max-w-md flex gap-2">
                                 <input
-                                    className="w-full bg-white/10 border-white/20 rounded-2xl px-6 h-16 focus:bg-white/20 transition-all outline-none placeholder:text-blue-100/50"
+                                    className="w-full bg-primary-foreground/10 border-primary-foreground/20 rounded-2xl px-6 h-16 focus:bg-primary-foreground/20 transition-all outline-none placeholder:text-primary-foreground/50 text-primary-foreground"
                                     placeholder={t('newsletter.placeholder')}
                                 />
-                                <button className="h-16 px-8 rounded-2xl bg-white text-blue-600 font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all">
+                                <button className="h-16 px-8 rounded-2xl bg-primary-foreground text-primary font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all">
                                     {t('newsletter.button')}
                                 </button>
                             </div>

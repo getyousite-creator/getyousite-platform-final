@@ -43,7 +43,7 @@ export default function DeploymentLoader({ isVisible, onComplete }: DeploymentLo
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-[500] flex items-center justify-center bg-black/90 backdrop-blur-xl"
+                    className="fixed inset-0 z-[500] flex items-center justify-center bg-background/80 backdrop-blur-xl"
                 >
                     <div className="max-w-md w-full px-8">
                         <div className="space-y-8">
@@ -72,13 +72,13 @@ export default function DeploymentLoader({ isVisible, onComplete }: DeploymentLo
                                                 x: 0,
                                                 scale: isActive ? 1.05 : 1
                                             }}
-                                            className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5"
+                                            className="flex items-center gap-4 p-4 rounded-2xl bg-card border border-border"
                                         >
-                                            <div className={`p-2 rounded-lg bg-black/40 ${step.color}`}>
+                                            <div className={`p-2 rounded-lg bg-secondary/30`}>
                                                 <Icon size={18} />
                                             </div>
                                             <div className="flex-1">
-                                                <p className={`text-xs font-black uppercase tracking-widest ${isActive ? "text-white" : "text-zinc-500"}`}>
+                                                <p className={`text-xs font-black uppercase tracking-widest ${isActive ? "text-foreground" : "text-muted-foreground"}`}>
                                                     {step.label}
                                                 </p>
                                             </div>
@@ -93,7 +93,7 @@ export default function DeploymentLoader({ isVisible, onComplete }: DeploymentLo
                             </div>
 
                             {/* PROGRESS BAR */}
-                            <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                            <div className="h-1 bg-muted rounded-full overflow-hidden">
                                 <motion.div
                                     className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500"
                                     initial={{ width: "0%" }}

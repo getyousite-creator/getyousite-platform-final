@@ -22,25 +22,25 @@ export function CheckoutModule({ siteId, planId, amount, onSuccess }: CheckoutMo
     const [provider, setProvider] = React.useState<'paypal' | 'stripe'>('paypal');
 
     return (
-        <div className="p-8 rounded-[40px] bg-zinc-900 border border-white/5 space-y-8 max-w-lg mx-auto shadow-2xl">
+        <div className="p-8 rounded-[40px] bg-card border border-border space-y-8 max-w-lg mx-auto shadow-2xl">
             <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center">
                     <Shield className="w-6 h-6 text-blue-500" />
                 </div>
                 <div>
-                    <h3 className="text-xl font-black uppercase tracking-tightest text-white">Secure Activation</h3>
-                    <p className="text-xs text-zinc-500 uppercase tracking-widest">Protocol: PayPal Sovereign Cloud</p>
+                    <h3 className="text-xl font-black uppercase tracking-tightest text-foreground">Secure Activation</h3>
+                    <p className="text-xs text-muted-foreground uppercase tracking-widest">Protocol: PayPal Sovereign Cloud</p>
                 </div>
             </div>
 
-            <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/5">
+                <div className="p-6 rounded-2xl bg-secondary border border-border">
                 <div className="flex justify-between items-center mb-4">
-                    <span className="text-zinc-500 uppercase text-[10px] font-bold">Service Plan</span>
-                    <span className="text-white font-black uppercase text-xs">{planId}</span>
+                    <span className="text-muted-foreground uppercase text-[10px] font-bold">Service Plan</span>
+                    <span className="text-foreground font-black uppercase text-xs">{planId}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                    <span className="text-zinc-500 uppercase text-[10px] font-bold">Atomic Cost</span>
-                    <span className="text-2xl font-black text-white">${amount} <span className="text-[10px] text-zinc-600">USD</span></span>
+                    <span className="text-muted-foreground uppercase text-[10px] font-bold">Atomic Cost</span>
+                    <span className="text-2xl font-black text-foreground">${amount} <span className="text-[10px] text-muted-foreground">USD</span></span>
                 </div>
             </div>
 
@@ -102,15 +102,15 @@ export function CheckoutModule({ siteId, planId, amount, onSuccess }: CheckoutMo
                             toast.error(res.error || "Stripe Bridge Error.");
                         }
                     }}
-                    className="w-full h-14 bg-[#635BFF] hover:bg-[#5851e5] text-white font-black uppercase tracking-widest text-[11px] rounded-full shadow-lg"
+                    className="w-full h-14 bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase tracking-widest text-[11px] rounded-full shadow-lg"
                 >
                     Activate with Stripe
                 </Button>
             )}
 
-            <div className="flex justify-center items-center gap-2">
-                <Zap className="w-3 h-3 text-zinc-700" />
-                <span className="text-[8px] text-zinc-700 uppercase font-black tracking-widest">Encrypted via Sovereign Monetization Bridge</span>
+                <div className="flex justify-center items-center gap-2">
+                <Zap className="w-3 h-3 text-muted-foreground" />
+                <span className="text-[8px] text-muted-foreground uppercase font-black tracking-widest">Encrypted via Sovereign Monetization Bridge</span>
             </div>
         </div>
     );

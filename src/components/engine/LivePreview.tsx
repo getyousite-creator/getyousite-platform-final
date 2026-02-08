@@ -42,7 +42,7 @@ export const LivePreview: React.FC<PreviewProps> = ({ config, isGenerating }) =>
     }
 
     return (
-        <div className="relative w-full h-full bg-white overflow-hidden shadow-2xl rounded-2xl border-4 border-zinc-900 aspect-[9/16] md:aspect-[16/10]">
+        <div className="relative w-full h-full bg-card overflow-hidden shadow-2xl rounded-2xl border-4 border-border aspect-[9/16] md:aspect-[16/10]">
             <AnimatePresence mode="wait">
                 <motion.div
                     key={config?.site_id || 'initial'}
@@ -67,7 +67,7 @@ const DynamicRenderer = ({ blueprint }: any) => {
     if (!blueprint) return (
         <div className="flex flex-col items-center justify-center p-20 text-center space-y-4">
             <div className="w-12 h-12 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-            <p className="text-zinc-500 font-mono text-xs uppercase tracking-widest">Initializing Neural Link...</p>
+            <p className="text-muted-foreground font-mono text-xs uppercase tracking-widest">Initializing Neural Link...</p>
         </div>
     );
 
@@ -76,11 +76,11 @@ const DynamicRenderer = ({ blueprint }: any) => {
     return (
         <div style={{ '--primary-color': primaryColor } as any} className="min-h-full">
             {/* 1. Header Rendering */}
-            <section id="preview-header" className={`border-b border-black/5 p-4 flex justify-between items-center bg-white/80 backdrop-blur-md sticky top-0 z-10 ${blueprint.navigation?.transparent ? 'absolute inset-x-0 bg-transparent border-none' : ''}`}>
+            <section id="preview-header" className={`border-b border-border p-4 flex justify-between items-center bg-background/80 backdrop-blur-md sticky top-0 z-10 ${blueprint.navigation?.transparent ? 'absolute inset-x-0 bg-transparent border-none' : ''}`}>
                 <div className="font-black text-xl tracking-tighter" style={{ color: primaryColor }}>
                     {blueprint.navigation?.logo || blueprint.name || "Sovereign_Site"}
                 </div>
-                <div className="flex gap-4 text-[10px] font-bold uppercase tracking-widest text-zinc-400">
+                <div className="flex gap-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                     {blueprint.navigation?.links ? (
                         blueprint.navigation.links.map((link: any, i: number) => (
                             <span key={i}>{link.label}</span>
@@ -113,16 +113,16 @@ const DynamicRenderer = ({ blueprint }: any) => {
             ))}
 
             {/* 3. Footer Rendering */}
-            <footer className="p-12 bg-zinc-50 border-t border-black/5 text-center">
+            <footer className="p-12 bg-background border-t border-border text-center">
                 <div className="mb-6 flex justify-center gap-6">
                     {blueprint.footer?.links?.map((link: any, i: number) => (
-                        <span key={i} className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest cursor-pointer hover:text-black transition-colors">{link.label}</span>
+                        <span key={i} className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest cursor-pointer hover:text-foreground transition-colors">{link.label}</span>
                     ))}
                 </div>
-                <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">
+                <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">
                     {blueprint.footer?.copyright || "© 2024 GetYouSite Sovereign Engine"}
                 </p>
-                <div className="mt-4 flex justify-center gap-4 text-zinc-400">
+                <div className="mt-4 flex justify-center gap-4 text-muted-foreground">
                     {blueprint.footer?.social && Object.entries(blueprint.footer.social).map(([platform, url]: any) => (
                         <span key={platform} className="text-[10px] font-bold uppercase">{platform}</span>
                     ))}
@@ -133,11 +133,11 @@ const DynamicRenderer = ({ blueprint }: any) => {
 };
 
 const AIProcessingHUD = () => (
-    <div className="absolute inset-0 bg-blue-900/5 backdrop-blur-[2px] pointer-events-none flex items-center justify-center z-50">
+    <div className="absolute inset-0 bg-primary/5 backdrop-blur-[2px] pointer-events-none flex items-center justify-center z-50">
         <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-black/90 text-blue-400 p-6 font-mono text-[10px] rounded-xl border border-blue-500/30 shadow-2xl space-y-2"
+            className="bg-card/90 text-primary-foreground p-6 font-mono text-[10px] rounded-xl border border-border shadow-2xl space-y-2"
         >
             <div className="flex gap-2 items-center">
                 <div className="w-2 h-2 bg-blue-500 rounded-full animate-blink" />
@@ -150,11 +150,11 @@ const AIProcessingHUD = () => (
 );
 
 const GenerationSkeleton = () => (
-    <div className="w-full h-full bg-zinc-50 flex items-center justify-center rounded-2xl border border-zinc-200">
+    <div className="w-full h-full bg-background flex items-center justify-center rounded-2xl border border-border">
         <div className="space-y-4 w-2/3">
-            <div className="h-4 bg-zinc-200 rounded-full w-3/4 animate-pulse" />
-            <div className="h-4 bg-zinc-200 rounded-full w-1/2 animate-pulse" />
-            <div className="h-32 bg-zinc-200 rounded-xl w-full animate-pulse" />
+            <div className="h-4 bg-secondary rounded-full w-3/4 animate-pulse" />
+            <div className="h-4 bg-secondary rounded-full w-1/2 animate-pulse" />
+            <div className="h-32 bg-secondary rounded-xl w-full animate-pulse" />
         </div>
     </div>
 );

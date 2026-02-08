@@ -52,7 +52,7 @@ export function DialogContent({ className, children }: { className?: string; chi
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="absolute inset-0 bg-black/80 backdrop-blur-md"
+                        className="absolute inset-0 bg-background/80 backdrop-blur-md"
                         onClick={() => onOpenChange(false)}
                     />
                     <motion.div
@@ -60,13 +60,13 @@ export function DialogContent({ className, children }: { className?: string; chi
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
                         className={cn(
-                            "relative w-full max-w-lg bg-zinc-950 border border-white/10 rounded-2xl shadow-2xl overflow-hidden",
+                            "relative w-full max-w-lg bg-background border border-border rounded-2xl shadow-2xl overflow-hidden",
                             className
                         )}
                     >
                         <button
                             onClick={() => onOpenChange(false)}
-                            className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors z-[10]"
+                            className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors z-[10]"
                         >
                             <X size={20} />
                         </button>
@@ -83,9 +83,9 @@ export function DialogHeader({ className, ...props }: React.HTMLAttributes<HTMLD
 }
 
 export function DialogTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
-    return <h2 className={cn("text-lg font-semibold leading-none tracking-tight text-white", className)} {...props} />
+    return <h2 className={cn("text-lg font-semibold leading-none tracking-tight text-foreground", className)} {...props} />
 }
 
 export function DialogDescription({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
-    return <p className={cn("text-sm text-zinc-500", className)} {...props} />
+    return <p className={cn("text-sm text-muted-foreground", className)} {...props} />
 }

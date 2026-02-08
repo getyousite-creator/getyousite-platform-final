@@ -1,97 +1,140 @@
 "use client";
 
 import { useState } from 'react';
-import { signUpAction, signInWithOAuthAction } from '@/app/actions/auth-actions';
+import { useForm } from 'react-hook-form';
+import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { AlertCircle, CheckCircle, Loader2, Mail } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
+interface SignUpFormData {
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
+
 export default function SignUpForm() {
     const router = useRouter();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const { register, handleSubmit, formState: { errors }, watch, setError: setFormError } = useForm<SignUpFormData>();
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [generalError, setGeneralError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    // Watch password for confirm validation
+    const password = watch('password');
+
+    const onSubmit = async (data: SignUpFormData) => {
+        // **DIAGNOSTIC STEP 1: IS THIS FUNCTION EVEN CALLED?**
+        console.log('Form submission initiated. Data:', { email: data.email, passwordLength: data.password?.length });
+        
         setLoading(true);
-        setError(null);
+        setGeneralError(null);
 
-        // Validate password match
-        if (password !== confirmPassword) {
-            setError('Passwords do not match');
+        // Client-side validation for password match
+        if (data.password !== data.confirmPassword) {
+            setFormError('confirmPassword', { type: 'manual', message: 'Passwords do not match' });
             setLoading(false);
             return;
         }
 
-        // Validate password strength
-        if (password.length < 8) {
-            setError('Password must be at least 8 characters');
-            setLoading(false);
-            return;
-        }
+        const supabase = createClient();
 
-        const result = await signUpAction(email, password);
+        try {
+            // **DIAGNOSTIC STEP 2: IS THE API CALL BEING MADE?**
+            const { data: authData, error } = await supabase.auth.signUp({
+                email: data.email,
+                password: data.password,
+            });
 
-        if (result.success) {
-            setSuccess(true);
-            // Wait 2 seconds then redirect
-            setTimeout(() => {
-                router.push('/login');
-            }, 2000);
-        } else {
-            setError(result.error || 'Sign up failed');
+            // **DIAGNOSTIC STEP 3: WHAT IS THE API RESPONSE?**
+            if (error) {
+                console.error('Supabase SignUp Error:', error.message, error);
+                // **CRITICAL:** Display this error to the user!
+                setGeneralError(error.message);
+            } else {
+                console.log('Supabase SignUp Success. User:', authData.user);
+                
+                // Check if user is actually returned
+                if (authData.user) {
+                     // **CRITICAL:** Inform the user to check their email for verification.
+                    setSuccess(true);
+                } else {
+                     console.warn('SignUp successful but no user returned. Review email settings.');
+                     setSuccess(true);
+                }
+            }
+        } catch (err) {
+            console.error('Unexpected Exception:', err);
+            setGeneralError('An unexpected error occurred during sign up.');
+        } finally {
             setLoading(false);
         }
     };
 
     const handleGoogleSignUp = async () => {
         setLoading(true);
-        setError(null);
-
+        setGeneralError(null);
+        console.log('Initiating Google OAuth...');
         try {
-            await signInWithOAuthAction('google');
+            const supabase = createClient();
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: `${window.location.origin}/auth/callback`,
+                },
+            });
+
+            if (error) {
+                console.error('Google Auth Error:', error);
+                setGeneralError(error.message);
+                setLoading(false);
+            } else {
+                console.log('Google Auth Redirecting:', data);
+            }
         } catch (err) {
-            setError('OAuth sign up failed');
+            console.error('Google OAuth Exception:', err);
+            setGeneralError('OAuth sign up failed');
             setLoading(false);
         }
     };
 
     if (success) {
         return (
-            <div className="p-8 rounded-2xl bg-zinc-900 border border-white/10 shadow-2xl">
+            <div className="p-8 rounded-2xl bg-card border border-border shadow-2xl">
                 <div className="text-center py-8">
-                    <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                    <h2 className="text-2xl font-bold text-white mb-2">Account Created!</h2>
-                    <p className="text-zinc-400 mb-4">
-                        Check your email to verify your account.
+                    <CheckCircle className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
+                    <h2 className="text-2xl font-bold text-foreground mb-2">Account Created Successfully!</h2>
+                    <p className="text-muted-foreground mb-6">
+                        We have sent a verification link to your email address.
+                        <br />
+                        Please check your inbox (and spam folder) to activate your account.
                     </p>
-                    <p className="text-sm text-zinc-500">
-                        Redirecting to login...
-                    </p>
+                    <div className="p-4 bg-primary/10 rounded-lg border border-primary/20 text-sm text-primary">
+                        Diagnostics active: Check console if email not received.
+                    </div>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="p-8 rounded-2xl bg-zinc-900 border border-white/10 shadow-2xl">
+        <div className="p-8 rounded-2xl bg-card border border-border shadow-2xl">
             {/* Header */}
             <div className="mb-8">
-                <h1 className="text-2xl font-bold text-white mb-2">Create Account</h1>
-                <p className="text-sm text-zinc-500">Get started with GetYouSite today</p>
+                <h1 className="text-2xl font-bold text-foreground mb-2">Create Account</h1>
+                <p className="text-sm text-muted-foreground">Get started with GetYouSite today</p>
             </div>
 
             {/* Error Alert */}
-            {error && (
-                <div className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
-                    <p className="text-sm text-red-400">{error}</p>
+            {generalError && (
+                <div className="mb-6 p-4 rounded-lg bg-destructive/10 border border-destructive/20 flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
+                    <div>
+                        <h4 className="text-sm font-bold text-destructive">Registration Failed</h4>
+                        <p className="text-xs text-destructive/80 mt-1">{generalError}</p>
+                    </div>
                 </div>
             )}
 
@@ -100,7 +143,7 @@ export default function SignUpForm() {
                 <Button
                     type="button"
                     variant="outline"
-                    className="w-full h-12 border-white/10 bg-white/5 hover:bg-white/10 text-white"
+                    className="w-full h-12 border-border bg-secondary hover:bg-secondary/80 text-foreground"
                     onClick={handleGoogleSignUp}
                     disabled={loading}
                 >
@@ -117,75 +160,72 @@ export default function SignUpForm() {
             {/* Divider */}
             <div className="relative mb-6">
                 <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t border-white/10" />
+                    <span className="w-full border-t border-border" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-zinc-900 px-2 text-zinc-600">Or sign up with</span>
+                    <span className="bg-card px-2 text-muted-foreground">Or sign up with</span>
                 </div>
             </div>
 
             {/* Email/Password Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="space-y-2">
-                    <Label htmlFor="email" className="text-sm text-zinc-400">
+                    <Label htmlFor="email" className="text-sm text-muted-foreground">
                         Email
                     </Label>
                     <Input
                         id="email"
                         type="email"
                         placeholder="you@example.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
+                        {...register('email', { required: 'Email is required' })}
                         disabled={loading}
-                        className="bg-white/5 border-white/10 h-12 text-white"
+                        className="bg-secondary border-border h-12 text-foreground"
                     />
+                    {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="password" className="text-sm text-zinc-400">
+                    <Label htmlFor="password" className="text-sm text-muted-foreground">
                         Password
                     </Label>
                     <Input
                         id="password"
                         type="password"
                         placeholder="••••••••"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        minLength={8}
+                        {...register('password', { 
+                            required: 'Password is required',
+                            minLength: { value: 8, message: 'Must be at least 8 characters' }
+                        })}
                         disabled={loading}
-                        className="bg-white/5 border-white/10 h-12 text-white"
+                        className="bg-secondary border-border h-12 text-foreground"
                     />
-                    <p className="text-xs text-zinc-600">Must be at least 8 characters</p>
+                    {/* Error handled by formState */}
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="confirmPassword" className="text-sm text-zinc-400">
+                    <Label htmlFor="confirmPassword" className="text-sm text-muted-foreground">
                         Confirm Password
                     </Label>
                     <Input
                         id="confirmPassword"
                         type="password"
                         placeholder="••••••••"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                        minLength={8}
+                        {...register('confirmPassword', { required: 'Please confirm your password' })}
                         disabled={loading}
-                        className="bg-white/5 border-white/10 h-12 text-white"
+                        className="bg-secondary border-border h-12 text-foreground"
                     />
+                    {errors.confirmPassword && <p className="text-xs text-destructive">{errors.confirmPassword.message}</p>}
                 </div>
 
                 <Button
                     type="submit"
-                    className="w-full h-12 bg-blue-600 hover:bg-blue-500 text-white font-semibold"
+                    className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
                     disabled={loading}
                 >
                     {loading ? (
                         <>
                             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            Creating account...
+                            Connecting to Supabase...
                         </>
                     ) : (
                         <>
@@ -195,12 +235,15 @@ export default function SignUpForm() {
                     )}
                 </Button>
 
-                <p className="text-xs text-zinc-500 text-center mt-4">
+                <p className="text-xs text-muted-foreground text-center mt-4">
                     By signing up, you agree to our{' '}
-                    <a href="/terms" className="text-blue-500 hover:underline">Terms of Service</a>
+                    <a href="/terms" className="text-primary hover:underline">Terms of Service</a>
                     {' '}and{' '}
-                    <a href="/privacy" className="text-blue-500 hover:underline">Privacy Policy</a>
+                    <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>
                 </p>
+                <div className="text-[10px] text-muted-foreground/50 text-center font-mono mt-4">
+                    Diagnostics Active: v1.1
+                </div>
             </form>
         </div>
     );

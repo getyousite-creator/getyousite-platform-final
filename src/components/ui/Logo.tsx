@@ -24,13 +24,13 @@ export default function Logo({ className, showText = true, ...props }: LogoProps
                 <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                    className="absolute inset-0 border border-slate-800/50 rounded-full -m-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute inset-0 border border-border/50 rounded-full -m-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
                 />
             </div>
 
             {showText && (
                 <div className="flex flex-col -space-y-1.5 pt-0.5">
-                    <span className="text-2xl font-black tracking-[-0.05em] text-white leading-none">GETYOUSITE</span>
+                    <span className="text-2xl font-black tracking-[-0.05em] text-foreground leading-none">GETYOUSITE</span>
                 </div>
             )}
         </div>

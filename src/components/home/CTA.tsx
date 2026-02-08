@@ -8,7 +8,7 @@ export default function CTA() {
     return (
         <section className="py-24 relative overflow-hidden flex items-center justify-center">
             {/* Background Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black to-blue-950/50" />
+            <div className="absolute inset-0 bg-gradient-to-b from-secondary/60 to-primary/20" />
 
             {/* Animated Particles (CSS only for perf) */}
             <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }} />
@@ -18,7 +18,7 @@ export default function CTA() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
-                    className="text-4xl md:text-7xl font-bold text-white mb-8 tracking-tighter"
+                    className="text-4xl md:text-7xl font-bold text-foreground mb-8 tracking-tighter"
                 >
                     Ready to <span className="text-blue-500">Scale?</span>
                 </motion.h2>
@@ -28,7 +28,7 @@ export default function CTA() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.1 }}
-                    className="text-xl text-zinc-300 mb-10 max-w-2xl mx-auto"
+                    className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto"
                 >
                     High-performance infrastructure is ready. Move beyond simple builders.
                     Launch your professional business asset today.

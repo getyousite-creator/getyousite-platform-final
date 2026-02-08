@@ -30,46 +30,57 @@ const templateMap: Record<string, React.ComponentType<SovereignTemplateProps>> =
     'luxe-cart': MasterRetail,
     'alpha-pro': MasterRetail,
     'fashion-store': MasterRetail,
+    'urban-retail': MasterRetail, // Fixed: Added mapping
 
     // PROFESSIONAL PILLAR
     'law-silo': MasterProfessional,
     'sierra-industry': MasterProfessional,
     'omega-pro': MasterProfessional,
+    'prime-law': MasterProfessional, // Fixed: Added mapping
+    'prime-partners': MasterProfessional, // Fixed: Added mapping
 
     // RESTO PILLAR
     'zen-food': MasterResto,
     'verma-hospitality': MasterResto,
     'gourmet-engine': MasterResto,
+    'fusion-bistro': MasterResto, // Fixed: Added mapping
 
     // CREATIVE PILLAR
     'creative-agency': MasterCreative,
     'cyber-portfolio': MasterCreative,
     'studio-zero': MasterCreative,
+    'yoga-flow': MasterCreative, // Fixed: Mapped to Creative (Visual)
 
     // LANDING PILLAR
     'tech-grid': MasterLanding,
     'saas-convert': MasterLanding,
     'lead-gen-pro': MasterLanding,
+    'tech-nova': MasterLanding, // Fixed: Added mapping
+    'venture-cap': MasterLanding, // Fixed: Mapped to Landing (High Conv)
 
     // REAL ESTATE PILLAR
     'boreal-estate': MasterRealEstate,
     'property-hub': MasterRealEstate,
     'estate-pro': MasterRealEstate,
+    'estate-prime': MasterRealEstate, // Fixed: Added mapping
 
     // LMS PILLAR
     'elite-lms': MasterLMS,
     'course-master': MasterLMS,
     'academy-pro': MasterLMS,
+    'lms-pro': MasterLMS, // Fixed: Added mapping
 
     // PUBLIC PILLAR
     'news-silo': MasterPublic,
     'blog-pro': MasterPublic,
     'dispatch-engine': MasterPublic,
+    'news-daily': MasterPublic, // Fixed: Added mapping
 
     // WELLNESS PILLAR
     'spa-wellness': MasterWellness,
     'beauty-glow': MasterWellness,
     'zen-retreat': MasterWellness,
+    'dental-plus': MasterWellness, // Fixed: Mapped to Wellness (Clean)
 
     // FITNESS PILLAR
     'fitness-neon': MasterFitness,

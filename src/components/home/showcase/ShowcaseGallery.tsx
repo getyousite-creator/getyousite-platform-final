@@ -100,26 +100,26 @@ export default function ShowcaseGallery() {
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.9 }}
-                            className="group relative bg-zinc-900/50 border border-white/5 rounded-[40px] overflow-hidden hover:border-blue-500/50 hover:shadow-[0_0_80px_rgba(37,99,235,0.15)] transition-all duration-700"
+                            className="group relative bg-card border border-border rounded-[40px] overflow-hidden hover:border-primary/50 hover:shadow-xl transition-all duration-700"
                         >
                             {/* Preview Image */}
                             <div className="aspect-[4/3] relative overflow-hidden">
                                 <Image
                                     src={template.image}
-                                    alt={template.title}
+                                    alt={t(`projects.${template.id}.title`)}
                                     fill
                                     className="object-cover grayscale-[0.5] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-[1.5s] ease-out"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-secondary/50 via-transparent to-transparent" />
 
                                 {template.badge && (
-                                    <div className="absolute top-6 left-6 px-4 py-1.5 bg-blue-600 rounded-full text-[9px] font-black uppercase tracking-widest text-white shadow-xl z-20">
+                                    <div className="absolute top-6 left-6 px-4 py-1.5 bg-primary rounded-full text-[9px] font-black uppercase tracking-widest text-primary-foreground shadow-xl z-20">
                                         {template.badge}
                                     </div>
                                 )}
 
                                 {template.estimatedSavings && (
-                                    <div className="absolute top-6 right-6 px-4 py-1.5 bg-emerald-500/90 backdrop-blur-md rounded-full text-[9px] font-black uppercase tracking-widest text-white shadow-xl z-20 border border-emerald-400/30">
+                                    <div className="absolute top-6 right-6 px-4 py-1.5 bg-emerald-500/90 backdrop-blur-md rounded-full text-[9px] font-black uppercase tracking-widest text-primary-foreground shadow-xl z-20 border border-emerald-400/30">
                                         {template.estimatedSavings}
                                     </div>
                                 )}
@@ -129,14 +129,14 @@ export default function ShowcaseGallery() {
                                     <div className="flex flex-col gap-4">
                                         <Button
                                             onClick={() => handlePreview(template.id)}
-                                            className="bg-white text-black hover:bg-zinc-100 font-black uppercase tracking-widest text-[10px] px-10 py-7 rounded-2xl shadow-2xl transition-transform active:scale-95"
+                                            className="bg-background text-foreground hover:bg-secondary font-black uppercase tracking-widest text-[10px] px-10 py-7 rounded-2xl shadow-2xl transition-transform active:scale-95"
                                         >
                                             {t('preview')}
                                         </Button>
                                         <Button
                                             onClick={() => handleEdit(template.id)}
                                             variant="outline"
-                                            className="bg-black/50 border-white/20 text-white hover:bg-white hover:text-black font-black uppercase tracking-widest text-[10px] px-10 py-7 rounded-2xl backdrop-blur-md transition-all active:scale-95"
+                                            className="bg-secondary/80 border-border text-foreground hover:bg-background font-black uppercase tracking-widest text-[10px] px-10 py-7 rounded-2xl backdrop-blur-md transition-all active:scale-95"
                                         >
                                             {t('edit')}
                                         </Button>
@@ -147,13 +147,18 @@ export default function ShowcaseGallery() {
                             {/* Info */}
                             <div className="p-8">
                                 <div className="flex items-center gap-2 mb-3">
-                                    <Globe className="w-3.5 h-3.5 text-blue-500" />
-                                    <span className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">{template.category}</span>
+                                    <Globe className="w-3.5 h-3.5 text-primary" />
+                                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">{template.category}</span>
                                 </div>
-                                <h4 className="text-2xl font-black text-white mb-4 uppercase tracking-tighter italic">{template.title}</h4>
+                                <h4 className="text-2xl font-black text-foreground mb-4 uppercase tracking-tighter italic">
+                                    {t(`projects.${template.id}.title`)}
+                                </h4>
+                                <p className="text-xs text-muted-foreground mb-4 line-clamp-2">
+                                    {t(`projects.${template.id}.desc`)}
+                                </p>
                                 <div className="flex flex-wrap gap-2">
                                     {template.features.slice(0, 3).map(f => (
-                                        <span key={f} className="text-[8px] font-black uppercase tracking-widest px-2.5 py-1 bg-white/5 border border-white/10 rounded-md text-zinc-400">
+                                        <span key={f} className="text-[8px] font-black uppercase tracking-widest px-2.5 py-1 bg-secondary border border-border rounded-md text-muted-foreground">
                                             {f}
                                         </span>
                                     ))}
@@ -166,13 +171,13 @@ export default function ShowcaseGallery() {
 
             {/* LIVE DEPLOYMENTS SECTION - PROOF OF POWER */}
             {featuredSites.length > 0 && activeCategory === "all" && (
-                <div className="pt-32 border-t border-white/5 space-y-16">
+                <div className="pt-32 border-t border-border space-y-16">
                     <div className="flex flex-col items-center text-center space-y-4">
-                        <div className="w-20 h-20 bg-blue-600/10 rounded-[32px] flex items-center justify-center border border-blue-600/20 mb-4">
-                            <Layers className="w-10 h-10 text-blue-400" />
+                        <div className="w-20 h-20 bg-primary/10 rounded-[32px] flex items-center justify-center border border-primary/20 mb-4">
+                            <Layers className="w-10 h-10 text-primary" />
                         </div>
-                        <h3 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter italic">{t('live_title')}</h3>
-                        <p className="text-zinc-500 text-sm font-bold uppercase tracking-[0.3em]">{t('live_subtitle')}</p>
+                        <h3 className="text-4xl md:text-6xl font-black text-foreground uppercase tracking-tighter italic">{t('live_title')}</h3>
+                        <p className="text-muted-foreground text-sm font-bold uppercase tracking-[0.3em]">{t('live_subtitle')}</p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -181,7 +186,7 @@ export default function ShowcaseGallery() {
                                 key={site.id}
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                className="group relative bg-zinc-950 border border-white/5 rounded-[40px] p-2 hover:border-blue-500/30 transition-all duration-700"
+                                className="group relative bg-card border border-border rounded-[40px] p-2 hover:border-primary/30 transition-all duration-700"
                             >
                                 <div className="aspect-[16/10] relative rounded-[32px] overflow-hidden">
                                     <Image
@@ -190,19 +195,19 @@ export default function ShowcaseGallery() {
                                         fill
                                         className="object-cover group-hover:scale-105 transition-transform duration-1000"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-transparent to-transparent opacity-60" />
 
                                     <div className="absolute bottom-6 left-6 right-6">
                                         <div className="flex items-center justify-between">
                                             <div>
-                                                <h4 className="text-xl font-bold text-white uppercase tracking-tight italic">{site.name}</h4>
-                                                <p className="text-blue-400 text-[10px] font-black uppercase tracking-widest">{site.site_type || "Production Architecture"}</p>
+                                                <h4 className="text-xl font-bold text-foreground uppercase tracking-tight italic">{site.name}</h4>
+                                                <p className="text-primary-foreground text-[10px] font-black uppercase tracking-widest">{site.site_type || "Production Architecture"}</p>
                                             </div>
                                             <Button
                                                 onClick={() => window.open(`https://${site.slug}.getyousite.com`, '_blank')}
-                                                className="w-12 h-12 rounded-2xl bg-white/10 hover:bg-white hover:text-black backdrop-blur-xl border border-white/10 p-0"
+                                                className="w-12 h-12 rounded-2xl bg-secondary hover:bg-background hover:text-foreground backdrop-blur-xl border border-border p-0"
                                             >
-                                                <ArrowRight size={24} />
+                                                <ArrowRight size={24} className="text-foreground group-hover:text-background" />
                                             </Button>
                                         </div>
                                     </div>

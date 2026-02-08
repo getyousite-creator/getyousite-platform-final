@@ -19,7 +19,7 @@ export function SovereignImage({ src, alt, className, fallbackSrc = "/placeholde
                     <motion.div
                         initial={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="absolute inset-0 bg-zinc-800 animate-pulse z-10"
+                        className="absolute inset-0 bg-secondary animate-pulse z-10"
                     />
                 )}
             </AnimatePresence>

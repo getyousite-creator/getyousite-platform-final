@@ -12,8 +12,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { templates as SHARED_TEMPLATES } from '@/data/template-data';
 
-interface Template {
+interface CommandTemplate {
     id: string;
     name: string;
     slug: string;
@@ -42,75 +43,18 @@ interface CommandCenterProps {
     aiInsight?: string;
 }
 
-// Mock templates for demo
-const AVAILABLE_TEMPLATES: Template[] = [
-    {
-        id: 't1-quantum',
-        name: 'Tech Startup',
-        slug: 'tech-startup',
-        description: 'Modern, cutting-edge design for technology startups',
-        category: 'saas',
-        thumbnail_url: '/images/tech-startup.png',
-        is_premium: false,
-        rating: 4.8,
-        features: ['Dark Mode', 'Pricing Tables', 'Features Grid']
-    },
-    {
-        id: 't2-creative',
-        name: 'Creative Portfolio',
-        slug: 'creative-portfolio',
-        description: 'Stunning portfolio for designers and creatives',
-        category: 'portfolio',
-        thumbnail_url: '/images/creative-portfolio.png',
-        is_premium: false,
-        rating: 4.9,
-        features: ['Gallery Grid', 'About Section', 'Contact Form']
-    },
-    {
-        id: 't3-ecommerce',
-        name: 'E-Commerce Store',
-        slug: 'ecommerce-store',
-        description: 'Complete e-commerce solution with product showcases',
-        category: 'ecommerce',
-        thumbnail_url: '/images/ecommerce-store.png',
-        is_premium: true,
-        rating: 4.7,
-        features: ['Product Showcase', 'Categories', 'Reviews']
-    },
-    {
-        id: 't4-medical',
-        name: 'Medical Clinic',
-        slug: 'medical-clinic',
-        description: 'Professional healthcare website for medical practices',
-        category: 'medical',
-        thumbnail_url: '/images/medical-clinic.png',
-        is_premium: false,
-        rating: 4.6,
-        features: ['Services List', 'Doctors Team', 'Appointments']
-    },
-    {
-        id: 't5-restaurant',
-        name: 'Luxury Restaurant',
-        slug: 'restaurant-luxury',
-        description: 'Elegant dining experience website',
-        category: 'restaurant',
-        thumbnail_url: '/images/restaurant-luxury.png',
-        is_premium: true,
-        rating: 4.8,
-        features: ['Menu Section', 'Reservations', 'Gallery']
-    },
-    {
-        id: 't6-realestate',
-        name: 'Real Estate Agency',
-        slug: 'realestate-agency',
-        description: 'Property listings and agent profiles',
-        category: 'realestate',
-        thumbnail_url: '/images/realestate-agency.png',
-        is_premium: false,
-        rating: 4.5,
-        features: ['Property Listings', 'Agent Profiles', 'Search']
-    },
-];
+// Unified template source
+const AVAILABLE_TEMPLATES: CommandTemplate[] = SHARED_TEMPLATES.map(t => ({
+    id: t.id,
+    name: t.title,
+    slug: t.id,
+    description: t.desc,
+    category: t.category,
+    thumbnail_url: t.image,
+    is_premium: ['Sovereign', 'Luxury'].includes(t.badge || ''),
+    rating: 4.8,
+    features: t.features
+}));
 
 const NICHE_OPTIONS = [
     'AI & Tech',
@@ -157,12 +101,12 @@ export function CommandCenter({
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                        <Brain className="w-5 h-5 text-white" />
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                        <Brain className="w-5 h-5 text-primary-foreground" />
                     </div>
                     <div>
-                        <h2 className="text-lg font-bold text-white">AI Architect</h2>
-                        <p className="text-xs text-zinc-500">Generates conversion-optimized sites</p>
+                        <h2 className="text-lg font-bold text-foreground">AI Architect</h2>
+                        <p className="text-xs text-muted-foreground">Generates conversion-optimized sites</p>
                     </div>
                 </div>
                 <Badge variant="outline" className="bg-blue-500/10 text-blue-400 border-blue-500/20">
@@ -173,16 +117,16 @@ export function CommandCenter({
 
             {/* Tabs */}
             <Tabs defaultValue="details" onValueChange={setActiveTab}>
-                <TabsList className="w-full grid grid-cols-3 bg-white/5">
-                    <TabsTrigger value="details" className="data-[state=active]:bg-white/10">
+                <TabsList className="w-full grid grid-cols-3 bg-secondary/5">
+                    <TabsTrigger value="details" className="data-[state=active]:bg-secondary/20">
                         <Edit3 className="w-4 h-4 mr-2" />
                         Details
                     </TabsTrigger>
-                    <TabsTrigger value="template" className="data-[state=active]:bg-white/10">
+                    <TabsTrigger value="template" className="data-[state=active]:bg-secondary/20">
                         <Layout className="w-4 h-4 mr-2" />
                         Template
                     </TabsTrigger>
-                    <TabsTrigger value="style" className="data-[state=active]:bg-white/10">
+                    <TabsTrigger value="style" className="data-[state=active]:bg-secondary/20">
                         <Palette className="w-4 h-4 mr-2" />
                         Style
                     </TabsTrigger>
@@ -192,7 +136,7 @@ export function CommandCenter({
                 <TabsContent value="details" className="space-y-6 mt-6">
                     {/* Business Name */}
                     <div className="space-y-3">
-                        <Label htmlFor="businessName" className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
+                        <Label htmlFor="businessName" className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
                             Business Name
                         </Label>
                         <Input
@@ -200,34 +144,34 @@ export function CommandCenter({
                             value={businessName}
                             onChange={(e) => setBusinessName(e.target.value)}
                             placeholder="e.g., Royal Moroccan Cuisine"
-                            className="bg-white/5 border-white/10 text-white placeholder:text-zinc-600 focus:border-blue-500 transition-colors"
+                            className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-primary transition-colors"
                         />
                     </div>
 
                     {/* Niche Selection */}
                     <div className="space-y-3">
-                        <Label className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
+                        <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
                             Industry / Niche
                         </Label>
                         <div className="relative">
                             <select
                                 value={niche}
                                 onChange={(e) => setNiche(e.target.value)}
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white appearance-none cursor-pointer focus:border-blue-500 transition-colors"
+                                className="w-full bg-background border border-border rounded-xl px-4 py-3 text-foreground appearance-none cursor-pointer focus:border-primary transition-colors"
                             >
                                 {NICHE_OPTIONS.map((option) => (
-                                    <option key={option} value={option} className="bg-zinc-900">
+                                    <option key={option} value={option} className="bg-background text-foreground">
                                         {option}
                                     </option>
                                 ))}
                             </select>
-                            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 pointer-events-none" />
+                            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                         </div>
                     </div>
 
                     {/* Vision / Description */}
                     <div className="space-y-3">
-                        <Label htmlFor="vision" className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
+                        <Label htmlFor="vision" className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
                             Your Vision
                         </Label>
                         <textarea
@@ -236,9 +180,9 @@ export function CommandCenter({
                             onChange={(e) => setVision(e.target.value)}
                             placeholder="Describe your business, target audience, and what you want to achieve..."
                             rows={4}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-zinc-600 focus:border-blue-500 transition-colors resize-none"
+                            className="w-full bg-background border border-border rounded-xl px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-primary transition-colors resize-none"
                         />
-                        <p className="text-xs text-zinc-500">
+                        <p className="text-xs text-muted-foreground">
                             {vision.length}/500 characters • The more details, the better the AI understands your needs
                         </p>
                     </div>
@@ -254,7 +198,7 @@ export function CommandCenter({
                                 <Sparkles className="w-4 h-4 text-blue-400" />
                                 <span className="text-xs font-bold text-blue-400 uppercase">AI Strategy</span>
                             </div>
-                            <p className="text-sm text-zinc-300">
+                            <p className="text-sm text-foreground/80">
                                 {aiInsight || "Analyzing your vision for structural advantages..."}
                             </p>
                         </motion.div>
@@ -265,13 +209,13 @@ export function CommandCenter({
                 <TabsContent value="template" className="space-y-6 mt-6">
                     {/* Search */}
                     <div className="relative">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                         <input
                             type="text"
                             placeholder="Search templates..."
                             value={templateSearch}
                             onChange={(e) => setTemplateSearch(e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white placeholder:text-zinc-600 focus:border-blue-500 transition-colors"
+                            className="w-full bg-background border border-border rounded-xl pl-10 pr-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-primary transition-colors"
                         />
                     </div>
 
@@ -286,13 +230,13 @@ export function CommandCenter({
                                 className={`
                                     relative rounded-xl overflow-hidden cursor-pointer border-2 transition-all
                                     ${selectedId === template.id
-                                        ? 'border-blue-500 ring-2 ring-blue-500/20'
-                                        : 'border-white/10 hover:border-white/30'
+                                        ? 'border-primary ring-2 ring-primary/20'
+                                        : 'border-border hover:border-border/50'
                                     }
                                 `}
                             >
                                 {/* Thumbnail Placeholder */}
-                                <div className="aspect-video bg-gradient-to-br from-zinc-800 to-zinc-900 flex items-center justify-center">
+                                <div className="aspect-video bg-gradient-to-br from-secondary to-background flex items-center justify-center">
                                     {template.thumbnail_url ? (
                                         <img
                                             src={template.thumbnail_url}
@@ -300,17 +244,17 @@ export function CommandCenter({
                                             className="w-full h-full object-cover"
                                         />
                                     ) : (
-                                        <Layout className="w-8 h-8 text-zinc-600" />
+                                        <Layout className="w-8 h-8 text-muted-foreground" />
                                     )}
                                 </div>
 
                                 {/* Overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-secondary/20 to-transparent" />
 
                                 {/* Content */}
                                 <div className="absolute bottom-0 left-0 right-0 p-3">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm font-bold text-white">{template.name}</span>
+                                    <span className="text-sm font-bold text-foreground">{template.name}</span>
                                         {template.is_premium && (
                                             <Badge variant="secondary" className="bg-yellow-500/20 text-yellow-400 text-[10px]">
                                                 <Star className="w-3 h-3 mr-1" fill="currentColor" />
@@ -321,15 +265,15 @@ export function CommandCenter({
                                     {template.rating && (
                                         <div className="flex items-center gap-1 mt-1">
                                             <Star className="w-3 h-3 text-yellow-500" fill="currentColor" />
-                                            <span className="text-xs text-zinc-400">{template.rating}</span>
+                                            <span className="text-xs text-muted-foreground">{template.rating}</span>
                                         </div>
                                     )}
                                 </div>
 
                                 {/* Selected Indicator */}
                                 {selectedId === template.id && (
-                                    <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
-                                        <Check className="w-4 h-4 text-white" />
+                                    <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
+                                        <Check className="w-4 h-4 text-primary-foreground" />
                                     </div>
                                 )}
                             </motion.div>
@@ -339,25 +283,55 @@ export function CommandCenter({
 
                 {/* Style Tab */}
                 <TabsContent value="style" className="space-y-6 mt-6">
-                    <div className="p-6 rounded-xl bg-white/5 border border-white/10 text-center">
-                        <Palette className="w-12 h-12 text-zinc-600 mx-auto mb-4" />
-                        <h3 className="text-lg font-bold text-white mb-2">Smart Styling</h3>
-                        <p className="text-sm text-zinc-400 mb-4">
-                            The AI will automatically generate colors, typography, and spacing based on your industry and vision.
-                        </p>
-                        <Button variant="outline" className="border-white/10 bg-white/5 hover:bg-white/10">
-                            <Zap className="w-4 h-4 mr-2" />
-                            Auto-Generate Styles
-                        </Button>
+                    <div className="space-y-6">
+                        {/* Brand Colors */}
+                        <div className="space-y-3">
+                            <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Brand Colors</Label>
+                            <div className="grid grid-cols-5 gap-3">
+                                {['#3b82f6', '#ec4899', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#6366f1', '#14b8a6', '#f97316', '#06b6d4'].map((color) => (
+                                    <button
+                                        key={color}
+                                        className="w-full aspect-square rounded-full border-2 border-border hover:border-foreground hover:scale-110 transition-all shadow-lg"
+                                        style={{ backgroundColor: color }}
+                                        onClick={() => {}} // No-op
+                                    />
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Typography */}
+                        <div className="space-y-3">
+                            <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Typography</Label>
+                            <div className="space-y-2">
+                                {['Modern Sans', 'Elegant Serif', 'Tech Mono', 'Soft Rounded'].map(font => (
+                                    <div key={font} className="p-3 rounded-xl bg-card border border-border hover:bg-secondary/10 cursor-pointer flex items-center justify-between group transition-all">
+                                        <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{font}</span>
+                                        <div className="w-2 h-2 rounded-full border border-border group-hover:border-primary group-hover:bg-primary transition-all" />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                         {/* Interface Style */}
+                         <div className="space-y-3">
+                            <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Corner Style</Label>
+                            <div className="flex gap-2">
+                                {['Sharp', 'Round', 'Pill'].map(style => (
+                                    <Button key={style} variant="outline" className="flex-1 bg-card border-border text-muted-foreground text-xs hover:text-foreground hover:bg-secondary/10">
+                                        {style}
+                                    </Button>
+                                ))}
+                            </div>
+                         </div>
                     </div>
 
                     {/* Preview Selected Template */}
                     {selectedTemplate && (
-                        <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                            <h4 className="text-sm font-bold text-white mb-3">Selected: {selectedTemplate.name}</h4>
+                        <div className="p-4 rounded-xl bg-card border border-border">
+                            <h4 className="text-sm font-bold text-foreground mb-3">Selected: {selectedTemplate.name}</h4>
                             <div className="flex flex-wrap gap-2">
                                 {selectedTemplate.features.map((feature) => (
-                                    <Badge key={feature} variant="outline" className="border-white/20 text-zinc-400">
+                                    <Badge key={feature} variant="outline" className="border-border text-muted-foreground">
                                         {feature}
                                     </Badge>
                                 ))}
@@ -379,8 +353,8 @@ export function CommandCenter({
                     className={`
                         w-full h-14 rounded-xl font-bold text-sm uppercase tracking-[0.2em]
                         ${isGenerating
-                            ? 'bg-zinc-800 text-zinc-400 cursor-wait'
-                            : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white shadow-lg shadow-blue-500/25'
+                            ? 'bg-secondary text-muted-foreground cursor-wait'
+                            : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-primary-foreground shadow-lg shadow-blue-500/25'
                         }
                     `}
                 >
@@ -398,11 +372,11 @@ export function CommandCenter({
                 </Button>
 
                 {!businessName || !vision ? (
-                    <p className="text-center text-xs text-zinc-500 mt-3">
+                    <p className="text-center text-xs text-muted-foreground mt-3">
                         Fill in your business details to continue
                     </p>
                 ) : (
-                    <p className="text-center text-xs text-zinc-500 mt-3">
+                    <p className="text-center text-xs text-muted-foreground mt-3">
                         Takes approximately 30-60 seconds
                     </p>
                 )}
@@ -418,7 +392,7 @@ export function CommandCenter({
                     <Check className="w-5 h-5 text-emerald-500" />
                     <div>
                         <p className="text-sm font-bold text-emerald-400">Project Saved</p>
-                        <p className="text-xs text-zinc-500">ID: {activeStoreId.slice(0, 8)}...</p>
+                        <p className="text-xs text-muted-foreground">ID: {activeStoreId.slice(0, 8)}...</p>
                     </div>
                 </motion.div>
             )}

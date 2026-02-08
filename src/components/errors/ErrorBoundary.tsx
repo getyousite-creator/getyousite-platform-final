@@ -74,18 +74,18 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 
             // Default error UI
             return (
-                <div className="min-h-screen bg-black flex items-center justify-center p-8">
-                    <div className="max-w-2xl w-full bg-zinc-900 rounded-2xl border border-red-500/20 p-12 space-y-8">
+                <div className="min-h-screen bg-background flex items-center justify-center p-8">
+                    <div className="max-w-2xl w-full bg-card rounded-2xl border border-border p-12 space-y-8">
                         {/* Error Icon */}
                         <div className="flex items-center gap-4">
                             <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center">
                                 <AlertTriangle className="w-8 h-8 text-red-500" />
                             </div>
                             <div>
-                                <h1 className="text-2xl font-black text-white tracking-tight">
+                                <h1 className="text-2xl font-black text-foreground tracking-tight">
                                     Something Went Wrong
                                 </h1>
-                                <p className="text-zinc-400 text-sm mt-1">
+                                <p className="text-muted-foreground text-sm mt-1">
                                     An unexpected error occurred in the application
                                 </p>
                             </div>
@@ -93,11 +93,11 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 
                         {/* Error Details (Development Only) */}
                         {process.env.NODE_ENV === 'development' && this.state.error && (
-                            <div className="bg-black/50 rounded-lg p-6 border border-zinc-800">
+                            <div className="bg-background/50 rounded-lg p-6 border border-border">
                                 <p className="text-red-400 font-mono text-xs mb-2">
                                     Error Message:
                                 </p>
-                                <p className="text-zinc-300 font-mono text-sm break-all">
+                                <p className="text-foreground/80 font-mono text-sm break-all">
                                     {this.state.error.message}
                                 </p>
 
@@ -106,7 +106,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
                                         <p className="text-red-400 font-mono text-xs mt-4 mb-2">
                                             Stack Trace:
                                         </p>
-                                        <pre className="text-zinc-400 font-mono text-xs overflow-x-auto">
+                                        <pre className="text-muted-foreground font-mono text-xs overflow-x-auto">
                                             {this.state.error.stack}
                                         </pre>
                                     </>
@@ -118,14 +118,14 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
                         <div className="flex gap-4">
                             <button
                                 onClick={this.handleReset}
-                                className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors"
+                                className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-primary-foreground font-bold rounded-lg transition-colors"
                             >
                                 <RefreshCw className="w-4 h-4" />
                                 Try Again
                             </button>
                             <button
                                 onClick={() => window.location.href = '/'}
-                                className="px-6 py-3 bg-zinc-800 hover:bg-zinc-700 text-white font-bold rounded-lg transition-colors"
+                                className="px-6 py-3 bg-secondary hover:bg-secondary/80 text-foreground font-bold rounded-lg transition-colors"
                             >
                                 Go Home
                             </button>
@@ -133,7 +133,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 
                         {/* Production Message */}
                         {process.env.NODE_ENV === 'production' && (
-                            <p className="text-zinc-500 text-xs">
+                            <p className="text-muted-foreground text-xs">
                                 Error ID: {Date.now().toString(36)}
                                 <br />
                                 If this problem persists, please contact support with this error ID.

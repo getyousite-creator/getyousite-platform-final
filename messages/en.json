@@ -14,11 +14,11 @@
         "sovereign_access": "Secure Access Active"
     },
     "Hero": {
-        "badge": "Industrial Standard • v2.0",
-        "headline": "High-Performance Professional Websites.",
-        "subheadline": "Precision engineering for digital business assets. Intelligent design, global speed, and absolute reliability.",
+        "badge": "Professional Website Builder v2.0",
+        "headline": "Create a professional website in minutes.",
+        "subheadline": "No code, no complexity. Just your business, beautifully online.",
         "placeholder": "Describe your business niche...",
-        "generate": "Build My Site",
+        "generate": "Start Free",
         "gdpr": "GDPR & Security Compliant",
         "uptime": "99.9% Uptime SLA",
         "aiCore": "AI Infrastructure",
@@ -84,7 +84,7 @@
     },
     "Showcase": {
         "title": "Our <span class='text-blue-500'>Portfolio</span>",
-        "subtitle": "Explore our library of professional templates ready for your new project.",
+        "subtitle": "Start with a professional template designed for growth and reliability.",
         "tabs": {
             "all": "All",
             "business": "Business & Agency",
@@ -101,30 +101,30 @@
         "live_subtitle": "Professional websites built for our clients",
         "view_archive": "View All Templates",
         "projects": {
-            "saas": {
-                "title": "Smart Analytics",
-                "desc": "Real-time data visualization system with a modern look."
-            },
-            "fashion": {
-                "title": "Elite Fashion",
-                "desc": "Minimalist fashion store focused on product conversion."
-            },
-            "portfolio": {
-                "title": "Neon Dreams",
-                "desc": "Minimalist design system with WebGL interactions."
-            },
-            "medical": {
-                "title": "Clínica Nova",
-                "desc": "Secure patient portal with a scheduling core."
-            },
-            "restaurant": {
-                "title": "Aurum & Ash",
-                "desc": "Industrial dining experience with a reservation engine."
-            },
-            "tech": {
-                "title": "SyncSphere",
-                "desc": "B2B collaboration platform with an isometric visual identity."
-            }
+            "dr-khalil": { "title": "Dr. Khalil V3", "desc": "Medical and dental clinical excellence." },
+            "luxe-cart": { "title": "Luxe E-Commerce", "desc": "Premium shopping experiences." },
+            "corp-global": { "title": "Global Stability", "desc": "High-trust corporate architecture." },
+            "fitness-neon": { "title": "Kinetic Lab", "desc": "High-energy athletic performance." },
+            "financial-core": { "title": "Ledger Pro", "desc": "Premium accounting and tax logic." },
+            "internal-engine": { "title": "Operational Shell", "desc": "Production-ready internal tools." },
+            "law-silo": { "title": "Lex Sileo", "desc": "Prestige legal architecture." },
+            "zen-food": { "title": "Aurum & Ash", "desc": "Cinematic dining experiences." },
+            "studio-zero": { "title": "Studio Zero", "desc": "Visual-heavy portfolios." },
+            "tech-grid": { "title": "SyncSphere", "desc": "High-frequency landing pages." },
+            "boreal-estate": { "title": "Boreal Estates", "desc": "Prestige listings for luxury." },
+            "elite-lms": { "title": "Elite Academia", "desc": "Masterclass architecture for education." },
+            "news-silo": { "title": "Dispatch Engine", "desc": "Editorial excellence." },
+            "spa-wellness": { "title": "Zen Retreat", "desc": "Tranquil design for wellness." },
+            "urban-retail": { "title": "Urban Retail", "desc": "Contemporary streetwear storefront." },
+            "prime-law": { "title": "Prime Partners", "desc": "Authoritative legal presence." },
+            "fusion-bistro": { "title": "Fusion Bistro", "desc": "Modern culinary showcase." },
+            "venture-cap": { "title": "Venture One", "desc": "Strategic investment portfolio." },
+            "dental-plus": { "title": "Dental Plus", "desc": "Friendly family dentistry." },
+            "yoga-flow": { "title": "Yoga Flow", "desc": "Minimalist calm for studios." },
+            "tech-nova": { "title": "Nova Tech", "desc": "Innovative tech solutions." },
+            "estate-prime": { "title": "Prime Estate", "desc": "Premium residential listings." },
+            "news-daily": { "title": "Daily News", "desc": "Fast-paced news feed." },
+            "lms-pro": { "title": "Pro Learn", "desc": "Professional training platform." }
         }
     },
     "Pricing": {
@@ -232,7 +232,11 @@
         "error_password_too_short": "Security Mandate: Password must be at least 8 characters.",
         "error_generic": "Authentication failed. Please try again.",
         "recall_identity": "Return to Login",
-        "terms": "By signing in, you agree to our Terms of Service and Privacy Policy."
+        "terms": "By signing in, you agree to our Terms of Service and Privacy Policy.",
+        "backHome": "Back to Home",
+        "sovereign_access": "Secure Access Active",
+        "check_email_title": "Check Your Email",
+        "check_email_desc": "We've sent a verification link to your email. Please check your inbox and click the link to verify your account."
     },
     "Contact": {
         "title": "Contact Us",

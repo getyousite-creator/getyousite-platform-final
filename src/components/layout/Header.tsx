@@ -9,7 +9,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { usePathname, useRouter, Link } from "@/i18n/routing";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
 import { useSupabase } from "@/components/providers/SupabaseProvider";
-import { signOutAction } from "@/app/actions/auth-actions";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { LogOut, User as UserIcon } from "lucide-react";
 
@@ -54,7 +54,7 @@ export default function Header() {
                 className={cn(
                     "fixed top-0 left-0 right-0 z-[100] transition-all duration-700",
                     isScrolled
-                        ? "bg-slate-950/80 backdrop-blur-xl border-b border-white/5 py-4 shadow-2xl"
+                        ? "bg-background/80 backdrop-blur-xl border-b border-border py-4 shadow-sm"
                         : "bg-transparent py-8"
                 )}
             >
@@ -63,27 +63,27 @@ export default function Header() {
 
                     {/* Desktop Navigation - Refined Structure */}
                     <nav className="hidden lg:flex items-center gap-10">
-                        <a href="#services" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-blue-400 transition-all">{t('services')}</a>
-                        <a href="#pricing" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-blue-400 transition-all">{t('pricing')}</a>
-                        <a href="#showcase" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-blue-400 transition-all">{t('portfolio')}</a>
-                        <Link href="/blog" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-blue-400 transition-all font-mono">{t('blog')}</Link>
-                        <Link href="/contact" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-blue-400 transition-all font-mono">{t('contact')}</Link>
+                        <a href="#services" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-all">{t('services')}</a>
+                        <a href="#pricing" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-all">{t('pricing')}</a>
+                        <a href="#showcase" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-all">{t('portfolio')}</a>
+                        <Link href="/blog" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-all font-mono">{t('blog')}</Link>
+                        <Link href="/contact" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-all font-mono">{t('contact')}</Link>
                     </nav>
 
                     {/* Actions */}
                     <div className="hidden md:flex items-center gap-4">
                         {/* Lang Selector */}
                         <div className="relative group">
-                            <button className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors uppercase">
+                            <button className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors uppercase">
                                 <Globe className="w-4 h-4" />
                                 <span>{locale}</span>
                             </button>
-                            <div className="absolute top-full right-0 mt-2 w-32 bg-zinc-900 border border-white/10 rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                            <div className="absolute top-full right-0 mt-2 w-32 bg-background border border-border rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                                 {languages.map((lang) => (
                                     <button
                                         key={lang.code}
                                         onClick={() => changeLocale(lang.code)}
-                                        className="w-full text-left px-4 py-2 text-sm hover:bg-white/5 flex items-center gap-2 text-zinc-300 hover:text-white"
+                                        className="w-full text-left px-4 py-2 text-sm hover:bg-secondary flex items-center gap-2 text-muted-foreground hover:text-foreground"
                                     >
                                         <span>{lang.flag}</span>
                                         <span>{lang.code.toUpperCase()}</span>
@@ -96,7 +96,7 @@ export default function Header() {
                             <div className="flex items-center gap-4">
                                 <Link
                                     href="/dashboard"
-                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 flex items-center gap-2 hover:text-blue-300 transition-colors"
+                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-primary flex items-center gap-2 hover:text-primary/80 transition-colors"
                                 >
                                     <UserIcon className="w-3.5 h-3.5" />
                                     {t('dashboard')}
@@ -104,9 +104,11 @@ export default function Header() {
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 hover:text-red-400 gap-2 h-9"
+                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-destructive gap-2 h-9"
                                     onClick={async () => {
-                                        await signOutAction();
+                                        const supabase = createClient();
+                                        await supabase.auth.signOut();
+                                        router.refresh();
                                         toast.success("Security sequence: Session Terminated.");
                                     }}
                                 >
@@ -118,14 +120,14 @@ export default function Header() {
                             <>
                                 <Button
                                     variant="ghost"
-                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-white"
+                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-foreground"
                                     onClick={() => router.push('/login')}
                                 >
                                     {t('login')}
                                 </Button>
                                 <Button
-                                    variant="glow"
-                                    className="bg-blue-600 hover:bg-blue-500 text-white border-0 h-10 px-6 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(37,99,235,0.2)]"
+                                    variant="default"
+                                    className="bg-primary hover:bg-primary/90 text-primary-foreground border-0 h-10 px-6 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] shadow-lg"
                                     onClick={() => router.push('/signup')}
                                 >
                                     {t('launch')}
@@ -135,7 +137,7 @@ export default function Header() {
                     </div>
 
                     {/* Mobile Toggle */}
-                    <button className="md:hidden text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                    <button className="md:hidden text-foreground" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                         {isMobileMenuOpen ? <X /> : <Menu />}
                     </button>
                 </div>
@@ -145,20 +147,20 @@ export default function Header() {
                     <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
-                        className="md:hidden bg-slate-950 border-b border-white/5"
+                        className="md:hidden bg-background border-b border-border"
                     >
                         <div className="flex flex-col p-6 gap-6">
-                            <a href="#services" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{t('services')}</a>
-                            <a href="#pricing" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{t('pricing')}</a>
-                            <a href="#showcase" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{t('portfolio')}</a>
-                            <Link href="/blog" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{t('blog')}</Link>
-                            <Link href="/contact" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{t('contact')}</Link>
-                            <div className="flex flex-col gap-3 pt-4 border-t border-white/5">
-                                <Button variant="outline" className="w-full border-white/10 text-[10px] font-black uppercase tracking-[0.3em]" onClick={() => router.push('/login')}>{t('login')}</Button>
-                                <Button className="w-full bg-blue-600 text-[10px] font-black uppercase tracking-[0.3em]" onClick={() => router.push('/signup')}>{t('launch')}</Button>
+                            <a href="#services" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">{t('services')}</a>
+                            <a href="#pricing" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">{t('pricing')}</a>
+                            <a href="#showcase" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">{t('portfolio')}</a>
+                            <Link href="/blog" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">{t('blog')}</Link>
+                            <Link href="/contact" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">{t('contact')}</Link>
+                            <div className="flex flex-col gap-3 pt-4 border-t border-border">
+                                <Button variant="outline" className="w-full border-border text-[10px] font-black uppercase tracking-[0.3em] text-foreground" onClick={() => router.push('/login')}>{t('login')}</Button>
+                                <Button className="w-full bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-[0.3em]" onClick={() => router.push('/signup')}>{t('launch')}</Button>
                             </div>
 
-                            <div className="flex gap-4 mt-4 pt-4 border-t border-white/10 justify-center">
+                            <div className="flex gap-4 mt-4 pt-4 border-t border-border justify-center">
                                 {languages.map((lang) => (
                                     <button key={lang.code} onClick={() => changeLocale(lang.code)} className="text-2xl">
                                         {lang.flag}

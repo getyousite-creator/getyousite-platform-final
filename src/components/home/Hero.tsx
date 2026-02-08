@@ -39,57 +39,58 @@ export default function Hero() {
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mb-8 inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl"
+                    className="mb-8 inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-secondary border border-border backdrop-blur-md shadow-sm"
                 >
-                    <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                    <span className="text-[10px] font-black text-white/70 tracking-[0.3em] uppercase">{t('badge')}</span>
+                    <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                    <span className="text-[10px] font-bold text-foreground/70 tracking-[0.1em] uppercase">{t('badge')}</span>
                 </motion.div>
 
-                {/* SUPREME TYPOGRAPHY - WIX STUDIO INSPIRED */}
+                {/* HEADING (H1) - Clarity First */}
+                {/* Protocol: 3.75rem (60px) on LG. No Italic. No All-Caps. */}
                 <motion.h1
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1, duration: 0.8, ease: "easeOut" }}
-                    className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white mb-10 max-w-6xl leading-[0.9] uppercase italic"
+                    className="text-4xl md:text-6xl lg:text-[3.75rem] font-bold tracking-tight text-foreground mb-6 max-w-4xl leading-[1.1]"
                 >
-                    <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">
-                        {t('headline')}
-                    </span>
+                    {t('headline')}
                 </motion.h1>
 
-                {/* Subheadline - Innovative Simplicity */}
+                {/* Subheadline - Functional Support */}
+                {/* Protocol: 1.25rem (20px). Color: Neutral Secondary (#8A8A8E / muted-foreground) */}
                 <motion.p
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="text-xl md:text-2xl text-slate-400 mb-14 max-w-3xl leading-relaxed font-medium"
+                    className="text-lg md:text-[1.25rem] text-muted-foreground mb-12 max-w-2xl leading-relaxed font-normal"
                 >
                     {t('subheadline')}
                 </motion.p>
 
-                {/* GENIUS AI COMMAND CENTER */}
+                {/* GENIUS AI COMMAND CENTER - REFINED */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.5, type: "spring", stiffness: 100 }}
-                    className="w-full max-w-3xl relative group mb-20"
+                    className="w-full max-w-2xl relative group mb-20"
                 >
-                    <div className="absolute -inset-1.5 bg-gradient-to-r from-blue-600/30 via-slate-800 to-blue-600/30 rounded-[2rem] blur-2xl opacity-50 group-hover:opacity-100 transition duration-1000" />
-                    <div className="relative flex items-center bg-slate-900 border border-white/10 rounded-[2rem] p-3 backdrop-blur-2xl shadow-[0_0_50px_rgba(37,99,235,0.1)] overflow-hidden">
+                    {/* Simplified Glow */}
+                    <div className="absolute -inset-1 bg-primary/20 rounded-[1.5rem] blur-xl opacity-0 group-hover:opacity-100 transition duration-700" />
+                    
+                    <div className="relative flex items-center bg-card border border-border rounded-[1.5rem] p-2 shadow-xl overflow-hidden">
                         <input
                             type="text"
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
                             onKeyDown={handleKeyDown}
                             placeholder={t('placeholder')}
-                            className="w-full bg-transparent text-white px-8 py-5 focus:outline-none placeholder:text-slate-600 font-bold text-xl"
+                            className="w-full bg-transparent text-foreground px-6 py-4 focus:outline-none placeholder:text-muted-foreground font-medium text-lg"
                         />
                         <Button
-                            className="shrink-0 h-16 px-10 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white shadow-2xl transition-all active:scale-95 text-lg font-black uppercase tracking-widest group/btn"
+                            className="shrink-0 h-14 px-8 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm transition-all text-base font-semibold"
                             onClick={handleGenerate}
                         >
                             {t('generate')}
-                            <ArrowRight className="ml-3 w-6 h-6 group-hover/btn:translate-x-1 transition-transform" />
                         </Button>
                     </div>
                 </motion.div>
@@ -99,17 +100,17 @@ export default function Hero() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.8 }}
-                    className="flex flex-wrap items-center gap-16 justify-center text-slate-500 text-[10px] font-black tracking-[0.3em] uppercase"
+                    className="flex flex-wrap items-center gap-16 justify-center text-muted-foreground text-[10px] font-black tracking-[0.3em] uppercase"
                 >
-                    <div className="flex items-center gap-3 hover:text-white transition-colors cursor-default group">
+                    <div className="flex items-center gap-3 hover:text-foreground transition-colors cursor-default group">
                         <Zap className="w-4 h-4 text-blue-500 group-hover:scale-125 transition-transform" />
                         <span>{t('badges.delivery')}</span>
                     </div>
-                    <div className="flex items-center gap-3 hover:text-white transition-colors cursor-default group">
+                    <div className="flex items-center gap-3 hover:text-foreground transition-colors cursor-default group">
                         <Cpu className="w-4 h-4 text-purple-500 group-hover:scale-125 transition-transform" />
                         <span>{t('badges.core')}</span>
                     </div>
-                    <div className="flex items-center gap-3 hover:text-white transition-colors cursor-default group">
+                    <div className="flex items-center gap-3 hover:text-foreground transition-colors cursor-default group">
                         <Shield className="w-4 h-4 text-yellow-500 group-hover:scale-125 transition-transform" />
                         <span>{t('badges.logic')}</span>
                     </div>

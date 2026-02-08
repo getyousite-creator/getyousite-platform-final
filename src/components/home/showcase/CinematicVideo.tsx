@@ -59,23 +59,23 @@ export default function CinematicVideo({
                 className="w-full h-full object-cover transition-transform duration-[10000ms] ease-linear group-hover:scale-105"
             />
 
-            {/* Dark Overlay for Clinical Readability */}
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/20 opacity-60 pointer-events-none" />
+            {/* Subtle Overlay for Readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-muted-foreground/10 via-transparent to-muted-foreground/5 opacity-100 pointer-events-none" />
 
             {/* Controls Layer */}
             <div className="absolute bottom-6 left-6 right-6 z-20 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="flex items-center gap-4">
                     <button
                         onClick={togglePlay}
-                        className="p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all"
+                        className="p-3 rounded-full bg-secondary/10 backdrop-blur-md border border-border hover:bg-secondary/20 transition-all"
                     >
-                        {isPlaying ? <span className="w-4 h-4 block border-l-2 border-r-2 border-white mx-0.5" /> : <Play className="w-4 h-4 fill-current text-white" />}
+                        {isPlaying ? <span className="w-4 h-4 block border-l-2 border-r-2 border-muted-foreground mx-0.5" /> : <Play className="w-4 h-4 fill-current text-foreground" />}
                     </button>
                     <button
                         onClick={() => setIsMuted(!isMuted)}
-                        className="p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all"
+                        className="p-3 rounded-full bg-secondary/10 backdrop-blur-md border border-border hover:bg-secondary/20 transition-all"
                     >
-                        {isMuted ? <VolumeX className="w-4 h-4 text-white" /> : <Volume2 className="w-4 h-4 text-white" />}
+                        {isMuted ? <VolumeX className="w-4 h-4 text-foreground" /> : <Volume2 className="w-4 h-4 text-foreground" />}
                     </button>
                 </div>
             </div>

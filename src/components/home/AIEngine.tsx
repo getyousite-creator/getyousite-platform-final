@@ -14,12 +14,12 @@ const codeSnippet = [
 ];
 
 const features = [
-    { icon: Brain, text: "Self-Healing Codebase", color: "text-purple-500" },
-    { icon: Target, text: "Real-time A/B Testing", color: "text-blue-500" },
-    { icon: Search, text: "Semantic SEO Injection", color: "text-emerald-500" },
-    { icon: Globe, text: "Multi-Language Generation", color: "text-orange-500" },
-    { icon: Zap, text: "Lightning Fast Deployment", color: "text-yellow-500" },
-    { icon: Shield, text: "Enterprise Security", color: "text-red-500" },
+    { icon: Brain, text: "Self-Healing Codebase", token: "text-primary" },
+    { icon: Target, text: "Real-time A/B Testing", token: "text-secondary" },
+    { icon: Search, text: "Semantic SEO Injection", token: "text-success" },
+    { icon: Globe, text: "Multi-Language Generation", token: "text-accent" },
+    { icon: Zap, text: "Lightning Fast Deployment", token: "text-warning" },
+    { icon: Shield, text: "Enterprise Security", token: "text-danger" },
 ];
 
 export default function AIEngine() {
@@ -39,7 +39,7 @@ export default function AIEngine() {
     }, []);
 
     return (
-        <section id="ai-engine" className="py-24 bg-zinc-950/50 border-y border-white/5">
+        <section id="ai-engine" className="py-24 bg-background/50 border-y border-border">
             <div className="container mx-auto px-6">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
 
@@ -49,7 +49,7 @@ export default function AIEngine() {
                             initial={{ opacity: 0, x: -20 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
-                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-medium"
+                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-medium"
                         >
                             <Brain className="w-3 h-3" />
                             <span>Next-Gen Intelligence</span>
@@ -60,7 +60,7 @@ export default function AIEngine() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.1 }}
-                            className="text-4xl md:text-5xl font-bold text-white"
+                            className="text-4xl md:text-5xl font-bold text-foreground"
                         >
                             The Engine That <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">Builds Itself.</span>
@@ -71,7 +71,7 @@ export default function AIEngine() {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.2 }}
-                            className="text-zinc-400 text-lg leading-relaxed"
+                            className="text-muted-foreground text-lg leading-relaxed"
                         >
                             Our automated design system analyzes your niche and generates a conversion-optimized architecture in seconds. It coordinates layout, copy, and performance parameters for maximum business impact.
                         </motion.p>
@@ -84,8 +84,8 @@ export default function AIEngine() {
                             className="grid grid-cols-2 gap-4"
                         >
                             {features.map((feature) => (
-                                <li key={feature.text} className="flex items-center gap-3 text-zinc-300">
-                                    <feature.icon className={`w-5 h-5 ${feature.color}`} />
+                                <li key={feature.text} className="flex items-center gap-3 text-muted-foreground">
+                                    <feature.icon className={`w-5 h-5 ${feature.token}`} />
                                     <span>{feature.text}</span>
                                 </li>
                             ))}
@@ -97,19 +97,19 @@ export default function AIEngine() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.4 }}
-                            className="grid grid-cols-3 gap-6 pt-6 border-t border-white/10"
+                            className="grid grid-cols-3 gap-6 pt-6 border-t border-border/10"
                         >
                             <div>
-                                <div className="text-3xl font-black text-white">Lighthouse</div>
-                                <div className="text-zinc-500 text-sm">95+ Performance</div>
+                                <div className="text-3xl font-black text-foreground">Lighthouse</div>
+                                <div className="text-muted-foreground text-sm">95+ Performance</div>
                             </div>
                             <div>
-                                <div className="text-3xl font-black text-white">Global</div>
-                                <div className="text-zinc-500 text-sm">CDN Edge Ready</div>
+                                <div className="text-3xl font-black text-foreground">Global</div>
+                                <div className="text-muted-foreground text-sm">CDN Edge Ready</div>
                             </div>
                             <div>
-                                <div className="text-3xl font-black text-white">ISO</div>
-                                <div className="text-zinc-500 text-sm">Safety Standard</div>
+                                <div className="text-3xl font-black text-foreground">ISO</div>
+                                <div className="text-muted-foreground text-sm">Safety Standard</div>
                             </div>
                         </motion.div>
                     </div>
@@ -120,14 +120,14 @@ export default function AIEngine() {
                             initial={{ opacity: 0, scale: 0.9 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
-                            className="bg-black rounded-xl border border-zinc-800 shadow-2xl overflow-hidden aspect-video md:aspect-square lg:aspect-video"
+                            className="bg-card rounded-xl border border-border shadow-2xl overflow-hidden aspect-video md:aspect-square lg:aspect-video"
                         >
                             {/* Window Header */}
-                            <div className="bg-zinc-900 px-4 py-3 flex items-center gap-2 border-b border-zinc-800">
+                            <div className="px-4 py-3 flex items-center gap-2 border-b border-border bg-secondary/5">
                                 <div className="w-3 h-3 rounded-full bg-red-500" />
                                 <div className="w-3 h-3 rounded-full bg-yellow-500" />
                                 <div className="w-3 h-3 rounded-full bg-green-500" />
-                                <div className="ml-4 text-xs text-zinc-500 font-mono">engine_core.exe</div>
+                                <div className="ml-4 text-xs text-muted-foreground font-mono">engine_core.exe</div>
                             </div>
 
                             {/* Terminal Body */}
@@ -140,7 +140,7 @@ export default function AIEngine() {
                                         className="mb-2"
                                     >
                                         <span className="text-green-500 mr-2">➜</span>
-                                        <span className="text-zinc-300">{line}</span>
+                                        <span className="text-muted-foreground">{line}</span>
                                     </motion.div>
                                 ))}
                                 <motion.div
@@ -160,11 +160,11 @@ export default function AIEngine() {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.5 }}
-                            className="absolute -right-4 top-1/4 bg-zinc-900/80 backdrop-blur border border-white/10 rounded-lg p-3"
+                            className="absolute -right-4 top-1/4 bg-card/80 backdrop-blur border border-border rounded-lg p-3"
                         >
                             <div className="flex items-center gap-2">
                                 <Sparkles className="w-4 h-4 text-yellow-500" />
-                                <span className="text-xs font-mono text-white">GPT-4 Powered</span>
+                                <span className="text-xs font-mono text-foreground">GPT-4 Powered</span>
                             </div>
                         </motion.div>
 
@@ -173,11 +173,11 @@ export default function AIEngine() {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.6 }}
-                            className="absolute -left-4 bottom-1/4 bg-zinc-900/80 backdrop-blur border border-white/10 rounded-lg p-3"
+                            className="absolute -left-4 bottom-1/4 bg-card/80 backdrop-blur border border-border rounded-lg p-3"
                         >
                             <div className="flex items-center gap-2">
                                 <Zap className="w-4 h-4 text-blue-500" />
-                                <span className="text-xs font-mono text-white">Edge Cached</span>
+                                <span className="text-xs font-mono text-foreground">Edge Cached</span>
                             </div>
                         </motion.div>
                     </div>

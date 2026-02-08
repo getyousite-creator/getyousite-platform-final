@@ -118,23 +118,23 @@ export default function FloatingChat() {
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="mb-4 w-[380px] h-[500px] bg-slate-950/90 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden"
+                        className="mb-4 w-[380px] h-[500px] bg-card/90 backdrop-blur-2xl border border-border rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.08)] flex flex-col overflow-hidden"
                     >
                         {/* Header */}
-                        <div className="p-6 border-b border-white/5 bg-gradient-to-r from-blue-600/10 to-transparent flex items-center justify-between">
+                        <div className="p-6 border-b border-border bg-gradient-to-r from-primary/10 to-transparent flex items-center justify-between">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center shadow-[0_0_15px_rgba(37,99,235,0.4)]">
-                                    <Bot className="w-6 h-6 text-white" />
+                                    <Bot className="w-6 h-6 text-primary-foreground" />
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-black text-white uppercase tracking-widest">{personaName}</h3>
+                                    <h3 className="text-sm font-black text-foreground uppercase tracking-widest">{personaName}</h3>
                                     <div className="flex items-center gap-1.5">
                                         <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                                        <span className="text-[10px] text-slate-500 font-bold uppercase tracking-tighter">Neural Network Active</span>
+                                        <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-tighter">Neural Network Active</span>
                                     </div>
                                 </div>
                             </div>
-                            <button onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-white transition-colors">
+                            <button onClick={() => setIsOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
@@ -144,7 +144,7 @@ export default function FloatingChat() {
                             {messages.length === 0 && (
                                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
                                     <Sparkles className="w-8 h-8 text-blue-500/50" />
-                                    <p className="text-xs text-slate-500 font-medium max-w-[200px]">
+                                    <p className="text-xs text-muted-foreground font-medium max-w-[200px]">
                                         {isRTL ? "أنا يوسف، مستشارك الرقمي. كيف يمكنني مساعدتك اليوم؟" : "I am JO, your digital consultant. How can I architect your success today?"}
                                     </p>
                                 </div>
@@ -161,15 +161,15 @@ export default function FloatingChat() {
                                     >
                                         <div className={cn(
                                             "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
-                                            m.role === 'user' ? "bg-slate-800" : "bg-blue-600/20 text-blue-400"
+                                            m.role === 'user' ? "bg-card text-foreground" : "bg-primary/20 text-primary-foreground"
                                         )}>
                                             {m.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
                                         </div>
                                         <div className={cn(
                                             "p-3 rounded-2xl text-sm leading-relaxed",
                                             m.role === 'user'
-                                                ? "bg-slate-900 text-white font-medium"
-                                                : "bg-blue-600/5 text-slate-300 border border-blue-500/10"
+                                                ? "bg-card/80 text-foreground font-medium"
+                                                : "bg-primary/5 text-muted-foreground border border-primary/10"
                                         )} dir={isRTL ? "rtl" : "ltr"}>
                                             {m.content}
                                         </div>
@@ -182,15 +182,15 @@ export default function FloatingChat() {
 
                                         return (
                                             <div key={toolCallId} className="px-11">
-                                                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between group">
+                                                <div className="p-4 rounded-2xl bg-card/5 border border-border flex items-center justify-between group">
                                                     <div className="flex items-center gap-3">
                                                         <div className={cn(
                                                             "w-2 h-2 rounded-full animate-pulse",
                                                             addResult ? "bg-emerald-500" : "bg-amber-500"
                                                         )} />
                                                         <div>
-                                                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Neural_Action</p>
-                                                            <p className="text-xs font-bold text-white uppercase italic">
+                                                            <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Neural_Action</p>
+                                                            <p className="text-xs font-bold text-muted-foreground uppercase italic">
                                                                 {toolInvocation.toolName.replace(/_/g, ' ')}
                                                             </p>
                                                         </div>
@@ -208,14 +208,14 @@ export default function FloatingChat() {
                         </div>
 
                         {/* Input */}
-                        <form onSubmit={onFormSubmit} className="p-4 border-t border-white/5 bg-slate-900/50">
+                        <form onSubmit={onFormSubmit} className="p-4 border-t border-border bg-card/50">
                             <div className="relative">
                                 <input
                                     type="text"
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
                                     placeholder={isRTL ? "اسأل يوسف..." : "Ask JO..."}
-                                    className="w-full bg-slate-950 border border-white/10 rounded-xl py-3 px-4 pr-12 text-sm text-white focus:outline-none focus:border-blue-600/50 transition-colors"
+                                    className="w-full bg-card border border-border rounded-xl py-3 px-4 pr-12 text-sm text-foreground focus:outline-none focus:border-blue-600/50 transition-colors"
                                     dir={isRTL ? "rtl" : "ltr"}
                                 />
                                 <button
@@ -239,13 +239,13 @@ export default function FloatingChat() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white shadow-[0_10px_30px_rgba(37,99,235,0.4)] relative group overflow-hidden"
+                className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-primary-foreground shadow-[0_10px_30px_rgba(37,99,235,0.4)] relative group overflow-hidden"
             >
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-background/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
                 {isOpen ? <X className="w-7 h-7" /> : <MessageSquare className="w-7 h-7" />}
 
                 {!isOpen && (
-                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-slate-950 animate-pulse" />
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-card animate-pulse" />
                 )}
             </motion.button>
         </div>

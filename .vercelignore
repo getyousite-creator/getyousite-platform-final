@@ -1,0 +1,10 @@
+.git
+.gitignore
+.env.local
+.next
+node_modules
+*.md
+!README.md
+.vscode
+.DS_Store
+.next/cache

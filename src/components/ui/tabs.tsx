@@ -43,7 +43,7 @@ const Tabs = ({
 }
 
 const TabsList = ({ className, children }: { className?: string, children: React.ReactNode }) => (
-    <div className={cn("inline-flex h-12 items-center justify-center rounded-xl bg-zinc-900 p-1 text-zinc-500", className)}>
+    <div className={cn("inline-flex h-12 items-center justify-center rounded-xl bg-muted p-1 text-muted-foreground", className)}>
         {children}
     </div>
 )
@@ -58,8 +58,8 @@ const TabsTrigger = ({ value, className, children }: { value: string, className?
             className={cn(
                 "inline-flex items-center justify-center whitespace-nowrap rounded-lg px-6 py-2 text-xs font-black uppercase tracking-widest transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
                 isActive
-                    ? "bg-zinc-800 text-white shadow-sm"
-                    : "hover:bg-zinc-800/50 hover:text-zinc-300",
+                    ? "bg-background text-foreground shadow-sm"
+                    : "hover:bg-background/50 hover:text-foreground",
                 className
             )}
         >

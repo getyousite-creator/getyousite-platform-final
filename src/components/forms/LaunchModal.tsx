@@ -82,7 +82,7 @@ export default function LaunchModal() {
             <DeploymentLoader isVisible={isDeploying} onComplete={handleDeploymentComplete} />
 
             <Dialog open={isOpen && !isDeploying} onOpenChange={onClose}>
-                <DialogContent className="sm:max-w-[500px] bg-zinc-950 border-white/10 p-0 overflow-hidden outline-none">
+                <DialogContent className="sm:max-w-[500px] bg-card border-border p-0 overflow-hidden outline-none">
                     <div className="relative p-8">
                         {success ? (
                             <motion.div
@@ -94,21 +94,21 @@ export default function LaunchModal() {
                                     <CheckCircle2 className="w-10 h-10 text-emerald-400" />
                                 </div>
                                 <div>
-                                    <h3 className="text-2xl font-bold text-white mb-2 tracking-tight uppercase">{t('success.title')}</h3>
-                                    <p className="text-zinc-500 text-sm">{t('success.desc')}</p>
+                                    <h3 className="text-2xl font-bold text-foreground mb-2 tracking-tight uppercase">{t('success.title')}</h3>
+                                    <p className="text-muted-foreground text-sm">{t('success.desc')}</p>
                                 </div>
                             </motion.div>
                         ) : (
                             <>
                                 <DialogHeader className="mb-8">
-                                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black uppercase tracking-widest w-fit mb-4">
+                                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest w-fit mb-4">
                                         <Sparkles className="w-3 h-3" />
                                         {t('init_sequence')}
                                     </div>
-                                    <DialogTitle className="text-3xl font-black text-white tracking-tighter uppercase leading-none">
+                                    <DialogTitle className="text-3xl font-black text-foreground tracking-tighter uppercase leading-none">
                                         {t('title')}
                                     </DialogTitle>
-                                    <DialogDescription className="text-zinc-500 text-sm mt-4">
+                                    <DialogDescription className="text-muted-foreground text-sm mt-4">
                                         {t('desc')}
                                     </DialogDescription>
                                 </DialogHeader>
@@ -116,12 +116,12 @@ export default function LaunchModal() {
                                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                                     <div className="space-y-4">
                                         <div className="space-y-2">
-                                            <Label htmlFor="email" className="text-xs font-bold text-zinc-500 uppercase">{t('email_label')}</Label>
+                                            <Label htmlFor="email" className="text-xs font-bold text-muted-foreground uppercase">{t('email_label')}</Label>
                                             <Input
                                                 id="email"
                                                 {...register("email")}
                                                 placeholder={t('email_placeholder')}
-                                                className="bg-white/5 border-white/10 text-zinc-100 h-12 focus:ring-blue-500/50"
+                                                className="bg-background border-input text-foreground h-12 focus:ring-primary/50"
                                             />
                                             {errors.email && (
                                                 <p className="text-[10px] text-red-400 flex items-center gap-1">
@@ -131,25 +131,25 @@ export default function LaunchModal() {
                                         </div>
 
                                         <div className="space-y-2">
-                                            <Label htmlFor="siteType" className="text-xs font-bold text-zinc-500 uppercase">{t('type_label')}</Label>
+                                            <Label htmlFor="siteType" className="text-xs font-bold text-muted-foreground uppercase">{t('type_label')}</Label>
                                             <select
                                                 id="siteType"
                                                 {...register("siteType")}
-                                                className="w-full bg-white/5 border border-white/10 rounded-md h-12 text-sm text-zinc-100 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none"
+                                                className="w-full bg-background border-input rounded-md h-12 text-sm text-foreground px-3 focus:outline-none focus:ring-primary/50 appearance-none"
                                             >
-                                                <option value="blog" className="bg-zinc-900">{t('type_options.blog')}</option>
-                                                <option value="business" className="bg-zinc-900">{t('type_options.business')}</option>
-                                                <option value="store" className="bg-zinc-900">{t('type_options.store')}</option>
+                                                <option value="blog" className="bg-secondary">{t('type_options.blog')}</option>
+                                                <option value="business" className="bg-secondary">{t('type_options.business')}</option>
+                                                <option value="store" className="bg-secondary">{t('type_options.store')}</option>
                                             </select>
                                         </div>
 
                                         <div className="space-y-2">
-                                            <Label htmlFor="vision" className="text-xs font-bold text-zinc-500 uppercase">{t('vision_label')}</Label>
+                                            <Label htmlFor="vision" className="text-xs font-bold text-muted-foreground uppercase">{t('vision_label')}</Label>
                                             <Input
                                                 id="vision"
                                                 {...register("vision")}
                                                 placeholder={t('vision_placeholder')}
-                                                className="bg-white/5 border-white/10 text-zinc-100 h-12 focus:ring-blue-500/50"
+                                                className="bg-background border-input text-foreground h-12 focus:ring-primary/50"
                                             />
                                             {errors.vision && (
                                                 <p className="text-[10px] text-red-400 flex items-center gap-1">
@@ -159,15 +159,15 @@ export default function LaunchModal() {
                                         </div>
 
                                         <div className="space-y-2">
-                                            <Label className="text-xs font-bold text-zinc-500 uppercase">{t('tier_label')}</Label>
+                                            <Label className="text-xs font-bold text-muted-foreground uppercase">{t('tier_label')}</Label>
                                             <select
                                                 {...register("budget")}
-                                                className="w-full bg-white/5 border border-white/10 rounded-md h-12 text-sm text-zinc-100 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none"
+                                                className="w-full bg-background border-input rounded-md h-12 text-sm text-foreground px-3 focus:outline-none focus:ring-primary/50 appearance-none"
                                             >
-                                                <option value="starter" className="bg-zinc-900">{t('tier_options.starter')}</option>
-                                                <option value="pro" className="bg-zinc-900">{t('tier_options.pro')}</option>
-                                                <option value="business" className="bg-zinc-900">{t('tier_options.business')}</option>
-                                                <option value="enterprise" className="bg-zinc-900">{t('tier_options.enterprise')}</option>
+                                                <option value="starter" className="bg-secondary">{t('tier_options.starter')}</option>
+                                                <option value="pro" className="bg-secondary">{t('tier_options.pro')}</option>
+                                                <option value="business" className="bg-secondary">{t('tier_options.business')}</option>
+                                                <option value="enterprise" className="bg-secondary">{t('tier_options.enterprise')}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -176,7 +176,7 @@ export default function LaunchModal() {
                                         type="submit"
                                         disabled={isSubmitting}
                                         variant="glow"
-                                        className="w-full h-14 font-black uppercase tracking-widest bg-blue-600 hover:bg-blue-500 text-white border-0"
+                                        className="w-full h-14 font-black uppercase tracking-widest bg-primary text-primary-foreground hover:bg-primary/90 border-0"
                                     >
                                         {isSubmitting ? t('submitting') : t('submit')}
                                         <Rocket className="ml-2 w-4 h-4" />

@@ -9,35 +9,41 @@
     --font-inter: "Inter", sans-serif;
     --font-noto-arabic: "Noto Sans Arabic", sans-serif;
 
-    /* REFINED DEEP SPACE BLACK (Slate 950 base) */
-    --background: 222 47% 2%;  /* #020617 Slate 950 */
-    --foreground: 210 40% 98%;
+    /* CELESTIAL CLARITY SYSTEM (Strict Protocol) */
+    /* Base: White #FFFFFF */
+    --background: 0 0% 100%;
+    /* Text Primary: #1C1C1E - Soft Black */
+    --foreground: 240 3% 11%;
+    
+    /* Internal Elements */
+    --card: 0 0% 100%;
+    --card-foreground: 240 3% 11%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 3% 11%;
+ 
+    /* Primary Action: #007AFF Azure Blue (HSL: 211, 100%, 50%) */
+    --primary: 211 100% 50%;
+    --primary-foreground: 0 0% 100%;
+ 
+    /* Secondary/Muted */
+    --secondary: 210 20% 98%; 
+    --secondary-foreground: 211 100% 50%; /* Blue text for secondary */
+ 
+    /* Text Secondary: #8A8A8E */
+    --muted: 220 2% 96%; /* #E5E5E5 Border equivalent */
+    --muted-foreground: 240 2% 55%;
 
-    --card: 222 47% 4%; /* Slightly lighter than bg */
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222 47% 4%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 217 91% 60%;
-    /* Blue 500 */
-    --primary-foreground: 222 47.4% 11.2%;
-
-    --secondary: 217 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
+    /* Accent: #FF9500 Tangerine */
+    --accent: 35 100% 50%;
+    --accent-foreground: 0 0% 100%;
+ 
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-
-    --border: 217 32.6% 17.5%;
-    --input: 217 32.6% 17.5%;
-    --ring: 224 76.3% 48%;
+ 
+    --border: 240 5% 90%; /* #E5E5E5 */
+    --input: 240 5% 90%;
+    --ring: 211 100% 50%;
   }
 
   /* MEDICAL THEME (CLEAN / CLINICAL) */

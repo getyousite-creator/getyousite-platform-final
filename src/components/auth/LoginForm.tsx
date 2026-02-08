@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { signInAction, signInWithOAuthAction } from '@/app/actions/auth-actions';
+import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,13 +20,17 @@ export default function LoginForm() {
         setLoading(true);
         setError(null);
 
-        const result = await signInAction(email, password);
+        const supabase = createClient();
+        const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password
+        });
 
-        if (result.success) {
+        if (!error) {
             router.push('/customizer');
             router.refresh();
         } else {
-            setError(result.error || 'Login failed');
+            setError(error.message || 'Login failed');
             setLoading(false);
         }
     };
@@ -35,8 +39,14 @@ export default function LoginForm() {
         setLoading(true);
         setError(null);
 
+        const supabase = createClient();
         try {
-            await signInWithOAuthAction('google');
+            await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: `${window.location.origin}/auth/callback`,
+                }
+            });
         } catch (err) {
             setError('OAuth login failed');
             setLoading(false);
@@ -44,11 +54,11 @@ export default function LoginForm() {
     };
 
     return (
-        <div className="p-8 rounded-2xl bg-zinc-900 border border-white/10 shadow-2xl">
+            <div className="p-8 rounded-2xl bg-card border border-border shadow-2xl">
             {/* Header */}
             <div className="mb-8">
-                <h1 className="text-2xl font-bold text-white mb-2">Welcome Back</h1>
-                <p className="text-sm text-zinc-500">Sign in to your account to continue</p>
+                    <h1 className="text-2xl font-bold text-foreground mb-2">Welcome Back</h1>
+                    <p className="text-sm text-muted-foreground">Sign in to your account to continue</p>
             </div>
 
             {/* Error Alert */}
@@ -64,7 +74,7 @@ export default function LoginForm() {
                 <Button
                     type="button"
                     variant="outline"
-                    className="w-full h-12 border-white/10 bg-white/5 hover:bg-white/10 text-white"
+                    className="w-full h-12 border-border bg-card/5 hover:bg-card/10 text-foreground"
                     onClick={handleGoogleLogin}
                     disabled={loading}
                 >
@@ -81,17 +91,17 @@ export default function LoginForm() {
             {/* Divider */}
             <div className="relative mb-6">
                 <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t border-white/10" />
+                    <span className="w-full border-t border-border" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-zinc-900 px-2 text-zinc-600">Or continue with</span>
+                    <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
                 </div>
             </div>
 
             {/* Email/Password Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                    <Label htmlFor="email" className="text-sm text-zinc-400">
+                        <Label htmlFor="email" className="text-sm text-muted-foreground">
                         Email
                     </Label>
                     <Input
@@ -102,12 +112,12 @@ export default function LoginForm() {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                         disabled={loading}
-                        className="bg-white/5 border-white/10 h-12 text-white"
+                        className="bg-card/5 border-border h-12 text-foreground"
                     />
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="password" className="text-sm text-zinc-400">
+                        <Label htmlFor="password" className="text-sm text-muted-foreground">
                         Password
                     </Label>
                     <Input
@@ -118,13 +128,13 @@ export default function LoginForm() {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                         disabled={loading}
-                        className="bg-white/5 border-white/10 h-12 text-white"
+                        className="bg-card/5 border-border h-12 text-foreground"
                     />
                 </div>
 
                 <Button
                     type="submit"
-                    className="w-full h-12 bg-blue-600 hover:bg-blue-500 text-white font-semibold"
+                        className="w-full h-12 bg-blue-600 hover:bg-blue-500 text-primary-foreground font-semibold"
                     disabled={loading}
                 >
                     {loading ? (

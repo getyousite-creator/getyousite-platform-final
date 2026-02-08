@@ -34,8 +34,8 @@ export function ComponentLibrary({ type, content, primaryColor }: ComponentLibra
             return <PreviewGallery content={content} primaryColor={primaryColor} />;
         default:
             return (
-                <div className="p-12 text-center border-b border-black/5 bg-zinc-50">
-                    <p className="text-[10px] text-zinc-400 font-mono uppercase tracking-widest">
+                <div className="p-12 text-center border-b border-border bg-background">
+                    <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">
                         [{type}] Section_Pending_Orchestration
                     </p>
                 </div>
@@ -51,19 +51,19 @@ function PreviewTestimonials({ content, primaryColor }: any) {
     ];
 
     return (
-        <section className="py-24 px-8 bg-zinc-900 text-white relative overflow-hidden">
+        <section className="py-24 px-8 bg-card text-foreground relative overflow-hidden">
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                 {reviews.map((review: any, i: number) => (
-                    <div key={i} className="p-8 bg-white/5 border border-white/10 rounded-2xl relative group hover:bg-white/10 transition-colors">
-                        <div className="text-4xl text-white/20 font-serif absolute top-4 left-6">"</div>
-                        <p className="text-lg text-zinc-300 mb-6 relative z-10 leading-relaxed">
+                    <div key={i} className="p-8 bg-secondary/10 border border-border rounded-2xl relative group hover:bg-secondary/20 transition-colors">
+                        <div className="text-4xl text-muted-foreground font-serif absolute top-4 left-6">"</div>
+                        <p className="text-lg text-muted-foreground mb-6 relative z-10 leading-relaxed">
                             {review.text}
                         </p>
                         <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white/20 to-transparent" />
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-secondary/20 to-transparent" />
                             <div>
                                 <h4 className="font-bold text-sm tracking-wide">{review.name}</h4>
-                                <span className="text-[10px] uppercase tracking-widest text-zinc-500">{review.role}</span>
+                                <span className="text-[10px] uppercase tracking-widest text-muted-foreground">{review.role}</span>
                             </div>
                         </div>
                     </div>
@@ -76,12 +76,12 @@ function PreviewTestimonials({ content, primaryColor }: any) {
 function PreviewBenefits({ content, primaryColor }: any) {
     const items = content?.items || ["Instant Setup", "High Security", "Growth Ready"];
     return (
-        <section className="py-20 px-8 bg-white text-center">
-            <h2 className="text-3xl font-black mb-12 tracking-tight">Core Advantages</h2>
+        <section className="py-20 px-8 bg-background text-center">
+            <h2 className="text-3xl font-black mb-12 tracking-tight text-foreground">Core Advantages</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto">
                 {items.map((benefit: string, i: number) => (
                     <div key={i} className="space-y-4">
-                        <div className="text-4xl font-black text-zinc-100 mb-2">0{i + 1}</div>
+                        <div className="text-4xl font-black text-foreground mb-2">0{i + 1}</div>
                         <h3 className="text-xl font-bold">{benefit}</h3>
                         <div className="h-1 w-12 mx-auto rounded-full" style={{ backgroundColor: primaryColor }} />
                     </div>
@@ -94,10 +94,10 @@ function PreviewBenefits({ content, primaryColor }: any) {
 function PreviewTrustBar({ content, primaryColor }: any) {
     const logos = content?.logos || ["Partner Alpha", "Tech Beta", "Global Gamma"];
     return (
-        <section className="py-12 bg-zinc-900 overflow-hidden">
-            <div className="flex gap-16 justify-center opacity-30 grayscale invert">
+        <section className="py-12 bg-card overflow-hidden">
+            <div className="flex gap-16 justify-center opacity-30 grayscale">
                 {logos.map((logo: string, i: number) => (
-                    <span key={i} className="text-xl font-black tracking-tighter text-white whitespace-nowrap">{logo}</span>
+                    <span key={i} className="text-xl font-black tracking-tighter text-muted-foreground whitespace-nowrap">{logo}</span>
                 ))}
             </div>
         </section>
@@ -107,13 +107,13 @@ function PreviewTrustBar({ content, primaryColor }: any) {
 function PreviewFAQ({ content, primaryColor }: any) {
     const items = content?.items || [{ q: "How long does it take?", a: "Seconds with our AI." }];
     return (
-        <section className="py-20 px-8 bg-zinc-50 border-t border-black/5">
+        <section className="py-20 px-8 bg-background border-t border-border">
             <div className="max-w-3xl mx-auto space-y-8">
-                <h2 className="text-3xl font-black text-center mb-12">Common Inquiries</h2>
+                <h2 className="text-3xl font-black text-center mb-12 text-foreground">Common Inquiries</h2>
                 {items.map((item: any, i: number) => (
-                    <div key={i} className="p-6 bg-white rounded-xl border border-black/5 shadow-sm">
-                        <h4 className="font-bold mb-2">{item.q}</h4>
-                        <p className="text-sm text-zinc-500">{item.a}</p>
+                    <div key={i} className="p-6 bg-card rounded-xl border border-border shadow-sm">
+                        <h4 className="font-bold mb-2 text-foreground">{item.q}</h4>
+                        <p className="text-sm text-muted-foreground">{item.a}</p>
                     </div>
                 ))}
             </div>
@@ -123,15 +123,15 @@ function PreviewFAQ({ content, primaryColor }: any) {
 
 function PreviewHero({ content, primaryColor }: any) {
     return (
-        <section className="py-24 px-8 text-center bg-white">
-            <h1 className="text-4xl md:text-6xl font-black tracking-tighter mb-6 leading-tight">
+        <section className="py-24 px-8 text-center bg-background">
+            <h1 className="text-4xl md:text-6xl font-black tracking-tighter mb-6 leading-tight text-foreground">
                 {content?.headline || "Untitled Ambition"}
             </h1>
-            <p className="text-zinc-500 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
                 {content?.subheadline || "A blueprint awaiting its architectural destiny."}
             </p>
             <button
-                className="px-8 py-4 rounded-full font-black uppercase text-xs tracking-widest text-white shadow-xl transition-transform hover:scale-105"
+                className="px-8 py-4 rounded-full font-black uppercase text-xs tracking-widest text-primary-foreground shadow-xl transition-transform hover:scale-105"
                 style={{ backgroundColor: primaryColor, boxShadow: `0 10px 30px ${primaryColor}44` }}
             >
                 Initiate Protocol
@@ -148,15 +148,15 @@ function PreviewFeatures({ content, primaryColor }: any) {
     ];
 
     return (
-        <section className="py-20 px-8 bg-zinc-50 border-y border-black/5">
+        <section className="py-20 px-8 bg-background border-y border-border">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {items.map((item: any, i: number) => (
-                    <div key={i} className="p-8 bg-white rounded-2xl border border-black/5 shadow-sm">
-                        <div className="w-10 h-10 rounded-lg mb-6 flex items-center justify-center text-white" style={{ backgroundColor: primaryColor }}>
+                    <div key={i} className="p-8 bg-card rounded-2xl border border-border shadow-sm">
+                        <div className="w-10 h-10 rounded-lg mb-6 flex items-center justify-center text-primary-foreground" style={{ backgroundColor: primaryColor }}>
                             {i + 1}
                         </div>
-                        <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                        <p className="text-sm text-zinc-500 leading-relaxed">{item.description}</p>
+                        <h3 className="text-xl font-bold mb-3 text-foreground">{item.title}</h3>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
                     </div>
                 ))}
             </div>
@@ -166,15 +166,15 @@ function PreviewFeatures({ content, primaryColor }: any) {
 
 function PreviewCTA({ content, primaryColor }: any) {
     return (
-        <section className="py-24 px-8 text-white relative overflow-hidden" style={{ backgroundColor: primaryColor }}>
+        <section className="py-24 px-8 text-foreground relative overflow-hidden" style={{ backgroundColor: primaryColor }}>
             <div className="relative z-10 text-center space-y-8">
                 <h2 className="text-4xl font-black tracking-tight">{content?.headline || "Ready for Deployment?"}</h2>
-                <p className="text-white/80 max-w-xl mx-auto">{content?.subheadline || "Join the sovereign network and scale your vision."}</p>
-                <button className="px-10 py-5 bg-white text-black rounded-full font-black uppercase text-xs tracking-widest shadow-2xl">
+                <p className="text-primary-foreground/80 max-w-xl mx-auto">{content?.subheadline || "Join the sovereign network and scale your vision."}</p>
+                <button className="px-10 py-5 bg-card text-foreground rounded-full font-black uppercase text-xs tracking-widest shadow-2xl">
                     Get Started Now
                 </button>
             </div>
-            <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent pointer-events-none" />
         </section>
     );
 }
@@ -188,19 +188,19 @@ function PreviewGallery({ content, primaryColor }: any) {
     ];
 
     return (
-        <section className="py-20 px-8 bg-white">
+        <section className="py-20 px-8 bg-background">
             <h2 className="text-3xl font-black text-center mb-12">Visual Perspective</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
                 {images.map((img: string, i: number) => (
-                    <div key={i} className="aspect-square relative group overflow-hidden rounded-2xl shadow-lg border border-black/5 bg-zinc-100">
+                    <div key={i} className="aspect-square relative group overflow-hidden rounded-2xl shadow-lg border border-border bg-secondary/10">
                         <img
                             src={img}
                             alt={`Gallery ${i}`}
                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <div className="w-10 h-10 rounded-full border border-white/50 flex items-center justify-center">
-                                <Search className="w-4 h-4 text-white" />
+                        <div className="absolute inset-0 bg-card/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <div className="w-10 h-10 rounded-full border border-border flex items-center justify-center">
+                                <Search className="w-4 h-4 text-foreground" />
                             </div>
                         </div>
                     </div>
