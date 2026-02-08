@@ -39,7 +39,15 @@ export default function MasterLMS(props: SovereignTemplateProps) {
     const heroHeadline = (heroSection?.content?.headline as string) || headline;
     const heroSub = (heroSection?.content?.subheadline as string) || subheadline;
 
-    const courses = (coursesSection?.content?.courses as Course[]) || [
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const coursesRaw = (coursesSection?.content?.items as any[]) || [];
+    const courses: Course[] = coursesRaw.length > 0 ? coursesRaw.map((item, i) => ({
+        title: item.title,
+        students: `${(i + 1) * 450}+`,
+        rating: "4.9",
+        img: item.image || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop",
+        duration: `${(i + 4) * 2}h`
+    })) : [
         { title: "Architecture of Sovereignty", students: "1.2k", rating: "4.9", img: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop", duration: "12h" },
         { title: "Neural Logic Masterclass", students: "800", rating: "4.8", img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop", duration: "8h" },
         { title: "Digital Empire Economics", students: "2.5k", rating: "5.0", img: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop", duration: "24h" }

@@ -27,6 +27,38 @@ export default function MasterInternal(props: SovereignTemplateProps) {
     const { settings, blueprint } = props;
     const { headline } = settings;
 
+    // AI Blueprint Extraction
+    const dashboardSection = blueprint?.layout?.find((s) => s.type === 'features');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const itemsRaw = (dashboardSection?.content?.items as any[]) || [];
+    
+    const sidebarItems = itemsRaw.slice(0, 5).map(item => ({
+        label: item.title || "Module",
+        icon: LayoutDashboard // Default icon, could be dynamic mapped if needed
+    }));
+
+    const statsRaw = itemsRaw.slice(0, 3).map((item, i) => ({
+        label: item.title || "Metric",
+        val: i === 0 ? "98.2%" : i === 1 ? "1.4GB" : "12ms",
+        icon: i === 0 ? Cpu : i === 1 ? Layers : Zap,
+        color: i === 0 ? "text-blue-500" : i === 1 ? "text-purple-500" : "text-emerald-500"
+    }));
+
+    // If no AI data, fallbacks must be generic but strictly typed
+    const navigationItems = sidebarItems.length > 0 ? sidebarItems : [
+        { icon: LayoutDashboard, label: "Overview_Logic" },
+        { icon: Users2, label: "Neural_Registry" },
+        { icon: Package, label: "Asset_Inventory" },
+        { icon: Activity, label: "System_Flux" },
+        { icon: Database, label: "Data_Silo" }
+    ];
+
+    const stats = statsRaw.length > 0 ? statsRaw : [
+        { label: "CPU_Load", val: "12.4%", icon: Cpu, color: "text-blue-500" },
+        { label: "Memory_Usage", val: "4.2 GB", icon: Layers, color: "text-purple-500" },
+        { icon: Zap, label: "latency", val: "14ms", color: "text-emerald-500" }
+    ];
+
     const onOpen = useLaunchModal((state) => state.onOpen);
 
     return (
@@ -43,14 +75,8 @@ export default function MasterInternal(props: SovereignTemplateProps) {
                         </div>
 
                         <nav className="space-y-2 flex-grow">
-                            {[
-                                { icon: LayoutDashboard, label: "Overview_Logic", active: true },
-                                { icon: Users2, label: "Neural_Registry" },
-                                { icon: Package, label: "Asset_Inventory" },
-                                { icon: Activity, label: "System_Flux" },
-                                { icon: Database, label: "Data_Silo" }
-                            ].map((item, i) => (
-                                <div key={i} className={`flex items-center gap-4 p-4 rounded-xl cursor-pointer transition-all ${item.active ? 'bg-blue-600/10 text-blue-500' : 'hover:bg-white/5 hover:text-white'}`}>
+                            {navigationItems.map((item, i) => (
+                                <div key={i} className={`flex items-center gap-4 p-4 rounded-xl cursor-pointer transition-all ${i === 0 ? 'bg-blue-600/10 text-blue-500' : 'hover:bg-white/5 hover:text-white'}`}>
                                     <item.icon className="w-5 h-5" />
                                     <span className="text-[10px] font-black uppercase tracking-widest">{item.label}</span>
                                 </div>
@@ -89,11 +115,7 @@ export default function MasterInternal(props: SovereignTemplateProps) {
 
                         {/* STATUS MATRIX */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            {[
-                                { label: "CPU_Load", val: "12.4%", icon: Cpu, color: "text-blue-500" },
-                                { label: "Memory_Usage", val: "4.2 GB", icon: Layers, color: "text-purple-500" },
-                                { icon: Zap, label: "latency", val: "14ms", color: "text-emerald-500" }
-                            ].map((stat, i) => (
+                            {stats.map((stat, i) => (
                                 <motion.div
                                     key={i}
                                     initial={{ opacity: 0, y: 20 }}

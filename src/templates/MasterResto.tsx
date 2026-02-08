@@ -38,7 +38,14 @@ export default function MasterResto(props: SovereignTemplateProps) {
         (aboutSection?.content?.images?.[1]?.src as string) ||
         "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2070&auto=format&fit=crop";
 
-    const menuItems = (menuSection?.content?.menu as MenuItem[]) || [
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const menuRaw = (menuSection?.content?.items as any[]) || [];
+    const menuItems: MenuItem[] = menuRaw.length > 0 ? menuRaw.map(item => ({
+        name: item.title,
+        price: "$29",
+        description: item.description?.substring(0, 100) || "Chef's selection.",
+        img: item.image || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=2080&auto=format&fit=crop",
+    })) : [
         {
             name: "Chef&apos;s Signature",
             price: "$42",

@@ -26,6 +26,21 @@ export default function MasterAccounting(props: SovereignTemplateProps) {
     const { settings, blueprint } = props;
     const { headline, subheadline } = settings;
 
+    // AI Blueprint Extraction
+    const featuresSection = blueprint?.layout?.find((s) => s.type === 'features');
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const integrationsRaw = (featuresSection?.content?.items as any[]) || [];
+    const integrations = integrationsRaw.length > 0 ? integrationsRaw.slice(0, 3).map(item => ({
+        icon: Database,
+        label: item.title,
+        val: "Active"
+    })) : [
+        { icon: Database, label: "Excel & QuickBooks Sync", val: "Active" },
+        { icon: ShieldCheck, label: "Tax Compliance Logic", val: "Secure" },
+        { icon: LineChart, label: "Real-time Cash Flow", val: "99.9% Acc" }
+    ];
+
     const onOpen = useLaunchModal((state) => state.onOpen);
 
     return (
@@ -120,11 +135,7 @@ export default function MasterAccounting(props: SovereignTemplateProps) {
                                     <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm h-full">
                                         <h3 className="text-xs font-black uppercase tracking-[0.3em] text-slate-400 mb-8">Industrial_Integrations</h3>
                                         <div className="space-y-6">
-                                            {[
-                                                { icon: Database, label: "Excel & QuickBooks Sync", val: "Active" },
-                                                { icon: ShieldCheck, label: "Tax Compliance Logic", val: "Secure" },
-                                                { icon: LineChart, label: "Real-time Cash Flow", val: "99.9% Acc" }
-                                            ].map((item, i) => (
+                                            {integrations.map((item, i) => (
                                                 <div key={i} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100 group cursor-pointer hover:border-teal-200 transition-colors">
                                                     <div className="flex items-center gap-4">
                                                         <item.icon className="w-5 h-5 text-slate-400 group-hover:text-teal-600 transition-colors" />

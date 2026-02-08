@@ -38,7 +38,14 @@ export default function MasterCreative(props: SovereignTemplateProps) {
     const heroHeadline = (heroSection?.content?.headline as string) || headline;
     const heroImg = (heroSection?.content?.image as string) || "https://images.unsplash.com/photo-1493424440862-621b185fbb44?q=80&w=2400&auto=format&fit=crop";
 
-    const projects = (portfolioSection?.content?.projects as CaseStudy[]) || [
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const projectsRaw = (portfolioSection?.content?.items as any[]) || [];
+    const projects: CaseStudy[] = projectsRaw.length > 0 ? projectsRaw.map(item => ({
+        title: item.title || "Untitled Project",
+        category: item.description?.substring(0, 15) || "Creative_Work",
+        img: item.image || "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2400&auto=format&fit=crop",
+        year: "2024"
+    })) : [
         { title: "Kinetic Fluidity", category: "Motion_Audit", img: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2400&auto=format&fit=crop", year: "2026" },
         { title: "Sovereign UI", category: "Eco_System", img: "https://images.unsplash.com/photo-1581291518151-0ca98316f31f?q=80&w=2400&auto=format&fit=crop", year: "2025" },
         { title: "Neural Branding", category: "Identity_Shift", img: "https://images.unsplash.com/photo-1618556450991-2f1af64e8191?q=80&w=2400&auto=format&fit=crop", year: "2026" },

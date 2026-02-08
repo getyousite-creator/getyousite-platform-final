@@ -25,6 +25,7 @@ interface Program {
     level: string;
     duration: string;
     img: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     icon: any;
 }
 
@@ -35,7 +36,17 @@ export default function MasterFitness(props: SovereignTemplateProps) {
     // AI Blueprint Extraction
     const programsSection = blueprint?.layout?.find((s) => s.type === 'features');
 
-    const programs = (programsSection?.content?.programs as Program[]) || [
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const programsRaw = (programsSection?.content?.items as any[]) || [];
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const programs: Program[] = programsRaw.length > 0 ? programsRaw.map((item: any) => ({
+        title: item.title,
+        level: item.description?.substring(0, 50) || "Intense",
+        duration: "12 Weeks",
+        img: item.image || "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop",
+        icon: Dumbbell
+    })) : [
         { title: "Sovereign Hypertrophy", level: "Advanced", duration: "12 Weeks", img: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop", icon: Dumbbell },
         { title: "Kinetic Fat Loss", level: "Beginner", duration: "8 Weeks", img: "https://images.unsplash.com/photo-1541534741688-611c501f21ee?q=80&w=2070&auto=format&fit=crop", icon: Flame },
         { title: "Neural Athleticism", level: "Elite", duration: "6 Months", img: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2070&auto=format&fit=crop", icon: Zap }

@@ -41,7 +41,15 @@ export default function MasterWellness(props: SovereignTemplateProps) {
     const heroHeadline = (heroSection?.content?.headline as string) || headline;
     const heroImg = (heroSection?.content?.image as string) || "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=2440&auto=format&fit=crop";
 
-    const treatments = (wellnessSection?.content?.treatments as Treatment[]) || [
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const treatmentsRaw = (wellnessSection?.content?.items as any[]) || [];
+    const treatments: Treatment[] = treatmentsRaw.length > 0 ? treatmentsRaw.map((item) => ({
+        title: item.title,
+        duration: "60 MIN",
+        price: "$120",
+        img: item.image || "https://images.unsplash.com/photo-1540555700478-4be289fbecee?q=80&w=2070&auto=format&fit=crop",
+        desc: item.description || "Holistic alignment via high-fidelity botanical essence."
+    })) : [
         { title: "Neutral Balance Ritual", duration: "90 MIN", price: "$180", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecee?q=80&w=2070&auto=format&fit=crop", desc: "Holistic alignment via high-fidelity botanical essence." },
         { title: "Kinetic Glow Therapy", duration: "60 MIN", price: "$120", img: "https://images.unsplash.com/photo-1590439471364-192aa70c0b53?q=80&w=1974&auto=format&fit=crop", desc: "Advanced facial architecture for mission-critical radiance." },
         { title: "Sovereign Sauna Flux", duration: "45 MIN", price: "$65", img: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=2070&auto=format&fit=crop", desc: "Thermal logic detoxification for absolute cellular integrity." }
@@ -200,7 +208,7 @@ export default function MasterWellness(props: SovereignTemplateProps) {
                                 <div className="flex gap-2">
                                     {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-5 h-5 text-orange-500 fill-orange-500" />)}
                                 </div>
-                                <h3 className="text-4xl font-black uppercase leading-none italic italic">"The Sovereign Serenity protocol is the only benchmark for modern wellness architecture."</h3>
+                                <h3 className="text-4xl font-black uppercase leading-none italic italic">&quot;The Sovereign Serenity protocol is the only benchmark for modern wellness architecture.&quot;</h3>
                                 <div className="flex items-center gap-6 font-sans">
                                     <div className="w-14 h-14 rounded-full bg-orange-100 flex items-center justify-center">
                                         <User className="w-7 h-7 text-orange-600" />

@@ -36,7 +36,16 @@ export default function MasterPublic(props: SovereignTemplateProps) {
     // AI Blueprint Extraction
     const blogSection = blueprint?.layout?.find((s) => s.type === 'features');
 
-    const articles = (blogSection?.content?.articles as Article[]) || [
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const articlesRaw = (blogSection?.content?.items as any[]) || [];
+    const articles: Article[] = articlesRaw.length > 0 ? articlesRaw.map((item) => ({
+        title: item.title,
+        excerpt: item.description?.substring(0, 80) + "..." || "Analyzing the shift from centralized dependencies to absolute digital ownership.",
+        author: "A. Sovereign",
+        date: "FEB 2026",
+        img: item.image || "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2070&auto=format&fit=crop",
+        category: "Philosophy"
+    })) : [
         { title: "The Sovereign Manifesto", excerpt: "Analyzing the shift from centralized dependencies to absolute digital ownership.", author: "A. Sovereign", date: "FEB 2026", img: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2070&auto=format&fit=crop", category: "Philosophy" },
         { title: "Neural Synthesis v2.4", excerpt: "How generative architecture is replacing static selection models.", author: "B. Architect", date: "JAN 2026", img: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=2070&auto=format&fit=crop", category: "Technology" },
         { title: "Economic Resilience", excerpt: "Strategic protocols for building recession-proof digital empires.", author: "C. Strategist", date: "DEC 2025", img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop", category: "Economy" }

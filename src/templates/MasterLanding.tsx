@@ -31,6 +31,18 @@ export default function MasterLanding(props: SovereignTemplateProps) {
     const heroHeadline = (heroSection?.content?.headline as string) || headline;
     const heroSub = (heroSection?.content?.subheadline as string) || subheadline;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const pillarsRaw = (featuresSection?.content?.items as any[]) || [];
+    const pillars = pillarsRaw.length > 0 ? pillarsRaw.slice(0, 3).map(item => ({
+        icon: Zap, // Default icon since we can't easily map string to Icon component without a map
+        title: item.title,
+        desc: item.description
+    })) : [
+        { icon: Zap, title: "Neural Latency", desc: "42ms response timing globally via Edge Node architecture." },
+        { icon: Cpu, title: "Logic Synthesis", desc: "AI-driven decision matrix that optimizes user conversion paths." },
+        { icon: Globe, title: "Sovereign Scale", desc: "Elastic infrastructure that expands autonomously with demand." }
+    ];
+
     const onOpen = useLaunchModal((state) => state.onOpen);
 
     return (
@@ -137,11 +149,7 @@ export default function MasterLanding(props: SovereignTemplateProps) {
                     <section className="py-40 bg-slate-50">
                         <div className="container mx-auto px-6">
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                                {[
-                                    { icon: Zap, title: "Neural Latency", desc: "42ms response timing globally via Edge Node architecture." },
-                                    { icon: Cpu, title: "Logic Synthesis", desc: "AI-driven decision matrix that optimizes user conversion paths." },
-                                    { icon: Globe, title: "Sovereign Scale", desc: "Elastic infrastructure that expands autonomously with demand." }
-                                ].map((pill, i) => (
+                                {pillars.map((pill, i) => (
                                     <div key={i} className="p-10 rounded-[40px] bg-white border border-slate-100 shadow-sm hover:shadow-xl transition-shadow group">
                                         <div
                                             className="w-16 h-16 rounded-3xl flex items-center justify-center mb-10 shadow-lg group-hover:scale-110 transition-transform"
