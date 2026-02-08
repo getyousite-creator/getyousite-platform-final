@@ -28,6 +28,8 @@ export default async function middleware(request: NextRequest) {
         "vercel.app",
         "getyuosite.com",
         "getyousite.com",
+        "www.getyuosite.com",
+        "www.getyousite.com",
     ];
     const isMainApp = allowedDomains.some((domain) => hostname.includes(domain));
 
@@ -37,14 +39,11 @@ export default async function middleware(request: NextRequest) {
         // but since middleware must be edge-fast, we'll use a rewrite pattern
         // that the renderer uses to fetch data.
 
-        // Fix: Rewrite must respect the file structure structure src/app/[locale]/_site-renderer
-        // We need to inject the default locale if one isn't present in the internal rewrite,
-        // but typically rewrites map to the file system path parameters.
-        // However, since _site-renderer is INSIDE [locale], we usually need to preserve the locale.
-        // For now, only the strict isMainApp check addresses the 404 on the main site.
-
-        // Rewrite to /[locale]/_site-renderer/[hostname]
-        url.pathname = `/_site-renderer/${hostname}`;
+        // SOVEREIGN REPAIR:
+        // The _site-renderer directory lives inside [locale], so we MUST include a locale in the rewrite.
+        // We force 'en' as the structural locale for the renderer, while the actual content
+        // will be determined by the site's blueprint data.
+        url.pathname = `/en/_site-renderer/${hostname}`;
         return NextResponse.rewrite(url);
     }
 
