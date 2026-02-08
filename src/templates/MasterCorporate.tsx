@@ -8,13 +8,12 @@ import {
     BarChart3,
     Briefcase,
     Building2,
-    CheckCircle2,
     TrendingUp,
     ChevronRight,
     ArrowUpRight,
     Search,
     PieChart,
-    Users
+    Users,
 } from "lucide-react";
 import { SovereignTemplateProps } from "@/lib/types/template";
 import Image from "next/image";
@@ -25,10 +24,31 @@ export default function MasterCorporate(props: SovereignTemplateProps) {
     const { headline, subheadline } = settings;
 
     // AI Blueprint Extraction
-    const services = blueprint?.layout?.find((s) => s.type === 'features')?.content?.items || [
-        { title: "Strategic M&A Intelligence", desc: "Complex transaction logic with absolute regulatory compliance.", icon: Briefcase },
-        { title: "Sovereign Asset Protection", desc: "Capital preservation protocols for the elite global tier.", icon: Shield },
-        { title: "Market Alpha Algorithms", desc: "Proprietary predictive modeling for industrial dominance.", icon: TrendingUp }
+    const heroSection = blueprint?.layout?.find((s) => s.type === "hero");
+    const heroHeadline = (heroSection?.content?.headline as string) || headline;
+    const heroSubheadline = (heroSection?.content?.subheadline as string) || subheadline;
+    const heroImage =
+        (heroSection?.content?.image as string) ||
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop";
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const services = (blueprint?.layout?.find((s) => s.type === "features")?.content
+        ?.items as unknown as { title: string; description: string; icon: any }[]) || [
+        {
+            title: "Strategic M&A Intelligence",
+            description: "Complex transaction logic with absolute regulatory compliance.",
+            icon: Briefcase,
+        },
+        {
+            title: "Sovereign Asset Protection",
+            description: "Capital preservation protocols for the elite global tier.",
+            icon: Shield,
+        },
+        {
+            title: "Market Alpha Algorithms",
+            description: "Proprietary predictive modeling for industrial dominance.",
+            icon: TrendingUp,
+        },
     ];
 
     const onOpen = useLaunchModal((state) => state.onOpen);
@@ -41,12 +61,19 @@ export default function MasterCorporate(props: SovereignTemplateProps) {
                     <nav className="h-24 px-8 lg:px-20 flex items-center justify-between sticky top-0 bg-white/80 backdrop-blur-xl z-[100] border-b border-slate-100">
                         <div className="flex items-center gap-12">
                             <span className="text-2xl font-black tracking-tighter uppercase flex items-center gap-2">
-                                <Globe className="w-6 h-6 text-blue-900" /> {blueprint?.name || "CORP_GLOBAL"}
+                                <Globe className="w-6 h-6 text-blue-900" />{" "}
+                                {blueprint?.name || "CORP_GLOBAL"}
                             </span>
                             <div className="hidden lg:flex items-center gap-10 text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">
-                                <span className="hover:text-blue-900 cursor-pointer transition-colors">Strategic_Units</span>
-                                <span className="hover:text-blue-900 cursor-pointer transition-colors">Market_Insights</span>
-                                <span className="hover:text-blue-900 cursor-pointer transition-colors">Governance</span>
+                                <span className="hover:text-blue-900 cursor-pointer transition-colors">
+                                    Strategic_Units
+                                </span>
+                                <span className="hover:text-blue-900 cursor-pointer transition-colors">
+                                    Market_Insights
+                                </span>
+                                <span className="hover:text-blue-900 cursor-pointer transition-colors">
+                                    Governance
+                                </span>
                             </div>
                         </div>
 
@@ -72,13 +99,15 @@ export default function MasterCorporate(props: SovereignTemplateProps) {
                             >
                                 <div className="inline-flex items-center gap-3 px-5 py-2 bg-blue-50 border border-blue-100">
                                     <Shield className="w-4 h-4 text-blue-900" />
-                                    <span className="text-[10px] font-black uppercase text-blue-900 tracking-widest">Global Stability Standard Verified</span>
+                                    <span className="text-[10px] font-black uppercase text-blue-900 tracking-widest">
+                                        Global Stability Standard Verified
+                                    </span>
                                 </div>
                                 <h1 className="text-6xl md:text-[6vw] font-black tracking-tighter leading-[0.9] text-slate-950 uppercase">
-                                    {headline}
+                                    {heroHeadline}
                                 </h1>
                                 <p className="text-xl text-slate-500 max-w-xl leading-relaxed font-medium">
-                                    {subheadline}
+                                    {heroSubheadline}
                                 </p>
                                 <div className="flex flex-wrap gap-6 pt-6">
                                     <button className="h-20 px-12 bg-slate-900 text-white font-black uppercase tracking-widest text-[11px] hover:bg-blue-900 transition-colors flex items-center gap-4">
@@ -97,14 +126,18 @@ export default function MasterCorporate(props: SovereignTemplateProps) {
                                 className="relative h-[600px] border-[20px] border-white shadow-2xl rounded-sm overflow-hidden"
                             >
                                 <Image
-                                    src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop"
+                                    src={heroImage}
                                     alt="Corporate"
                                     fill
                                     className="object-cover"
                                 />
                                 <div className="absolute top-10 right-10 p-8 bg-blue-900 text-white shadow-2xl">
-                                    <p className="text-[8px] font-black uppercase tracking-widest mb-2 opacity-60">Global_Market_Cap</p>
-                                    <p className="text-3xl font-black tabular-nums font-mono">$1.4T+</p>
+                                    <p className="text-[8px] font-black uppercase tracking-widest mb-2 opacity-60">
+                                        Global_Market_Cap
+                                    </p>
+                                    <p className="text-3xl font-black tabular-nums font-mono">
+                                        $1.4T+
+                                    </p>
                                 </div>
                             </motion.div>
                         </div>
@@ -114,13 +147,27 @@ export default function MasterCorporate(props: SovereignTemplateProps) {
                     <section className="py-40">
                         <div className="container mx-auto px-8">
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-1px bg-slate-100 border border-slate-100">
+                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                 {services.map((unit: any, i: number) => (
-                                    <div key={i} className="bg-white p-12 lg:p-20 space-y-10 group hover:bg-slate-50 transition-colors">
+                                    <div
+                                        key={i}
+                                        className="bg-white p-12 lg:p-20 space-y-10 group hover:bg-slate-50 transition-colors"
+                                    >
                                         <div className="w-16 h-16 bg-blue-50 flex items-center justify-center group-hover:bg-blue-900 transition-colors">
-                                            <unit.icon className="w-8 h-8 text-blue-900 group-hover:text-white transition-colors" />
+                                            {/* Dynamic Icon Mapped or Fallback - Double Cast for Strictness */}
+                                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                            {(unit as unknown as { icon: any }).icon ? (
+                                                <unit.icon className="w-8 h-8 text-blue-900 group-hover:text-white transition-colors" />
+                                            ) : (
+                                                <Briefcase className="w-8 h-8 text-blue-900 group-hover:text-white transition-colors" />
+                                            )}
                                         </div>
-                                        <h3 className="text-2xl font-black uppercase tracking-tight leading-none">{unit.title}</h3>
-                                        <p className="text-slate-400 leading-relaxed text-sm font-medium">{unit.desc}</p>
+                                        <h3 className="text-2xl font-black uppercase tracking-tight leading-none">
+                                            {unit.title}
+                                        </h3>
+                                        <p className="text-slate-400 leading-relaxed text-sm font-medium">
+                                            {unit.description || unit.desc}
+                                        </p>
                                         <div className="pt-6 flex items-center justify-between text-[10px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
                                             <span>Learn_More</span>
                                             <ArrowUpRight className="w-4 h-4" />
@@ -138,13 +185,17 @@ export default function MasterCorporate(props: SovereignTemplateProps) {
                                 { icon: Building2, val: "42", label: "Global_Outposts" },
                                 { icon: PieChart, val: "18%", label: "Alpha_Yield" },
                                 { icon: Users, val: "12K", label: "Elite_Operators" },
-                                { icon: BarChart3, val: "0.2s", label: "Logic_Latency" }
+                                { icon: BarChart3, val: "0.2s", label: "Logic_Latency" },
                             ].map((stat, i) => (
                                 <div key={i} className="space-y-4">
                                     <stat.icon className="w-8 h-8 text-blue-500" />
                                     <div className="space-y-1">
-                                        <p className="text-5xl font-black tabular-nums">{stat.val}</p>
-                                        <p className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-600">{stat.label}</p>
+                                        <p className="text-5xl font-black tabular-nums">
+                                            {stat.val}
+                                        </p>
+                                        <p className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-600">
+                                            {stat.label}
+                                        </p>
                                     </div>
                                 </div>
                             ))}
@@ -160,7 +211,9 @@ export default function MasterCorporate(props: SovereignTemplateProps) {
                             <span>Investor_Relations</span>
                         </div>
                         <div className="text-right">
-                            <p className="text-[10px] text-slate-200 font-bold uppercase tracking-[1em]">© 2026 Sovereign Global Infrastructure Group.</p>
+                            <p className="text-[10px] text-slate-200 font-bold uppercase tracking-[1em]">
+                                © 2026 Sovereign Global Infrastructure Group.
+                            </p>
                         </div>
                     </footer>
                 </div>
