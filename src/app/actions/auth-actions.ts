@@ -46,7 +46,7 @@ export async function signUpAction(email: string, password: string): Promise<Aut
     }
 
     const supabase = await createClient();
-    
+
     console.log('[AUTH-SIGNUP] Attempting signup for:', email);
 
     // Create user in Supabase Auth
@@ -169,7 +169,7 @@ export async function signInWithOAuthAction(provider: 'google' | 'apple' | 'azur
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: providerName,
       options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || ''}/auth/callback`,
+        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || ''}/auth/callback?next=/dashboard`,
       },
     });
 

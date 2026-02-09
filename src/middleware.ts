@@ -34,7 +34,6 @@ export default async function middleware(request: NextRequest) {
     const isMainApp = allowedDomains.some((domain) => hostname.includes(domain));
 
     if (!isMainApp) {
-        const subdomain = hostname.split(".")[0];
         // Note: For absolute rigor, we would fetch the siteId from Supabase here,
         // but since middleware must be edge-fast, we'll use a rewrite pattern
         // that the renderer uses to fetch data.
@@ -69,6 +68,6 @@ export const config = {
     matcher: [
         "/",
         "/(fr|en|es|ar)/:path*",
-        "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+        "/((?!_next/static|_next/image|favicon.ico|auth/callback|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
     ],
 };
