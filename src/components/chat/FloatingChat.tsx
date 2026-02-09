@@ -123,7 +123,7 @@ export default function FloatingChat() {
                         {/* Header */}
                         <div className="p-6 border-b border-border bg-gradient-to-r from-primary/10 to-transparent flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+                                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-[0_0_15px_hsl(var(--primary)/0.4)]">
                                     <Bot className="w-6 h-6 text-primary-foreground" />
                                 </div>
                                 <div>
@@ -143,7 +143,7 @@ export default function FloatingChat() {
                         <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-hide">
                             {messages.length === 0 && (
                                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
-                                    <Sparkles className="w-8 h-8 text-blue-500/50" />
+                                    <Sparkles className="w-8 h-8 text-primary/50" />
                                     <p className="text-xs text-muted-foreground font-medium max-w-[200px]">
                                         {isRTL ? "أنا يوسف، مستشارك الرقمي. كيف يمكنني مساعدتك اليوم؟" : "I am JO, your digital consultant. How can I architect your success today?"}
                                     </p>
@@ -215,14 +215,14 @@ export default function FloatingChat() {
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
                                     placeholder={isRTL ? "اسأل يوسف..." : "Ask JO..."}
-                                    className="w-full bg-card border border-border rounded-xl py-3 px-4 pr-12 text-sm text-foreground focus:outline-none focus:border-blue-600/50 transition-colors"
+                                    className="w-full bg-card border border-border rounded-xl py-3 px-4 pr-12 text-sm text-foreground focus:outline-none focus:border-primary/50 transition-colors"
                                     dir={isRTL ? "rtl" : "ltr"}
                                 />
                                 <button
                                     type="submit"
                                     disabled={isLoading}
                                     className={cn(
-                                        "absolute top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-500 transition-colors disabled:opacity-50",
+                                        "absolute top-1/2 -translate-y-1/2 text-primary hover:text-primary/80 transition-colors disabled:opacity-50",
                                         isRTL ? "left-4" : "right-4"
                                     )}
                                 >
@@ -239,7 +239,7 @@ export default function FloatingChat() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-primary-foreground shadow-[0_10px_30px_rgba(37,99,235,0.4)] relative group overflow-hidden"
+                className="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-primary-foreground shadow-[0_10px_30px_hsl(var(--primary)/0.4)] relative group overflow-hidden"
             >
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-background/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
                 {isOpen ? <X className="w-7 h-7" /> : <MessageSquare className="w-7 h-7" />}

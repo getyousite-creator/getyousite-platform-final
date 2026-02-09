@@ -102,19 +102,19 @@ export default function BlogPostPage() {
                     <div className="mt-32 pt-16 border-t border-white/5">
                         <div className="flex flex-col md:flex-row items-center justify-between gap-12">
                             <div className="flex items-center gap-6">
-                                <div className="w-16 h-16 rounded-full bg-slate-900 border border-white/10 flex items-center justify-center overflow-hidden">
-                                    <Sparkles className="w-8 h-8 text-blue-500" />
+                                <div className="w-16 h-16 rounded-full bg-secondary border border-border flex items-center justify-center overflow-hidden">
+                                    <Sparkles className="w-8 h-8 text-primary" />
                                 </div>
                                 <div>
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">Authenticated Author</p>
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Authenticated Author</p>
                                     <p className="text-xl font-bold">{post.author}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-4">
-                                <Button className="h-14 px-8 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all font-black uppercase tracking-widest">
+                                <Button className="h-14 px-8 rounded-xl bg-secondary border border-border hover:bg-secondary/80 transition-all font-black uppercase tracking-widest">
                                     <Share2 className="mr-2 w-4 h-4" /> {t('share_node')}
                                 </Button>
-                                <Button className="h-14 px-8 rounded-xl bg-blue-600 hover:bg-blue-500 transition-all font-black uppercase tracking-widest">
+                                <Button className="h-14 px-8 rounded-xl bg-primary hover:bg-primary/90 transition-all font-black uppercase tracking-widest">
                                     {t('apply_insights')}
                                 </Button>
                             </div>

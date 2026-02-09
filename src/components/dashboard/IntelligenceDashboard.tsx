@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { getGlobalPerformanceAction } from '@/app/actions/intelligence-actions';
 import { useAuth } from '@/components/providers/SupabaseProvider';
-import { Zap, Shield, TrendingUp, AlertTriangle, CheckCircle2, Activity } from 'lucide-react';
+import { Zap, Shield, TrendingUp, Activity } from 'lucide-react';
 
 export function IntelligenceDashboard() {
     const { user } = useAuth();
@@ -33,7 +33,7 @@ export function IntelligenceDashboard() {
                 <div>
                     <h2 className="text-3xl font-black italic uppercase tracking-tightest text-foreground">Intelligence Hub</h2>
                     <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-2 flex items-center gap-2">
-                        <Activity className="w-3 h-3 text-blue-500 animate-pulse" />
+                        <Activity className="w-3 h-3 text-primary animate-pulse" />
                         Real-time success velocity tracking active
                     </p>
                 </div>
@@ -53,13 +53,13 @@ export function IntelligenceDashboard() {
                             <div>
                                 <h3 className="text-sm font-black uppercase text-foreground mb-1">{site.name}</h3>
                                 <span className={`text-[8px] font-bold uppercase py-0.5 px-2 rounded-full border ${site.status === 'deployed' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' :
-                                        'bg-secondary/10 border-secondary/30 text-muted-foreground'
+                                    'bg-secondary/10 border-secondary/30 text-muted-foreground'
                                     }`}>
                                     {site.status}
                                 </span>
                             </div>
                             <div className={`p-3 rounded-xl ${site.seoScore > 80 ? 'bg-emerald-500/10 text-emerald-500' :
-                                    site.seoScore > 50 ? 'bg-amber-500/10 text-amber-500' : 'bg-red-500/10 text-red-500'
+                                site.seoScore > 50 ? 'bg-amber-500/10 text-amber-500' : 'bg-red-500/10 text-red-500'
                                 }`}>
                                 <Zap className="w-5 h-5" />
                             </div>
@@ -74,7 +74,7 @@ export function IntelligenceDashboard() {
                                 </div>
                                 <div className="h-1 w-full bg-secondary rounded-full overflow-hidden">
                                     <div
-                                        className="h-full bg-blue-500 transition-all duration-1000"
+                                        className="h-full bg-primary transition-all duration-1000"
                                         style={{ width: `${Math.min(100, site.views / 10)}%` }}
                                     />
                                 </div>
@@ -114,10 +114,10 @@ export function IntelligenceDashboard() {
             </div>
 
             {/* Global Integrity Alerts */}
-            <div className="p-8 rounded-[40px] bg-blue-600/5 border border-blue-500/20">
+            <div className="p-8 rounded-[40px] bg-primary/5 border border-primary/20">
                 <div className="flex items-center gap-6">
-                    <div className="w-16 h-16 rounded-[24px] bg-blue-600/10 flex items-center justify-center flex-shrink-0">
-                        <Shield className="w-8 h-8 text-blue-500" />
+                    <div className="w-16 h-16 rounded-[24px] bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <Shield className="w-8 h-8 text-primary" />
                     </div>
                     <div>
                         <h4 className="text-lg font-black italic uppercase tracking-tight text-foreground mb-1">Integrity Advisory</h4>

@@ -26,9 +26,8 @@ export default function SignUpForm() {
     const password = watch('password');
 
     const onSubmit = async (data: SignUpFormData) => {
-        // **DIAGNOSTIC STEP 1: IS THIS FUNCTION EVEN CALLED?**
-        console.log('Form submission initiated. Data:', { email: data.email, passwordLength: data.password?.length });
-        
+        // Form submission logic
+
         setLoading(true);
         setGeneralError(null);
 
@@ -42,31 +41,24 @@ export default function SignUpForm() {
         const supabase = createClient();
 
         try {
-            // **DIAGNOSTIC STEP 2: IS THE API CALL BEING MADE?**
             const { data: authData, error } = await supabase.auth.signUp({
                 email: data.email,
                 password: data.password,
             });
 
-            // **DIAGNOSTIC STEP 3: WHAT IS THE API RESPONSE?**
             if (error) {
-                console.error('Supabase SignUp Error:', error.message, error);
                 // **CRITICAL:** Display this error to the user!
                 setGeneralError(error.message);
             } else {
-                console.log('Supabase SignUp Success. User:', authData.user);
-                
                 // Check if user is actually returned
                 if (authData.user) {
-                     // **CRITICAL:** Inform the user to check their email for verification.
+                    // **CRITICAL:** Inform the user to check their email for verification.
                     setSuccess(true);
                 } else {
-                     console.warn('SignUp successful but no user returned. Review email settings.');
-                     setSuccess(true);
+                    setSuccess(true);
                 }
             }
         } catch (err) {
-            console.error('Unexpected Exception:', err);
             setGeneralError('An unexpected error occurred during sign up.');
         } finally {
             setLoading(false);
@@ -76,7 +68,6 @@ export default function SignUpForm() {
     const handleGoogleSignUp = async () => {
         setLoading(true);
         setGeneralError(null);
-        console.log('Initiating Google OAuth...');
         try {
             const supabase = createClient();
             const { data, error } = await supabase.auth.signInWithOAuth({
@@ -87,14 +78,12 @@ export default function SignUpForm() {
             });
 
             if (error) {
-                console.error('Google Auth Error:', error);
                 setGeneralError(error.message);
                 setLoading(false);
             } else {
-                console.log('Google Auth Redirecting:', data);
+                // Redirecting
             }
         } catch (err) {
-            console.error('Google OAuth Exception:', err);
             setGeneralError('OAuth sign up failed');
             setLoading(false);
         }
@@ -192,7 +181,7 @@ export default function SignUpForm() {
                         id="password"
                         type="password"
                         placeholder="••••••••"
-                        {...register('password', { 
+                        {...register('password', {
                             required: 'Password is required',
                             minLength: { value: 8, message: 'Must be at least 8 characters' }
                         })}

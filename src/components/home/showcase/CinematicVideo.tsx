@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+
 import { Play, Volume2, VolumeX } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -29,7 +29,7 @@ export default function CinematicVideo({
     useEffect(() => {
         if (autoPlay && videoRef.current) {
             videoRef.current.play().catch(() => {
-                console.log("Autoplay blocked - awaiting user interaction");
+                // Autoplay blocked
             });
         }
     }, [autoPlay]);

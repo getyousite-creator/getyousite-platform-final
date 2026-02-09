@@ -54,11 +54,11 @@ export default function LoginForm() {
     };
 
     return (
-            <div className="p-8 rounded-2xl bg-card border border-border shadow-2xl">
+        <div className="p-8 rounded-2xl bg-card border border-border shadow-2xl">
             {/* Header */}
             <div className="mb-8">
-                    <h1 className="text-2xl font-bold text-foreground mb-2">Welcome Back</h1>
-                    <p className="text-sm text-muted-foreground">Sign in to your account to continue</p>
+                <h1 className="text-2xl font-bold text-foreground mb-2">Welcome Back</h1>
+                <p className="text-sm text-muted-foreground">Sign in to your account to continue</p>
             </div>
 
             {/* Error Alert */}
@@ -101,7 +101,7 @@ export default function LoginForm() {
             {/* Email/Password Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                        <Label htmlFor="email" className="text-sm text-muted-foreground">
+                    <Label htmlFor="email" className="text-sm text-muted-foreground">
                         Email
                     </Label>
                     <Input
@@ -117,7 +117,7 @@ export default function LoginForm() {
                 </div>
 
                 <div className="space-y-2">
-                        <Label htmlFor="password" className="text-sm text-muted-foreground">
+                    <Label htmlFor="password" className="text-sm text-muted-foreground">
                         Password
                     </Label>
                     <Input
@@ -134,7 +134,7 @@ export default function LoginForm() {
 
                 <Button
                     type="submit"
-                        className="w-full h-12 bg-blue-600 hover:bg-blue-500 text-primary-foreground font-semibold"
+                    className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
                     disabled={loading}
                 >
                     {loading ? (

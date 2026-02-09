@@ -27,8 +27,8 @@ export default function Hero() {
             {/* Wix-Style INNOVATIVE BACKGROUND */}
             <div className="absolute inset-0 z-0">
                 {/* Dynamic Mesh Gradients */}
-                <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-blue-600/10 blur-[120px] rounded-full animate-pulse" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-600/10 blur-[150px] rounded-full delay-1000" />
+                <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-primary/10 blur-[120px] rounded-full animate-pulse" />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-accent/10 blur-[150px] rounded-full delay-1000" />
 
                 {/* Subtle Grid Pattern */}
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 contrast-150 brightness-100 mix-blend-overlay" />
@@ -76,7 +76,7 @@ export default function Hero() {
                 >
                     {/* Simplified Glow */}
                     <div className="absolute -inset-1 bg-primary/20 rounded-[1.5rem] blur-xl opacity-0 group-hover:opacity-100 transition duration-700" />
-                    
+
                     <div className="relative flex items-center bg-card border border-border rounded-[1.5rem] p-2 shadow-xl overflow-hidden">
                         <input
                             type="text"

@@ -224,11 +224,11 @@ export default function DashboardClient() {
                                             <Eye className="w-6 h-6 text-primary" />
                                         </div>
                                     </div>
-                                        <div className="flex items-center mt-4 text-emerald-500 text-sm">
-                                            <ArrowUpRight size={16} className="mr-1" />
-                                            <span>+12.5%</span>
-                                            <span className="text-muted-foreground ml-2">{t('vs_last_month')}</span>
-                                        </div>
+                                    <div className="flex items-center mt-4 text-emerald-500 text-sm">
+                                        <ArrowUpRight size={16} className="mr-1" />
+                                        <span>+12.5%</span>
+                                        <span className="text-muted-foreground ml-2">{t('vs_last_month')}</span>
+                                    </div>
                                 </CardContent>
                             </Card>
                         </motion.div>
@@ -416,7 +416,7 @@ export default function DashboardClient() {
                                         <p className="text-muted-foreground mb-6 max-w-sm mx-auto">
                                             {t('no_assets_desc')}
                                         </p>
-                                        <Button asChild className="bg-blue-600 hover:bg-blue-500">
+                                        <Button asChild className="bg-primary hover:bg-primary/90">
                                             <Link href="/ar/customizer">{t('create_first')}</Link>
                                         </Button>
                                     </div>

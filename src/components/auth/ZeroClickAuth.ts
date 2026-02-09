@@ -6,14 +6,13 @@ import { isSupabaseConfigured } from "@/lib/supabase";
  * Hardened Zero-Click Auth helper.
  * STRICT MODE: Fail if Google One Tap fails. No silent fake-auth fallback.
  */
-export async function handleZeroClickAuth(credential: string) {
+export async function handleZeroClickAuth(_credential: string) {
     if (!isSupabaseConfigured) {
         throw new Error("CANNOT_PROCEED: Supabase connection is offline or unconfigured.");
     }
 
     // Logic for verifying Google One Tap credential against Supabase
     // This is a strict-enforcement stub.
-    console.log("STRATEGY: Verifying Sovereign Identity via Google One Tap...");
 
     // Simulating a real verification process
     return {

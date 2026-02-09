@@ -17,8 +17,8 @@ export default function Logo({ className, showText = true, ...props }: LogoProps
         >
             <div className="relative flex items-center justify-center">
                 {/* Scientific Geometric Core */}
-                <div className="w-9 h-9 border-2 border-slate-700 rounded-lg rotate-45 group-hover:border-blue-500 transition-colors duration-500" />
-                <div className="absolute w-4 h-4 bg-blue-600 rounded-sm rotate-45 group-hover:scale-125 group-hover:shadow-[0_0_15px_rgba(37,99,235,0.6)] transition-all duration-500" />
+                <div className="w-9 h-9 border-2 border-muted-foreground/30 rounded-lg rotate-45 group-hover:border-primary transition-colors duration-500" />
+                <div className="absolute w-4 h-4 bg-primary rounded-sm rotate-45 group-hover:scale-125 group-hover:shadow-[0_0_15px_hsl(var(--primary)/0.6)] transition-all duration-500" />
 
                 {/* Secondary Orbit */}
                 <motion.div

@@ -7,11 +7,11 @@ export function PwaProvider({ children }: { children: React.ReactNode }) {
         if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js').then(
-                    (registration) => {
-                        console.log('Sovereign ServiceWorker registration successful with scope: ', registration.scope);
+                    () => {
+                        // Registration successful
                     },
-                    (err) => {
-                        console.log('Sovereign ServiceWorker registration failed: ', err);
+                    () => {
+                        // Registration failed
                     }
                 );
             });

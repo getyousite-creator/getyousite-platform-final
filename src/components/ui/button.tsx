@@ -14,8 +14,8 @@ const buttonVariants = cva(
                 secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
                 ghost: "hover:bg-accent hover:text-accent-foreground",
                 link: "text-primary underline-offset-4 hover:underline",
-                premium: "bg-blue-600 text-primary-foreground shadow-[0_0_15px_rgba(37,99,235,0.5)] hover:bg-blue-700 hover:shadow-[0_0_25px_rgba(37,99,235,0.7)] transition-all duration-300",
-                glow: "bg-gradient-to-r from-blue-500 to-cyan-500 text-primary-foreground shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border-none",
+                premium: "bg-primary text-primary-foreground shadow-[0_0_15px_hsl(var(--primary)/0.5)] hover:bg-primary/90 hover:shadow-[0_0_25px_hsl(var(--primary)/0.7)] transition-all duration-300",
+                glow: "bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border-none",
             },
             size: {
                 default: "h-10 px-4 py-2",
@@ -40,7 +40,7 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ({ className, variant, size, asChild = false, ...props }, ref) => {
         // Basic slot support if user wanted radix-slot, otherwise button
-        const Comp = "button"
+        const Comp = asChild ? Slot : "button"
         return (
             <Comp
                 className={cn(buttonVariants({ variant, size, className }))}

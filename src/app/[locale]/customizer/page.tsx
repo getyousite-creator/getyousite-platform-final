@@ -46,7 +46,6 @@ export default function CustomizerPage() {
             const result = await getStoreAction(storeIdParam);
 
             if (result.success && result.data) {
-                console.log("LOGIC: Existing store loaded", result.data.id);
                 setActiveStoreId(result.data.id);
                 setUserId(result.data.user_id); // Set User ID for Storage RLS
                 setBusinessName(result.data.name);
@@ -57,7 +56,6 @@ export default function CustomizerPage() {
                 }
                 setShowPay(true);
             } else {
-                console.error("LOGIC: Failed to load store", result.error);
                 toast.error("Failed to load store");
             }
             setIsLoadingStore(false);
@@ -80,7 +78,6 @@ export default function CustomizerPage() {
                 setShowAuthModal(true);
                 return false;
             } else if (!result.success) {
-                console.error("Save failed:", result.error);
                 return false;
             }
 
@@ -92,7 +89,6 @@ export default function CustomizerPage() {
 
             return true;
         } catch (e) {
-            console.error(e);
             return false;
         }
     }, [businessName, vision, activeStoreId, router]);
@@ -121,7 +117,6 @@ export default function CustomizerPage() {
             }
 
         } catch (error) {
-            console.error("ORCHESTRATION_FAILURE:", error);
             toast.error("Generation failed");
         } finally {
             setIsGenerating(false);
@@ -151,12 +146,10 @@ export default function CustomizerPage() {
 
         // Asset Cleanup: Delete old asset if it exists and is from our storage
         if (oldUrl && oldUrl.includes("site-assets") && oldUrl !== url) {
-            console.log("Purging old asset:", oldUrl);
             // We fire and forget the delete to not block UI, or we could await if critical
             // Given the user's strict requirement, we should probably log error if it fails
             StorageService.deleteAsset(oldUrl).then(res => {
-                if (!res.success) console.error("Failed to purge asset:", res.error);
-                else console.log("Asset purged successfully");
+                // Silent fail/success
             });
         }
 
