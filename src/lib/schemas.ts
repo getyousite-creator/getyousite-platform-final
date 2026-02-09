@@ -47,7 +47,7 @@ export const SiteBlueprintSchema = z.object({
         secondary: z.string(),
         accent: z.string(),
         fontFamily: z.string(),
-        mode: z.enum(["light", "dark", "industrial"]),
+        mode: z.enum(["light", "dark", "industrial", "quantum"]),
     }),
     layout: z.array(SectionSchema),
     footer: z.object({
