@@ -9,7 +9,7 @@ import Link from 'next/link';
 import {
     Plus, Edit, TrendingUp, Users, Eye, Globe, Search,
     Clock, Calendar, BarChart3, SearchCheck, Shield,
-    Zap, Target, ArrowUpRight, ArrowDownRight, Download
+    Zap, Target, ArrowUpRight, ArrowDownRight, Download, LogOut
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';

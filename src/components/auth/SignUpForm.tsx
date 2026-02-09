@@ -232,8 +232,8 @@ export default function SignUpForm() {
                     {' '}and{' '}
                     <Link href="/privacy" className="text-primary hover:underline">Privacy Policy</Link>
                 </p>
-            </p>
-        </form>
+
+            </form>
         </div >
     );
 }
