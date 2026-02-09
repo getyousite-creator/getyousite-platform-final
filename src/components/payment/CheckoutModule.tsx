@@ -24,12 +24,12 @@ export function CheckoutModule({ siteId, planId, amount, onSuccess }: CheckoutMo
     return (
         <div className="p-8 rounded-[40px] bg-card border border-border space-y-8 max-w-lg mx-auto shadow-2xl">
             <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center">
-                    <Shield className="w-6 h-6 text-blue-500" />
+                <div className="w-12 h-12 rounded-2xl bg-[#00D09C]/10 flex items-center justify-center">
+                    <Shield className="w-6 h-6 text-[#00D09C]" />
                 </div>
                 <div>
-                    <h3 className="text-xl font-black uppercase tracking-tightest text-foreground">Secure Activation</h3>
-                    <p className="text-xs text-muted-foreground uppercase tracking-widest">Protocol: PayPal Sovereign Cloud</p>
+                    <h3 className="text-xl font-black uppercase tracking-tightest text-foreground">Node Activation</h3>
+                    <p className="text-xs text-muted-foreground uppercase tracking-widest">Protocol: Sovereign Financial Bridge</p>
                 </div>
             </div>
 
@@ -102,7 +102,7 @@ export function CheckoutModule({ siteId, planId, amount, onSuccess }: CheckoutMo
                             toast.error(res.error || "Stripe Bridge Error.");
                         }
                     }}
-                    className="w-full h-14 bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase tracking-widest text-[11px] rounded-full shadow-lg"
+                    className="w-full h-14 bg-[#00D09C] hover:bg-[#00B085] text-white font-black uppercase tracking-widest text-[11px] rounded-full shadow-[0_0_20px_rgba(0,208,156,0.3)] transition-all"
                 >
                     Activate with Stripe
                 </Button>

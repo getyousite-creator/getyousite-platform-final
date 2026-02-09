@@ -20,15 +20,15 @@ export default function PythonPortfolio({ settings, blueprint }: SovereignTempla
     const updatePulse = useTemplateEditor((state) => state.updatePulse);
     const onOpen = useLaunchModal((state) => state.onOpen);
 
-    // Pythonic Green Theme Override
-    const accentColor = primaryColor || "#22c55e";
+    // Sovereign Green Theme Override
+    const accentColor = primaryColor || "#00D09C";
 
     return (
         <motion.div
             key={updatePulse}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="w-full min-h-screen bg-[#0d1117] text-slate-300 font-mono selection:bg-[#22c55e] selection:text-black overflow-x-hidden"
+            className="w-full min-h-screen bg-[#0d1117] text-slate-300 font-mono selection:bg-[#00D09C] selection:text-black overflow-x-hidden"
             style={{ fontFamily: "'Fira Code', 'Roboto Mono', monospace" }}
         >
             {/* GRID OVERLAY */}
@@ -40,16 +40,16 @@ export default function PythonPortfolio({ settings, blueprint }: SovereignTempla
             <nav className="border-b border-slate-800 bg-[#0d1117]/80 backdrop-blur-md sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
                     <div className="flex items-center gap-2 text-white font-bold tracking-tighter" onClick={() => onOpen("PythonHome")}>
-                        <Terminal className="w-5 h-5 text-green-500" />
+                        <Terminal className="w-5 h-5 text-[#00D09C]" />
                         <span>~/portfolio</span>
-                        <span className="animate-pulse w-3 h-5 bg-green-500 block ml-1" />
+                        <span className="animate-pulse w-3 h-5 bg-[#00D09C] block ml-1" />
                     </div>
                     <div className="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-slate-500">
-                        <span className="hover:text-green-400 cursor-pointer transition-colors">./projects</span>
-                        <span className="hover:text-green-400 cursor-pointer transition-colors">./stack</span>
+                        <span className="hover:text-[#00D09C] cursor-pointer transition-colors">./projects</span>
+                        <span className="hover:text-[#00D09C] cursor-pointer transition-colors">./stack</span>
                         <button
                             onClick={() => onOpen("HireProtocol")}
-                            className="bg-green-600/10 text-green-500 px-4 py-2 border border-green-500/20 hover:bg-green-500 hover:text-black transition-all"
+                            className="bg-[#00D09C]/10 text-[#00D09C] px-4 py-2 border border-[#00D09C]/20 hover:bg-[#00D09C] hover:text-black transition-all"
                         >
                             sudo hire_me
                         </button>
@@ -61,20 +61,20 @@ export default function PythonPortfolio({ settings, blueprint }: SovereignTempla
             <section className="relative pt-20 pb-32 px-6">
                 <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     <div className="space-y-8">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/50 border border-slate-700 text-[10px] text-green-400 font-mono">
-                            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/50 border border-slate-700 text-[10px] text-[#00D09C] font-mono">
+                            <span className="w-2 h-2 rounded-full bg-[#00D09C] animate-pulse" />
                             INTERPRETER ACTIVE: V3.12.0
                         </div>
 
                         <h1 className="text-5xl md:text-7xl font-black text-white leading-tight tracking-tighter">
-                            <span className="text-green-500">def</span> {heroHeadline?.split(' ')[0]}<span className="text-slate-500">(</span>self<span className="text-slate-500">):</span>
+                            <span className="text-[#00D09C]">def</span> {heroHeadline?.split(' ')[0]}<span className="text-slate-500">(</span>self<span className="text-slate-500">):</span>
                         </h1>
 
                         <div className="p-6 bg-slate-900 border border-slate-800 rounded-lg font-mono text-sm relative group">
                             <div className="absolute top-0 left-0 w-full h-8 bg-slate-800 flex items-center gap-2 px-4 rounded-t-lg">
                                 <div className="w-3 h-3 rounded-full bg-red-500" />
                                 <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                                <div className="w-3 h-3 rounded-full bg-green-500" />
+                                <div className="w-3 h-3 rounded-full bg-[#00D09C]" />
                             </div>
                             <div className="mt-6 space-y-2 text-slate-400">
                                 <p><span className="text-purple-400">class</span> <span className="text-yellow-300">Architect</span>:</p>
@@ -82,23 +82,23 @@ export default function PythonPortfolio({ settings, blueprint }: SovereignTempla
                                 <p className="pl-4">{heroSubheadline}</p>
                                 <p className="pl-4">"""</p>
                                 <p className="pl-4"><span className="text-blue-400">def</span> <span className="text-yellow-300">__init__</span>(self):</p>
-                                <p className="pl-8">self.stack = [<span className="text-green-300">'Django'</span>, <span className="text-green-300">'FastAPI'</span>, <span className="text-green-300">'Torch'</span>]</p>
-                                <p className="pl-8">self.mission = <span className="text-green-300">'Scale Infinite'</span></p>
+                                <p className="pl-8">self.stack = [<span className="text-emerald-300">'Django'</span>, <span className="text-emerald-300">'FastAPI'</span>, <span className="text-emerald-300">'Torch'</span>]</p>
+                                <p className="pl-8">self.mission = <span className="text-emerald-300">'Scale Infinite'</span></p>
                             </div>
                         </div>
 
                         <div className="flex gap-4 pt-4">
-                            <button onClick={() => onOpen("Execute")} className="px-8 py-4 bg-green-500 text-black font-bold uppercase tracking-wider hover:bg-green-400 transition-all flex items-center gap-2">
+                            <button onClick={() => onOpen("Execute")} className="px-8 py-4 bg-[#00D09C] text-black font-bold uppercase tracking-wider hover:bg-[#00D09C]/80 transition-all flex items-center gap-2">
                                 <Command className="w-4 h-4" /> Execute
                             </button>
-                            <button className="px-8 py-4 bg-transparent border border-slate-700 text-white font-bold uppercase tracking-wider hover:border-green-500 hover:text-green-500 transition-all">
+                            <button className="px-8 py-4 bg-transparent border border-slate-700 text-white font-bold uppercase tracking-wider hover:border-[#00D09C] hover:text-[#00D09C] transition-all">
                                 Documentation
                             </button>
                         </div>
                     </div>
 
                     <div className="relative">
-                        <div className="absolute inset-0 bg-green-500/20 blur-[100px] rounded-full opacity-20" />
+                        <div className="absolute inset-0 bg-[#00D09C]/20 blur-[100px] rounded-full opacity-20" />
                         <div className="relative border border-slate-800 bg-slate-900/50 backdrop-blur-sm rounded-xl overflow-hidden aspect-square group">
                             <SovereignImage
                                 src={heroImage}
@@ -109,7 +109,7 @@ export default function PythonPortfolio({ settings, blueprint }: SovereignTempla
                             <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-slate-950 to-transparent">
                                 <div className="flex items-center gap-4 text-xs font-mono">
                                     <div className="bg-slate-900/80 px-3 py-1 rounded border border-slate-700 flex items-center gap-2">
-                                        <GitBranch className="w-3 h-3 text-green-500" />
+                                        <GitBranch className="w-3 h-3 text-[#00D09C]" />
                                         main
                                     </div>
                                     <div className="text-slate-400">Last commit: 12ms ago</div>
@@ -138,9 +138,9 @@ export default function PythonPortfolio({ settings, blueprint }: SovereignTempla
 
 function StackItem({ icon: Icon, title, desc }: any) {
     return (
-        <div className="p-6 border border-slate-800 bg-slate-900/50 hover:border-green-500/50 hover:bg-green-500/5 transition-all group rounded-lg">
-            <Icon className="w-8 h-8 text-slate-500 group-hover:text-green-500 mb-4 transition-colors" />
-            <h3 className="text-lg font-bold text-white mb-1 group-hover:text-green-400 transition-colors">{title}</h3>
+        <div className="p-6 border border-slate-800 bg-slate-900/50 hover:border-[#00D09C]/50 hover:bg-[#00D09C]/5 transition-all group rounded-lg">
+            <Icon className="w-8 h-8 text-slate-500 group-hover:text-[#00D09C] mb-4 transition-colors" />
+            <h3 className="text-lg font-bold text-white mb-1 group-hover:text-[#00D09C] transition-colors">{title}</h3>
             <p className="text-xs text-slate-500 font-mono uppercase tracking-wider">{desc}</p>
         </div>
     );

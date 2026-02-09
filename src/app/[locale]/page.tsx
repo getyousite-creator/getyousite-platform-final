@@ -17,7 +17,7 @@ export default function Home() {
     }
 
     return (
-        <main className="bg-black min-h-screen selection:bg-blue-500/30">
+        <main className="bg-black min-h-screen selection:bg-[#00D09C]/30">
             <Header />
             <Hero />
             <Services />

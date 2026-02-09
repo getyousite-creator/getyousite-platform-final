@@ -178,7 +178,7 @@ export default function DashboardClient() {
     }
 
     return (
-        <div className="min-h-screen bg-background p-8">
+        <div className="min-h-screen bg-[#0A2540] p-8">
             <div className="max-w-7xl mx-auto space-y-8">
                 {/* HEADER */}
                 <div className="flex items-center justify-between">
@@ -186,13 +186,13 @@ export default function DashboardClient() {
                         <motion.h1
                             initial={{ opacity: 0, y: -20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="text-3xl font-black text-foreground uppercase tracking-tighter"
+                            className="text-3xl font-black text-white uppercase tracking-tighter"
                         >
                             {t('title')}
                         </motion.h1>
-                        <p className="text-muted-foreground mt-1">{t('subtitle')}</p>
+                        <p className="text-blue-200/60 mt-1">{t('subtitle')}</p>
                     </div>
-                    <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold">
+                    <Button asChild className="bg-[#00D09C] hover:bg-[#00B085] text-white font-bold shadow-[0_0_20px_rgba(0,208,156,0.3)] border-none">
                         <Link href="/ar/customizer">
                             <Plus size={16} className="mr-2" />
                             {t('launch_new')}
@@ -367,7 +367,7 @@ export default function DashboardClient() {
                                                         {store.status === 'pending_payment' && (
                                                             <Button
                                                                 size="sm"
-                                                                className="bg-amber-500 hover:bg-amber-600 text-black font-black uppercase tracking-widest text-[9px] shadow-[0_0_20px_rgba(245,158,11,0.3)] animate-pulse"
+                                                                className="bg-[#00D09C] hover:bg-[#00B085] text-white font-black uppercase tracking-widest text-[9px] shadow-[0_0_20px_rgba(0,208,156,0.3)] animate-pulse border-none"
                                                                 onClick={(e) => {
                                                                     e.stopPropagation();
                                                                     handleActivation(store.id);

@@ -87,7 +87,7 @@ export default function Hero() {
                             className="w-full bg-transparent text-foreground px-6 py-4 focus:outline-none placeholder:text-muted-foreground font-medium text-lg"
                         />
                         <Button
-                            className="shrink-0 h-14 px-8 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm transition-all text-base font-semibold"
+                            className="shrink-0 h-14 px-8 rounded-xl bg-[#00D09C] hover:bg-[#00B085] text-white shadow-[0_0_30px_rgba(0,208,156,0.3)] transition-all text-base font-semibold border-none"
                             onClick={handleGenerate}
                         >
                             {t('generate')}
@@ -103,15 +103,15 @@ export default function Hero() {
                     className="flex flex-wrap items-center gap-16 justify-center text-muted-foreground text-[10px] font-black tracking-[0.3em] uppercase"
                 >
                     <div className="flex items-center gap-3 hover:text-foreground transition-colors cursor-default group">
-                        <Zap className="w-4 h-4 text-blue-500 group-hover:scale-125 transition-transform" />
+                        <Zap className="w-4 h-4 text-[#00D09C] group-hover:scale-125 transition-transform" />
                         <span>{t('badges.delivery')}</span>
                     </div>
                     <div className="flex items-center gap-3 hover:text-foreground transition-colors cursor-default group">
-                        <Cpu className="w-4 h-4 text-purple-500 group-hover:scale-125 transition-transform" />
+                        <Cpu className="w-4 h-4 text-[#00D09C] group-hover:scale-125 transition-transform opacity-70" />
                         <span>{t('badges.core')}</span>
                     </div>
                     <div className="flex items-center gap-3 hover:text-foreground transition-colors cursor-default group">
-                        <Shield className="w-4 h-4 text-yellow-500 group-hover:scale-125 transition-transform" />
+                        <Shield className="w-4 h-4 text-[#00D09C] group-hover:scale-125 transition-transform opacity-50" />
                         <span>{t('badges.logic')}</span>
                     </div>
                 </motion.div>
