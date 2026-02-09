@@ -189,28 +189,28 @@ export default function CustomizerPage() {
             currency: "USD",
             intent: "capture" // capture
         }}>
-            <div className="min-h-screen bg-zinc-950 text-white flex flex-col md:flex-row overflow-hidden">
+            <div className="min-h-screen bg-[#0A2540] text-white flex flex-col md:flex-row overflow-hidden">
                 {/* LEFT SIDE: COMMAND CENTER */}
-                <aside className="w-full md:w-1/3 border-r border-white/5 p-8 overflow-y-auto bg-zinc-950/50 backdrop-blur-xl z-20 relative flex flex-col gap-6">
-                    <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-transparent pointer-events-none" />
+                <aside className="w-full md:w-1/3 border-r border-white/5 p-8 overflow-y-auto bg-[#0A2540]/90 backdrop-blur-xl z-20 relative flex flex-col gap-6">
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#00D09C]/5 to-transparent pointer-events-none" />
 
                     {/* Status Bar */}
                     <div className="flex items-center justify-between">
                         {activeStoreId ? (
-                            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900 border border-zinc-800">
+                            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#051423] border border-white/10">
                                 <div className={`w-2 h-2 rounded-full ${saveStatus === 'saving' ? 'bg-yellow-500 animate-pulse' :
-                                    saveStatus === 'saved' ? 'bg-green-500' :
-                                        saveStatus === 'error' ? 'bg-red-500' : 'bg-zinc-600'
+                                    saveStatus === 'saved' ? 'bg-[#00D09C]' :
+                                        saveStatus === 'error' ? 'bg-red-500' : 'bg-gray-600'
                                     }`} />
-                                <span className="text-[10px] uppercase font-bold text-zinc-400">
+                                <span className="text-[10px] uppercase font-bold text-gray-400">
                                     {saveStatus === 'saving' ? 'Syncing...' :
                                         saveStatus === 'saved' ? 'Synced' :
                                             saveStatus === 'error' ? 'Sync Error' : 'Unsaved'}
                                 </span>
                             </div>
                         ) : (
-                            <div className="px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20">
-                                <span className="text-[10px] uppercase font-bold text-blue-400">New Session</span>
+                            <div className="px-3 py-1.5 rounded-full bg-[#00D09C]/10 border border-[#00D09C]/20">
+                                <span className="text-[10px] uppercase font-bold text-[#00D09C]">New Session</span>
                             </div>
                         )}
                     </div>
@@ -238,8 +238,8 @@ export default function CustomizerPage() {
                 </aside>
 
                 {/* RIGHT SIDE: LIVE PREVIEW CANVAS */}
-                <main className="flex-1 bg-zinc-900 overflow-hidden relative p-8 md:p-12 flex items-center justify-center">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent pointer-events-none" />
+                <main className="flex-1 bg-[#051423] overflow-hidden relative p-8 md:p-12 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#00D09C]/5 via-transparent to-transparent pointer-events-none" />
                     <PreviewCanvas blueprint={blueprint} isGenerating={isGenerating} />
                 </main>
             </div>

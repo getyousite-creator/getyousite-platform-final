@@ -101,15 +101,15 @@ export function CommandCenter({
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                        <Brain className="w-5 h-5 text-primary-foreground" />
+                    <div className="w-10 h-10 rounded-xl bg-[#00D09C]/10 border border-[#00D09C]/20 flex items-center justify-center">
+                        <Brain className="w-5 h-5 text-[#00D09C]" />
                     </div>
                     <div>
-                        <h2 className="text-lg font-bold text-foreground">AI Architect</h2>
+                        <h2 className="text-lg font-bold text-foreground">Sovereign Architect</h2>
                         <p className="text-xs text-muted-foreground">Generates conversion-optimized sites</p>
                     </div>
                 </div>
-                <Badge variant="outline" className="bg-blue-500/10 text-blue-400 border-blue-500/20">
+                <Badge variant="outline" className="bg-[#00D09C]/10 text-[#00D09C] border-[#00D09C]/20">
                     <Sparkles className="w-3 h-3 mr-1" />
                     GPT-4 Powered
                 </Badge>
@@ -230,7 +230,7 @@ export function CommandCenter({
                                 className={`
                                     relative rounded-xl overflow-hidden cursor-pointer border-2 transition-all
                                     ${selectedId === template.id
-                                        ? 'border-primary ring-2 ring-primary/20'
+                                        ? 'border-[#00D09C] ring-2 ring-[#00D09C]/20'
                                         : 'border-border hover:border-border/50'
                                     }
                                 `}
@@ -254,7 +254,7 @@ export function CommandCenter({
                                 {/* Content */}
                                 <div className="absolute bottom-0 left-0 right-0 p-3">
                                     <div className="flex items-center justify-between">
-                                    <span className="text-sm font-bold text-foreground">{template.name}</span>
+                                        <span className="text-sm font-bold text-foreground">{template.name}</span>
                                         {template.is_premium && (
                                             <Badge variant="secondary" className="bg-yellow-500/20 text-yellow-400 text-[10px]">
                                                 <Star className="w-3 h-3 mr-1" fill="currentColor" />
@@ -272,8 +272,8 @@ export function CommandCenter({
 
                                 {/* Selected Indicator */}
                                 {selectedId === template.id && (
-                                    <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
-                                        <Check className="w-4 h-4 text-primary-foreground" />
+                                    <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#00D09C] flex items-center justify-center">
+                                        <Check className="w-4 h-4 text-white" />
                                     </div>
                                 )}
                             </motion.div>
@@ -293,7 +293,7 @@ export function CommandCenter({
                                         key={color}
                                         className="w-full aspect-square rounded-full border-2 border-border hover:border-foreground hover:scale-110 transition-all shadow-lg"
                                         style={{ backgroundColor: color }}
-                                        onClick={() => {}} // No-op
+                                        onClick={() => { }} // No-op
                                     />
                                 ))}
                             </div>
@@ -312,8 +312,8 @@ export function CommandCenter({
                             </div>
                         </div>
 
-                         {/* Interface Style */}
-                         <div className="space-y-3">
+                        {/* Interface Style */}
+                        <div className="space-y-3">
                             <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Corner Style</Label>
                             <div className="flex gap-2">
                                 {['Sharp', 'Round', 'Pill'].map(style => (
@@ -322,7 +322,7 @@ export function CommandCenter({
                                     </Button>
                                 ))}
                             </div>
-                         </div>
+                        </div>
                     </div>
 
                     {/* Preview Selected Template */}
@@ -351,10 +351,10 @@ export function CommandCenter({
                     onClick={onGenerate}
                     disabled={!businessName || !vision || isGenerating}
                     className={`
-                        w-full h-14 rounded-xl font-bold text-sm uppercase tracking-[0.2em]
+                        w-full h-14 rounded-xl font-bold text-sm uppercase tracking-[0.2em] transition-all
                         ${isGenerating
                             ? 'bg-secondary text-muted-foreground cursor-wait'
-                            : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-primary-foreground shadow-lg shadow-blue-500/25'
+                            : 'bg-[#00D09C] hover:bg-[#00B085] text-white shadow-[0_0_20px_rgba(0,208,156,0.3)] hover:shadow-[0_0_30px_rgba(0,208,156,0.5)]'
                         }
                     `}
                 >
