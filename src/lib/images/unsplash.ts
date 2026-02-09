@@ -20,6 +20,7 @@ interface UnsplashPhoto {
 export async function searchUnsplashImages(
     query: string,
     count: number = 3,
+    orientation: 'landscape' | 'portrait' | 'squarish' = 'landscape'
 ): Promise<ImageResult[]> {
     if (!UNSPLASH_ACCESS_KEY) {
         console.warn("⚠️ UNSPLASH_ACCESS_KEY missing. Using placeholders.");
@@ -28,7 +29,7 @@ export async function searchUnsplashImages(
 
     try {
         const response = await fetch(
-            `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=${count}&orientation=landscape`,
+            `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=${count}&orientation=${orientation}`,
             {
                 headers: {
                     Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`,

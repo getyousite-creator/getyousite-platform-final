@@ -48,7 +48,24 @@ export async function getGlobalPerformanceAction(userId: string) {
 }
 
 export async function triggerNeuralAuditAction(storeId: string) {
-    // This will trigger the SEOEngine (which is already server-side compatible)
-    const { SEOEngine } = await import('@/lib/engine/seo-engine');
-    return await SEOEngine.runAudit(storeId);
+    // This will trigger the SEOService
+    const { SEOService } = await import('@/lib/services/seo-service');
+    return await SEOService.analyzeStore(storeId);
+}
+
+export async function getAuditDetailsAction(storeId: string) {
+    const supabase = await createClient();
+
+    const { data: audits, error } = await supabase
+        .from('seo_audits')
+        .select('*')
+        .eq('store_id', storeId)
+        .order('analyzed_at', { ascending: false })
+        .limit(1);
+
+    if (error || !audits || audits.length === 0) {
+        return null;
+    }
+
+    return audits[0];
 }

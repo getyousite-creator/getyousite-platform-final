@@ -54,6 +54,10 @@ export default async function SiteRendererPage({ params }: SiteRendererProps) {
         <TemplateRenderer
             templateId={storeData.template_id || 'corp-global'}
             blueprint={storeData.blueprint as any}
+            meta={{
+                id: storeData.id,
+                name: storeData.name
+            }}
         />
     );
 }

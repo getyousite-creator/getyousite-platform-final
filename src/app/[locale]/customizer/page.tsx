@@ -12,7 +12,7 @@ import { saveStoreAction, getStoreAction } from '@/app/actions/store-actions';
 import { StorageService } from '@/lib/services/storage-service';
 import AuthModal from '@/components/auth/AuthModal';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Loader2 } from 'lucide-react'; // Note: Button isn't in lucide, fixing this import
+import { Loader2, Activity } from 'lucide-react'; // Note: Button isn't in lucide, fixing this import
 import { toast } from 'sonner';
 
 
@@ -27,6 +27,7 @@ export default function CustomizerPage() {
     const [businessName, setBusinessName] = useState("");
     const [niche, setNiche] = useState("AI & Tech");
     const [selectedId, setSelectedId] = useState("t1-quantum");
+    const [selectedPageSlug, setSelectedPageSlug] = useState("index");
     const [showPay, setShowPay] = useState(false);
 
     const [isLoadingStore, setIsLoadingStore] = useState(false);
@@ -176,9 +177,9 @@ export default function CustomizerPage() {
     // 7. Render
     if (isLoadingStore) {
         return (
-            <div className="min-h-screen bg-zinc-950 flex items-center justify-center text-white">
-                <Loader2 className="animate-spin text-blue-500 w-8 h-8" />
-                <span className="ml-2 font-mono text-zinc-400">LOADING_ASSET_DATA...</span>
+            <div className="min-h-screen bg-[#0A2540] flex flex-col items-center justify-center text-white sovereign">
+                <Activity className="animate-spin text-[#00D09C] w-12 h-12 mb-6" />
+                <span className="font-black text-[10px] uppercase tracking-widest text-zinc-400 animate-pulse">RECONSTRUCTING_STORE_DNA...</span>
             </div>
         );
     }
@@ -189,7 +190,7 @@ export default function CustomizerPage() {
             currency: "USD",
             intent: "capture" // capture
         }}>
-            <div className="min-h-screen bg-[#0A2540] text-white flex flex-col md:flex-row overflow-hidden">
+            <div className="min-h-screen bg-[#0A2540] text-white flex flex-col md:flex-row overflow-hidden sovereign">
                 {/* LEFT SIDE: COMMAND CENTER */}
                 <aside className="w-full md:w-1/3 border-r border-white/5 p-8 overflow-y-auto bg-[#0A2540]/90 backdrop-blur-xl z-20 relative flex flex-col gap-6">
                     <div className="absolute inset-0 bg-gradient-to-b from-[#00D09C]/5 to-transparent pointer-events-none" />
@@ -230,6 +231,9 @@ export default function CustomizerPage() {
                         userId={userId}
                         onAssetUpload={handleAssetUpload}
                         aiInsight={blueprint?.ai_insight}
+                        blueprint={blueprint}
+                        selectedPageSlug={selectedPageSlug}
+                        onSelectPage={setSelectedPageSlug}
                     />
 
                     {showPay && (
@@ -240,7 +244,7 @@ export default function CustomizerPage() {
                 {/* RIGHT SIDE: LIVE PREVIEW CANVAS */}
                 <main className="flex-1 bg-[#051423] overflow-hidden relative p-8 md:p-12 flex items-center justify-center">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#00D09C]/5 via-transparent to-transparent pointer-events-none" />
-                    <PreviewCanvas blueprint={blueprint} isGenerating={isGenerating} />
+                    <PreviewCanvas blueprint={blueprint} isGenerating={isGenerating} selectedPageSlug={selectedPageSlug} />
                 </main>
             </div>
 

@@ -7,9 +7,10 @@ import { ComponentLibrary } from './ComponentLibrary';
 interface PreviewProps {
     config: any; // Data from CustomizerEngine
     isGenerating: boolean;
+    selectedPageSlug?: string;
 }
 
-export const LivePreview: React.FC<PreviewProps> = ({ config, isGenerating }) => {
+export const LivePreview: React.FC<PreviewProps> = ({ config, isGenerating, selectedPageSlug = 'index' }) => {
     // 1. Logic Hardening: Analytics Ingestion
     useEffect(() => {
         if (config?.id || config?.site_id) {
@@ -20,7 +21,7 @@ export const LivePreview: React.FC<PreviewProps> = ({ config, isGenerating }) =>
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             storeId: config.id || config.site_id,
-                            path: '/',
+                            path: `/${selectedPageSlug}`,
                             metadata: {
                                 device: window.innerWidth < 768 ? 'mobile' : 'desktop',
                                 referrer: document.referrer,
@@ -53,7 +54,10 @@ export const LivePreview: React.FC<PreviewProps> = ({ config, isGenerating }) =>
                     className="w-full h-full overflow-y-auto scrollbar-hide"
                 >
                     {/* DYNAMIC INJECTION ENGINE */}
-                    <DynamicRenderer blueprint={config?.final_config || config} />
+                    <DynamicRenderer
+                        blueprint={config?.final_config || config}
+                        selectedPageSlug={selectedPageSlug}
+                    />
                 </motion.div>
             </AnimatePresence>
 
@@ -63,7 +67,7 @@ export const LivePreview: React.FC<PreviewProps> = ({ config, isGenerating }) =>
     );
 };
 
-const DynamicRenderer = ({ blueprint }: any) => {
+const DynamicRenderer = ({ blueprint, selectedPageSlug = 'index' }: any) => {
     if (!blueprint) return (
         <div className="flex flex-col items-center justify-center p-20 text-center space-y-4">
             <div className="w-12 h-12 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
@@ -72,6 +76,12 @@ const DynamicRenderer = ({ blueprint }: any) => {
     );
 
     const primaryColor = blueprint.theme?.primary || '#3b82f6';
+
+    // Extract layout based on selected page
+    let activeLayout = blueprint.layout || [];
+    if (blueprint.pages && blueprint.pages[selectedPageSlug]) {
+        activeLayout = blueprint.pages[selectedPageSlug].layout || [];
+    }
 
     return (
         <div style={{ '--primary-color': primaryColor } as any} className="min-h-full">
@@ -83,7 +93,9 @@ const DynamicRenderer = ({ blueprint }: any) => {
                 <div className="flex gap-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                     {blueprint.navigation?.links ? (
                         blueprint.navigation.links.map((link: any, i: number) => (
-                            <span key={i}>{link.label}</span>
+                            <span key={i} className={selectedPageSlug === (link.href === '/' ? 'index' : link.href.replace('/', '')) ? 'text-primary' : ''}>
+                                {link.label}
+                            </span>
                         ))
                     ) : (
                         <>
@@ -96,21 +108,33 @@ const DynamicRenderer = ({ blueprint }: any) => {
             </section>
 
             {/* 2. Content Injection (Silos) */}
-            {(blueprint.layout || []).map((section: any, index: number) => (
-                <motion.div
-                    key={section.id || index}
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{
-                        delay: index * 0.1,
-                        type: "spring",
-                        stiffness: 100
-                    }}
-                    className={section.animation === 'fade-in' ? 'animate-fade-in' : ''}
-                >
-                    <ComponentLibrary type={section.type} content={section.content} primaryColor={primaryColor} />
-                </motion.div>
-            ))}
+            {activeLayout.length > 0 ? (
+                activeLayout.map((section: any, index: number) => (
+                    <motion.div
+                        key={section.id || index}
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{
+                            delay: index * 0.1,
+                            type: "spring",
+                            stiffness: 100
+                        }}
+                        className={section.animation === 'fade-in' ? 'animate-fade-in' : ''}
+                    >
+                        <ComponentLibrary type={section.type} content={section.content} primaryColor={primaryColor} />
+                    </motion.div>
+                ))
+            ) : (
+                <div className="flex flex-col items-center justify-center p-20 text-center space-y-6 min-h-[400px]">
+                    <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center">
+                        <Layout className="w-8 h-8 text-muted-foreground" />
+                    </div>
+                    <div>
+                        <h3 className="text-lg font-bold">This page is a draft</h3>
+                        <p className="text-sm text-muted-foreground max-w-xs mx-auto">Generate this page in the Sovereign Architect to see it live.</p>
+                    </div>
+                </div>
+            )}
 
             {/* 3. Footer Rendering */}
             <footer className="p-12 bg-background border-t border-border text-center">

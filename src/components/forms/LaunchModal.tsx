@@ -5,50 +5,82 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Rocket, Sparkles, CheckCircle2, AlertCircle } from "lucide-react";
+import { Rocket, Sparkles, CheckCircle2, AlertCircle, Activity, MessageSquare } from "lucide-react";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
 import { useTranslations } from "next-intl";
 import { LeadFormValues, LeadSchema } from "@/lib/schemas";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
 import DeploymentLoader from "@/components/ui/DeploymentLoader";
+import { toast } from "sonner";
 
 export default function LaunchModal() {
-    const { isOpen, onClose, visionPrefill } = useLaunchModal();
+    const { isOpen, onClose, visionPrefill, storeContext } = useLaunchModal();
     const t = useTranslations('LaunchModal');
     const [success, setSuccess] = useState(false);
     const [isDeploying, setIsDeploying] = useState(false);
     const { updateBlueprint } = useTemplateEditor();
 
+    // 1. FORM SETUP (Context Aware)
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
         reset
-    } = useForm<LeadFormValues>({
-        resolver: zodResolver(LeadSchema),
+    } = useForm<LeadFormValues & { fullName?: string, message?: string }>({
+        resolver: zodResolver(LeadSchema.extend({
+            fullName: z.string().optional(),
+            message: z.string().optional()
+        })),
         defaultValues: {
             vision: visionPrefill || "",
             budget: "pro",
             email: "",
-            siteType: "business"
+            siteType: "business",
+            fullName: "",
+            message: ""
         }
     });
 
     useEffect(() => {
         if (isOpen) {
-            reset({ vision: visionPrefill || "", budget: "pro", email: "", siteType: "business" });
+            reset({
+                vision: visionPrefill || "",
+                budget: "pro",
+                email: "",
+                siteType: "business",
+                fullName: "",
+                message: ""
+            });
             setSuccess(false);
             setIsDeploying(false);
         }
     }, [isOpen, visionPrefill, reset]);
 
-    const onSubmit = async (data: LeadFormValues) => {
-        setIsDeploying(true); // Trigger futuristic loader
+    const onSubmit = async (data: any) => {
+        if (storeContext) {
+            // GENIUS PATH: Site Lead Capture
+            try {
+                const { captureStoreLeadAction } = await import("@/actions/lead-actions");
+                const res = await captureStoreLeadAction({
+                    storeId: storeContext.id,
+                    email: data.email,
+                    fullName: data.fullName,
+                    message: data.message || data.vision
+                });
+                if (res.success) setSuccess(true);
+            } catch (err) {
+                console.error("LEAD_CAPTURE_CRITICAL_FAILURE", err);
+            }
+            return;
+        }
 
+        // LEGACY PATH: GetYouSite Blueprint Initiation
+        setIsDeploying(true);
         const formData = new FormData();
         formData.append("email", data.email);
         formData.append("vision", data.vision);
@@ -56,6 +88,7 @@ export default function LaunchModal() {
         formData.append("siteType", data.siteType);
 
         try {
+            const { captureLead } = await import("@/actions/capture-lead");
             const result = await captureLead({ success: false }, formData);
 
             if (result.success && result.blueprint) {
@@ -63,7 +96,7 @@ export default function LaunchModal() {
                 setSuccess(true);
             } else {
                 setIsDeploying(false);
-                alert(result.message || "Failed to initialize protocol.");
+                toast.error(result.message || "Failed to initialize protocol.");
             }
         } catch (error: unknown) {
             setIsDeploying(false);
@@ -82,103 +115,114 @@ export default function LaunchModal() {
             <DeploymentLoader isVisible={isDeploying} onComplete={handleDeploymentComplete} />
 
             <Dialog open={isOpen && !isDeploying} onOpenChange={onClose}>
-                <DialogContent className="sm:max-w-[500px] bg-card border-border p-0 overflow-hidden outline-none">
-                    <div className="relative p-8">
+                <DialogContent className="sm:max-w-[500px] bg-[#0A2540] border-white/10 p-0 overflow-hidden outline-none sovereign">
+                    <div className="relative p-8 font-sans">
                         {success ? (
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 className="text-center py-12 space-y-6"
                             >
-                                <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto border border-emerald-500/30">
-                                    <CheckCircle2 className="w-10 h-10 text-emerald-400" />
+                                <div className="w-20 h-20 bg-[#00D09C]/20 rounded-full flex items-center justify-center mx-auto border border-[#00D09C]/30 shadow-[0_0_30px_rgba(0,208,156,0.2)]">
+                                    <CheckCircle2 className="w-10 h-10 text-[#00D09C]" />
                                 </div>
                                 <div>
-                                    <h3 className="text-2xl font-bold text-foreground mb-2 tracking-tight uppercase">{t('success.title')}</h3>
-                                    <p className="text-muted-foreground text-sm">{t('success.desc')}</p>
+                                    <h3 className="text-2xl font-black text-white mb-2 tracking-tight uppercase italic">
+                                        {storeContext ? "Transmission Successful" : t('success.title')}
+                                    </h3>
+                                    <p className="text-blue-100/60 text-[10px] uppercase font-bold tracking-widest">
+                                        {storeContext ? `Your request has been routed to the administrative hub of ${storeContext.name}.` : t('success.desc')}
+                                    </p>
                                 </div>
                             </motion.div>
                         ) : (
                             <>
                                 <DialogHeader className="mb-8">
-                                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest w-fit mb-4">
-                                        <Sparkles className="w-3 h-3" />
-                                        {t('init_sequence')}
+                                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#00D09C]/10 border border-[#00D09C]/20 text-[#00D09C] text-[10px] font-black uppercase tracking-widest w-fit mb-4">
+                                        <Activity className="w-3 h-3" />
+                                        {storeContext ? "Sovereign Link" : t('init_sequence')}
                                     </div>
-                                    <DialogTitle className="text-3xl font-black text-foreground tracking-tighter uppercase leading-none">
-                                        {t('title')}
+                                    <DialogTitle className="text-3xl font-black text-white tracking-tighter uppercase leading-none italic">
+                                        {storeContext ? `Contact ${storeContext.name}` : t('title')}
                                     </DialogTitle>
-                                    <DialogDescription className="text-muted-foreground text-sm mt-4">
-                                        {t('desc')}
+                                    <DialogDescription className="text-blue-200/50 text-[10px] uppercase font-bold tracking-widest mt-4">
+                                        {storeContext ? "Establish a direct communication line with the node operator." : t('desc')}
                                     </DialogDescription>
                                 </DialogHeader>
 
                                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                                     <div className="space-y-4">
+                                        {storeContext && (
+                                            <div className="space-y-2">
+                                                <Label htmlFor="fullName" className="text-[10px] font-black text-blue-200/40 uppercase tracking-widest">Operator Name</Label>
+                                                <Input
+                                                    id="fullName"
+                                                    {...register("fullName")}
+                                                    placeholder="Identification required"
+                                                    className="bg-white/5 border-white/10 text-white h-12 focus:ring-[#00D09C]/50 rounded-xl"
+                                                />
+                                            </div>
+                                        )}
+
                                         <div className="space-y-2">
-                                            <Label htmlFor="email" className="text-xs font-bold text-muted-foreground uppercase">{t('email_label')}</Label>
+                                            <Label htmlFor="email" className="text-[10px] font-black text-blue-200/40 uppercase tracking-widest">{t('email_label')}</Label>
                                             <Input
                                                 id="email"
                                                 {...register("email")}
                                                 placeholder={t('email_placeholder')}
-                                                className="bg-background border-input text-foreground h-12 focus:ring-primary/50"
+                                                className="bg-white/5 border-white/10 text-white h-12 focus:ring-[#00D09C]/50 rounded-xl"
                                             />
                                             {errors.email && (
-                                                <p className="text-[10px] text-red-400 flex items-center gap-1">
+                                                <p className="text-[10px] text-red-400 font-bold flex items-center gap-1 mt-1 uppercase">
                                                     <AlertCircle className="w-3 h-3" /> {errors.email.message}
                                                 </p>
                                             )}
                                         </div>
 
-                                        <div className="space-y-2">
-                                            <Label htmlFor="siteType" className="text-xs font-bold text-muted-foreground uppercase">{t('type_label')}</Label>
-                                            <select
-                                                id="siteType"
-                                                {...register("siteType")}
-                                                className="w-full bg-background border-input rounded-md h-12 text-sm text-foreground px-3 focus:outline-none focus:ring-primary/50 appearance-none"
-                                            >
-                                                <option value="blog" className="bg-secondary">{t('type_options.blog')}</option>
-                                                <option value="business" className="bg-secondary">{t('type_options.business')}</option>
-                                                <option value="store" className="bg-secondary">{t('type_options.store')}</option>
-                                            </select>
-                                        </div>
+                                        {!storeContext ? (
+                                            <>
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="siteType" className="text-[10px] font-black text-blue-200/40 uppercase tracking-widest">{t('type_label')}</Label>
+                                                    <select
+                                                        id="siteType"
+                                                        {...register("siteType")}
+                                                        className="w-full bg-white/5 border-white/10 rounded-xl h-12 text-sm text-white px-3 focus:outline-none focus:ring-[#00D09C]/50 appearance-none"
+                                                    >
+                                                        <option value="blog" className="bg-[#0A2540]">{t('type_options.blog')}</option>
+                                                        <option value="business" className="bg-[#0A2540]">{t('type_options.business')}</option>
+                                                        <option value="store" className="bg-[#0A2540]">{t('type_options.store')}</option>
+                                                    </select>
+                                                </div>
 
-                                        <div className="space-y-2">
-                                            <Label htmlFor="vision" className="text-xs font-bold text-muted-foreground uppercase">{t('vision_label')}</Label>
-                                            <Input
-                                                id="vision"
-                                                {...register("vision")}
-                                                placeholder={t('vision_placeholder')}
-                                                className="bg-background border-input text-foreground h-12 focus:ring-primary/50"
-                                            />
-                                            {errors.vision && (
-                                                <p className="text-[10px] text-red-400 flex items-center gap-1">
-                                                    <AlertCircle className="w-3 h-3" /> {errors.vision.message}
-                                                </p>
-                                            )}
-                                        </div>
-
-                                        <div className="space-y-2">
-                                            <Label className="text-xs font-bold text-muted-foreground uppercase">{t('tier_label')}</Label>
-                                            <select
-                                                {...register("budget")}
-                                                className="w-full bg-background border-input rounded-md h-12 text-sm text-foreground px-3 focus:outline-none focus:ring-primary/50 appearance-none"
-                                            >
-                                                <option value="starter" className="bg-secondary">{t('tier_options.starter')}</option>
-                                                <option value="pro" className="bg-secondary">{t('tier_options.pro')}</option>
-                                                <option value="business" className="bg-secondary">{t('tier_options.business')}</option>
-                                                <option value="enterprise" className="bg-secondary">{t('tier_options.enterprise')}</option>
-                                            </select>
-                                        </div>
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="vision" className="text-[10px] font-black text-blue-200/40 uppercase tracking-widest">{t('vision_label')}</Label>
+                                                    <Input
+                                                        id="vision"
+                                                        {...register("vision")}
+                                                        placeholder={t('vision_placeholder')}
+                                                        className="bg-white/5 border-white/10 text-white h-12 focus:ring-[#00D09C]/50 rounded-xl"
+                                                    />
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <div className="space-y-2">
+                                                <Label htmlFor="message" className="text-[10px] font-black text-blue-200/40 uppercase tracking-widest">Transmission Message</Label>
+                                                <textarea
+                                                    id="message"
+                                                    {...register("message")}
+                                                    placeholder="Enter your inquiry..."
+                                                    className="w-full bg-white/5 border-white/10 rounded-xl p-4 text-sm text-white focus:outline-none focus:ring-[#00D09C]/50 min-h-[100px]"
+                                                />
+                                            </div>
+                                        )}
                                     </div>
 
                                     <Button
                                         type="submit"
                                         disabled={isSubmitting}
-                                        variant="glow"
-                                        className="w-full h-14 font-black uppercase tracking-widest bg-primary text-primary-foreground hover:bg-primary/90 border-0"
+                                        className="w-full h-14 font-black uppercase tracking-widest bg-[#00D09C] text-[#0A2540] hover:bg-[#00D09C]/90 border-0 rounded-2xl shadow-[0_0_20px_rgba(0,208,156,0.3)] transition-all"
                                     >
-                                        {isSubmitting ? t('submitting') : t('submit')}
+                                        {isSubmitting ? "Transmitting..." : (storeContext ? "Submit Inquiry" : t('submit'))}
                                         <Rocket className="ml-2 w-4 h-4" />
                                     </Button>
                                 </form>

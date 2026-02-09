@@ -21,16 +21,23 @@ interface SovereignWrapperProps {
         pulse: number;
         primary: string;
         secondary: string;
+        meta?: { id: string; name: string };
     }) => React.ReactNode;
+    meta?: { id: string; name: string };
 }
 
 /**
  * SOVEREIGN WRAPPER (Structural Hardening)
  * Centralizes hook logic and serves as the Layout Orchestrator's execution environment.
  */
-export default function SovereignWrapper({ children }: SovereignWrapperProps) {
+export default function SovereignWrapper({ children, meta }: SovereignWrapperProps) {
     const { settings, blueprint, updatePulse: pulse } = useTemplateEditor();
-    const onOpen = useLaunchModal((state) => state.onOpen);
+    const modal = useLaunchModal();
+
+    // Contextual Open Logic
+    const handleOpen = (title: string) => {
+        modal.onOpen(title, meta);
+    };
 
     return (
         <AnimatePresence mode="wait">
@@ -45,6 +52,7 @@ export default function SovereignWrapper({ children }: SovereignWrapperProps) {
             >
                 {/* PERSISTENCE HUB: ARCHITECTURAL STATUS BAR */}
                 <div className="fixed top-4 right-4 z-[200] flex flex-col gap-2 pointer-events-none">
+                    {/* ... (Status Bars) ... */}
                     <motion.div
                         initial={{ x: 20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
@@ -102,10 +110,11 @@ export default function SovereignWrapper({ children }: SovereignWrapperProps) {
                 {children && children({
                     settings,
                     blueprint,
-                    onOpen,
+                    onOpen: handleOpen,
                     pulse,
                     primary: settings.primaryColor,
                     secondary: settings.secondaryColor,
+                    meta
                 })}
             </motion.div>
         </AnimatePresence>
@@ -147,9 +156,9 @@ function DynamicHero({ content }: { content: Record<string, any> }) {
             <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight text-foreground">{content.headline}</h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">{content.subheadline}</p>
             {content.cta && (
-                 <button className="mt-8 px-8 py-4 bg-primary text-primary-foreground rounded-full font-bold hover:scale-105 transition-transform">
+                <button className="mt-8 px-8 py-4 bg-primary text-primary-foreground rounded-full font-bold hover:scale-105 transition-transform">
                     {content.cta}
-                 </button>
+                </button>
             )}
         </section>
     );

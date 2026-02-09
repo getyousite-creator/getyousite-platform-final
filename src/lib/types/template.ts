@@ -12,4 +12,5 @@ export interface TemplateState {
 export interface SovereignTemplateProps {
     settings: TemplateState;
     blueprint?: SiteBlueprint | null;
+    meta?: { id: string; name: string };
 }

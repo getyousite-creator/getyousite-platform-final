@@ -1,9 +1,6 @@
 "use client";
 
 import { IntelligenceDashboard } from './IntelligenceDashboard';
-
-// Inside DashboardClient return, under the header section or as a new tab
-// I'll add it as a new section above the sites list to provide immediate "Truth"
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import {
@@ -13,15 +10,14 @@ import {
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-// LOGIC UNIFICATION: Direct Payment Integration
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { CheckoutModule } from "@/components/payment/CheckoutModule";
-// Tabs removed from imports as they were unused in this scope
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { LeadMatrix } from './LeadMatrix';
 
 // Types for dashboard data
 interface DashboardStore {
@@ -68,11 +64,14 @@ interface DashboardData {
 
 export default function DashboardClient() {
     const t = useTranslations("Dashboard");
+    const params = useParams();
+    const locale = params.locale as string || 'en';
     const [data, setData] = useState<DashboardData | null>(null);
     const [loading, setLoading] = useState(true);
     const [selectedStore, setSelectedStore] = useState<string | null>(null);
     const [showCheckout, setShowCheckout] = useState(false);
     const [activeStoreId, setActiveStoreId] = useState<string | null>(null);
+    const [activeTab, setActiveTab] = useState("overview");
 
     const handleActivation = (storeId: string) => {
         setActiveStoreId(storeId);
@@ -82,7 +81,6 @@ export default function DashboardClient() {
     const handlePaymentSuccess = () => {
         setShowCheckout(false);
         setActiveStoreId(null);
-        // FORCE REFRESH DASHBOARD LOGIC
         setLoading(true);
         fetchDashboardData();
     };
@@ -92,7 +90,6 @@ export default function DashboardClient() {
         try {
             const response = await fetch(`/api/export?id=${storeId}`);
             const data = await response.json();
-
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -113,25 +110,18 @@ export default function DashboardClient() {
 
     const fetchDashboardData = async () => {
         try {
-            // Fetch stores
             const storesResponse = await fetch('/api/dashboard/stores');
             const storesData = await storesResponse.json();
-
-            // Fetch analytics if stores exist
             let analyticsData = null;
             if (storesData.stores?.length > 0) {
                 const analyticsResponse = await fetch(`/api/dashboard/analytics?storeId=${storesData.stores[0].id}`);
                 analyticsData = await analyticsResponse.json();
             }
-
-            // Fetch SEO scores
             let seoData = null;
             if (storesData.stores?.length > 0) {
                 const seoResponse = await fetch(`/api/dashboard/seo?storeId=${storesData.stores[0].id}`);
                 seoData = await seoResponse.json();
             }
-
-            // Synthesize real activity from stores
             const synthesizedActivity = (storesData.stores || []).map((store: any) => ({
                 type: store.status === 'deployed' ? 'success' : store.status === 'pending_payment' ? 'warning' : 'info',
                 message: store.status === 'deployed'
@@ -163,434 +153,231 @@ export default function DashboardClient() {
         return num.toString();
     };
 
-    const getScoreColor = (score: number): string => {
-        if (score >= 80) return 'text-emerald-500';
-        if (score >= 60) return 'text-yellow-500';
-        return 'text-red-500';
-    };
-
-    const getScoreBg = (score: number): string => {
-        if (score >= 80) return 'bg-emerald-500/10 border-emerald-500/20';
-        if (score >= 60) return 'bg-yellow-500/10 border-yellow-500/20';
-        return 'bg-red-500/10 border-red-500/20';
-    };
-
     if (loading) {
         return (
-            <div className="min-h-screen bg-background flex items-center justify-center">
+            <div className="min-h-screen bg-[#0A2540] flex items-center justify-center sovereign">
                 <div className="text-center">
-                    <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                    <p className="text-muted-foreground font-mono">{t('syncing')}</p>
+                    <Zap className="w-12 h-12 text-[#00D09C] animate-pulse mx-auto mb-6" />
+                    <p className="text-[#00D09C] text-[10px] font-black uppercase tracking-widest animate-pulse">Synchronizing Neural Channels...</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[#0A2540] p-8">
-            <div className="max-w-7xl mx-auto space-y-8">
-                {/* HEADER */}
-                <div className="flex items-center justify-between">
-                    <div>
+        <div className="min-h-screen bg-[#0A2540] p-4 md:p-12 sovereign selection:bg-[#00D09C] selection:text-[#0A2540]">
+            <div className="max-w-7xl mx-auto space-y-12">
+
+                {/* SOVEREIGN ID & HEADER */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-[#00D09C]/10 border border-[#00D09C]/20 flex items-center justify-center">
+                                <Shield className="w-5 h-5 text-[#00D09C]" />
+                            </div>
+                            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400/60 leading-none">Status: AUTHENTICATED // GRID_ID: SG-882-X</span>
+                        </div>
                         <motion.h1
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="text-3xl font-black text-white uppercase tracking-tighter"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className="text-5xl md:text-7xl font-black text-white italic tracking-tighter uppercase leading-none"
                         >
-                            {t('title')}
+                            Neural Hub
                         </motion.h1>
-                        <p className="text-blue-200/60 mt-1">{t('subtitle')}</p>
                     </div>
-                    <Button asChild className="bg-[#00D09C] hover:bg-[#00B085] text-white font-bold shadow-[0_0_20px_rgba(0,208,156,0.3)] border-none">
-                        <Link href="/ar/customizer">
-                            <Plus size={16} className="mr-2" />
-                            {t('launch_new')}
-                        </Link>
-                    </Button>
+
+                    <div className="flex items-center gap-4">
+                        <Button
+                            onClick={async () => {
+                                const { createClient } = await import('@/lib/supabase/client');
+                                const supabase = createClient();
+                                await supabase.auth.signOut();
+                                window.location.href = '/';
+                            }}
+                            variant="outline"
+                            className="h-14 border-white/5 bg-white/5 hover:bg-white/10 text-white font-black uppercase tracking-widest px-8 rounded-2xl"
+                        >
+                            <LogOut className="w-4 h-4 mr-2" />
+                            Sign Out
+                        </Button>
+                        <Button asChild className="h-14 bg-[#00D09C] hover:bg-[#00B085] text-[#0A2540] font-black uppercase tracking-widest px-10 rounded-2xl shadow-[0_0_30px_rgba(0,208,156,0.2)] border-0">
+                            <Link href={`/${locale}/customizer`}>
+                                <Plus size={18} className="mr-2" />
+                                Launch New Node
+                            </Link>
+                        </Button>
+                    </div>
                 </div>
 
-                {/* INTELLIGENCE HUB */}
-                <IntelligenceDashboard />
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-12">
+                    <TabsList className="bg-white/5 border border-white/5 p-1 h-14 rounded-2xl w-fit flex gap-1">
+                        <TabsTrigger value="overview" className="h-full px-8 rounded-xl data-[state=active]:bg-[#00D09C] data-[state=active]:text-[#0A2540] text-white/40 text-[10px] font-black uppercase tracking-widest transition-all">
+                            Overview
+                        </TabsTrigger>
+                        <TabsTrigger value="leads" className="h-full px-8 rounded-xl data-[state=active]:bg-[#00D09C] data-[state=active]:text-[#0A2540] text-white/40 text-[10px] font-black uppercase tracking-widest transition-all">
+                            Leads
+                        </TabsTrigger>
+                        <TabsTrigger value="analytics" className="h-full px-8 rounded-xl data-[state=active]:bg-[#00D09C] data-[state=active]:text-[#0A2540] text-white/40 text-[10px] font-black uppercase tracking-widest transition-all">
+                            Growth Matrix
+                        </TabsTrigger>
+                        <TabsTrigger value="seo" className="h-full px-8 rounded-xl data-[state=active]:bg-[#00D09C] data-[state=active]:text-[#0A2540] text-white/40 text-[10px] font-black uppercase tracking-widest transition-all">
+                            Intelligence
+                        </TabsTrigger>
+                    </TabsList>
 
-                {/* STATS GRID */}
-                {data && data.analytics && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1 }}
-                        >
-                            <Card className="bg-card border-border shadow-sm">
-                                <CardContent className="p-6">
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="text-muted-foreground text-sm font-medium">{t('total_views')}</p>
-                                            <p className="text-3xl font-bold text-foreground mt-1">
-                                                {formatNumber(data.analytics.totalViews)}
-                                            </p>
-                                        </div>
-                                        <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                                            <Eye className="w-6 h-6 text-primary" />
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center mt-4 text-emerald-500 text-sm">
-                                        <ArrowUpRight size={16} className="mr-1" />
-                                        <span>+12.5%</span>
-                                        <span className="text-muted-foreground ml-2">{t('vs_last_month')}</span>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
+                    <TabsContent value="overview" className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        {/* SITE LIST & INTELLIGENCE MINIFIED */}
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                            <div className="lg:col-span-2 space-y-8">
+                                <div className="flex items-center justify-between">
+                                    <h3 className="text-xl font-black italic uppercase text-white">Active Nodes</h3>
+                                    <Badge className="bg-white/5 border-white/10 text-blue-400 uppercase text-[9px] px-3 py-1 font-black tracking-widest">
+                                        Total Assets: {data?.stores.length}
+                                    </Badge>
+                                </div>
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
-                        >
-                            <Card className="bg-card border-border shadow-sm">
-                                <CardContent className="p-6">
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="text-muted-foreground text-sm font-medium">{t('unique_visitors')}</p>
-                                            <p className="text-3xl font-bold text-foreground mt-1">
-                                                {formatNumber(data.analytics.uniqueVisitors)}
-                                            </p>
-                                        </div>
-                                        <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center">
-                                            <Users className="w-6 h-6 text-purple-500" />
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center mt-4 text-emerald-500 text-sm">
-                                        <ArrowUpRight size={16} className="mr-1" />
-                                        <span>+8.3%</span>
-                                        <span className="text-muted-foreground ml-2">vs last month</span>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3 }}
-                        >
-                            <Card className="bg-card border-border shadow-sm">
-                                <CardContent className="p-6">
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="text-muted-foreground text-sm font-medium">{t('conversion_rate')}</p>
-                                            <p className="text-3xl font-black text-foreground mt-1">
-                                                {(Math.random() * 5 + 2).toFixed(1)}%
-                                            </p>
-                                        </div>
-                                        <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-                                            <Target className="w-6 h-6 text-emerald-500" />
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center mt-4 text-emerald-500 text-sm">
-                                        <ArrowUpRight size={16} className="mr-1" />
-                                        <span>+2.1%</span>
-                                        <span className="text-muted-foreground ml-2">vs last month</span>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4 }}
-                        >
-                            <Card className="bg-card border-border shadow-sm">
-                                <CardContent className="p-6">
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="text-muted-foreground text-sm font-medium">{t('avg_session')}</p>
-                                            <p className="text-3xl font-black text-foreground mt-1">
-                                                {Math.floor(data.analytics.avgSessionDuration / 60)}:{(data.analytics.avgSessionDuration % 60).toString().padStart(2, '0')}
-                                            </p>
-                                        </div>
-                                        <div className="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center">
-                                            <Clock className="w-6 h-6 text-orange-500" />
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center mt-4 text-red-500 text-sm">
-                                        <ArrowDownRight size={16} className="mr-1" />
-                                        <span>-1.2%</span>
-                                        <span className="text-muted-foreground ml-2">vs last month</span>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
-                    </div>
-                )}
-
-                {/* MAIN CONTENT GRID */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* STORES LIST */}
-                    <div className="lg:col-span-2">
-                        <Card className="bg-card border-border shadow-sm">
-                            <CardHeader>
-                                <CardTitle className="text-foreground flex items-center gap-2">
-                                    <Shield className="w-5 h-5 text-primary" />
-                                    {t('assets')}
-                                </CardTitle>
-                                <CardDescription className="text-muted-foreground">{t('assets_desc')}</CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                {data && data.stores.length > 0 ? (
-                                    <div className="space-y-4">
-                                        {data.stores.map((store) => (
-                                            <motion.div
-                                                key={store.id}
-                                                initial={{ opacity: 0, x: -20 }}
-                                                animate={{ opacity: 1, x: 0 }}
-                                                className="p-4 rounded-xl bg-secondary/10 border border-border hover:border-primary/20 transition-all cursor-pointer group"
-                                                onClick={() => setSelectedStore(store.id === selectedStore ? null : store.id)}
-                                            >
-                                                <div className="flex items-center justify-between">
-                                                    <div className="flex-1">
-                                                        <div className="flex items-center gap-3">
-                                                            <h3 className="text-foreground font-bold">{store.name}</h3>
-                                                            <Badge
-                                                                variant="outline"
-                                                                className={`
-                                                                    ${store.status === 'deployed' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : ''}
-                                                                    ${store.status === 'draft' ? 'bg-secondary/10 text-muted-foreground border-border' : ''}
-                                                                    ${store.status === 'pending_payment' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' : ''}
-                                                                    uppercase tracking-widest text-[10px] font-bold px-2 py-0.5
-                                                                `}
-                                                            >
-                                                                {store.status}
-                                                            </Badge>
-                                                        </div>
-                                                        {store.description && (
-                                                            <p className="text-muted-foreground text-sm mt-1">{store.description}</p>
-                                                        )}
-                                                        <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
-                                                            <span>ID: {store.id.slice(0, 8)}...</span>
-                                                            <span>Created: {new Date(store.created_at).toLocaleDateString()}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="flex items-center gap-2">
-                                                        {store.status === 'pending_payment' && (
-                                                            <Button
-                                                                size="sm"
-                                                                className="bg-[#00D09C] hover:bg-[#00B085] text-white font-black uppercase tracking-widest text-[9px] shadow-[0_0_20px_rgba(0,208,156,0.3)] animate-pulse border-none"
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation();
-                                                                    handleActivation(store.id);
-                                                                }}
-                                                            >
-                                                                <Zap className="w-3.5 h-3.5 mr-2" />
-                                                                Activate
-                                                            </Button>
-                                                        )}
-                                                        {store.status === 'deployed' && (
-                                                            <Button
-                                                                variant="outline"
-                                                                size="sm"
-                                                                className="border-[#00D09C]/20 bg-[#00D09C]/10 hover:bg-[#00D09C]/20 text-[#00D09C] font-black uppercase tracking-widest text-[9px]"
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation();
-                                                                    handleExport(store.id, store.name);
-                                                                }}
-                                                            >
-                                                                <Download size={12} className="mr-2" />
-                                                                Export Asset
-                                                            </Button>
-                                                        )}
-                                                        <Button
-                                                            variant="outline"
-                                                            size="sm"
-                                                            className="border-white/5 bg-white/5 hover:bg-white/10 text-gray-400 font-black uppercase tracking-widest text-[9px]"
-                                                            asChild
+                                <div className="grid gap-4">
+                                    {data?.stores.map((store) => (
+                                        <div key={store.id} className="p-8 rounded-[40px] bg-white/5 border border-white/5 hover:border-[#00D09C]/40 transition-all group relative overflow-hidden">
+                                            <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <div className="flex gap-2">
+                                                    {store.status === 'deployed' && (
+                                                        <button
+                                                            onClick={() => handleExport(store.id, store.name)}
+                                                            className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-all"
                                                         >
-                                                            <Link href={`/ar/customizer?id=${store.id}`}>
-                                                                <Edit size={12} className="mr-2" />
-                                                                Edit
-                                                            </Link>
-                                                        </Button>
-                                                    </div>
+                                                            <Download className="w-4 h-4" />
+                                                        </button>
+                                                    )}
+                                                    <Link
+                                                        href={`/${locale}/customizer?id=${store.id}`}
+                                                        className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-all"
+                                                    >
+                                                        <Edit className="w-4 h-4" />
+                                                    </Link>
                                                 </div>
-                                            </motion.div>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <div className="text-center py-12">
-                                        <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                                            <Shield className="w-8 h-8 text-gray-600" />
-                                        </div>
-                                        <h3 className="text-lg font-bold text-foreground mb-2">{t('no_assets')}</h3>
-                                        <p className="text-muted-foreground mb-6 max-w-sm mx-auto">
-                                            {t('no_assets_desc')}
-                                        </p>
-                                        <Button asChild className="bg-[#00D09C] hover:bg-[#00B085] text-white border-none shadow-[0_0_20px_rgba(0,208,156,0.3)]">
-                                            <Link href="/ar/customizer">{t('create_first')}</Link>
-                                        </Button>
-                                    </div>
-                                )}
-                            </CardContent>
-                        </Card>
-                    </div>
+                                            </div>
 
-                    {/* SIDEBAR */}
-                    <div className="space-y-6">
-                        {/* SEO SCORE CARD */}
-                        {data && data.seo && (
-                            <Card className="bg-[#0A2540]/20 border border-white/5 backdrop-blur-md">
-                                <CardHeader>
-                                    <CardTitle className="text-foreground flex items-center gap-2">
-                                        <SearchCheck className="w-5 h-5 text-[#00D09C]" />
-                                        {t('seo_health')}
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent className="space-y-4">
-                                    <div className="flex items-center justify-center">
-                                        <div className={`w-24 h-24 rounded-full bg-black/40 border-4 border-[#00D09C]/30 flex items-center justify-center shadow-[0_0_20px_rgba(0,208,156,0.1)]`}>
-                                            <span className={`text-3xl font-black text-[#00D09C]`}>
-                                                {data.seo.overallScore}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <div className="p-3 rounded-xl bg-white/5 border border-white/5">
-                                            <p className="text-gray-500 text-[10px] font-black uppercase tracking-widest">SEO Score</p>
-                                            <p className={`text-lg font-black text-[#00D09C]`}>
-                                                {data.seo.seoScore}
-                                            </p>
-                                        </div>
-                                        <div className="p-3 rounded-xl bg-white/5 border border-white/5">
-                                            <p className="text-gray-500 text-[10px] font-black uppercase tracking-widest">Performance</p>
-                                            <p className={`text-lg font-black text-[#00D09C]`}>
-                                                {data.seo.performanceScore}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    {data.seo.issues.length > 0 && (
-                                        <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
-                                            <p className="text-amber-500 text-[10px] font-black uppercase tracking-widest mb-2">
-                                                {data.seo.issues.length} Issues Found
-                                            </p>
-                                            {data.seo.issues.slice(0, 3).map((issue, i) => (
-                                                <p key={i} className="text-gray-400 text-[10px] mb-1 font-medium">
-                                                    • {issue.message}
-                                                </p>
-                                            ))}
-                                        </div>
-                                    )}
-                                    <Button variant="outline" className="w-full border-white/10 bg-white/5 hover:bg-white/10 text-gray-400 text-[10px] font-black uppercase tracking-widest">
-                                        View Full Audit
-                                    </Button>
-                                </CardContent>
-                            </Card>
-                        )}
+                                            <div className="flex flex-col md:flex-row gap-8 items-start md:items-center">
+                                                <div className="w-20 h-20 rounded-3xl bg-black/40 border border-white/10 flex items-center justify-center text-[#00D09C] font-black text-2xl italic shadow-2xl">
+                                                    {store.name.slice(0, 1)}
+                                                </div>
+                                                <div className="flex-1 space-y-2">
+                                                    <div className="flex items-center gap-4">
+                                                        <h4 className="text-2xl font-black text-white italic tracking-tight">{store.name}</h4>
+                                                        <Badge className={`
+                                                            ${store.status === 'deployed' ? 'bg-[#00D09C]/10 text-[#00D09C] border-[#00D09C]/20' : 'bg-white/5 text-zinc-500 border-white/5'}
+                                                            uppercase text-[8px] font-black tracking-[0.2em] px-3 py-1 rounded-full
+                                                        `}>
+                                                            {store.status}
+                                                        </Badge>
+                                                    </div>
+                                                    <p className="text-blue-200/40 text-xs font-medium max-w-md leading-relaxed">
+                                                        {store.description || "No mission description assigned to this asset."}
+                                                    </p>
 
-                        {/* QUICK ACTIONS */}
-                        <Card className="bg-[#0A2540]/20 border border-white/5 backdrop-blur-md">
-                            <CardHeader>
-                                <CardTitle className="text-foreground flex items-center gap-2">
-                                    <Zap className="w-5 h-5 text-[#00D09C]" />
-                                    {t('quick_actions')}
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent className="space-y-2">
-                                <Button variant="outline" className="w-full justify-start border-white/5 bg-white/5 hover:bg-[#00D09C]/10 text-gray-400 hover:text-[#00D09C] transition-all text-[10px] font-black uppercase tracking-widest">
-                                    <Globe className="w-4 h-4 mr-3" />
-                                    {t('add_domain')}
-                                </Button>
-                                <Button variant="outline" className="w-full justify-start border-white/5 bg-white/5 hover:bg-[#00D09C]/10 text-gray-400 hover:text-[#00D09C] transition-all text-[10px] font-black uppercase tracking-widest">
-                                    <Search className="w-4 h-4 mr-3" />
-                                    {t('run_audit')}
-                                </Button>
-                                <Button variant="outline" className="w-full justify-start border-white/5 bg-white/5 hover:bg-[#00D09C]/10 text-gray-400 hover:text-[#00D09C] transition-all text-[10px] font-black uppercase tracking-widest">
-                                    <BarChart3 className="w-4 h-4 mr-3" />
-                                    {t('view_analytics')}
-                                </Button>
-                                <Button variant="outline" className="w-full justify-start border-white/5 bg-white/5 hover:bg-[#00D09C]/10 text-gray-400 hover:text-[#00D09C] transition-all text-[10px] font-black uppercase tracking-widest">
-                                    <Calendar className="w-4 h-4 mr-3" />
-                                    {t('schedule_report')}
-                                </Button>
-                                <Button
-                                    variant="outline"
-                                    className="w-full justify-start border-red-500/20 bg-red-500/5 hover:bg-red-500/10 text-red-500 hover:text-red-600 mt-4 text-[10px] font-black uppercase tracking-widest"
-                                    onClick={async () => {
-                                        const { createClient } = await import('@/lib/supabase/client');
-                                        const supabase = createClient();
-                                        await supabase.auth.signOut();
-                                        window.location.href = '/';
-                                    }}
-                                >
-                                    <LogOut className="w-4 h-4 mr-3" />
-                                    {t('signout') || "Sign Out"}
-                                </Button>
-                            </CardContent>
-                        </Card>
+                                                    {store.status === 'pending_payment' && (
+                                                        <button
+                                                            onClick={() => handleActivation(store.id)}
+                                                            className="flex items-center gap-3 text-[#00D09C] text-[10px] font-black uppercase tracking-widest pt-4 group/btn"
+                                                        >
+                                                            <Zap className="w-3 h-3 animate-pulse" />
+                                                            Authorize Deployment Sequence
+                                                            <ArrowUpRight className="w-3 h-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
 
-                        {/* RECENT ACTIVITY */}
-                        <Card className="bg-[#0A2540]/20 border border-white/5 backdrop-blur-md">
-                            <CardHeader>
-                                <CardTitle className="text-foreground flex items-center gap-2">
-                                    <Clock className="w-5 h-5 text-gray-400" />
-                                    {t('recent_activity')}
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent className="space-y-3">
-                                {data && data.recentActivity.map((activity, i) => (
-                                    <div key={i} className="flex items-start gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors">
-                                        <div className={`w-2 h-2 rounded-full mt-1.5 shadow-[0_0_8px_rgba(255,255,255,0.3)] ${activity.type === 'success' ? 'bg-[#00D09C]' :
-                                            activity.type === 'warning' ? 'bg-amber-500' : 'bg-blue-400'
-                                            }`} />
+                            <div className="space-y-8">
+                                <h3 className="text-xl font-black italic uppercase text-white">Recent Activity</h3>
+                                <div className="space-y-4">
+                                    {data?.recentActivity.map((activity, i) => (
+                                        <div key={i} className="p-6 rounded-[32px] bg-white/2 border border-white/5 flex gap-4 items-start">
+                                            <div className={`w-1.5 h-1.5 rounded-full mt-2 shadow-[0_0_10px_rgba(0,0,0,0.5)] ${activity.type === 'success' ? 'bg-[#00D09C]' : 'bg-blue-400'
+                                                }`} />
+                                            <div className="space-y-1">
+                                                <p className="text-xs text-white/90 font-medium leading-relaxed italic">"{activity.message}"</p>
+                                                <p className="text-[9px] text-zinc-600 font-bold uppercase tracking-widest">{new Date(activity.date).toLocaleDateString()}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </TabsContent>
+
+                    <TabsContent value="leads" className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <LeadMatrix />
+                    </TabsContent>
+
+                    <TabsContent value="analytics" className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        {/* STATS TILES */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {[
+                                { label: 'Total Transmissions', value: data?.analytics?.totalViews, icon: Eye, color: '#00D09C' },
+                                { label: 'Unique Operators', value: data?.analytics?.uniqueVisitors, icon: Users, color: '#6366f1' },
+                                { label: 'Conversion Velocity', value: '4.2%', icon: Target, color: '#f59e0b' },
+                                { label: 'Attention Span', value: '3m 12s', icon: Clock, color: '#ec4899' }
+                            ].map((stat, i) => (
+                                <div key={stat.label} className="p-8 rounded-[40px] bg-white/5 border border-white/5 relative overflow-hidden group">
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/5 to-transparent rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700" />
+                                    <div className="relative z-10 space-y-4">
+                                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-[#00D09C]/50 transition-all">
+                                            <stat.icon className="w-6 h-6" style={{ color: stat.color }} />
+                                        </div>
                                         <div>
-                                            <p className="text-gray-300 text-xs font-medium leading-relaxed">{activity.message}</p>
-                                            <p className="text-gray-500 text-[10px] font-bold mt-1 uppercase tracking-widest">
-                                                {new Date(activity.date).toLocaleDateString()}
-                                            </p>
+                                            <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">{stat.label}</p>
+                                            <p className="text-4xl font-black text-white italic tracking-tighter mt-1">{stat.value}</p>
                                         </div>
                                     </div>
-                                ))}
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
+                                </div>
+                            ))}
+                        </div>
 
-                {/* TRAFFIC CHART PLACEHOLDER */}
-                {data && data.analytics && data.analytics.viewsOverTime.length > 0 && (
-                    <Card className="bg-[#0A2540]/20 border border-white/5 backdrop-blur-md">
-                        <CardHeader>
-                            <CardTitle className="text-foreground flex items-center gap-2">
-                                <TrendingUp className="w-5 h-5 text-[#00D09C]" />
-                                Traffic Overview
-                            </CardTitle>
-                            <CardDescription className="text-gray-500 uppercase text-[10px] font-black tracking-widest">Page views over the last 30 days</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="h-64 flex items-end justify-between gap-2 px-8">
-                                {(data.analytics?.viewsOverTime || []).slice(-14).map((day, i) => (
+                        {/* TIME SERIES */}
+                        <div className="p-10 rounded-[40px] bg-white/5 border border-white/5">
+                            <div className="flex items-center justify-between mb-12">
+                                <div>
+                                    <h4 className="text-xl font-black italic uppercase text-white">Grid Traffic Patterns</h4>
+                                    <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mt-1">30-Day Transmission Density</p>
+                                </div>
+                            </div>
+                            <div className="h-64 flex items-end justify-between gap-3 px-4">
+                                {(data?.analytics?.viewsOverTime || []).slice(-20).map((day, i) => (
                                     <div key={i} className="flex-1 flex flex-col items-center gap-4 group">
                                         <div
-                                            className="w-full bg-[#00D09C]/20 group-hover:bg-[#00D09C] group-hover:shadow-[0_0_20px_rgba(0,208,156,0.4)] rounded-t-lg transition-all cursor-pointer duration-500"
+                                            className="w-full bg-[#00D09C]/10 group-hover:bg-[#00D09C] group-hover:shadow-[0_0_20px_rgba(0,208,156,0.3)] rounded-t-xl transition-all duration-700"
                                             style={{
-                                                height: `${(day.views / Math.max(...(data.analytics?.viewsOverTime || [{ views: 1 }]).map(d => d.views))) * 100}%`,
-                                                minHeight: day.views > 0 ? '6px' : '0'
+                                                height: `${(day.views / (Math.max(...(data?.analytics?.viewsOverTime || [{ views: 1 }]).map(d => d.views)) || 1)) * 100}%`,
+                                                minHeight: '4px'
                                             }}
                                         />
-                                        <span className="text-[10px] font-black text-gray-600 group-hover:text-white transition-colors">
+                                        <span className="text-[8px] font-black text-white/20 group-hover:text-white transition-colors">
                                             {new Date(day.date).getDate()}
                                         </span>
                                     </div>
                                 ))}
                             </div>
-                        </CardContent>
-                    </Card>
-                )}
+                        </div>
+                    </TabsContent>
+
+                    <TabsContent value="seo" className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <IntelligenceDashboard />
+                    </TabsContent>
+                </Tabs>
+
                 {/* LOGIC UNIFICATION: CHECKOUT DIALOG */}
                 <Dialog open={showCheckout} onOpenChange={setShowCheckout}>
                     <DialogContent className="max-w-2xl bg-transparent border-none p-0">
                         {activeStoreId && (
                             <CheckoutModule
                                 siteId={activeStoreId}
-                                planId="pro" // Defaulting to Pro for now, or fetch from store metadata
+                                planId="pro"
                                 siteType="business"
                                 currency="USD"
                                 amount="49.00"

@@ -3,37 +3,37 @@
 import dynamic from 'next/dynamic';
 import { useTemplateEditor } from '@/hooks/use-template-editor';
 
-const MasterMedical = dynamic(() => import('./MasterMedical'));
-const MasterRetail = dynamic(() => import('./MasterRetail'));
-const MasterProfessional = dynamic(() => import('./MasterProfessional'));
-const MasterResto = dynamic(() => import('./MasterResto'));
-const MasterCreative = dynamic(() => import('./MasterCreative'));
-const PythonPortfolio = dynamic(() => import('./creative/PythonPortfolio'));
-const MasterLanding = dynamic(() => import('./MasterLanding'));
-const MasterRealEstate = dynamic(() => import('./MasterRealEstate'));
-const MasterLMS = dynamic(() => import('./MasterLMS'));
-const MasterPublic = dynamic(() => import('./MasterPublic'));
-const MasterWellness = dynamic(() => import('./MasterWellness'));
-const MasterFitness = dynamic(() => import('./MasterFitness'));
-const MasterCorporate = dynamic(() => import('./MasterCorporate'));
+const MasterMedical = dynamic<SovereignTemplateProps>(() => import('./MasterMedical'));
+const MasterRetail = dynamic<SovereignTemplateProps>(() => import('./MasterRetail'));
+const MasterProfessional = dynamic<SovereignTemplateProps>(() => import('./MasterProfessional'));
+const MasterResto = dynamic<SovereignTemplateProps>(() => import('./MasterResto'));
+const MasterCreative = dynamic<SovereignTemplateProps>(() => import('./MasterCreative'));
+const PythonPortfolio = dynamic<SovereignTemplateProps>(() => import('./creative/PythonPortfolio'));
+const MasterLanding = dynamic<SovereignTemplateProps>(() => import('./MasterLanding'));
+const MasterRealEstate = dynamic<SovereignTemplateProps>(() => import('./MasterRealEstate'));
+const MasterLMS = dynamic<SovereignTemplateProps>(() => import('./MasterLMS'));
+const MasterPublic = dynamic<SovereignTemplateProps>(() => import('./MasterPublic'));
+const MasterWellness = dynamic<SovereignTemplateProps>(() => import('./MasterWellness'));
+const MasterFitness = dynamic<SovereignTemplateProps>(() => import('./MasterFitness'));
+const MasterCorporate = dynamic<SovereignTemplateProps>(() => import('./MasterCorporate'));
 
-const MasterAccounting = dynamic(() => import('./MasterAccounting'));
-const MasterInternal = dynamic(() => import('./MasterInternal'));
+const MasterAccounting = dynamic<SovereignTemplateProps>(() => import('./MasterAccounting'));
+const MasterInternal = dynamic<SovereignTemplateProps>(() => import('./MasterInternal'));
 
 // SOVEREIGN SPECIFIC IMPLEMENTATIONS
-const NeuraAgency = dynamic(() => import('./agency/NeuraAgency'));
-const OmegaAgencyPro = dynamic(() => import('./agency/OmegaAgencyPro'));
-const LuxeCart = dynamic(() => import('./ecommerce/LuxeCart'));
-const AlphaStorePro = dynamic(() => import('./ecommerce/AlphaStorePro'));
-const EliteLMS = dynamic(() => import('./education/EliteLMS'));
-const TechGrid = dynamic(() => import('./fintech/TechGrid'));
-const DrKhalilDental = dynamic(() => import('./healthcare/DrKhalilDental'));
-const VitalCare = dynamic(() => import('./healthcare/VitalCare'));
-const VermaHospitality = dynamic(() => import('./hospitality/VermaHospitality'));
-const SierraIndustrial = dynamic(() => import('./industrial/SierraIndustrial'));
-const LawSilo = dynamic(() => import('./legal/LawSilo'));
-const BorealEstates = dynamic(() => import('./realestate/BorealEstates'));
-const ZenKitchen = dynamic(() => import('./restaurant/ZenKitchen'));
+const NeuraAgency = dynamic<SovereignTemplateProps>(() => import('./agency/NeuraAgency'));
+const OmegaAgencyPro = dynamic<SovereignTemplateProps>(() => import('./agency/OmegaAgencyPro'));
+const LuxeCart = dynamic<SovereignTemplateProps>(() => import('./ecommerce/LuxeCart'));
+const AlphaStorePro = dynamic<SovereignTemplateProps>(() => import('./ecommerce/AlphaStorePro'));
+const EliteLMS = dynamic<SovereignTemplateProps>(() => import('./education/EliteLMS'));
+const TechGrid = dynamic<SovereignTemplateProps>(() => import('./fintech/TechGrid'));
+const DrKhalilDental = dynamic<SovereignTemplateProps>(() => import('./healthcare/DrKhalilDental'));
+const VitalCare = dynamic<SovereignTemplateProps>(() => import('./healthcare/VitalCare'));
+const VermaHospitality = dynamic<SovereignTemplateProps>(() => import('./hospitality/VermaHospitality'));
+const SierraIndustrial = dynamic<SovereignTemplateProps>(() => import('./industrial/SierraIndustrial'));
+const LawSilo = dynamic<SovereignTemplateProps>(() => import('./legal/LawSilo'));
+const BorealEstates = dynamic<SovereignTemplateProps>(() => import('./realestate/BorealEstates'));
+const ZenKitchen = dynamic<SovereignTemplateProps>(() => import('./restaurant/ZenKitchen'));
 
 import { SovereignTemplateProps } from "@/lib/types/template";
 
@@ -121,7 +121,15 @@ const templateMap: Record<string, React.ComponentType<SovereignTemplateProps>> =
     'data-nexus': MasterInternal,
 };
 
-export default function TemplateRenderer({ templateId, blueprint: overrideBlueprint }: { templateId: string, blueprint?: any }) {
+export default function TemplateRenderer({
+    templateId,
+    blueprint: overrideBlueprint,
+    meta
+}: {
+    templateId: string,
+    blueprint?: any,
+    meta?: { id: string; name: string }
+}) {
     const Template = templateMap[templateId as keyof typeof templateMap] || MasterProfessional;
 
     const editorSettings = useTemplateEditor(state => state.settings);
@@ -131,5 +139,5 @@ export default function TemplateRenderer({ templateId, blueprint: overrideBluepr
     const activeBlueprint = overrideBlueprint || editorBlueprint;
 
     // Sovereign Update: Inject full architecture metadata
-    return <Template settings={editorSettings} blueprint={activeBlueprint} />;
+    return <Template settings={editorSettings} blueprint={activeBlueprint} meta={meta} />;
 }

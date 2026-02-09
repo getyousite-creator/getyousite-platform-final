@@ -7,9 +7,10 @@ import { SiteBlueprint } from "@/lib/schemas";
 interface PreviewCanvasProps {
     blueprint: SiteBlueprint | null;
     isGenerating: boolean;
+    selectedPageSlug?: string;
 }
 
-export function PreviewCanvas({ blueprint, isGenerating }: PreviewCanvasProps) {
+export function PreviewCanvas({ blueprint, isGenerating, selectedPageSlug }: PreviewCanvasProps) {
     return (
         <div className="w-full max-w-5xl h-full flex flex-col items-center justify-center space-y-6">
             <div className="flex items-center gap-4 text-muted-foreground text-[10px] font-black uppercase tracking-widest">
@@ -22,7 +23,7 @@ export function PreviewCanvas({ blueprint, isGenerating }: PreviewCanvasProps) {
                 {/* Visual Polish: Glass Shine */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-background/5 via-transparent to-transparent pointer-events-none opacity-50" />
 
-                <LivePreview config={blueprint} isGenerating={isGenerating} />
+                <LivePreview config={blueprint} isGenerating={isGenerating} selectedPageSlug={selectedPageSlug} />
 
                 {/* Generation Overlay Logic is handled inside LivePreview, but we can add a frame here if needed */}
             </div>

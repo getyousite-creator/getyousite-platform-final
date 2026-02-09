@@ -89,3 +89,31 @@ ADD COLUMN IF NOT EXISTS subscription_status TEXT,
 ADD COLUMN IF NOT EXISTS plan_id TEXT,
 ADD COLUMN IF NOT EXISTS subscription_id TEXT,
 ADD COLUMN IF NOT EXISTS paypal_payer_id TEXT;
+-- 6. CONVERSION ENGINE (STORE LEADS)
+CREATE TABLE IF NOT EXISTS public.store_leads (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    store_id UUID NOT NULL REFERENCES public.stores(id) ON DELETE CASCADE,
+    email TEXT NOT NULL,
+    full_name TEXT,
+    message TEXT,
+    metadata JSONB,
+    status TEXT DEFAULT 'new' CHECK (status IN ('new', 'contacted', 'archived')),
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Enable RLS
+ALTER TABLE public.store_leads ENABLE ROW LEVEL SECURITY;
+
+-- Policy: Public can insert (contact form)
+CREATE POLICY "public_insert_leads" ON public.store_leads FOR INSERT WITH CHECK (true);
+
+-- Policy: Store owners can view leads for their stores
+CREATE POLICY "owners_view_leads" ON public.store_leads FOR SELECT 
+USING (
+    EXISTS (
+        SELECT 1 FROM public.stores 
+        WHERE id = store_leads.store_id AND user_id = auth.uid()
+    )
+);
+
+CREATE INDEX IF NOT EXISTS idx_store_leads_store_id ON public.store_leads(store_id);

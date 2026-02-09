@@ -26,6 +26,9 @@ interface CommandTemplate {
     features: string[];
 }
 
+import { generateNewPageAction } from '@/actions/generate-page';
+import { toast } from 'sonner';
+
 interface CommandCenterProps {
     businessName: string;
     setBusinessName: (name: string) => void;
@@ -41,6 +44,9 @@ interface CommandCenterProps {
     userId: string;
     onAssetUpload: (url: string) => void;
     aiInsight?: string;
+    blueprint?: any;
+    selectedPageSlug?: string;
+    onSelectPage?: (slug: string) => void;
 }
 
 // Unified template source
@@ -69,25 +75,31 @@ const NICHE_OPTIONS = [
     'SaaS & Software',
 ];
 
-export function CommandCenter({
-    businessName,
-    setBusinessName,
-    vision,
-    setVision,
-    niche,
-    setNiche,
-    selectedId,
-    setSelectedId,
-    isGenerating,
-    onGenerate,
-    activeStoreId,
-    userId,
-    onAssetUpload,
-    aiInsight,
-}: CommandCenterProps) {
+export function CommandCenter(props: CommandCenterProps) {
+    const {
+        businessName,
+        setBusinessName,
+        vision,
+        setVision,
+        niche,
+        setNiche,
+        selectedId,
+        setSelectedId,
+        isGenerating,
+        onGenerate,
+        activeStoreId,
+        userId,
+        onAssetUpload,
+        aiInsight,
+        blueprint,
+        selectedPageSlug,
+        onSelectPage
+    } = props;
+
     const [showTemplates, setShowTemplates] = useState(false);
     const [templateSearch, setTemplateSearch] = useState('');
     const [activeTab, setActiveTab] = useState('details');
+    const [pageGenLoading, setPageGenLoading] = useState<string | null>(null);
 
     const filteredTemplates = AVAILABLE_TEMPLATES.filter(t =>
         t.name.toLowerCase().includes(templateSearch.toLowerCase()) ||
@@ -95,6 +107,32 @@ export function CommandCenter({
     );
 
     const selectedTemplate = AVAILABLE_TEMPLATES.find(t => t.id === selectedId);
+
+    const handleGeneratePage = async (slug: string, name: string) => {
+        if (!activeStoreId) {
+            toast.error("Save your project first to generate sub-pages.");
+            return;
+        }
+
+        setPageGenLoading(slug);
+        try {
+            const result = await generateNewPageAction(activeStoreId, slug, name);
+            if (result.success) {
+                toast.success(`Protocol Synthesized: ${name} page is now online.`);
+                // Refresh logic if needed, but since it's a server action that updates DB, 
+                // and we're looking at blueprint from props, we might need a way to trigger 
+                // a re-fetch or manual blueprint update in the parent.
+                // For now, let's assume auto-save or re-load handles it.
+                if (window) window.location.reload();
+            } else {
+                toast.error(result.message || "Synthesis failed.");
+            }
+        } catch (e) {
+            toast.error("Critical Engine Failure");
+        } finally {
+            setPageGenLoading(null);
+        }
+    };
 
     return (
         <div className="space-y-6 relative z-10">
@@ -111,26 +149,92 @@ export function CommandCenter({
                 </div>
                 <Badge variant="outline" className="bg-[#00D09C]/10 text-[#00D09C] border-[#00D09C]/20">
                     <Sparkles className="w-3 h-3 mr-1" />
-                    GPT-4 Powered
+                    GPT-4o-mini
                 </Badge>
             </div>
 
             {/* Tabs */}
             <Tabs defaultValue="details" onValueChange={setActiveTab}>
-                <TabsList className="w-full grid grid-cols-3 bg-secondary/5">
-                    <TabsTrigger value="details" className="data-[state=active]:bg-secondary/20">
-                        <Edit3 className="w-4 h-4 mr-2" />
+                <TabsList className="w-full grid grid-cols-4 bg-secondary/5">
+                    <TabsTrigger value="details" className="data-[state=active]:bg-secondary/20 text-[10px] font-black uppercase">
                         Details
                     </TabsTrigger>
-                    <TabsTrigger value="template" className="data-[state=active]:bg-secondary/20">
-                        <Layout className="w-4 h-4 mr-2" />
+                    <TabsTrigger value="pages" className="data-[state=active]:bg-secondary/20 text-[10px] font-black uppercase">
+                        Pages
+                    </TabsTrigger>
+                    <TabsTrigger value="template" className="data-[state=active]:bg-secondary/20 text-[10px] font-black uppercase">
                         Template
                     </TabsTrigger>
-                    <TabsTrigger value="style" className="data-[state=active]:bg-secondary/20">
-                        <Palette className="w-4 h-4 mr-2" />
+                    <TabsTrigger value="style" className="data-[state=active]:bg-secondary/20 text-[10px] font-black uppercase">
                         Style
                     </TabsTrigger>
                 </TabsList>
+
+                {/* Pages Tab */}
+                <TabsContent value="pages" className="space-y-6 mt-6">
+                    <div className="p-4 rounded-xl bg-blue-500/5 border border-blue-500/10 mb-4">
+                        <p className="text-[10px] text-blue-400 font-bold uppercase tracking-widest leading-relaxed">
+                            SOVEREIGN_GEN_PROTOCOL: Generating sub-pages separately ensures logic perfection and zero-cost efficiency.
+                        </p>
+                    </div>
+
+                    <div className="space-y-3">
+                        {['index', 'about', 'services', 'contact'].map((slug) => {
+                            const page = blueprint?.pages?.[slug];
+                            const isDraft = !page || page.status === 'draft' || (page.layout || []).length === 0;
+                            const pageName = slug === 'index' ? 'Home' : slug.charAt(0).toUpperCase() + slug.slice(1);
+
+                            return (
+                                <div
+                                    key={slug}
+                                    className={`p-4 rounded-2xl border transition-all ${selectedPageSlug === slug ? 'bg-[#00D09C]/5 border-[#00D09C]/20' : 'bg-white/5 border-white/5 hover:border-white/10'}`}
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelectPage?.(slug)}>
+                                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isDraft ? 'bg-zinc-800 text-zinc-500' : 'bg-[#00D09C]/20 text-[#00D09C]'}`}>
+                                                <Globe className="w-4 h-4" />
+                                            </div>
+                                            <div>
+                                                <h4 className="text-sm font-bold text-white">{pageName}</h4>
+                                                <span className={`text-[9px] font-black uppercase tracking-widest ${isDraft ? 'text-zinc-500' : 'text-[#00D09C]'}`}>
+                                                    {isDraft ? 'Draft_Protocol' : 'Neural_Ready'}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        {isDraft && slug !== 'index' ? (
+                                            <Button
+                                                size="sm"
+                                                variant="outline"
+                                                onClick={() => handleGeneratePage(slug, pageName)}
+                                                disabled={pageGenLoading === slug}
+                                                className="h-8 bg-blue-500/10 border-blue-500/20 text-blue-400 text-[9px] font-black tracking-widest hover:bg-blue-500/20"
+                                            >
+                                                {pageGenLoading === slug ? (
+                                                    <RefreshCw className="w-3 h-3 animate-spin mr-1" />
+                                                ) : (
+                                                    <Zap className="w-3 h-3 mr-1" />
+                                                )}
+                                                GENERATE
+                                            </Button>
+                                        ) : (
+                                            <div className="flex gap-2">
+                                                <Button
+                                                    size="sm"
+                                                    variant="ghost"
+                                                    onClick={() => onSelectPage?.(slug)}
+                                                    className="h-8 text-white/40 text-[9px] font-black tracking-widest hover:text-white"
+                                                >
+                                                    VIEW
+                                                </Button>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </TabsContent>
 
                 {/* Details Tab */}
                 <TabsContent value="details" className="space-y-6 mt-6">
