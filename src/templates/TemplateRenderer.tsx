@@ -8,6 +8,7 @@ const MasterRetail = dynamic(() => import('./MasterRetail'));
 const MasterProfessional = dynamic(() => import('./MasterProfessional'));
 const MasterResto = dynamic(() => import('./MasterResto'));
 const MasterCreative = dynamic(() => import('./MasterCreative'));
+const PythonPortfolio = dynamic(() => import('./creative/PythonPortfolio'));
 const MasterLanding = dynamic(() => import('./MasterLanding'));
 const MasterRealEstate = dynamic(() => import('./MasterRealEstate'));
 const MasterLMS = dynamic(() => import('./MasterLMS'));
@@ -47,7 +48,8 @@ const templateMap: Record<string, React.ComponentType<SovereignTemplateProps>> =
 
     // CREATIVE PILLAR
     'creative-agency': MasterCreative,
-    'cyber-portfolio': MasterCreative,
+    'cyber-portfolio': MasterCreative, // Mapped to MasterCreative by default, but should ideally point to CyberPortfolio if implemented
+    'python-portfolio': PythonPortfolio,
     'studio-zero': MasterCreative,
     'yoga-flow': MasterCreative, // Fixed: Mapped to Creative (Visual)
 

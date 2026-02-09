@@ -192,6 +192,15 @@ export const SITE_TEMPLATES: { categories: TemplateCategory[] } = {
                     blueprint: constructBlueprint("Studio Zero", "#a855f7", ["hero", "gallery", "features"])
                 },
                 {
+                    id: "python-portfolio",
+                    name: "Python Architect",
+                    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=2070",
+                    description: "Terminal-grade portfolio for backend engineers and data scientists.",
+                    components: ["Terminal-Hero", "Repo-Grid", "Cmd-Contact"],
+                    primaryColor: "#22c55e",
+                    blueprint: constructBlueprint("Python Architect", "#22c55e", ["hero", "features", "projects"])
+                },
+                {
                     id: "elite-lms",
                     name: "Elite Academia",
                     image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=2067&auto=format&fit=crop",
