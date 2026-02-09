@@ -9,41 +9,52 @@
     --font-inter: "Inter", sans-serif;
     --font-noto-arabic: "Noto Sans Arabic", sans-serif;
 
-    /* CELESTIAL CLARITY SYSTEM (Strict Protocol) */
-    /* Base: White #FFFFFF */
-    --background: 0 0% 100%;
-    /* Text Primary: #1C1C1E - Soft Black */
-    --foreground: 240 3% 11%;
-    
-    /* Internal Elements */
-    --card: 0 0% 100%;
-    --card-foreground: 240 3% 11%;
- 
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 3% 11%;
- 
-    /* Primary Action: #007AFF Azure Blue (HSL: 211, 100%, 50%) */
-    --primary: 211 100% 50%;
-    --primary-foreground: 0 0% 100%;
- 
-    /* Secondary/Muted */
-    --secondary: 210 20% 98%; 
-    --secondary-foreground: 211 100% 50%; /* Blue text for secondary */
- 
-    /* Text Secondary: #8A8A8E */
-    --muted: 220 2% 96%; /* #E5E5E5 Border equivalent */
-    --muted-foreground: 240 2% 55%;
+    /* TRUST & EFFICIENCY PROTOCOL (Sovereign B2B Standard) */
 
-    /* Accent: #FF9500 Tangerine */
-    --accent: 35 100% 50%;
+    /* Base Backgrounds */
+    --background: 0 0% 100%;
+    /* #FFFFFF */
+    /* Subtle Background for cards/sections */
+    --secondary: 210 33% 98%;
+    /* #F6F9FC */
+    --secondary-foreground: 229 35% 16%;
+
+    /* Typography */
+    --foreground: 229 35% 16%;
+    /* #1A1F36 - Tech/Financial Black */
+
+    /* Surface Elements */
+    --card: 0 0% 100%;
+    --card-foreground: 229 35% 16%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 229 35% 16%;
+
+    /* Primary Action: #0A2540 Tech Dark Blue (HSL: 210, 73%, 15%) */
+    --primary: 210 73% 15%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Accent Action: #00D09C Vibrant Green (HSL: 165, 100%, 41%) */
+    --accent: 165 100% 41%;
     --accent-foreground: 0 0% 100%;
- 
+
+    /* Muted Elements */
+    --muted: 210 33% 98%;
+    /* Matching secondary bg */
+    --muted-foreground: 220 9% 46%;
+    /* #6B7280 */
+
+    /* Functional Colors */
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
- 
-    --border: 240 5% 90%; /* #E5E5E5 */
-    --input: 240 5% 90%;
-    --ring: 211 100% 50%;
+    /* Red */
+    --destructive-foreground: 0 0% 98%;
+
+    /* Borders & Inputs */
+    --border: 0 0% 90%;
+    /* #E6E6E6 */
+    --input: 0 0% 90%;
+    --ring: 210 73% 15%;
+    /* Matches Primary */
   }
 
   /* MEDICAL THEME (CLEAN / CLINICAL) */

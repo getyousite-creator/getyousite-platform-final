@@ -146,10 +146,10 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="mb-8 px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 flex items-center gap-2 group cursor-default"
+                        className="mb-8 px-4 py-1.5 rounded-full bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 flex items-center gap-2 group cursor-default"
                     >
-                        <Sparkles className="w-3.5 h-3.5 text-amber-500 group-hover:animate-pulse" />
-                        <span className="text-[10px] font-black uppercase tracking-widest text-amber-500">
+                        <Sparkles className="w-3.5 h-3.5 text-emerald-500 group-hover:animate-pulse" />
+                        <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600">
                             {t('sovereign_access')}
                         </span>
                     </motion.div>
@@ -159,7 +159,7 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
                         {mode === "signin" ? t('signin_title') : mode === "signup" ? t('signup_title') : mode === "reset-password" ? t('reset_password_title') : mode === "check-email" ? t('check_email_title') : t('forgot_password_title')}
                     </h1>
                     <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-[0.4em] flex items-center gap-2">
-                        <ShieldCheck className="w-3 h-3 text-blue-500/50" />
+                        <ShieldCheck className="w-3 h-3 text-primary/60" />
                         {mode === "forgot-password" || mode === "reset-password" ? t('security_link_msg') : mode === "check-email" ? t('verification_msg') : t('subtitle')}
                     </p>
                 </div>
