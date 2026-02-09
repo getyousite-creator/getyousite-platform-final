@@ -17,72 +17,88 @@ const MasterWellness = dynamic(() => import('./MasterWellness'));
 const MasterFitness = dynamic(() => import('./MasterFitness'));
 const MasterCorporate = dynamic(() => import('./MasterCorporate'));
 const MasterAccounting = dynamic(() => import('./MasterAccounting'));
+const MasterAccounting = dynamic(() => import('./MasterAccounting'));
 const MasterInternal = dynamic(() => import('./MasterInternal'));
+
+// SOVEREIGN SPECIFIC IMPLEMENTATIONS
+const NeuraAgency = dynamic(() => import('./agency/NeuraAgency'));
+const OmegaAgencyPro = dynamic(() => import('./agency/OmegaAgencyPro'));
+const LuxeCart = dynamic(() => import('./ecommerce/LuxeCart'));
+const AlphaStorePro = dynamic(() => import('./ecommerce/AlphaStorePro'));
+const EliteLMS = dynamic(() => import('./education/EliteLMS'));
+const TechGrid = dynamic(() => import('./fintech/TechGrid'));
+const DrKhalilDental = dynamic(() => import('./healthcare/DrKhalilDental'));
+const VitalCare = dynamic(() => import('./healthcare/VitalCare'));
+const VermaHospitality = dynamic(() => import('./hospitality/VermaHospitality'));
+const SierraIndustrial = dynamic(() => import('./industrial/SierraIndustrial'));
+const LawSilo = dynamic(() => import('./legal/LawSilo'));
+const BorealEstates = dynamic(() => import('./realestate/BorealEstates'));
+const ZenKitchen = dynamic(() => import('./restaurant/ZenKitchen'));
 
 import { SovereignTemplateProps } from "@/lib/types/template";
 
 const templateMap: Record<string, React.ComponentType<SovereignTemplateProps>> = {
     // MEDICAL PILLAR
-    'vital-care': MasterMedical,
-    'dr-khalil': MasterMedical,
-    'medical-pro': MasterMedical,
+    'vital-care': VitalCare,
+    'dr-khalil': DrKhalilDental,
+    'medical-pro': MasterMedical, // Fallback
 
     // RETAIL PILLAR
-    'luxe-cart': MasterRetail,
-    'alpha-pro': MasterRetail,
+    'luxe-cart': LuxeCart,
+    'alpha-pro': AlphaStorePro,
     'fashion-store': MasterRetail,
-    'urban-retail': MasterRetail, // Fixed: Added mapping
+    'urban-retail': MasterRetail,
 
     // PROFESSIONAL PILLAR
-    'law-silo': MasterProfessional,
-    'sierra-industry': MasterProfessional,
-    'omega-pro': MasterProfessional,
-    'prime-law': MasterProfessional, // Fixed: Added mapping
-    'prime-partners': MasterProfessional, // Fixed: Added mapping
+    'law-silo': LawSilo,
+    'sierra-industry': SierraIndustrial,
+    'omega-pro': OmegaAgencyPro,
+    'prime-law': MasterProfessional,
+    'prime-partners': MasterProfessional,
 
     // RESTO PILLAR
-    'zen-food': MasterResto,
-    'verma-hospitality': MasterResto,
+    'zen-food': ZenKitchen,
+    'verma-hospitality': VermaHospitality,
     'gourmet-engine': MasterResto,
-    'fusion-bistro': MasterResto, // Fixed: Added mapping
+    'fusion-bistro': MasterResto,
 
     // CREATIVE PILLAR
-    'creative-agency': MasterCreative,
+    'creative-agency': NeuraAgency,
     'cyber-portfolio': MasterCreative, // Mapped to MasterCreative by default, but should ideally point to CyberPortfolio if implemented
     'python-portfolio': PythonPortfolio,
     'studio-zero': MasterCreative,
-    'yoga-flow': MasterCreative, // Fixed: Mapped to Creative (Visual)
+    'yoga-flow': MasterCreative,
 
     // LANDING PILLAR
-    'tech-grid': MasterLanding,
+    'tech-grid': TechGrid,
     'saas-convert': MasterLanding,
     'lead-gen-pro': MasterLanding,
-    'tech-nova': MasterLanding, // Fixed: Added mapping
-    'venture-cap': MasterLanding, // Fixed: Mapped to Landing (High Conv)
+    'tech-nova': MasterLanding,
+    'venture-cap': MasterLanding,
 
     // REAL ESTATE PILLAR
-    'boreal-estate': MasterRealEstate,
+    'boreal-estate': BorealEstates,
     'property-hub': MasterRealEstate,
     'estate-pro': MasterRealEstate,
-    'estate-prime': MasterRealEstate, // Fixed: Added mapping
+    'estate-prime': MasterRealEstate,
 
     // LMS PILLAR
-    'elite-lms': MasterLMS,
+    'elite-lms': EliteLMS,
     'course-master': MasterLMS,
     'academy-pro': MasterLMS,
-    'lms-pro': MasterLMS, // Fixed: Added mapping
+    'lms-pro': MasterLMS,
 
     // PUBLIC PILLAR
     'news-silo': MasterPublic,
     'blog-pro': MasterPublic,
     'dispatch-engine': MasterPublic,
-    'news-daily': MasterPublic, // Fixed: Added mapping
+    'news-daily': MasterPublic,
 
     // WELLNESS PILLAR
     'spa-wellness': MasterWellness,
     'beauty-glow': MasterWellness,
     'zen-retreat': MasterWellness,
-    'dental-plus': MasterWellness, // Fixed: Mapped to Wellness (Clean)
+    'dental-plus': MasterWellness,
 
     // FITNESS PILLAR
     'fitness-neon': MasterFitness,
