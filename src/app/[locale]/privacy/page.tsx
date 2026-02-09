@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 
 export default function PrivacyPolicyPage() {
     return (
-        <div className="min-h-screen bg-slate-950 text-white selection:bg-blue-600 selection:text-white">
+        <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
             <Header />
 
             <main className="pt-32 pb-24">
@@ -18,9 +18,9 @@ export default function PrivacyPolicyPage() {
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-slate-900 border border-white/10 text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 mb-8"
+                            className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-secondary border border-border text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground mb-8"
                         >
-                            <Shield className="w-3 h-3 text-blue-500" />
+                            <Shield className="w-3 h-3 text-primary" />
                             Security_Protocol_v2.0
                         </motion.div>
                         <motion.h1
@@ -30,7 +30,7 @@ export default function PrivacyPolicyPage() {
                         >
                             Privacy Anchor
                         </motion.h1>
-                        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-slate-500">How we protect your signal and data</p>
+                        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-muted-foreground">How we protect your signal and data</p>
                     </div>
 
                     <div className="max-w-4xl mx-auto space-y-20">
@@ -61,7 +61,7 @@ export default function PrivacyPolicyPage() {
                         <motion.div
                             initial={{ opacity: 0 }}
                             whileInView={{ opacity: 1 }}
-                            className="pt-20 border-t border-white/5 opacity-40 text-[10px] font-mono leading-relaxed space-y-4"
+                            className="pt-20 border-t border-border opacity-40 text-[10px] font-mono leading-relaxed space-y-4"
                         >
                             <p>Last Privacy Update: February 05, 2026.</p>
                             <p>Casablanca, Morocco / Global Sovereign Network.</p>
@@ -83,12 +83,12 @@ function Section({ icon: Icon, title, text }: any) {
             viewport={{ once: true }}
             className="flex flex-col md:flex-row gap-10 items-start group"
         >
-            <div className="shrink-0 w-16 h-16 bg-slate-900 border border-white/5 rounded-2xl flex items-center justify-center group-hover:bg-blue-600 group-hover:border-blue-500 transition-all duration-500">
-                <Icon className="w-8 h-8 text-slate-500 group-hover:text-white transition-colors" />
+            <div className="shrink-0 w-16 h-16 bg-secondary border border-border rounded-2xl flex items-center justify-center group-hover:bg-primary group-hover:border-primary transition-all duration-500">
+                <Icon className="w-8 h-8 text-muted-foreground group-hover:text-primary-foreground transition-colors" />
             </div>
             <div className="space-y-4">
                 <h2 className="text-3xl font-black italic tracking-tightest uppercase">{title}</h2>
-                <p className="text-slate-400 font-medium leading-relaxed text-lg">{text}</p>
+                <p className="text-muted-foreground font-medium leading-relaxed text-lg">{text}</p>
             </div>
         </motion.div>
     )

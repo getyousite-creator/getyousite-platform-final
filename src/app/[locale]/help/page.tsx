@@ -13,26 +13,14 @@ export default function HelpPage() {
     const router = useRouter();
 
     const faqs = [
-        {
-            q: "كيف يمكنني البدء في إنشاء موقعي؟",
-            a: "ببساطة، قم بالتسجيل واختر القالب المناسب لنشاطك. سيتم إرشادك خطوة بخطوة لتخصيص موقعك."
-        },
-        {
-            q: "ما هي مدة تسليم الموقع؟",
-            a: "نلتزم بتسليم موقعك الكامل خلال 48 ساعة من تأكيد الطلب والدفع."
-        },
-        {
-            q: "هل يمكنني تعديل الموقع بنفسي بعد التسليم؟",
-            a: "نعم! نوفر لك لوحة تحكم سهلة الاستخدام لتحديث المحتوى والصور في أي وقت."
-        },
-        {
-            q: "ما هي وسائل الدفع المتاحة؟",
-            a: "نقبل الدفع عبر PayPal والتحويل البنكي المحلي (CIH، Barid Bank) للعملاء في المغرب."
-        }
+        { q: t('faqs.q1'), a: t('faqs.a1') },
+        { q: t('faqs.q2'), a: t('faqs.a2') },
+        { q: t('faqs.q3'), a: t('faqs.a3') },
+        { q: t('faqs.q4'), a: t('faqs.a4') }
     ];
 
     return (
-        <div className="min-h-screen bg-slate-950 text-white selection:bg-blue-600 selection:text-white">
+        <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
             <Header />
 
             <main className="pt-32 pb-24">
@@ -41,7 +29,7 @@ export default function HelpPage() {
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-600/10 border border-blue-500/20 text-[10px] font-black uppercase tracking-[0.4em] text-blue-400 mb-8"
+                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-black uppercase tracking-[0.4em] text-primary mb-8"
                         >
                             <HelpCircle className="w-3 h-3" />
                             {t('badge')}
@@ -57,7 +45,7 @@ export default function HelpPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 }}
-                            className="text-xl md:text-2xl text-slate-400 font-medium leading-relaxed"
+                            className="text-xl md:text-2xl text-muted-foreground font-medium leading-relaxed"
                         >
                             {t('subtitle')}
                         </motion.p>
@@ -71,22 +59,22 @@ export default function HelpPage() {
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: i * 0.1 }}
-                                className="p-8 bg-slate-900/50 border border-white/5 rounded-2xl text-start"
+                                className="p-8 bg-secondary border border-border rounded-2xl text-start"
                             >
-                                <h3 className="text-lg font-bold mb-3 text-white">{faq.q}</h3>
-                                <p className="text-slate-400 leading-relaxed">{faq.a}</p>
+                                <h3 className="text-lg font-bold mb-3 text-foreground">{faq.q}</h3>
+                                <p className="text-muted-foreground leading-relaxed">{faq.a}</p>
                             </motion.div>
                         ))}
                     </div>
 
                     <div className="max-w-2xl mx-auto text-center">
-                        <div className="p-10 bg-gradient-to-br from-blue-600/10 to-purple-600/10 border border-blue-500/20 rounded-3xl">
-                            <Mail className="w-12 h-12 text-blue-500 mx-auto mb-4" />
-                            <h3 className="text-2xl font-black italic uppercase mb-4 tracking-tighter">لا تجد إجابة؟</h3>
-                            <p className="text-slate-400 mb-6">فريق الدعم الفني لدينا جاهز لمساعدتك على مدار الساعة</p>
+                        <div className="p-10 bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 rounded-3xl">
+                            <Mail className="w-12 h-12 text-primary mx-auto mb-4" />
+                            <h3 className="text-2xl font-black italic uppercase mb-4 tracking-tighter">{t('no_answer_title')}</h3>
+                            <p className="text-muted-foreground mb-6">{t('no_answer_desc')}</p>
                             <Button
                                 onClick={() => router.push('/contact')}
-                                className="bg-blue-600 hover:bg-blue-500 text-white h-12 px-8 rounded-xl font-black uppercase tracking-widest text-[10px]"
+                                className="bg-primary hover:bg-primary/90 text-primary-foreground h-12 px-8 rounded-xl font-black uppercase tracking-widest text-[10px]"
                             >
                                 {t('contact_support')}
                             </Button>

@@ -28,7 +28,7 @@ export default function ContactPage() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-950 text-white selection:bg-blue-600 selection:text-white">
+        <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
             <Header />
 
             <main className="pt-32 pb-24">
@@ -38,7 +38,7 @@ export default function ContactPage() {
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-600/10 border border-blue-500/20 text-[10px] font-black uppercase tracking-[0.4em] text-blue-400 mb-8"
+                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-black uppercase tracking-[0.4em] text-primary mb-8"
                         >
                             <Shield className="w-3 h-3" />
                             {t('badge')}
@@ -55,7 +55,7 @@ export default function ContactPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2 }}
-                            className="text-xl md:text-2xl text-slate-400 max-w-2xl font-medium leading-relaxed"
+                            className="text-xl md:text-2xl text-muted-foreground max-w-2xl font-medium leading-relaxed"
                         >
                             {t('subtitle')}
                         </motion.p>
@@ -69,49 +69,49 @@ export default function ContactPage() {
                             transition={{ delay: 0.3 }}
                             className="relative group"
                         >
-                            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-3xl blur-2xl opacity-50 group-hover:opacity-100 transition duration-1000" />
+                            <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-accent/20 rounded-3xl blur-2xl opacity-50 group-hover:opacity-100 transition duration-1000" />
                             <form
                                 onSubmit={handleSubmit}
-                                className="relative bg-slate-900/50 border border-white/10 rounded-3xl p-10 backdrop-blur-3xl space-y-8"
+                                className="relative bg-secondary border border-border rounded-3xl p-10 backdrop-blur-3xl space-y-8"
                             >
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                     <div className="space-y-3">
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">{t('form.name')}</label>
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">{t('form.name')}</label>
                                         <Input
                                             required
-                                            className="bg-slate-950/50 border-white/5 h-14 rounded-xl focus:ring-blue-500/50 focus:border-blue-500/50 transition-all text-start"
+                                            className="bg-card border-border h-14 rounded-xl focus:ring-primary/50 focus:border-primary/50 transition-all text-start"
                                             placeholder={t('form.name_placeholder')}
                                         />
                                     </div>
                                     <div className="space-y-3">
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">{t('form.email')}</label>
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">{t('form.email')}</label>
                                         <Input
                                             required
                                             type="email"
-                                            className="bg-slate-950/50 border-white/5 h-14 rounded-xl focus:ring-blue-500/50 focus:border-blue-500/50 transition-all text-start"
+                                            className="bg-card border-border h-14 rounded-xl focus:ring-primary/50 focus:border-primary/50 transition-all text-start"
                                             placeholder={t('form.email_placeholder')}
                                         />
                                     </div>
                                 </div>
                                 <div className="space-y-3">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">{t('form.subject')}</label>
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">{t('form.subject')}</label>
                                     <Input
                                         required
-                                        className="bg-slate-950/50 border-white/5 h-14 rounded-xl focus:ring-blue-500/50 focus:border-blue-500/50 transition-all text-start"
+                                        className="bg-card border-border h-14 rounded-xl focus:ring-primary/50 focus:border-primary/50 transition-all text-start"
                                         placeholder={t('form.subject_placeholder')}
                                     />
                                 </div>
                                 <div className="space-y-3">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">{t('form.message')}</label>
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">{t('form.message')}</label>
                                     <Textarea
                                         required
-                                        className="bg-slate-950/50 border-white/5 min-h-[160px] rounded-xl focus:ring-blue-500/50 focus:border-blue-500/50 transition-all resize-none text-start"
+                                        className="bg-card border-border min-h-[160px] rounded-xl focus:ring-primary/50 focus:border-primary/50 transition-all resize-none text-start"
                                         placeholder={t('form.message_placeholder')}
                                     />
                                 </div>
                                 <Button
                                     disabled={isSubmitting}
-                                    className="w-full h-16 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-lg font-black uppercase tracking-widest shadow-2xl transition-all active:scale-95 group/btn"
+                                    className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl text-lg font-black uppercase tracking-widest shadow-2xl transition-all active:scale-95 group/btn"
                                 >
                                     {isSubmitting ? t('form.sending') : t('form.send')}
                                     <Send className="mx-3 w-5 h-5 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
@@ -126,7 +126,7 @@ export default function ContactPage() {
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.4 }}
                             >
-                                <h2 className="text-[10px] font-black uppercase tracking-[0.5em] text-slate-500 mb-10">
+                                <h2 className="text-[10px] font-black uppercase tracking-[0.5em] text-muted-foreground mb-10">
                                     {t('info.title')}
                                 </h2>
 
@@ -157,7 +157,7 @@ export default function ContactPage() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.6 }}
-                                className="pt-12 border-t border-white/5 space-y-6"
+                                className="pt-12 border-t border-border space-y-6"
                             >
                                 <a
                                     href="https://wa.me/212630597101"
@@ -189,12 +189,12 @@ export default function ContactPage() {
 function NodeItem({ icon: Icon, label, value, link }: any) {
     return (
         <a href={link} className="flex items-center gap-6 group hover:translate-x-2 transition-transform">
-            <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-blue-600 group-hover:border-blue-500 transition-all">
-                <Icon className="w-6 h-6 text-slate-400 group-hover:text-white transition-colors" />
+            <div className="w-14 h-14 rounded-2xl bg-secondary border border-border flex items-center justify-center group-hover:bg-primary group-hover:border-primary transition-all">
+                <Icon className="w-6 h-6 text-muted-foreground group-hover:text-primary-foreground transition-colors" />
             </div>
             <div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">{label}</p>
-                <p className="text-xl font-bold group-hover:text-blue-400 transition-colors">{value}</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">{label}</p>
+                <p className="text-xl font-bold group-hover:text-primary transition-colors">{value}</p>
             </div>
         </a>
     );

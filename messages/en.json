@@ -101,30 +101,102 @@
         "live_subtitle": "Professional websites built for our clients",
         "view_archive": "View All Templates",
         "projects": {
-            "dr-khalil": { "title": "Dr. Khalil V3", "desc": "Medical and dental clinical excellence." },
-            "luxe-cart": { "title": "Luxe E-Commerce", "desc": "Premium shopping experiences." },
-            "corp-global": { "title": "Global Stability", "desc": "High-trust corporate architecture." },
-            "fitness-neon": { "title": "Kinetic Lab", "desc": "High-energy athletic performance." },
-            "financial-core": { "title": "Ledger Pro", "desc": "Premium accounting and tax logic." },
-            "internal-engine": { "title": "Operational Shell", "desc": "Production-ready internal tools." },
-            "law-silo": { "title": "Lex Sileo", "desc": "Prestige legal architecture." },
-            "zen-food": { "title": "Aurum & Ash", "desc": "Cinematic dining experiences." },
-            "studio-zero": { "title": "Studio Zero", "desc": "Visual-heavy portfolios." },
-            "tech-grid": { "title": "SyncSphere", "desc": "High-frequency landing pages." },
-            "boreal-estate": { "title": "Boreal Estates", "desc": "Prestige listings for luxury." },
-            "elite-lms": { "title": "Elite Academia", "desc": "Masterclass architecture for education." },
-            "news-silo": { "title": "Dispatch Engine", "desc": "Editorial excellence." },
-            "spa-wellness": { "title": "Zen Retreat", "desc": "Tranquil design for wellness." },
-            "urban-retail": { "title": "Urban Retail", "desc": "Contemporary streetwear storefront." },
-            "prime-law": { "title": "Prime Partners", "desc": "Authoritative legal presence." },
-            "fusion-bistro": { "title": "Fusion Bistro", "desc": "Modern culinary showcase." },
-            "venture-cap": { "title": "Venture One", "desc": "Strategic investment portfolio." },
-            "dental-plus": { "title": "Dental Plus", "desc": "Friendly family dentistry." },
-            "yoga-flow": { "title": "Yoga Flow", "desc": "Minimalist calm for studios." },
-            "tech-nova": { "title": "Nova Tech", "desc": "Innovative tech solutions." },
-            "estate-prime": { "title": "Prime Estate", "desc": "Premium residential listings." },
-            "news-daily": { "title": "Daily News", "desc": "Fast-paced news feed." },
-            "lms-pro": { "title": "Pro Learn", "desc": "Professional training platform." }
+            "dr-khalil": {
+                "title": "Dr. Khalil V3",
+                "desc": "Medical and dental clinical excellence."
+            },
+            "luxe-cart": {
+                "title": "Luxe E-Commerce",
+                "desc": "Premium shopping experiences."
+            },
+            "corp-global": {
+                "title": "Global Stability",
+                "desc": "High-trust corporate architecture."
+            },
+            "fitness-neon": {
+                "title": "Kinetic Lab",
+                "desc": "High-energy athletic performance."
+            },
+            "financial-core": {
+                "title": "Ledger Pro",
+                "desc": "Premium accounting and tax logic."
+            },
+            "internal-engine": {
+                "title": "Operational Shell",
+                "desc": "Production-ready internal tools."
+            },
+            "law-silo": {
+                "title": "Lex Sileo",
+                "desc": "Prestige legal architecture."
+            },
+            "zen-food": {
+                "title": "Aurum & Ash",
+                "desc": "Cinematic dining experiences."
+            },
+            "studio-zero": {
+                "title": "Studio Zero",
+                "desc": "Visual-heavy portfolios."
+            },
+            "tech-grid": {
+                "title": "SyncSphere",
+                "desc": "High-frequency landing pages."
+            },
+            "boreal-estate": {
+                "title": "Boreal Estates",
+                "desc": "Prestige listings for luxury."
+            },
+            "elite-lms": {
+                "title": "Elite Academia",
+                "desc": "Masterclass architecture for education."
+            },
+            "news-silo": {
+                "title": "Dispatch Engine",
+                "desc": "Editorial excellence."
+            },
+            "spa-wellness": {
+                "title": "Zen Retreat",
+                "desc": "Tranquil design for wellness."
+            },
+            "urban-retail": {
+                "title": "Urban Retail",
+                "desc": "Contemporary streetwear storefront."
+            },
+            "prime-law": {
+                "title": "Prime Partners",
+                "desc": "Authoritative legal presence."
+            },
+            "fusion-bistro": {
+                "title": "Fusion Bistro",
+                "desc": "Modern culinary showcase."
+            },
+            "venture-cap": {
+                "title": "Venture One",
+                "desc": "Strategic investment portfolio."
+            },
+            "dental-plus": {
+                "title": "Dental Plus",
+                "desc": "Friendly family dentistry."
+            },
+            "yoga-flow": {
+                "title": "Yoga Flow",
+                "desc": "Minimalist calm for studios."
+            },
+            "tech-nova": {
+                "title": "Nova Tech",
+                "desc": "Innovative tech solutions."
+            },
+            "estate-prime": {
+                "title": "Prime Estate",
+                "desc": "Premium residential listings."
+            },
+            "news-daily": {
+                "title": "Daily News",
+                "desc": "Fast-paced news feed."
+            },
+            "lms-pro": {
+                "title": "Pro Learn",
+                "desc": "Professional training platform."
+            }
         }
     },
     "Pricing": {
@@ -358,7 +430,19 @@
         "subtitle": "Everything you need to get started and manage your site successfully.",
         "badge": "Support Hub",
         "faq_title": "Frequently Asked Questions",
-        "contact_support": "Contact Technical Support"
+        "contact_support": "Contact Technical Support",
+        "no_answer_title": "Can't find an answer?",
+        "no_answer_desc": "Our technical support team is ready to help you around the clock.",
+        "faqs": {
+            "q1": "How can I start building my website?",
+            "a1": "Simply sign up and choose the template that suits your activity. You'll be guided step by step to customize your site.",
+            "q2": "What is the delivery time for the website?",
+            "a2": "We commit to delivering your complete website within 48 hours of order confirmation and payment.",
+            "q3": "Can I edit the website myself after delivery?",
+            "a3": "Yes! We provide you with an easy-to-use dashboard to update content and images at any time.",
+            "q4": "What payment methods are available?",
+            "a4": "We accept PayPal and local bank transfers (CIH, Barid Bank) for customers in Morocco."
+        }
     },
     "Editor": {
         "title": "Site Editor",
@@ -377,23 +461,6 @@
         "error": "Critical Failure",
         "back": "Return",
         "save": "Secure Changes"
-    },
-    "Footer": {
-        "tagline": "The sovereign infrastructure for the next generation of digital commerce. Built for speed, engineered for dominance.",
-        "platform": "Platform",
-        "company": "Company",
-        "system": "System Status",
-        "aiEngine": "AI Engine",
-        "pricing": "Pricing",
-        "blog": "Intelligence",
-        "contact": "Contact",
-        "about": "About Us",
-        "help": "Help Center",
-        "privacy": "Privacy Policy",
-        "terms": "Terms of Service",
-        "operational": "All Systems Operational",
-        "hosted": "Securely Hosted",
-        "copyright": "© 2026 GetYouSite. All rights reserved."
     },
     "Dashboard": {
         "title": "Command Center",

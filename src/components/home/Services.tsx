@@ -51,7 +51,7 @@ export default function Services() {
                         viewport={{ once: true }}
                         className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary border border-border text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground mb-8"
                     >
-                        Capabilities_Silo
+                        {t('title')}
                     </motion.div>
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
