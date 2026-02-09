@@ -44,3 +44,9 @@ next-env.d.ts
 .env*.local
 
 /src/generated/prisma
+
+# systeam
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
