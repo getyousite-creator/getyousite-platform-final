@@ -502,6 +502,19 @@ export default function DashboardClient() {
                                     <Calendar className="w-4 h-4 mr-2" />
                                     {t('schedule_report')}
                                 </Button>
+                                <Button
+                                    variant="outline"
+                                    className="w-full justify-start border-border bg-red-500/5 hover:bg-red-500/10 text-red-500 hover:text-red-600 mt-4 separator"
+                                    onClick={async () => {
+                                        const { createClient } = await import('@/lib/supabase/client');
+                                        const supabase = createClient();
+                                        await supabase.auth.signOut();
+                                        window.location.href = '/';
+                                    }}
+                                >
+                                    <LogOut className="w-4 h-4 mr-2" />
+                                    {t('signout') || "Sign Out"}
+                                </Button>
                             </CardContent>
                         </Card>
 

@@ -95,7 +95,7 @@ export default function SignUpForm() {
         return (
             <div className="p-8 rounded-2xl bg-card border border-border shadow-2xl">
                 <div className="text-center py-8">
-                    <CheckCircle className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
+                    <CheckCircle className="w-16 h-16 text-primary mx-auto mb-4" />
                     <h2 className="text-2xl font-bold text-foreground mb-2">Account Created Successfully!</h2>
                     <p className="text-muted-foreground mb-6">
                         We have sent a verification link to your email address.
@@ -232,10 +232,8 @@ export default function SignUpForm() {
                     {' '}and{' '}
                     <Link href="/privacy" className="text-primary hover:underline">Privacy Policy</Link>
                 </p>
-                <div className="text-[10px] text-muted-foreground/50 text-center font-mono mt-4">
-                    Diagnostics Active: v1.1
-                </div>
-            </form>
-        </div>
+            </p>
+        </form>
+        </div >
     );
 }

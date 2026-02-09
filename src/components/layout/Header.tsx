@@ -108,7 +108,7 @@ export default function Header() {
                                     onClick={async () => {
                                         const supabase = createClient();
                                         await supabase.auth.signOut();
-                                        router.refresh();
+                                        window.location.href = '/';
                                         toast.success("Security sequence: Session Terminated.");
                                     }}
                                 >
