@@ -8,6 +8,64 @@ export interface UserPromptData {
     selectedId: string;
 }
 
+// CLINICAL HEURISTIC SYNTHESIS
+const HeuristicSovereignGenerator = {
+    synthesize(userData: UserPromptData) {
+        const niche = userData.niche.toLowerCase();
+        const vision = userData.vision.toLowerCase();
+        const biz = userData.businessName;
+
+        // 1. Primary Niche Vectors
+        if (niche.includes('health') || niche.includes('doctor') || vision.includes('medical') || vision.includes('patient')) {
+            return {
+                headline: `Clinical Excellence for ${biz}: Patient-First Care`,
+                subheadline: `High-fidelity healthcare infrastructure designed for optimal patient outcomes and trust.`,
+                features: ["Sovereign-Health-v1", "HIPAA-Standard-Logic", "Global-Clinical-Reach"]
+            };
+        }
+
+        if (niche.includes('food') || niche.includes('resto') || niche.includes('cafe') || vision.includes('delicious') || vision.includes('taste')) {
+            return {
+                headline: `${biz}: The Art of Culinary Perfection`,
+                subheadline: `A digital dining experience that bridges tradition with avant-garde flavor science.`,
+                features: ["Menu-Logic-Synthesis", "Real-Time-Booking", "Gourmet-Visual-Grid"]
+            };
+        }
+
+        if (niche.includes('tech') || niche.includes('ai') || niche.includes('software') || vision.includes('future') || vision.includes('input')) {
+            return {
+                headline: `Orchestrating the Future with ${biz} Intelligence`,
+                subheadline: `Real-time neural architecture and high-frequency deployment for the global digital ecosystem.`,
+                features: ["Neural-Feed-v3", "Logic-Hardened-API", "Autonomous-Expansion-Nodes"]
+            };
+        }
+
+        if (niche.includes('estate') || niche.includes('property') || niche.includes('house')) {
+            return {
+                headline: `Luxury Architecture. Sovereign Ownership.`,
+                subheadline: `Curating high-value residential and commercial ecosystems for ${biz} clients.`,
+                features: ["Precision-Blueprints", "Asset-Security-Protocol", "Geometric-Layout-Optimization"]
+            };
+        }
+
+        if (niche.includes('law') || niche.includes('legal') || niche.includes('court') || vision.includes('justice')) {
+            return {
+                headline: `Unyielding Advocacy. Strategic Counsel.`,
+                subheadline: `Protecting your interests and legacy with the sovereign legal framework of ${biz}.`,
+                features: ["Precedent-Logic", "Client-Confidentiality-v2", "High-Stakes-Litigation"]
+            };
+        }
+
+        // 2. Intent-Based Synthesis (Catch-All)
+        const intent = vision.length > 5 ? vision : `Optimal ${niche} services`;
+        return {
+            headline: `Reinventing ${niche} through the ${biz} Logic`,
+            subheadline: `A sovereign digital asset built to dominate the ${niche} market: ${intent}.`,
+            features: ["Structural-Efficiency", "Growth-Velocity-v1", "Clean-Architecture-Standard"]
+        };
+    }
+};
+
 /**
  * SOVEREIGN CUSTOMIZATION ENGINE
  * 
@@ -45,51 +103,8 @@ export const CustomizerEngine = {
             throw new Error(`CRITICAL_ERROR: Template_ID_Not_Found: ${userData.selectedId}`);
         }
 
-        // CLINICAL CONTENT GENERATION MAP
-        // CLINICAL CONTENT GENERATION MAP
-        const nicheContent: Record<string, any> = {
-            "AI & Tech": {
-                headline: `Breaking: ${userData.businessName} Orchestrates the Future of Intelligence`,
-                subheadline: `Real-time neural analysis and high-frequency reporting on the global AI ecosystem.`,
-                features: ["Neural-Feed-v1", "Deep-Logic-Analysis", "Global-Intelligence-Network"]
-            },
-            "Real Estate": {
-                headline: `Luxury Architecture. Sovereign Ownership.`,
-                subheadline: `Curating the future of residential and commercial ecosystems for ${userData.businessName}.`,
-                features: ["Virtual-Blueprint-Tours", "Sovereign-Asset-Protection", "Geometric-Layout-Optimization"]
-            },
-            "Cooking & Culinary": {
-                headline: `Taste the Art of Perfection`,
-                subheadline: `Where ${userData.businessName} blends tradition with avant-garde culinary science.`,
-                features: ["Seasonal-Menu-Curation", "Farm-to-Table-Logistics", "Chef's-Table-Experience"]
-            },
-            "News & Media": {
-                headline: `The Truth, Accelerated.`,
-                subheadline: `${userData.businessName} delivers the world's pulse with uncompromising clarity.`,
-                features: ["Real-Time-Wire", "Investigative-Deep-Dives", "Global-Correspondent-Network"]
-            },
-            "Health & Science": {
-                headline: `Advancing Human Longevity`,
-                subheadline: `Pioneering research and clinical excellence at ${userData.businessName}.`,
-                features: ["Clinical-Trials-Access", "Precision-Medicine-Protocol", "Advanced-Diagnostics"]
-            },
-            "Finance & Law": {
-                headline: `Protecting Your Legacy`,
-                subheadline: `Strategic counsel for the modern era by ${userData.businessName}.`,
-                features: ["Wealth-Preservation", "Corporate-Governance", "Strategic-Litigation"]
-            },
-            "Fitness & Wellness": {
-                headline: `Forge Your Ultimate Self`,
-                subheadline: `${userData.businessName} provides the blueprint for physical and mental mastery.`,
-                features: ["Performance-Tracking", "Elite-Coaching", "Recovery-Protocols"]
-            }
-        };
-
-        const specializedContent = nicheContent[userData.niche] || {
-            headline: `Architecting ${userData.businessName} for the Future`,
-            subheadline: userData.vision,
-            features: ["Logic-Standard-v1", "Clean-Architecture", "Optimized-Efficiency"]
-        };
+        // 1. EXECUTE HEURISTIC SYNTHESIS
+        const specializedContent = HeuristicSovereignGenerator.synthesize(userData);
 
         // 2. Deep Architectural Merge (Logic-First)
         const finalBlueprint: SiteBlueprint = {
@@ -97,7 +112,7 @@ export const CustomizerEngine = {
             id: `site_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`,
             name: userData.businessName,
             description: userData.vision,
-            ai_insight: specializedContent.insight || `Focus on ${userData.niche.toLowerCase()} trends and local visibility for ${userData.businessName}.`,
+            ai_insight: `Focus on ${userData.niche.toLowerCase()} trends and local visibility for ${userData.businessName}. Synthetic heuristic applied.`,
             theme: {
                 ...template.blueprint.theme,
                 primary: template.blueprint.theme.primary,
@@ -108,14 +123,20 @@ export const CustomizerEngine = {
                 content: {
                     ...section.content,
                     headline: section.type === 'hero' ? specializedContent.headline : section.content.headline,
-                    subheadline: section.type === 'hero' ? specializedContent.subheadline : section.content.subheadline
+                    subheadline: section.type === 'hero' ? specializedContent.subheadline : section.content.subheadline,
+                    features: section.type === 'features' ? specializedContent.features : section.content.features
                 }
             })),
             metadata: {
                 ...template.blueprint.metadata,
                 generated_at: new Date().toISOString(),
-                engine_version: "Sovereign-v1.3-Harden-Logic",
-                niche: userData.niche
+                engine_version: "Sovereign-v1.4-Heuristic-Synthesis",
+                niche: userData.niche,
+                seo: {
+                    title: `${userData.businessName} | Optimal ${userData.niche}`,
+                    description: userData.vision.substring(0, 160) || `World-class ${userData.niche} services by ${userData.businessName}.`,
+                    keywords: [userData.niche, 'sovereign', 'intelligence']
+                }
             },
             timestamp: new Date().toISOString()
         };

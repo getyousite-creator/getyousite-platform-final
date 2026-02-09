@@ -46,7 +46,7 @@ export default function PricingEngine() {
                 </div>
 
                 <PayPalScriptProvider options={{
-                    "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
+                    clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
                     currency: "USD",
                     intent: "capture" // Fix: Must be 'capture' for one-time payments
                 }}>
@@ -68,35 +68,35 @@ function PlanCard({ plan, t }: { plan: any, t: any }) {
     return (
         <div
             className={`p-10 rounded-[40px] border flex flex-col transition-all duration-500 ${plan.popular
-                    ? 'bg-card border-primary/50 shadow-xl scale-105 z-10'
-                    : 'bg-card border-border hover:border-primary/20'
+                ? 'bg-[#0A2540]/50 border-[#00D09C]/50 shadow-[0_0_30px_rgba(0,208,156,0.1)] scale-105 z-10 backdrop-blur-xl'
+                : 'bg-white/5 border-white/5 hover:border-[#00D09C]/20'
                 }`}
         >
             <div className="flex items-center justify-between mb-8">
-                <div className={`p-4 rounded-2xl bg-secondary`}>
-                    <plan.icon className={`w-6 h-6 text-foreground`} />
+                <div className={`p-4 rounded-2xl bg-[#0A2540]/50 border border-white/5`}>
+                    <plan.icon className={`w-6 h-6 text-[#00D09C]`} />
                 </div>
                 {plan.popular && (
-                    <span className="bg-primary text-[8px] font-black uppercase tracking-widest px-3 py-1 rounded-full text-primary-foreground">
+                    <span className="bg-[#00D09C] text-[8px] font-black uppercase tracking-widest px-3 py-1 rounded-full text-white shadow-[0_0_10px_rgba(0,208,156,0.4)]">
                         {t("most_popular")}
                     </span>
                 )}
             </div>
 
-            <h3 className="text-xl font-black uppercase tracking-widest mb-2 text-foreground">{t(plan.id)}</h3>
+            <h3 className="text-xl font-black uppercase tracking-widest mb-2 text-white">{t(plan.id)}</h3>
             <div className="flex items-baseline gap-1 mb-4">
-                <span className="text-4xl font-black text-foreground">${plan.price}</span>
-                <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">/ lifelong</span>
+                <span className="text-4xl font-black text-white">${plan.price}</span>
+                <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">/ lifelong access</span>
             </div>
-            <p className="text-xs text-muted-foreground mb-8 leading-relaxed">{t(`desc.${plan.id}`)}</p>
+            <p className="text-xs text-blue-200/50 mb-8 leading-relaxed font-medium">{t(`desc.${plan.id}`)}</p>
 
             <ul className="space-y-4 mb-10 flex-grow">
                 {["basic_seo", "mobile", "delivery", "support"].map((feat) => (
                     <li key={feat} className="flex items-center gap-3">
-                        <div className="w-5 h-5 rounded-full bg-emerald-500/10 flex items-center justify-center">
-                            <Check className="w-3 h-3 text-emerald-500" />
+                        <div className="w-5 h-5 rounded-full bg-[#00D09C]/10 flex items-center justify-center">
+                            <Check className="w-3 h-3 text-[#00D09C]" />
                         </div>
-                        <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{t(`features.${feat}`)}</span>
+                        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest leading-none">{t(`features.${feat}`)}</span>
                     </li>
                 ))}
             </ul>
@@ -117,7 +117,7 @@ function PlanCard({ plan, t }: { plan: any, t: any }) {
                             return;
                         }
                         const res = await capturePayPalOrder(data.orderID, profile.id, plan.id);
-                        if (res.success) {
+                        if (res?.success) {
                             toast.success("Payment Secured. Dashboard Access Granted.");
                             router.push("/dashboard?checkout=success");
                         } else {

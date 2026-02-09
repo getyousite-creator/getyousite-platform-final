@@ -54,7 +54,7 @@ export default function Header() {
                 className={cn(
                     "fixed top-0 left-0 right-0 z-[100] transition-all duration-700",
                     isScrolled
-                        ? "bg-background/80 backdrop-blur-xl border-b border-border py-4 shadow-sm"
+                        ? "bg-black/90 backdrop-blur-xl border-b border-white/5 py-4 shadow-2xl"
                         : "bg-transparent py-8"
                 )}
             >
@@ -63,27 +63,27 @@ export default function Header() {
 
                     {/* Desktop Navigation - Refined Structure */}
                     <nav className="hidden lg:flex items-center gap-10">
-                        <a href="#services" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-all">{t('services')}</a>
-                        <a href="#pricing" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-all">{t('pricing')}</a>
-                        <a href="#showcase" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-all">{t('portfolio')}</a>
-                        <Link href="/blog" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-all font-mono">{t('blog')}</Link>
-                        <Link href="/contact" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-all font-mono">{t('contact')}</Link>
+                        <a href="#services" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C] transition-all">{t('services')}</a>
+                        <a href="#pricing" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C] transition-all">{t('pricing')}</a>
+                        <a href="#showcase" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C] transition-all">{t('portfolio')}</a>
+                        <Link href="/blog" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C] transition-all font-mono">{t('blog')}</Link>
+                        <Link href="/contact" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C] transition-all font-mono">{t('contact')}</Link>
                     </nav>
 
                     {/* Actions */}
                     <div className="hidden md:flex items-center gap-4">
                         {/* Lang Selector */}
                         <div className="relative group">
-                            <button className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors uppercase">
+                            <button className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors uppercase">
                                 <Globe className="w-4 h-4" />
                                 <span>{locale}</span>
                             </button>
-                            <div className="absolute top-full right-0 mt-2 w-32 bg-background border border-border rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                            <div className="absolute top-full right-0 mt-2 w-32 bg-black/90 border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all backdrop-blur-xl">
                                 {languages.map((lang) => (
                                     <button
                                         key={lang.code}
                                         onClick={() => changeLocale(lang.code)}
-                                        className="w-full text-left px-4 py-2 text-sm hover:bg-secondary flex items-center gap-2 text-muted-foreground hover:text-foreground"
+                                        className="w-full text-left px-4 py-2 text-xs hover:bg-[#00D09C]/10 flex items-center gap-2 text-gray-500 hover:text-white transition-colors"
                                     >
                                         <span>{lang.flag}</span>
                                         <span>{lang.code.toUpperCase()}</span>
@@ -96,7 +96,7 @@ export default function Header() {
                             <div className="flex items-center gap-4">
                                 <Link
                                     href="/dashboard"
-                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-primary flex items-center gap-2 hover:text-primary/80 transition-colors"
+                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-[#00D09C] flex items-center gap-2 hover:text-[#00D09C]/80 transition-colors"
                                 >
                                     <UserIcon className="w-3.5 h-3.5" />
                                     {t('dashboard')}
@@ -104,7 +104,7 @@ export default function Header() {
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-destructive gap-2 h-9"
+                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-red-500 gap-2 h-9"
                                     onClick={async () => {
                                         const supabase = createClient();
                                         await supabase.auth.signOut();
@@ -120,14 +120,14 @@ export default function Header() {
                             <>
                                 <Button
                                     variant="ghost"
-                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground hover:text-foreground"
+                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-white"
                                     onClick={() => router.push('/login')}
                                 >
                                     {t('login')}
                                 </Button>
                                 <Button
                                     variant="default"
-                                    className="bg-primary hover:bg-primary/90 text-primary-foreground border-0 h-10 px-6 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] shadow-lg"
+                                    className="bg-[#00D09C] hover:bg-[#00B085] text-white border-none h-10 px-6 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(0,208,156,0.3)] transition-all"
                                     onClick={() => router.push('/signup')}
                                 >
                                     {t('launch')}
@@ -137,7 +137,7 @@ export default function Header() {
                     </div>
 
                     {/* Mobile Toggle */}
-                    <button className="md:hidden text-foreground" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                    <button className="md:hidden text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                         {isMobileMenuOpen ? <X /> : <Menu />}
                     </button>
                 </div>
@@ -147,17 +147,17 @@ export default function Header() {
                     <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
-                        className="md:hidden bg-background border-b border-border"
+                        className="md:hidden bg-black border-b border-white/5"
                     >
                         <div className="flex flex-col p-6 gap-6">
-                            <a href="#services" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">{t('services')}</a>
-                            <a href="#pricing" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">{t('pricing')}</a>
-                            <a href="#showcase" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">{t('portfolio')}</a>
-                            <Link href="/blog" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">{t('blog')}</Link>
-                            <Link href="/contact" className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">{t('contact')}</Link>
-                            <div className="flex flex-col gap-3 pt-4 border-t border-border">
-                                <Button variant="outline" className="w-full border-border text-[10px] font-black uppercase tracking-[0.3em] text-foreground" onClick={() => router.push('/login')}>{t('login')}</Button>
-                                <Button className="w-full bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-[0.3em]" onClick={() => router.push('/signup')}>{t('launch')}</Button>
+                            <a href="#services" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C]">{t('services')}</a>
+                            <a href="#pricing" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C]">{t('pricing')}</a>
+                            <a href="#showcase" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C]">{t('portfolio')}</a>
+                            <Link href="/blog" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C]">{t('blog')}</Link>
+                            <Link href="/contact" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C]">{t('contact')}</Link>
+                            <div className="flex flex-col gap-3 pt-4 border-t border-white/5">
+                                <Button variant="ghost" className="w-full text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-white" onClick={() => router.push('/login')}>{t('login')}</Button>
+                                <Button className="w-full bg-[#00D09C] text-white text-[10px] font-black uppercase tracking-[0.3em] border-none shadow-[0_0_20px_rgba(0,208,156,0.3)]" onClick={() => router.push('/signup')}>{t('launch')}</Button>
                             </div>
 
                             <div className="flex gap-4 mt-4 pt-4 border-t border-border justify-center">

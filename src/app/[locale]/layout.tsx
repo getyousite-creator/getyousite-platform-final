@@ -69,7 +69,7 @@ export default async function LocaleLayout({
                         defaultTheme="light"
                         enableSystem={false}
                         disableTransitionOnChange
-                        themes={["light", "dark", "medical", "luxury"]}
+                        themes={["light", "dark", "medical", "luxury", "sovereign"]}
                     >
                         <SupabaseProvider>
                             <PwaProvider>

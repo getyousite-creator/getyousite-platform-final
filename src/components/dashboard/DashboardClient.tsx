@@ -131,14 +131,23 @@ export default function DashboardClient() {
                 seoData = await seoResponse.json();
             }
 
+            // Synthesize real activity from stores
+            const synthesizedActivity = (storesData.stores || []).map((store: any) => ({
+                type: store.status === 'deployed' ? 'success' : store.status === 'pending_payment' ? 'warning' : 'info',
+                message: store.status === 'deployed'
+                    ? `Site "${store.name}" successfully established on global CDN`
+                    : store.status === 'pending_payment'
+                        ? `Action required: Activate premium nodes for "${store.name}"`
+                        : `Neural draft created: "${store.name}"`,
+                date: store.updated_at || store.created_at
+            })).sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 5);
+
             setData({
                 stores: storesData.stores || [],
                 analytics: analyticsData,
                 seo: seoData,
-                recentActivity: [
-                    { type: 'success', message: 'Store "My Restaurant" deployed successfully', date: new Date().toISOString() },
-                    { type: 'info', message: 'New template added: "Medical Clinic"', date: new Date(Date.now() - 86400000).toISOString() },
-                    { type: 'warning', message: 'SEO audit recommended for "Portfolio"', date: new Date(Date.now() - 172800000).toISOString() },
+                recentActivity: synthesizedActivity.length > 0 ? synthesizedActivity : [
+                    { type: 'info', message: 'Ready for neural synthesis. Launch your first node.', date: new Date().toISOString() }
                 ],
             });
         } catch (error) {
@@ -381,24 +390,24 @@ export default function DashboardClient() {
                                                             <Button
                                                                 variant="outline"
                                                                 size="sm"
-                                                                className="border-primary/20 bg-primary/5 hover:bg-primary/10 text-primary font-bold"
+                                                                className="border-[#00D09C]/20 bg-[#00D09C]/10 hover:bg-[#00D09C]/20 text-[#00D09C] font-black uppercase tracking-widest text-[9px]"
                                                                 onClick={(e) => {
                                                                     e.stopPropagation();
                                                                     handleExport(store.id, store.name);
                                                                 }}
                                                             >
-                                                                <Download size={14} className="mr-2" />
+                                                                <Download size={12} className="mr-2" />
                                                                 Export Asset
                                                             </Button>
                                                         )}
                                                         <Button
                                                             variant="outline"
                                                             size="sm"
-                                                            className="border-border bg-secondary/10 hover:bg-secondary/20 text-muted-foreground"
+                                                            className="border-white/5 bg-white/5 hover:bg-white/10 text-gray-400 font-black uppercase tracking-widest text-[9px]"
                                                             asChild
                                                         >
                                                             <Link href={`/ar/customizer?id=${store.id}`}>
-                                                                <Edit size={14} className="mr-2" />
+                                                                <Edit size={12} className="mr-2" />
                                                                 Edit
                                                             </Link>
                                                         </Button>
@@ -409,14 +418,14 @@ export default function DashboardClient() {
                                     </div>
                                 ) : (
                                     <div className="text-center py-12">
-                                        <div className="w-16 h-16 bg-card/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                                            <Shield className="w-8 h-8 text-muted-foreground" />
+                                        <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                                            <Shield className="w-8 h-8 text-gray-600" />
                                         </div>
                                         <h3 className="text-lg font-bold text-foreground mb-2">{t('no_assets')}</h3>
                                         <p className="text-muted-foreground mb-6 max-w-sm mx-auto">
                                             {t('no_assets_desc')}
                                         </p>
-                                        <Button asChild className="bg-primary hover:bg-primary/90">
+                                        <Button asChild className="bg-[#00D09C] hover:bg-[#00B085] text-white border-none shadow-[0_0_20px_rgba(0,208,156,0.3)]">
                                             <Link href="/ar/customizer">{t('create_first')}</Link>
                                         </Button>
                                     </div>
@@ -429,48 +438,48 @@ export default function DashboardClient() {
                     <div className="space-y-6">
                         {/* SEO SCORE CARD */}
                         {data && data.seo && (
-                            <Card className="bg-card border-border">
+                            <Card className="bg-[#0A2540]/20 border border-white/5 backdrop-blur-md">
                                 <CardHeader>
                                     <CardTitle className="text-foreground flex items-center gap-2">
-                                        <SearchCheck className="w-5 h-5 text-yellow-500" />
+                                        <SearchCheck className="w-5 h-5 text-[#00D09C]" />
                                         {t('seo_health')}
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
                                     <div className="flex items-center justify-center">
-                                        <div className={`w-24 h-24 rounded-full ${getScoreBg(data.seo.overallScore)} border-4 flex items-center justify-center`}>
-                                            <span className={`text-3xl font-black ${getScoreColor(data.seo.overallScore)}`}>
+                                        <div className={`w-24 h-24 rounded-full bg-black/40 border-4 border-[#00D09C]/30 flex items-center justify-center shadow-[0_0_20px_rgba(0,208,156,0.1)]`}>
+                                            <span className={`text-3xl font-black text-[#00D09C]`}>
                                                 {data.seo.overallScore}
                                             </span>
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-3">
-                                        <div className="p-3 rounded-lg bg-card/5">
-                                            <p className="text-muted-foreground text-xs">SEO Score</p>
-                                            <p className={`text-lg font-bold ${getScoreColor(data.seo.seoScore)}`}>
+                                        <div className="p-3 rounded-xl bg-white/5 border border-white/5">
+                                            <p className="text-gray-500 text-[10px] font-black uppercase tracking-widest">SEO Score</p>
+                                            <p className={`text-lg font-black text-[#00D09C]`}>
                                                 {data.seo.seoScore}
                                             </p>
                                         </div>
-                                        <div className="p-3 rounded-lg bg-card/5">
-                                            <p className="text-muted-foreground text-xs">Performance</p>
-                                            <p className={`text-lg font-bold ${getScoreColor(data.seo.performanceScore)}`}>
+                                        <div className="p-3 rounded-xl bg-white/5 border border-white/5">
+                                            <p className="text-gray-500 text-[10px] font-black uppercase tracking-widest">Performance</p>
+                                            <p className={`text-lg font-black text-[#00D09C]`}>
                                                 {data.seo.performanceScore}
                                             </p>
                                         </div>
                                     </div>
                                     {data.seo.issues.length > 0 && (
-                                        <div className="p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
-                                            <p className="text-yellow-500 text-xs font-bold mb-2">
+                                        <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                                            <p className="text-amber-500 text-[10px] font-black uppercase tracking-widest mb-2">
                                                 {data.seo.issues.length} Issues Found
                                             </p>
                                             {data.seo.issues.slice(0, 3).map((issue, i) => (
-                                                <p key={i} className="text-muted-foreground text-xs mb-1">
+                                                <p key={i} className="text-gray-400 text-[10px] mb-1 font-medium">
                                                     • {issue.message}
                                                 </p>
                                             ))}
                                         </div>
                                     )}
-                                    <Button variant="outline" className="w-full border-border bg-card/5 hover:bg-card/10">
+                                    <Button variant="outline" className="w-full border-white/10 bg-white/5 hover:bg-white/10 text-gray-400 text-[10px] font-black uppercase tracking-widest">
                                         View Full Audit
                                     </Button>
                                 </CardContent>
@@ -478,33 +487,33 @@ export default function DashboardClient() {
                         )}
 
                         {/* QUICK ACTIONS */}
-                        <Card className="bg-card border-border">
+                        <Card className="bg-[#0A2540]/20 border border-white/5 backdrop-blur-md">
                             <CardHeader>
                                 <CardTitle className="text-foreground flex items-center gap-2">
-                                    <Zap className="w-5 h-5 text-orange-500" />
+                                    <Zap className="w-5 h-5 text-[#00D09C]" />
                                     {t('quick_actions')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2">
-                                <Button variant="outline" className="w-full justify-start border-border bg-card/5 hover:bg-card/10">
-                                    <Globe className="w-4 h-4 mr-2" />
+                                <Button variant="outline" className="w-full justify-start border-white/5 bg-white/5 hover:bg-[#00D09C]/10 text-gray-400 hover:text-[#00D09C] transition-all text-[10px] font-black uppercase tracking-widest">
+                                    <Globe className="w-4 h-4 mr-3" />
                                     {t('add_domain')}
                                 </Button>
-                                <Button variant="outline" className="w-full justify-start border-border bg-card/5 hover:bg-card/10">
-                                    <Search className="w-4 h-4 mr-2" />
+                                <Button variant="outline" className="w-full justify-start border-white/5 bg-white/5 hover:bg-[#00D09C]/10 text-gray-400 hover:text-[#00D09C] transition-all text-[10px] font-black uppercase tracking-widest">
+                                    <Search className="w-4 h-4 mr-3" />
                                     {t('run_audit')}
                                 </Button>
-                                <Button variant="outline" className="w-full justify-start border-border bg-card/5 hover:bg-card/10">
-                                    <BarChart3 className="w-4 h-4 mr-2" />
+                                <Button variant="outline" className="w-full justify-start border-white/5 bg-white/5 hover:bg-[#00D09C]/10 text-gray-400 hover:text-[#00D09C] transition-all text-[10px] font-black uppercase tracking-widest">
+                                    <BarChart3 className="w-4 h-4 mr-3" />
                                     {t('view_analytics')}
                                 </Button>
-                                <Button variant="outline" className="w-full justify-start border-border bg-card/5 hover:bg-card/10">
-                                    <Calendar className="w-4 h-4 mr-2" />
+                                <Button variant="outline" className="w-full justify-start border-white/5 bg-white/5 hover:bg-[#00D09C]/10 text-gray-400 hover:text-[#00D09C] transition-all text-[10px] font-black uppercase tracking-widest">
+                                    <Calendar className="w-4 h-4 mr-3" />
                                     {t('schedule_report')}
                                 </Button>
                                 <Button
                                     variant="outline"
-                                    className="w-full justify-start border-border bg-red-500/5 hover:bg-red-500/10 text-red-500 hover:text-red-600 mt-4 separator"
+                                    className="w-full justify-start border-red-500/20 bg-red-500/5 hover:bg-red-500/10 text-red-500 hover:text-red-600 mt-4 text-[10px] font-black uppercase tracking-widest"
                                     onClick={async () => {
                                         const { createClient } = await import('@/lib/supabase/client');
                                         const supabase = createClient();
@@ -512,29 +521,29 @@ export default function DashboardClient() {
                                         window.location.href = '/';
                                     }}
                                 >
-                                    <LogOut className="w-4 h-4 mr-2" />
+                                    <LogOut className="w-4 h-4 mr-3" />
                                     {t('signout') || "Sign Out"}
                                 </Button>
                             </CardContent>
                         </Card>
 
                         {/* RECENT ACTIVITY */}
-                        <Card className="bg-card border-border">
+                        <Card className="bg-[#0A2540]/20 border border-white/5 backdrop-blur-md">
                             <CardHeader>
                                 <CardTitle className="text-foreground flex items-center gap-2">
-                                    <Clock className="w-5 h-5 text-blue-500" />
+                                    <Clock className="w-5 h-5 text-gray-400" />
                                     {t('recent_activity')}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-3">
                                 {data && data.recentActivity.map((activity, i) => (
-                                    <div key={i} className="flex items-start gap-3 p-2 rounded-lg hover:bg-card/5 transition-colors">
-                                        <div className={`w-2 h-2 rounded-full mt-1.5 ${activity.type === 'success' ? 'bg-emerald-500' :
-                                            activity.type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'
+                                    <div key={i} className="flex items-start gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors">
+                                        <div className={`w-2 h-2 rounded-full mt-1.5 shadow-[0_0_8px_rgba(255,255,255,0.3)] ${activity.type === 'success' ? 'bg-[#00D09C]' :
+                                            activity.type === 'warning' ? 'bg-amber-500' : 'bg-blue-400'
                                             }`} />
                                         <div>
-                                            <p className="text-muted-foreground text-sm">{activity.message}</p>
-                                            <p className="text-muted-foreground text-xs mt-1">
+                                            <p className="text-gray-300 text-xs font-medium leading-relaxed">{activity.message}</p>
+                                            <p className="text-gray-500 text-[10px] font-bold mt-1 uppercase tracking-widest">
                                                 {new Date(activity.date).toLocaleDateString()}
                                             </p>
                                         </div>
@@ -547,26 +556,26 @@ export default function DashboardClient() {
 
                 {/* TRAFFIC CHART PLACEHOLDER */}
                 {data && data.analytics && data.analytics.viewsOverTime.length > 0 && (
-                    <Card className="bg-card border-border">
+                    <Card className="bg-[#0A2540]/20 border border-white/5 backdrop-blur-md">
                         <CardHeader>
                             <CardTitle className="text-foreground flex items-center gap-2">
-                                <TrendingUp className="w-5 h-5 text-emerald-500" />
+                                <TrendingUp className="w-5 h-5 text-[#00D09C]" />
                                 Traffic Overview
                             </CardTitle>
-                            <CardDescription>Page views over the last 30 days</CardDescription>
+                            <CardDescription className="text-gray-500 uppercase text-[10px] font-black tracking-widest">Page views over the last 30 days</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="h-64 flex items-end justify-between gap-1">
+                            <div className="h-64 flex items-end justify-between gap-2 px-8">
                                 {(data.analytics?.viewsOverTime || []).slice(-14).map((day, i) => (
-                                    <div key={i} className="flex-1 flex flex-col items-center gap-2">
+                                    <div key={i} className="flex-1 flex flex-col items-center gap-4 group">
                                         <div
-                                            className="w-full bg-blue-500/50 hover:bg-blue-500 rounded-t transition-all cursor-pointer"
+                                            className="w-full bg-[#00D09C]/20 group-hover:bg-[#00D09C] group-hover:shadow-[0_0_20px_rgba(0,208,156,0.4)] rounded-t-lg transition-all cursor-pointer duration-500"
                                             style={{
                                                 height: `${(day.views / Math.max(...(data.analytics?.viewsOverTime || [{ views: 1 }]).map(d => d.views))) * 100}%`,
-                                                minHeight: day.views > 0 ? '4px' : '0'
+                                                minHeight: day.views > 0 ? '6px' : '0'
                                             }}
                                         />
-                                        <span className="text-xs text-muted-foreground">
+                                        <span className="text-[10px] font-black text-gray-600 group-hover:text-white transition-colors">
                                             {new Date(day.date).getDate()}
                                         </span>
                                     </div>

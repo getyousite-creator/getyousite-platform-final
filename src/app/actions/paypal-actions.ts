@@ -51,18 +51,18 @@ export async function capturePayPalOrder(orderID: string, userId: string, planId
             revalidatePath('/dashboard');
 
             // MISSION 5.3: TRUTHFUL PROVISIONING
-            // We fetch the site hostname and trigger the Edge loop
-            const { data: sites } = await supabase
-                .from('sites')
-                .select('subdomain, custom_domain')
+            // We fetch the store associated with the transaction (if any) or all user stores requesting deployment
+            const { data: stores } = await supabase
+                .from('stores')
+                .select('id, slug, custom_domain, status')
                 .eq('user_id', userId)
-                .is('published', true);
+                .in('status', ['paid', 'deploying']);
 
-            if (sites && sites.length > 0) {
-                const { provisionSiteOnEdge } = await import('@/app/actions/provisioning-actions');
-                for (const site of sites) {
-                    const hostname = site.custom_domain || `${site.subdomain}.getyousite.main.app`;
-                    await provisionSiteOnEdge(hostname);
+            if (stores && stores.length > 0) {
+                const { DeploymentEngine } = await import('@/lib/engine/deployment');
+                for (const store of stores) {
+                    console.log(`[SOVEREIGN_IGNITION] Automatically initiating deployment for store: ${store.id}`);
+                    await DeploymentEngine.deployToProduction(store.id);
                 }
             }
 

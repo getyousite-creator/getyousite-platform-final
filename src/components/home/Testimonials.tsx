@@ -49,26 +49,26 @@ export default function Testimonials() {
                     {[...testimonials, ...testimonials, ...testimonials].map((testimonial, i) => (
                         <div
                             key={i}
-                            className="inline-block w-[350px] bg-card border border-border rounded-2xl p-8 hover:shadow-lg transition-shadow whitespace-normal"
+                            className="inline-block w-[350px] bg-[#0A2540]/5 border border-white/5 rounded-3xl p-8 hover:border-[#00D09C]/30 transition-all whitespace-normal backdrop-blur-sm shadow-xl"
                         >
                             <div className="flex items-center gap-1 mb-4">
                                 {[1, 2, 3, 4, 5].map((star) => (
-                                    <Star key={star} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                                    <Star key={star} className="w-4 h-4 fill-[#00D09C] text-[#00D09C]" />
                                 ))}
                             </div>
-                            <p className="text-muted-foreground mb-6 italic leading-relaxed">"{testimonial.content}"</p>
+                            <p className="text-blue-100/60 mb-6 italic leading-relaxed text-sm">"{testimonial.content}"</p>
                             <div className="flex items-center gap-4">
-                                <div className="relative w-10 h-10 rounded-full overflow-hidden border border-border">
+                                <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#00D09C]/20 bg-[#00D09C]/10">
                                     <Image
                                         src={testimonial.image}
                                         alt={testimonial.name}
                                         fill
-                                        className="object-cover"
+                                        className="object-cover grayscale hover:grayscale-0 transition-all"
                                     />
                                 </div>
                                 <div>
-                                    <h4 className="text-foreground font-semibold text-sm">{testimonial.name}</h4>
-                                    <p className="text-muted-foreground text-xs">{testimonial.role}</p>
+                                    <h4 className="text-white font-black uppercase tracking-tighter text-sm italic">{testimonial.name}</h4>
+                                    <p className="text-[#00D09C] text-[10px] font-black uppercase tracking-widest">{testimonial.role}</p>
                                 </div>
                             </div>
                         </div>

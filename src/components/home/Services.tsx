@@ -12,32 +12,32 @@ export default function Services() {
         {
             icon: Zap,
             id: "velocity",
-            color: "text-yellow-400",
+            color: "text-[#00D09C]",
         },
         {
             icon: Cpu,
             id: "ai",
-            color: "text-purple-400",
+            color: "text-[#00D09C]",
         },
         {
             icon: Globe,
             id: "cdn",
-            color: "text-blue-400",
+            color: "text-[#00D09C]",
         },
         {
             icon: Shield,
             id: "security",
-            color: "text-green-400",
+            color: "text-[#00D09C]",
         },
         {
             icon: Smartphone,
             id: "responsive",
-            color: "text-pink-400",
+            color: "text-[#00D09C]",
         },
         {
             icon: Rocket,
             id: "growth",
-            color: "text-orange-400",
+            color: "text-[#00D09C]",
         },
     ];
 
@@ -81,23 +81,23 @@ export default function Services() {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
                             whileHover={{ y: -5 }}
-                            className="group relative p-10 rounded-3xl bg-card border border-border hover:border-primary/30 transition-all duration-500 overflow-hidden backdrop-blur-sm"
+                            className="group relative p-10 rounded-3xl bg-[#0A2540]/5 border border-white/5 hover:border-[#00D09C]/30 transition-all duration-500 overflow-hidden backdrop-blur-sm"
                         >
                             {/* Hover Flux Glow */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                            <div className="absolute inset-0 bg-gradient-to-br from-[#00D09C]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-                            <div className={cn("mb-8 w-14 h-14 rounded-2xl bg-secondary border border-border flex items-center justify-center shadow transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3", service.color)}>
+                            <div className={cn("mb-8 w-14 h-14 rounded-2xl bg-[#0A2540]/10 border border-white/10 flex items-center justify-center shadow transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3", service.color)}>
                                 <service.icon className="w-7 h-7" />
                             </div>
 
-                            <h3 className="text-2xl font-black text-foreground mb-4 group-hover:text-primary transition-colors tracking-tight">
+                            <h3 className="text-2xl font-black text-foreground mb-4 group-hover:text-[#00D09C] transition-colors tracking-tight">
                                 {t(`${service.id}.title`)}
                             </h3>
                             <p className="text-muted-foreground text-sm leading-relaxed font-medium">
                                 {t(`${service.id}.desc`)}
                             </p>
 
-                            <div className="mt-8 w-12 h-1 bg-muted rounded-full group-hover:w-24 group-hover:bg-primary transition-all duration-500" />
+                            <div className="mt-8 w-12 h-1 bg-white/5 rounded-full group-hover:w-24 group-hover:bg-[#00D09C] transition-all duration-500" />
                         </motion.div>
                     ))}
                 </div>

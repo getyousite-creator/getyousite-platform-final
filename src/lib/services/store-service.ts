@@ -15,6 +15,7 @@ export interface Store {
     user_id: string;
     name: string;
     slug: string | null;
+    custom_domain: string | null;
     description: string | null;
     blueprint: SiteBlueprint;
     status: 'draft' | 'pending_payment' | 'paid' | 'deploying' | 'deployed' | 'failed';
@@ -39,11 +40,15 @@ export interface UpdateStoreData {
     blueprint?: SiteBlueprint;
     status?: Store['status'];
     slug?: string;
+    custom_domain?: string;
     deployment_url?: string;
     deployed_at?: Date | string;
     paid_at?: Date | string;
     payment_id?: string;
     amount?: number;
+    seo_title?: string;
+    seo_description?: string;
+    seo_keywords?: string[];
 }
 
 export interface StoreServiceError {
@@ -344,7 +349,7 @@ export const StoreService = {
 
             const supabase = await createClient();
 
-            // @ts-ignore
+
             const { data: store, error } = await supabase
                 .from('stores')
                 .update({
@@ -356,7 +361,7 @@ export const StoreService = {
                 })
                 .eq('id', id)
                 .select()
-                // @ts-ignore
+
                 .single();
 
             if (error) {
@@ -393,7 +398,7 @@ export const StoreService = {
 
             const supabase = await createClient();
 
-            // @ts-ignore
+
             const { data: store, error } = await supabase
                 .from('stores')
                 .update({
@@ -404,7 +409,7 @@ export const StoreService = {
                 })
                 .eq('id', id)
                 .select()
-                // @ts-ignore
+
                 .single();
 
             if (error) {
