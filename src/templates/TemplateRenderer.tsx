@@ -16,7 +16,7 @@ const MasterPublic = dynamic(() => import('./MasterPublic'));
 const MasterWellness = dynamic(() => import('./MasterWellness'));
 const MasterFitness = dynamic(() => import('./MasterFitness'));
 const MasterCorporate = dynamic(() => import('./MasterCorporate'));
-const MasterAccounting = dynamic(() => import('./MasterAccounting'));
+
 const MasterAccounting = dynamic(() => import('./MasterAccounting'));
 const MasterInternal = dynamic(() => import('./MasterInternal'));
 
