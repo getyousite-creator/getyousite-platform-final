@@ -21,6 +21,10 @@ export async function createStripeCheckoutAction(priceId: string, siteId: string
     const host = (await headers()).get("origin");
 
     try {
+        if (!stripe) {
+            throw new Error("Stripe Protocol Inactive: Missing Secret Key.");
+        }
+
         const session = await stripe.checkout.sessions.create({
             customer_email: user.email,
             line_items: [

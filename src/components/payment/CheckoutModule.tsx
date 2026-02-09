@@ -33,7 +33,7 @@ export function CheckoutModule({ siteId, planId, amount, onSuccess }: CheckoutMo
                 </div>
             </div>
 
-                <div className="p-6 rounded-2xl bg-secondary border border-border">
+            <div className="p-6 rounded-2xl bg-secondary border border-border">
                 <div className="flex justify-between items-center mb-4">
                     <span className="text-muted-foreground uppercase text-[10px] font-bold">Service Plan</span>
                     <span className="text-foreground font-black uppercase text-xs">{planId}</span>
@@ -65,7 +65,7 @@ export function CheckoutModule({ siteId, planId, amount, onSuccess }: CheckoutMo
                 <PayPalButtons
                     style={{
                         layout: "vertical",
-                        color: "blue",
+                        color: "gold",
                         shape: "pill",
                         label: "pay",
                         height: 54
@@ -108,7 +108,7 @@ export function CheckoutModule({ siteId, planId, amount, onSuccess }: CheckoutMo
                 </Button>
             )}
 
-                <div className="flex justify-center items-center gap-2">
+            <div className="flex justify-center items-center gap-2">
                 <Zap className="w-3 h-3 text-muted-foreground" />
                 <span className="text-[8px] text-muted-foreground uppercase font-black tracking-widest">Encrypted via Sovereign Monetization Bridge</span>
             </div>
