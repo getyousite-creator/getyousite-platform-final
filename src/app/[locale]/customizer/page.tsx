@@ -88,7 +88,7 @@ export default function CustomizerPage() {
             }
 
             return true;
-        } catch (e) {
+        } catch (_e) {
             return false;
         }
     }, [businessName, vision, activeStoreId, router]);
@@ -116,7 +116,7 @@ export default function CustomizerPage() {
                 setShowPay(true);
             }
 
-        } catch (error) {
+        } catch (_error) {
             toast.error("Generation failed");
         } finally {
             setIsGenerating(false);
@@ -148,7 +148,7 @@ export default function CustomizerPage() {
         if (oldUrl && oldUrl.includes("site-assets") && oldUrl !== url) {
             // We fire and forget the delete to not block UI, or we could await if critical
             // Given the user's strict requirement, we should probably log error if it fails
-            StorageService.deleteAsset(oldUrl).then(res => {
+            StorageService.deleteAsset(oldUrl).then(() => {
                 // Silent fail/success
             });
         }

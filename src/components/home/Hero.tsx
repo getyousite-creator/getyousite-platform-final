@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Zap, Cpu, Shield, Globe, Activity } from "lucide-react";
+import { ArrowRight, Zap, Cpu, Shield } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useLaunchModal } from "@/hooks/use-launch-modal";

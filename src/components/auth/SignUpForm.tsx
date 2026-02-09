@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { AlertCircle, CheckCircle, Loader2, Mail } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface SignUpFormData {
     email: string;
@@ -23,7 +24,8 @@ export default function SignUpForm() {
     const [success, setSuccess] = useState(false);
 
     // Watch password for confirm validation
-    const password = watch('password');
+    // Watch password for confirm validation if needed in UI, otherwise remove
+    // const password = watch('password');
 
     const onSubmit = async (data: SignUpFormData) => {
         // Form submission logic
@@ -58,7 +60,7 @@ export default function SignUpForm() {
                     setSuccess(true);
                 }
             }
-        } catch (err) {
+        } catch (_err) {
             setGeneralError('An unexpected error occurred during sign up.');
         } finally {
             setLoading(false);
@@ -70,7 +72,7 @@ export default function SignUpForm() {
         setGeneralError(null);
         try {
             const supabase = createClient();
-            const { data, error } = await supabase.auth.signInWithOAuth({
+            const { error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
                     redirectTo: `${window.location.origin}/auth/callback`,
@@ -83,7 +85,7 @@ export default function SignUpForm() {
             } else {
                 // Redirecting
             }
-        } catch (err) {
+        } catch (_err) {
             setGeneralError('OAuth sign up failed');
             setLoading(false);
         }
@@ -226,9 +228,9 @@ export default function SignUpForm() {
 
                 <p className="text-xs text-muted-foreground text-center mt-4">
                     By signing up, you agree to our{' '}
-                    <a href="/terms" className="text-primary hover:underline">Terms of Service</a>
+                    <Link href="/terms" className="text-primary hover:underline">Terms of Service</Link>
                     {' '}and{' '}
-                    <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>
+                    <Link href="/privacy" className="text-primary hover:underline">Privacy Policy</Link>
                 </p>
                 <div className="text-[10px] text-muted-foreground/50 text-center font-mono mt-4">
                     Diagnostics Active: v1.1

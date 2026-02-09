@@ -47,7 +47,7 @@ export default function LoginForm() {
                     redirectTo: `${window.location.origin}/auth/callback`,
                 }
             });
-        } catch (err) {
+        } catch (_err) {
             setError('OAuth login failed');
             setLoading(false);
         }
