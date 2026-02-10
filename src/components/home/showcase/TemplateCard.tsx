@@ -6,6 +6,7 @@ import { Eye, CheckCircle, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Template } from "@/data/template-data";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 interface TemplateCardProps {
     template: Template;
@@ -14,6 +15,7 @@ interface TemplateCardProps {
 
 export default function TemplateCard({ template, onClick }: TemplateCardProps) {
     const router = useRouter();
+    const t = useTranslations('Showcase');
 
     return (
         <motion.div
@@ -39,7 +41,7 @@ export default function TemplateCard({ template, onClick }: TemplateCardProps) {
                 <div className="w-full h-full pt-10 relative overflow-hidden">
                     <Image
                         src={template.image}
-                        alt={template.title}
+                        alt={t(`projects.${template.id}.title`)}
                         fill
                         className="object-cover object-top transition-transform duration-[6000ms] ease-out group-hover:scale-105 group-hover:translate-y-[20%]"
                     />
@@ -52,13 +54,13 @@ export default function TemplateCard({ template, onClick }: TemplateCardProps) {
                             onClick={() => window.open(template.demoUrl, '_blank')}
                             className="flex-1 h-12 rounded-xl bg-secondary/20 border border-border hover:bg-secondary/30 text-foreground font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 transition-all"
                         >
-                            <ExternalLink className="w-3.5 h-3.5" /> LIVE PREVIEW
+                            <ExternalLink className="w-3.5 h-3.5" /> {t('preview')}
                         </Button>
                         <Button
                             onClick={() => router.push('/signup')}
                             className="flex-1 h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 shadow-xl transition-all"
                         >
-                            <CheckCircle className="w-3.5 h-3.5" /> SELECT INDUSTRIAL PILLAR
+                            <CheckCircle className="w-3.5 h-3.5" /> {t('edit')}
                         </Button>
                     </div>
                 </div>
@@ -67,16 +69,16 @@ export default function TemplateCard({ template, onClick }: TemplateCardProps) {
             <div className="mt-8 px-4">
                 <div className="flex items-center justify-between mb-3">
                     <h3 className="text-xl font-black text-foreground group-hover:text-primary transition-colors tracking-tight uppercase">
-                        {template.title}
+                        {t(`projects.${template.id}.title`)}
                     </h3>
                     {template.badge && (
                         <span className="text-[8px] font-black text-blue-500 border border-blue-500/30 px-2 py-0.5 rounded-full uppercase tracking-widest">
-                            {template.badge}
+                            {t(`badges.${template.badge}`) || template.badge}
                         </span>
                     )}
                 </div>
                 <p className="text-muted-foreground text-xs font-bold line-clamp-2 leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity uppercase tracking-tighter">
-                    {template.desc}
+                    {t(`projects.${template.id}.desc`)}
                 </p>
             </div>
         </motion.div>

@@ -69,7 +69,7 @@ export default function Pricing() {
                     {/* Currency Toggle */}
                     <div className="flex items-center justify-center gap-4 mt-8">
                         <span className={cn("text-[10px] font-black uppercase tracking-widest transition-colors", currency === 'MAD' ? "text-primary" : "text-muted-foreground")}>
-                            {currency === 'MAD' ? "Morocco (DH)" : "International (USD)"}
+                            {currency === 'MAD' ? t('currency.mad') : t('currency.usd')}
                         </span>
                         <button
                             onClick={() => setCurrency(currency === 'MAD' ? 'USD' : 'MAD')}
@@ -97,17 +97,17 @@ export default function Pricing() {
                                     : "bg-card border-border hover:border-primary/20"
                             )}
                         >
-                                {plan.popular && (
-                                    <div className="absolute -top-4 ltr:left-10 rtl:right-10 px-4 py-1.5 rounded-full bg-primary text-[8px] font-black tracking-widest text-primary-foreground">
-                                        {t('most_popular')}
-                                    </div>
-                                )}
+                            {plan.popular && (
+                                <div className="absolute -top-4 ltr:left-10 rtl:right-10 px-4 py-1.5 rounded-full bg-primary text-[8px] font-black tracking-widest text-primary-foreground">
+                                    {t('most_popular')}
+                                </div>
+                            )}
 
                             <div className="mb-8">
                                 <div className={cn("text-[10px] font-black uppercase tracking-[0.3em] mb-2", plan.highlight ? "text-primary" : "text-muted-foreground")}>
                                     {plan.niche}
                                 </div>
-                                <h3 className={cn("text-2xl font-black italic uppercase tracking-tighter mb-4 text-foreground") }>
+                                <h3 className={cn("text-2xl font-black italic uppercase tracking-tighter mb-4 text-foreground")}>
                                     {plan.name}
                                 </h3>
                                 <div className="flex items-baseline gap-1">

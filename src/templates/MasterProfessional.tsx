@@ -3,11 +3,13 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, Zap, Shield, BarChart3, Globe, CheckCircle2 } from "lucide-react";
 import SovereignWrapper from "./SovereignWrapper";
-import type { SovereignTemplateProps } from "@/lib/types/template";
+import { SovereignTemplateProps } from "@/lib/types/template";
 import type { Section } from "@/lib/schemas";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export default function MasterProfessional(props: SovereignTemplateProps) {
+    const t = useTranslations("Templates.professional");
     const { settings, blueprint } = props;
     const { headline, subheadline, primaryColor = "#3b82f6" } = settings;
 
@@ -29,19 +31,19 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
         label?: string;
     }[]) || [
             {
-                title: "Strategic Security",
+                title: t("strategic_security"),
                 icon: Shield,
-                description: "End-to-end encryption for all corporate assets.",
+                description: t("strategic_security_desc"),
             },
             {
-                title: "Edge Delivery",
+                title: t("edge_delivery"),
                 icon: Zap,
-                description: "High-performance infrastructure with 99.9% uptime.",
+                description: t("edge_delivery_desc"),
             },
             {
-                title: "Global Expansion",
+                title: t("global_expansion"),
                 icon: Globe,
-                description: "Ready for international market growth.",
+                description: t("global_expansion_desc"),
             },
         ];
 
@@ -60,7 +62,7 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
                                     <Sparkles className="text-white w-4 h-4" />
                                 </div>
                                 <span className="text-lg font-black tracking-widest uppercase">
-                                    {blueprint?.name || "Professional"}
+                                    {blueprint?.name || t("professional")}
                                 </span>
                             </div>
                             <div className="hidden md:flex items-center gap-12 text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 rtl:flex-row-reverse">
@@ -68,19 +70,19 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
                                     href="#capabilities"
                                     className="hover:text-white transition-colors"
                                 >
-                                    Capabilities
+                                    {t('capabilities')}
                                 </a>
                                 <a
                                     href="#infrastructure"
                                     className="hover:text-white transition-colors"
                                 >
-                                    Infrastructure
+                                    {t('infrastructure')}
                                 </a>
                                 <button
                                     onClick={() => onOpen("Consultation")}
                                     className="px-8 py-3 rounded-full border border-white/10 hover:bg-white/5 transition-all text-white font-black"
                                 >
-                                    GET_STARTED
+                                    {t('get_started')}
                                 </button>
                             </div>
                         </div>
@@ -101,7 +103,7 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
                                         style={{ backgroundColor: primaryColor }}
                                     />
                                     <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
-                                        Engine Infrastructure Active
+                                        {t('active_status')}
                                     </span>
                                 </div>
 
@@ -119,11 +121,11 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
                                         className="h-16 px-10 rounded-2xl font-black text-xs uppercase tracking-widest text-zinc-950 flex items-center gap-3 transition-all hover:scale-105 shadow-2xl shadow-blue-500/20"
                                         style={{ backgroundColor: primaryColor }}
                                     >
-                                        Start Your Project <ArrowRight className="w-4 h-4" />
+                                        {t('start_project')} <ArrowRight className="w-4 h-4" />
                                     </button>
                                     <div className="flex items-center gap-4 px-6 border border-white/5 bg-white/5 rounded-2xl backdrop-blur-xl">
                                         <div className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
-                                            Efficiency_Index: 99.4%
+                                            {t('efficiency_index')}: 99.4%
                                         </div>
                                     </div>
                                 </div>
@@ -145,7 +147,7 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
                                 <div className="absolute inset-x-10 bottom-10 p-10 bg-black/40 backdrop-blur-3xl border border-white/10 rounded-[40px] z-10 transition-transform group-hover:-translate-y-2">
                                     <div className="flex items-center justify-between mb-4">
                                         <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">
-                                            Live_Network
+                                            {t('live_network')}
                                         </span>
                                         <div className="flex gap-1">
                                             {[1, 2, 3, 4].map((i) => (
@@ -157,7 +159,7 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
                                         </div>
                                     </div>
                                     <div className="text-lg font-black uppercase tracking-tightest">
-                                        Secure_Node_Active
+                                        {t('node_active')}
                                     </div>
                                 </div>
                             </motion.div>
@@ -205,15 +207,15 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
                             <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
                                 <div className="max-w-xl">
                                     <h2 className="text-5xl font-black uppercase tracking-tighter mb-4 italic leading-none">
-                                        Strategic_Capabilities.
+                                        {t('strategic_capabilities')}.
                                     </h2>
                                     <p className="text-zinc-500 font-medium leading-relaxed uppercase text-xs tracking-widest">
-                                        Engineered for absolute market dominance.
+                                        {t('dominance')}
                                     </p>
                                 </div>
                                 <div className="h-[1px] flex-1 bg-white/5 hidden md:block mb-6 mx-10" />
                                 <span className="text-[10px] font-bold text-zinc-600 uppercase font-mono tracking-widest">
-                                    REF: ARCH_PRO_01
+                                    {t("ref_code")}
                                 </span>
                             </div>
 
@@ -260,19 +262,17 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
 
                             <div className="relative z-10 max-w-4xl mx-auto space-y-10">
                                 <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.85]">
-                                    Secure your <br />
-                                    <span style={{ color: primaryColor }}>Business Asset.</span>
+                                    {t('secure_asset').split(' ').slice(0, 2).join(' ')} <br />
+                                    <span style={{ color: primaryColor }}>{t('secure_asset').split(' ').slice(2).join(' ')}</span>
                                 </h2>
                                 <p className="text-zinc-400 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
-                                    Join the elite network of architects who trust Sovereign
-                                    Professional infrastructure for their mission-critical
-                                    operations.
+                                    {t('elite_network')}
                                 </p>
                                 <button
                                     onClick={() => onOpen("Deploy")}
                                     className="h-20 px-16 bg-white text-zinc-950 rounded-[30px] font-black text-sm uppercase tracking-[0.3em] hover:scale-105 transition-transform shadow-3xl mx-auto flex items-center justify-center gap-4"
                                 >
-                                    DEPLOY_NOW <CheckCircle2 className="w-6 h-6 text-emerald-500" />
+                                    {t('deploy_now')} <CheckCircle2 className="w-6 h-6 text-emerald-500" />
                                 </button>
                             </div>
                         </div>
@@ -289,14 +289,14 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
                             </span>
                         </div>
                         <div className="flex flex-wrap justify-center gap-10 text-[9px] font-black uppercase tracking-[0.4em] text-zinc-600">
-                            <span>Security</span>
-                            <span>Infrastructure</span>
-                            <span>Network</span>
-                            <span>Legal</span>
-                            <span>Dossier</span>
+                            <span>{t('security')}</span>
+                            <span>{t('infrastructure')}</span>
+                            <span>{t('network')}</span>
+                            <span>{t('legal')}</span>
+                            <span>{t('dossier')}</span>
                         </div>
                         <p className="text-[10px] text-zinc-800 font-bold uppercase tracking-[0.5em] mt-10">
-                            © 2026 Professional Industrial Architecture. All Systems Verified.
+                            {t("copyright")}
                         </p>
                     </footer>
                 </div>

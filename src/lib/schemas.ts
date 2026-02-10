@@ -45,8 +45,12 @@ export const SectionSchema = z.object({
         "team",
         "services",
         "blog_list",
+        "LEGAL_NOTICE",
+        "APPOINTMENT_WIDGET",
+        "LIVE_PRICING",
         "custom"
     ]),
+
     content: z.record(z.string(), z.any()),
     styles: z.record(z.string(), z.any()),
     animation: z.enum(["fade-in", "slide-up", "zoom-in", "none"]),
@@ -76,8 +80,11 @@ export const SiteBlueprintSchema = z.object({
         secondary: z.string(),
         accent: z.string(),
         fontFamily: z.string(),
+        backgroundColor: z.string().default("#ffffff"),
+        textColor: z.string().default("#000000"),
         mode: z.enum(["light", "dark", "industrial", "quantum", "medical", "luxury", "clean", "neon"]),
     }),
+
     pages: z.record(z.string(), PageSchema), // Mapping of slug -> Page
     layout: z.array(SectionSchema), // Home page layout (for backward compatibility)
     footer: z.object({
@@ -85,6 +92,13 @@ export const SiteBlueprintSchema = z.object({
         links: z.array(z.object({ label: z.string(), href: z.string() })),
         social: z.record(z.string(), z.string()),
     }),
+    seo: z.object({
+        title: z.string(),
+        description: z.string(),
+        keywords: z.string(),
+        ogImage: z.string().optional(),
+        favicon: z.string().optional(),
+    }).optional(),
     metadata: z.record(z.string(), z.any()),
     economic_impact: z.object({
         estimated_savings: z.string(),
@@ -98,3 +112,25 @@ export const SiteBlueprintSchema = z.object({
 
 export type Section = z.infer<typeof SectionSchema>;
 export type SiteBlueprint = z.infer<typeof SiteBlueprintSchema>;
+
+export interface Category {
+    id: string;
+    name: string;
+    slug: string;
+}
+
+export interface Post {
+    id: string;
+    title: string;
+    slug: string;
+    excerpt: string;
+    content: string;
+    author: {
+        name: string;
+        avatar: string;
+    };
+    date: string;
+    category: string;
+    image: string;
+    tags: string[];
+}

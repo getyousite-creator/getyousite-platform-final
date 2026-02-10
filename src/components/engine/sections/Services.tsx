@@ -3,7 +3,7 @@
 import React from 'react';
 import { CheckCircle2, Star } from 'lucide-react';
 
-export default function Services({ content, primaryColor }: any) {
+export default function Services({ content, primaryColor, backgroundColor, textColor }: any) {
     const services = content?.items || [
         { name: 'الاستشارة الاستراتيجية', price: 'من 2000 د.م', description: 'تخطيط شامل لنمو عملك في السوق الرقمي.' },
         { name: 'التصميم الإبداعي', price: 'من 5000 د.م', description: 'هوية بصرية كاملة تميزك عن جميع منافسيك.' },
@@ -11,7 +11,11 @@ export default function Services({ content, primaryColor }: any) {
     ];
 
     return (
-        <section className="py-24 px-8 bg-card">
+        <section
+            className="py-24 px-8"
+            style={{ backgroundColor: backgroundColor || 'transparent', color: textColor }}
+        >
+
             <div className="max-w-6xl mx-auto space-y-16">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
                     <div className="space-y-4">

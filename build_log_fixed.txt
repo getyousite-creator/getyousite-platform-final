@@ -1,0 +1,64 @@
+
+> getyousite-platform@0.1.0 build
+> next build
+
+▲ Next.js 16.1.4 (Turbopack)
+- Environments: .env.local
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 71s
+  Skipping validation of types
+  Collecting page data using 3 workers ...
+STRIPE_SECRET_KEY is missing. Logic: Payment bridge will be inactive.
+⚠ Using edge runtime on a page currently disables static generation for that page
+NEURAL_BRIDGE_WARNING: OPENAI_API_KEY is missing. Responses will fail.
+  Generating static pages using 3 workers (0/12) ...
+  Generating static pages using 3 workers (3/12) 
+STRIPE_SECRET_KEY is missing. Logic: Payment bridge will be inactive.
+  Generating static pages using 3 workers (6/12) 
+  Generating static pages using 3 workers (9/12) 
+✓ Generating static pages using 3 workers (12/12) in 1137.0ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /_not-found
+├ ƒ /[locale]
+├ ƒ /[locale]/[siteId]/edit
+├ ƒ /[locale]/about
+├ ƒ /[locale]/admin/payments
+├ ƒ /[locale]/api/auth/callback
+├ ƒ /[locale]/api/chat
+├ ƒ /[locale]/api/generate
+├ ƒ /[locale]/api/webhooks/paypal
+├ ƒ /[locale]/blog
+├ ƒ /[locale]/blog/[slug]
+├ ƒ /[locale]/contact
+├ ƒ /[locale]/customizer
+├ ƒ /[locale]/dashboard
+├ ƒ /[locale]/demo/[templateId]
+├ ƒ /[locale]/forgot-password
+├ ƒ /[locale]/help
+├ ƒ /[locale]/login
+├ ƒ /[locale]/privacy
+├ ƒ /[locale]/reset-password
+├ ƒ /[locale]/showcase
+├ ƒ /[locale]/signup
+├ ƒ /[locale]/success/[siteId]
+├ ƒ /[locale]/terms
+├ ƒ /api/dashboard/analytics
+├ ƒ /api/dashboard/seo
+├ ƒ /api/dashboard/stores
+├ ƒ /api/export
+├ ƒ /api/generate
+├ ƒ /api/webhooks/stripe
+├ ƒ /auth/callback
+├ ○ /robots.txt
+└ ○ /sitemap.xml
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

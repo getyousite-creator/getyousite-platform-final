@@ -102,7 +102,7 @@ export default function Services() {
                             </p>
 
                             <div className="mt-10 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
-                                <span className="text-xs font-bold text-primary tracking-widest uppercase">Explore Logic</span>
+                                <span className="text-xs font-bold text-primary tracking-widest uppercase">{t('explore')}</span>
                                 <div className="w-8 h-[1px] bg-primary" />
                             </div>
                         </motion.div>

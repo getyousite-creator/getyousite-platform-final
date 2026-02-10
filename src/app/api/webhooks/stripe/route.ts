@@ -1,67 +1,92 @@
+import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/payments/stripe";
 import { createClient } from "@/lib/supabase/server";
+import Stripe from "stripe";
 
-/**
- * MISSION 7.3: MONETIZATION WEBHOOK
- * Logic: Synchronizes the physical world transaction with the digital profile.
- * Goal: Zero-latency subscription updates.
- */
+const relevantEvents = new Set([
+    "product.created",
+    "product.updated",
+    "price.created",
+    "price.updated",
+    "checkout.session.completed",
+    "customer.subscription.created",
+    "customer.subscription.updated",
+    "customer.subscription.deleted",
+]);
+
 export async function POST(req: Request) {
-    if (!stripe) {
-        return new NextResponse("Stripe protocol inactive.", { status: 503 });
-    }
-
     const body = await req.text();
-    const signature = req.headers.get("stripe-signature") as string;
+    const sig = headers().get("Stripe-Signature") as string;
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
-    if (!webhookSecret) {
-        console.warn("[WEBHOOK_ERROR] STRIPE_WEBHOOK_SECRET missing.");
-        return new NextResponse("Webhook secret missing.", { status: 500 });
-    }
-
-    let event;
+    let event: Stripe.Event;
 
     try {
-        event = stripe.webhooks.constructEvent(
-            body,
-            signature,
-            webhookSecret
-        );
+        if (!sig || !webhookSecret) return new Response("Webhook secret or signature missing", { status: 400 });
+        event = stripe!.webhooks.constructEvent(body, sig, webhookSecret);
     } catch (err: any) {
-        console.error(`[WEBHOOK_ERROR] Signature verification failure: ${err.message}`);
-        return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 });
+        console.error(`❌ Error message: ${err.message}`);
+        return new Response(`Webhook Error: ${err.message}`, { status: 400 });
     }
 
-    const supabase = await createClient();
+    if (relevantEvents.has(event.type)) {
+        try {
+            const supabase = await createClient();
 
-    // Handle the event
-    switch (event.type) {
-        case "checkout.session.completed":
-            const session = event.data.object as any;
-            const userId = session.metadata.userId;
-            const planId = session.metadata.planId;
+            switch (event.type) {
 
-            const { error } = await supabase
-                .from("profiles")
-                .update({
-                    subscription_status: "active",
-                    plan_id: planId,
-                    stripe_customer_id: session.customer as string,
-                })
-                .eq("id", userId);
+                // 1. CHECKOUT COMPLETED -> Provision Access
+                case "checkout.session.completed":
+                    const checkoutSession = event.data.object as Stripe.Checkout.Session;
+                    if (checkoutSession.mode === "subscription") {
+                        const subscriptionId = checkoutSession.subscription as string;
+                        const customerId = checkoutSession.customer as string;
+                        const userId = checkoutSession.metadata?.userId;
+                        const planId = checkoutSession.metadata?.planId;
 
-            if (error) {
-                console.error("[WEBHOOK_SYNC_ERROR]", error);
-                return new NextResponse("Database sync failed.", { status: 500 });
+                        // Logic: Update user tier and link Stripe info
+                        if (userId) {
+                            await supabase
+                                .from('users')
+                                .update({
+                                    tier: planId === 'price_pro' ? 'pro' : 'enterprise', // Simplified mapping logic
+                                    credits: 100 // Grant credits on upgrade
+                                })
+                                .eq('id', userId);
+
+                            await supabase
+                                .from('profiles')
+                                .update({
+                                    stripe_customer_id: customerId,
+                                    subscription_id: subscriptionId,
+                                    subscription_status: 'active',
+                                    plan_id: planId
+                                })
+                                .eq('id', userId);
+                        }
+                    }
+                    break;
+
+                // 2. SUBSCRIPTION UPDATED -> Sync Status
+                case "customer.subscription.updated":
+                    const subscription = event.data.object as Stripe.Subscription;
+                    const status = subscription.status;
+
+                    // Logic: Downgrade if canceled/past_due
+                    if (status === 'canceled' || status === 'unpaid') {
+                        // Find user by subscription_id and downgrade
+                        // (Implementation requires a reverse lookup or storing user_id in subscription metadata)
+                        console.log(`Subscription ${subscription.id} status changed to ${status}`);
+                    }
+                    break;
+
+                default:
+                // Unhandled event type
             }
-            break;
-
-        case "customer.subscription.deleted":
-            const subscription = event.data.object as any;
-            // logic to deactivate user in Supabase
-            break;
+        } catch (error) {
+            console.error(error);
+            return new Response('Webhook handler failed. View logs.', { status: 400 });
+        }
     }
 
     return NextResponse.json({ received: true });

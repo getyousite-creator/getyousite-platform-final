@@ -4,6 +4,7 @@ import React from 'react';
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { createPayPalOrder, capturePayPalOrder } from "@/app/actions/paypal-actions";
 import { useAuth } from "@/components/providers/SupabaseProvider";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Shield, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ interface CheckoutModuleProps {
 
 export function CheckoutModule({ siteId, planId, amount, onSuccess }: CheckoutModuleProps) {
     const { profile } = useAuth();
+    const t = useTranslations('Payment');
     const [provider, setProvider] = React.useState<'paypal' | 'stripe'>('paypal');
 
     return (
@@ -28,18 +30,18 @@ export function CheckoutModule({ siteId, planId, amount, onSuccess }: CheckoutMo
                     <Shield className="w-6 h-6 text-[#00D09C]" />
                 </div>
                 <div>
-                    <h3 className="text-xl font-black uppercase tracking-tightest text-foreground">Node Activation</h3>
-                    <p className="text-xs text-muted-foreground uppercase tracking-widest">Protocol: Sovereign Financial Bridge</p>
+                    <h3 className="text-xl font-black uppercase tracking-tightest text-foreground">{t('title')}</h3>
+                    <p className="text-xs text-muted-foreground uppercase tracking-widest">{t('protocol')}</p>
                 </div>
             </div>
 
             <div className="p-6 rounded-2xl bg-secondary border border-border">
                 <div className="flex justify-between items-center mb-4">
-                    <span className="text-muted-foreground uppercase text-[10px] font-bold">Service Plan</span>
+                    <span className="text-muted-foreground uppercase text-[10px] font-bold">{t('plan')}</span>
                     <span className="text-foreground font-black uppercase text-xs">{planId}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground uppercase text-[10px] font-bold">Atomic Cost</span>
+                    <span className="text-muted-foreground uppercase text-[10px] font-bold">{t('cost')}</span>
                     <span className="text-2xl font-black text-foreground">${amount} <span className="text-[10px] text-muted-foreground">USD</span></span>
                 </div>
             </div>
@@ -50,7 +52,7 @@ export function CheckoutModule({ siteId, planId, amount, onSuccess }: CheckoutMo
                     variant={provider === 'paypal' ? 'glow' : 'outline'}
                     className="flex-1 text-[10px] font-black uppercase tracking-widest h-12"
                 >
-                    PayPal
+                    {t('paypal')}
                 </Button>
                 <Button
                     onClick={() => setProvider('stripe')}
@@ -73,15 +75,15 @@ export function CheckoutModule({ siteId, planId, amount, onSuccess }: CheckoutMo
                     createOrder={() => createPayPalOrder(planId, amount).then(res => res.orderID)}
                     onApprove={async (data) => {
                         if (!profile?.id) {
-                            toast.error("Auth Required.");
+                            toast.error(t('auth_required'));
                             return;
                         }
                         const res = await capturePayPalOrder(data.orderID, profile.id, planId);
                         if (res?.success) {
-                            toast.success("Security Secured. Node Activated.");
+                            toast.success(t('success'));
                             if (onSuccess) onSuccess();
                         } else {
-                            toast.error(res?.error || "Bridge Error.");
+                            toast.error(res?.error || t('error'));
                         }
                     }}
                 />
@@ -90,27 +92,22 @@ export function CheckoutModule({ siteId, planId, amount, onSuccess }: CheckoutMo
                     onClick={async () => {
                         const { createStripeCheckoutAction } = await import("@/app/actions/stripe-actions");
                         // Mapping planId to mock Stripe Price IDs for simulation
-                        const priceMap: Record<string, string> = {
-                            'starter': 'price_starter_mock',
-                            'pro': 'price_pro_mock',
-                            'business': 'price_business_mock'
-                        };
-                        const res = await createStripeCheckoutAction(priceMap[planId.toLowerCase()] || 'price_default', siteId);
+                        const res = await createStripeCheckoutAction(planId, siteId);
                         if (res.url) {
                             window.location.href = res.url;
                         } else {
-                            toast.error(res.error || "Stripe Bridge Error.");
+                            toast.error(res.error || t('error'));
                         }
                     }}
                     className="w-full h-14 bg-[#00D09C] hover:bg-[#00B085] text-white font-black uppercase tracking-widest text-[11px] rounded-full shadow-[0_0_20px_rgba(0,208,156,0.3)] transition-all"
                 >
-                    Activate with Stripe
+                    {t('stripe')}
                 </Button>
             )}
 
             <div className="flex justify-center items-center gap-2">
                 <Zap className="w-3 h-3 text-muted-foreground" />
-                <span className="text-[8px] text-muted-foreground uppercase font-black tracking-widest">Encrypted via Sovereign Monetization Bridge</span>
+                <span className="text-[8px] text-muted-foreground uppercase font-black tracking-widest">{t('encrypted')}</span>
             </div>
         </div>
     );

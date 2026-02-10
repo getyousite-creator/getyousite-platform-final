@@ -110,11 +110,11 @@ export default function AIEngine() {
                                 <div className="text-white/30 text-[10px] font-bold uppercase tracking-widest mt-2">{t('stats.lighthouse')}</div>
                             </div>
                             <div>
-                                <div className="text-3xl font-bold text-white tracking-tight">Global</div>
+                                <div className="text-3xl font-bold text-white tracking-tight">{t('stats.propagation_value')}</div>
                                 <div className="text-primary text-[10px] font-bold uppercase tracking-widest mt-2">{t('stats.propagation')}</div>
                             </div>
                             <div>
-                                <div className="text-3xl font-bold text-white tracking-tight">ISO-AI</div>
+                                <div className="text-3xl font-bold text-white tracking-tight">{t('stats.standard_value')}</div>
                                 <div className="text-[#10B981] text-[10px] font-bold uppercase tracking-widest mt-2">{t('stats.standard')}</div>
                             </div>
                         </motion.div>
@@ -135,9 +135,9 @@ export default function AIEngine() {
                                     <div className="w-3 h-3 rounded-full bg-white/10" />
                                     <div className="w-3 h-3 rounded-full bg-primary/20" />
                                 </div>
-                                <div className="ml-4 text-[10px] text-white/20 font-mono tracking-[0.2em] uppercase">GYS_CORE_LOGIC_V2.OS</div>
+                                <div className="ml-4 text-[10px] text-white/20 font-mono tracking-[0.2em] uppercase">{t('terminal.header')}</div>
                                 <div className="ml-auto">
-                                    <div className="px-2 py-0.5 rounded bg-primary/10 border border-primary/20 text-[9px] text-primary font-bold">SYSTEM ACTIVE</div>
+                                    <div className="px-2 py-0.5 rounded bg-primary/10 border border-primary/20 text-[9px] text-primary font-bold">{t('terminal.status_active')}</div>
                                 </div>
                             </div>
 
@@ -150,7 +150,7 @@ export default function AIEngine() {
                                         animate={{ opacity: 1, x: 0 }}
                                         className="mb-4 flex gap-3"
                                     >
-                                        <span className="text-primary font-bold">LOG_</span>
+                                        <span className="text-primary font-bold">{t('terminal.log_prefix')}</span>
                                         <span className="text-white/40 tracking-wide">{line}</span>
                                     </motion.div>
                                 ))}
@@ -179,7 +179,7 @@ export default function AIEngine() {
                                 </div>
                                 <div className="flex flex-col">
                                     <span className="text-[10px] font-bold text-white uppercase tracking-wider">{t('gpt_active')}</span>
-                                    <span className="text-[8px] text-white/30 uppercase tracking-widest">Neural Sync</span>
+                                    <span className="text-[8px] text-white/30 uppercase tracking-widest">{t('gpt_active_status')}</span>
                                 </div>
                             </div>
                             <div className="flex items-center gap-4">

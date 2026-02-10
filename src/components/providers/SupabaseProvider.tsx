@@ -11,6 +11,8 @@ type Profile = {
     avatar_url: string | null;
     subscription_status: string | null;
     plan_id: string | null;
+    tier?: 'starter' | 'pro' | 'enterprise'; // Added for Gate Logic
+    credits?: number;
 };
 
 type SupabaseContext = {
@@ -34,14 +36,26 @@ export default function SupabaseProvider({
     const router = useRouter();
 
     const fetchProfile = async (userId: string) => {
-        const { data, error } = await supabase
+        // 1. Fetch Profile
+        const { data: profileData, error: profileError } = await supabase
             .from('profiles')
             .select('*')
             .eq('id', userId)
             .single();
 
-        if (!error && data) {
-            setProfile(data);
+        // 2. Fetch User Metadata (Tier/Credits) from public.users
+        const { data: userData, error: userError } = await supabase
+            .from('users')
+            .select('tier, credits')
+            .eq('id', userId)
+            .single();
+
+        if (!profileError && profileData) {
+            setProfile({
+                ...profileData,
+                tier: userData?.tier || 'starter',
+                credits: userData?.credits || 0
+            });
         }
     };
 

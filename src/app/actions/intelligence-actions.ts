@@ -48,9 +48,43 @@ export async function getGlobalPerformanceAction(userId: string) {
 }
 
 export async function triggerNeuralAuditAction(storeId: string) {
-    // This will trigger the SEOService
-    const { SEOService } = await import('@/lib/services/seo-service');
-    return await SEOService.analyzeStore(storeId);
+    const supabase = await createClient();
+
+    // 1. Fetch Store Blueprint
+    const { data: store } = await supabase
+        .from('stores')
+        .select('*')
+        .eq('id', storeId)
+        .single();
+
+    if (!store || !store.settings?.blueprint) {
+        throw new Error("Store blueprint not found");
+    }
+
+    // 2. Execute Neural Audit
+    const { NeuralAuditEngine } = await import('@/lib/ai/neural-audit');
+    const auditResult = await NeuralAuditEngine.auditBlueprint(store.settings.blueprint, store.settings.locale || 'en');
+
+    // 3. Save Deep Analysis
+    const { error } = await supabase.from('seo_audits').insert({
+        store_id: storeId,
+        overall_score: auditResult.overall_score,
+        seo_score: auditResult.vectors.seo.score,
+        performance_score: auditResult.vectors.conversion.score, // Mapping conversion to performance slot for now
+        accessibility_score: auditResult.vectors.visual.score,
+        best_practices_score: auditResult.vectors.content.score,
+        issues: [
+            ...auditResult.vectors.seo.issues.map((i: string) => ({ type: 'error', category: 'SEO', message: i, priority: 1 })),
+            ...auditResult.vectors.conversion.issues.map((i: string) => ({ type: 'warning', category: 'Conversion', message: i, priority: 2 }))
+        ],
+        recommendations: auditResult.action_plan,
+        analyzed_at: new Date().toISOString(),
+        details: auditResult // New JSONB column usage if available, else ignored
+    });
+
+    if (error) console.error("Audit Save Failed:", error);
+
+    return auditResult;
 }
 
 export async function getAuditDetailsAction(storeId: string) {

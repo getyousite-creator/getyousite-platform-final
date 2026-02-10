@@ -3,9 +3,10 @@
 import { motion } from "framer-motion";
 import SovereignWrapper from "./SovereignWrapper";
 import { UtensilsCrossed, Clock, MapPin, ChefHat, CalendarCheck, Phone } from "lucide-react";
-import { SovereignTemplateProps } from "@/lib/types/template";
+import type { SovereignTemplateProps } from "@/lib/types/template";
 import Image from "next/image";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
+import { useTranslations } from "next-intl";
 
 interface MenuItem {
     name: string;
@@ -16,6 +17,7 @@ interface MenuItem {
 }
 
 export default function MasterResto(props: SovereignTemplateProps) {
+    const t = useTranslations("Templates.resto");
     const { settings, blueprint } = props;
     const { headline, subheadline, primaryColor = "#c2410c" } = settings;
 
@@ -42,26 +44,26 @@ export default function MasterResto(props: SovereignTemplateProps) {
     const menuRaw = (menuSection?.content?.items as any[]) || [];
     const menuItems: MenuItem[] = menuRaw.length > 0 ? menuRaw.map(item => ({
         name: item.title,
-        price: "$29",
+        price: t("def_price"),
         description: item.description?.substring(0, 100) || "Chef's selection.",
         img: item.image || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=2080&auto=format&fit=crop",
     })) : [
         {
-            name: "Chef&apos;s Signature",
+            name: t("signature"),
             price: "$42",
-            description: "Aged Wagyu, truffle essence, wild marrow.",
+            description: t("signature_desc"),
             img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=2080&auto=format&fit=crop",
         },
         {
-            name: "Atlas Platter",
+            name: t("atlas_platter"),
             price: "$28",
-            description: "Mediterranean heritage selection.",
+            description: t("atlas_platter_desc"),
             img: "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=1974&auto=format&fit=crop",
         },
         {
-            name: "Neon Spice",
+            name: t("neon_spice"),
             price: "$19",
-            description: "South-East Asian high-intensity fusion.",
+            description: t("neon_spice_desc"),
             img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1974&auto=format&fit=crop",
         },
     ];
@@ -76,17 +78,17 @@ export default function MasterResto(props: SovereignTemplateProps) {
                     <nav className="h-24 px-8 lg:px-20 flex items-center justify-between sticky top-0 bg-white/70 backdrop-blur-2xl z-[100] border-b border-stone-100">
                         <div className="flex items-center gap-12">
                             <span className="text-2xl font-black tracking-tighter uppercase italic font-sans">
-                                {blueprint?.name || "THE_KITCHEN"}
+                                {blueprint?.name || t("kitchen")}
                             </span>
                             <div className="hidden lg:flex items-center gap-8 text-[10px] font-black uppercase tracking-[0.3em] text-stone-400 font-sans">
                                 <span className="hover:text-stone-900 cursor-pointer transition-colors">
-                                    Menû
+                                    {t("menu")}
                                 </span>
                                 <span className="hover:text-stone-900 cursor-pointer transition-colors">
-                                    Private_Table
+                                    {t("private_table")}
                                 </span>
                                 <span className="hover:text-stone-900 cursor-pointer transition-colors">
-                                    Philosophy
+                                    {t("philosophy")}
                                 </span>
                             </div>
                         </div>
@@ -95,7 +97,7 @@ export default function MasterResto(props: SovereignTemplateProps) {
                             onClick={() => onOpen("Reservation")}
                             className="h-14 px-8 border border-stone-200 text-[10px] font-black uppercase tracking-widest hover:bg-stone-950 hover:text-white transition-all font-sans"
                         >
-                            Reserve_Table
+                            {t("reserve_table")}
                         </button>
                     </nav>
 
@@ -117,7 +119,7 @@ export default function MasterResto(props: SovereignTemplateProps) {
                                 transition={{ duration: 1 }}
                             >
                                 <span className="text-white text-[10px] font-black uppercase tracking-[0.5em] mb-8 block font-sans">
-                                    Excellence Culinary Standards
+                                    {t("culinary_standards")}
                                 </span>
                                 <h1 className="text-white text-7xl md:text-9xl font-black uppercase tracking-tighter leading-[0.85] mb-10 drop-shadow-2xl font-serif italic text-balance">
                                     {heroHeadline}
@@ -127,7 +129,7 @@ export default function MasterResto(props: SovereignTemplateProps) {
                                     className="px-14 h-20 text-white font-black uppercase tracking-[0.2em] text-xs hover:scale-105 transition-transform shadow-2xl font-sans"
                                     style={{ backgroundColor: primaryColor }}
                                 >
-                                    View_Menu
+                                    {t("view_menu")}
                                 </button>
                             </motion.div>
                         </div>
@@ -138,7 +140,7 @@ export default function MasterResto(props: SovereignTemplateProps) {
                         <div className="lg:col-span-5 space-y-8">
                             <div className="w-16 h-[1px] bg-stone-900" />
                             <h2 className="text-5xl md:text-6xl font-black uppercase tracking-tighter leading-none italic">
-                                Engineering <br /> The Perfect Bite.
+                                {t("engineering_bite").split(' ').slice(0, 1).join(' ')} <br /> {t("engineering_bite").split(' ').slice(1).join(' ')}
                             </h2>
                             <p className="text-stone-500 text-lg font-medium leading-relaxed font-sans italic">
                                 {heroSub}
@@ -147,13 +149,13 @@ export default function MasterResto(props: SovereignTemplateProps) {
                                 {[
                                     {
                                         icon: ChefHat,
-                                        title: "Executive Chefs",
-                                        desc: "Mastery directed by tradition and innovation.",
+                                        title: t("chefs"),
+                                        desc: t("chefs_desc"),
                                     },
                                     {
                                         icon: UtensilsCrossed,
-                                        title: "Zero-Waste Logic",
-                                        desc: "Sustainability integrated into every recipe.",
+                                        title: t("waste_logic"),
+                                        desc: t("waste_logic_desc"),
                                     },
                                 ].map((item, i) => (
                                     <div
@@ -175,10 +177,10 @@ export default function MasterResto(props: SovereignTemplateProps) {
                         </div>
                         <div className="lg:col-span-7 grid grid-cols-2 gap-6 h-[600px]">
                             <div className="relative rounded-[40px] overflow-hidden translate-y-12">
-                                <Image src={aboutImg1} alt="Detail" fill className="object-cover" />
+                                <Image src={aboutImg1} alt={t("philosophy_img_alt")} fill className="object-cover" />
                             </div>
                             <div className="relative rounded-[40px] overflow-hidden -translate-y-12">
-                                <Image src={aboutImg2} alt="Detail" fill className="object-cover" />
+                                <Image src={aboutImg2} alt={t("philosophy_img_alt")} fill className="object-cover" />
                             </div>
                         </div>
                     </section>
@@ -189,21 +191,21 @@ export default function MasterResto(props: SovereignTemplateProps) {
                             <div className="flex flex-col md:flex-row items-baseline justify-between mb-24 gap-4">
                                 <div>
                                     <h2 className="text-6xl font-black uppercase tracking-tighter italic">
-                                        L&apos;Archive Menû.
+                                        {t("archive_menu")}
                                     </h2>
                                     <p className="text-[10px] font-black uppercase tracking-[0.5em] text-stone-500 mt-4 font-sans">
-                                        Seasonal Chef Selections
+                                        {t("seasonal_selections")}
                                     </p>
                                 </div>
                                 <div className="flex gap-6 text-[10px] font-black uppercase tracking-widest text-stone-600 font-sans">
                                     <span className="text-white border-b border-white pb-2 cursor-pointer">
-                                        Starters
+                                        {t("starters")}
                                     </span>
                                     <span className="hover:text-white cursor-pointer transition-colors pb-2">
-                                        Main_Assets
+                                        {t("main_assets")}
                                     </span>
                                     <span className="hover:text-white cursor-pointer transition-colors pb-2">
-                                        Elixirs
+                                        {t("elixirs")}
                                     </span>
                                 </div>
                             </div>
@@ -244,17 +246,17 @@ export default function MasterResto(props: SovereignTemplateProps) {
                         <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20">
                             <div className="space-y-12">
                                 <h2 className="text-5xl font-black uppercase tracking-tighter italic">
-                                    Foundations.
+                                    {t("foundations")}
                                 </h2>
                                 <div className="space-y-10">
                                     <div className="flex gap-6 items-center">
                                         <MapPin className="w-8 h-8 text-stone-300" />
                                         <div className="font-sans">
                                             <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest mb-1">
-                                                Location
+                                                {t("location")}
                                             </p>
                                             <p className="text-lg font-bold">
-                                                12 Central District, Casablanca, MA
+                                                {t("def_location")}
                                             </p>
                                         </div>
                                     </div>
@@ -262,10 +264,10 @@ export default function MasterResto(props: SovereignTemplateProps) {
                                         <Clock className="w-8 h-8 text-stone-300" />
                                         <div className="font-sans">
                                             <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest mb-1">
-                                                Service Hours
+                                                {t("service_hours")}
                                             </p>
                                             <p className="text-lg font-bold">
-                                                MON - SUN: 12:00 - 01:00
+                                                {t("def_hours")}
                                             </p>
                                         </div>
                                     </div>
@@ -273,9 +275,9 @@ export default function MasterResto(props: SovereignTemplateProps) {
                                         <Phone className="w-8 h-8 text-stone-300" />
                                         <div className="font-sans">
                                             <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest mb-1">
-                                                Direct Line
+                                                {t("direct_line")}
                                             </p>
-                                            <p className="text-lg font-bold">+212 522 XXX XXX</p>
+                                            <p className="text-lg font-bold">{t("def_phone")}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -286,10 +288,10 @@ export default function MasterResto(props: SovereignTemplateProps) {
                             >
                                 <CalendarCheck className="w-20 h-20 opacity-20" />
                                 <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tightest italic leading-none">
-                                    Initiate <br /> The_Table.
+                                    {t("initiate_table").split(' ').slice(0, 1).join(' ')} <br /> {t("initiate_table").split(' ').slice(1).join(' ')}
                                 </h3>
                                 <button className="h-16 px-14 bg-white text-stone-900 rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:scale-105 transition-transform shadow-2xl font-sans">
-                                    Reserve_Now
+                                    {t("reserve_now")}
                                 </button>
                             </div>
                         </div>
@@ -301,7 +303,7 @@ export default function MasterResto(props: SovereignTemplateProps) {
                             {blueprint?.name}
                         </span>
                         <p className="text-[10px] text-stone-400 font-bold uppercase tracking-[0.6em]">
-                            © 2026 Professional Kitchen Architecture. All Systems Verified.
+                            {t("copyright")}
                         </p>
                     </footer>
                 </div>

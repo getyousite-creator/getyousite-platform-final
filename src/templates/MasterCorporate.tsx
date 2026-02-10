@@ -18,8 +18,10 @@ import {
 import { SovereignTemplateProps } from "@/lib/types/template";
 import Image from "next/image";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
+import { useTranslations } from "next-intl";
 
 export default function MasterCorporate(props: SovereignTemplateProps) {
+    const t = useTranslations("Templates.corporate");
     const { settings, blueprint } = props;
     const { headline, subheadline } = settings;
 
@@ -34,22 +36,22 @@ export default function MasterCorporate(props: SovereignTemplateProps) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const services = (blueprint?.layout?.find((s) => s.type === "features")?.content
         ?.items as unknown as { title: string; description: string; icon: any }[]) || [
-        {
-            title: "Strategic M&A Intelligence",
-            description: "Complex transaction logic with absolute regulatory compliance.",
-            icon: Briefcase,
-        },
-        {
-            title: "Sovereign Asset Protection",
-            description: "Capital preservation protocols for the elite global tier.",
-            icon: Shield,
-        },
-        {
-            title: "Market Alpha Algorithms",
-            description: "Proprietary predictive modeling for industrial dominance.",
-            icon: TrendingUp,
-        },
-    ];
+            {
+                title: t("service_ma_title"),
+                description: t("service_ma_desc"),
+                icon: Briefcase,
+            },
+            {
+                title: t("service_protection_title"),
+                description: t("service_protection_desc"),
+                icon: Shield,
+            },
+            {
+                title: t("service_alpha_title"),
+                description: t("service_alpha_desc"),
+                icon: TrendingUp,
+            },
+        ];
 
     const onOpen = useLaunchModal((state) => state.onOpen);
 
@@ -62,17 +64,17 @@ export default function MasterCorporate(props: SovereignTemplateProps) {
                         <div className="flex items-center gap-12">
                             <span className="text-2xl font-black tracking-tighter uppercase flex items-center gap-2">
                                 <Globe className="w-6 h-6 text-blue-900" />{" "}
-                                {blueprint?.name || "CORP_GLOBAL"}
+                                {blueprint?.name || t("corp_global")}
                             </span>
                             <div className="hidden lg:flex items-center gap-10 text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">
                                 <span className="hover:text-blue-900 cursor-pointer transition-colors">
-                                    Strategic_Units
+                                    {t("units")}
                                 </span>
                                 <span className="hover:text-blue-900 cursor-pointer transition-colors">
-                                    Market_Insights
+                                    {t("insights")}
                                 </span>
                                 <span className="hover:text-blue-900 cursor-pointer transition-colors">
-                                    Governance
+                                    {t("governance")}
                                 </span>
                             </div>
                         </div>
@@ -83,7 +85,7 @@ export default function MasterCorporate(props: SovereignTemplateProps) {
                                 onClick={() => onOpen("Consultation")}
                                 className="h-12 px-8 bg-blue-900 text-white text-[10px] font-black uppercase tracking-widest hover:bg-black transition-colors"
                             >
-                                Executive_Entry
+                                {t("executive_entry")}
                             </button>
                         </div>
                     </nav>
@@ -100,7 +102,7 @@ export default function MasterCorporate(props: SovereignTemplateProps) {
                                 <div className="inline-flex items-center gap-3 px-5 py-2 bg-blue-50 border border-blue-100">
                                     <Shield className="w-4 h-4 text-blue-900" />
                                     <span className="text-[10px] font-black uppercase text-blue-900 tracking-widest">
-                                        Global Stability Standard Verified
+                                        {t("global_stability")}
                                     </span>
                                 </div>
                                 <h1 className="text-6xl md:text-[6vw] font-black tracking-tighter leading-[0.9] text-slate-950 uppercase">
@@ -111,10 +113,10 @@ export default function MasterCorporate(props: SovereignTemplateProps) {
                                 </p>
                                 <div className="flex flex-wrap gap-6 pt-6">
                                     <button className="h-20 px-12 bg-slate-900 text-white font-black uppercase tracking-widest text-[11px] hover:bg-blue-900 transition-colors flex items-center gap-4">
-                                        View_Capabilities <ChevronRight className="w-5 h-5" />
+                                        {t("view_capabilities")} <ChevronRight className="w-5 h-5" />
                                     </button>
                                     <button className="h-20 px-12 border border-slate-200 text-slate-900 font-black uppercase tracking-widest text-[11px] hover:bg-white transition-colors">
-                                        Annual_Report_2026
+                                        {t("annual_report")}
                                     </button>
                                 </div>
                             </motion.div>
@@ -133,7 +135,7 @@ export default function MasterCorporate(props: SovereignTemplateProps) {
                                 />
                                 <div className="absolute top-10 right-10 p-8 bg-blue-900 text-white shadow-2xl">
                                     <p className="text-[8px] font-black uppercase tracking-widest mb-2 opacity-60">
-                                        Global_Market_Cap
+                                        {t("market_cap")}
                                     </p>
                                     <p className="text-3xl font-black tabular-nums font-mono">
                                         $1.4T+
@@ -169,7 +171,7 @@ export default function MasterCorporate(props: SovereignTemplateProps) {
                                             {unit.description || unit.desc}
                                         </p>
                                         <div className="pt-6 flex items-center justify-between text-[10px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <span>Learn_More</span>
+                                            <span>{t("learn_more")}</span>
                                             <ArrowUpRight className="w-4 h-4" />
                                         </div>
                                     </div>
@@ -182,10 +184,10 @@ export default function MasterCorporate(props: SovereignTemplateProps) {
                     <section className="py-40 bg-slate-950 text-white">
                         <div className="container mx-auto px-8 grid grid-cols-1 md:grid-cols-4 gap-20">
                             {[
-                                { icon: Building2, val: "42", label: "Global_Outposts" },
-                                { icon: PieChart, val: "18%", label: "Alpha_Yield" },
-                                { icon: Users, val: "12K", label: "Elite_Operators" },
-                                { icon: BarChart3, val: "0.2s", label: "Logic_Latency" },
+                                { icon: Building2, val: "42", label: t("outposts") },
+                                { icon: PieChart, val: "18%", label: t("yield") },
+                                { icon: Users, val: "12K", label: t("operators") },
+                                { icon: BarChart3, val: "0.2s", label: t("latency") },
                             ].map((stat, i) => (
                                 <div key={i} className="space-y-4">
                                     <stat.icon className="w-8 h-8 text-blue-500" />
@@ -205,14 +207,14 @@ export default function MasterCorporate(props: SovereignTemplateProps) {
                     {/* CORPORATE FOOTER */}
                     <footer className="py-24 px-10 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-10">
                         <div className="flex items-center gap-10 text-[9px] font-black uppercase tracking-[0.5em] text-slate-300">
-                            <span>Slavery_Policy</span>
-                            <span>Privacy_Trust</span>
-                            <span>Regulatory_Log</span>
-                            <span>Investor_Relations</span>
+                            <span>{t("slavery_policy")}</span>
+                            <span>{t("privacy_trust")}</span>
+                            <span>{t("regulatory_log")}</span>
+                            <span>{t("investor_relations")}</span>
                         </div>
                         <div className="text-right">
                             <p className="text-[10px] text-slate-200 font-bold uppercase tracking-[1em]">
-                                © 2026 Sovereign Global Infrastructure Group.
+                                {t("copyright")}
                             </p>
                         </div>
                     </footer>

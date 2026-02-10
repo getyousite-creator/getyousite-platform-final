@@ -201,29 +201,29 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
                         {mode === "signin" ? "Welcome back to your command center." : "Join thousands of sovereign creators."}
                     </p>
 
-                    {/* SOCIAL LOGIN */}
+                    {/* SOCIAL LOGIN (Protocol 2: ZERO FRICTION) */}
                     {mode !== "check-email" && mode !== "reset-password" && (
-                        <div className="space-y-4 mb-8">
+                        <div className="space-y-4 mb-10">
                             <AuthButton
                                 icon={<GoogleIcon />}
-                                label="Continue with Google"
+                                label="Instant Access with Google"
                                 onClick={() => handleOAuth('google')}
                                 disabled={loading}
                             />
-                            {/* Only showing Google as primary requested, but can keep others if needed */}
                         </div>
                     )}
 
                     {mode !== "check-email" && mode !== "reset-password" && (
-                        <div className="relative mb-8">
+                        <div className="relative mb-10">
                             <div className="absolute inset-0 flex items-center">
-                                <span className="w-full border-t border-border" />
+                                <span className="w-full border-t border-white/5" />
                             </div>
-                            <div className="relative flex justify-center text-xs uppercase">
-                                <span className="bg-background px-4 text-muted-foreground font-bold tracking-widest">Or continue with email</span>
+                            <div className="relative flex justify-center text-[10px] uppercase font-black tracking-[0.2em] text-zinc-500">
+                                <span className="bg-background px-4">Sovereign Link Alternative</span>
                             </div>
                         </div>
                     )}
+
 
                     {/* FORM */}
                     {mode === "check-email" ? (
@@ -239,48 +239,49 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                             {mode !== "reset-password" && (
                                 <div className="space-y-2">
-                                    <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Email</Label>
-                                    <div className="relative">
-                                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Identity Access</Label>
+                                    <div className="relative group">
+                                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-primary transition-colors" />
                                         <Input
                                             {...register("email")}
                                             type="email"
-                                            placeholder="name@example.com"
+                                            placeholder="commander@getyousite.com"
                                             className={cn(
-                                                "pl-12 h-12 bg-secondary/20 border-border focus:ring-2 focus:ring-[#00D09C] focus:border-transparent transition-all rounded-xl",
-                                                errors.email && "ring-2 ring-red-500/50"
+                                                "pl-12 h-14 bg-white/[0.02] border-white/5 focus:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all rounded-xl text-sm",
+                                                errors.email && "border-red-500/50 ring-4 ring-red-500/10"
                                             )}
                                         />
                                     </div>
-                                    {errors.email?.message && <p className="text-xs text-red-500 font-bold mt-1">{t(errors.email.message as any)}</p>}
+                                    {errors.email?.message && <p className="text-[10px] text-red-500 font-bold mt-1 ml-1">{t(errors.email.message as any)}</p>}
                                 </div>
                             )}
 
                             {mode !== "forgot-password" && (
                                 <div className="space-y-2">
-                                    <div className="flex justify-between">
-                                        <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Password</Label>
+                                    <div className="flex justify-between items-center px-1">
+                                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Security Key</Label>
                                         {mode === "signin" && (
-                                            <button type="button" onClick={() => setMode("forgot-password")} className="text-xs font-bold text-[#00D09C] hover:underline">
-                                                Forgot?
+                                            <button type="button" onClick={() => setMode("forgot-password")} className="text-[10px] font-black uppercase tracking-[0.2em] text-primary hover:text-primary/80 transition-colors">
+                                                Recovery?
                                             </button>
                                         )}
                                     </div>
-                                    <div className="relative">
-                                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                                    <div className="relative group">
+                                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-primary transition-colors" />
                                         <Input
                                             {...register("password")}
                                             type="password"
                                             placeholder="••••••••"
                                             className={cn(
-                                                "pl-12 h-12 bg-secondary/20 border-border focus:ring-2 focus:ring-[#00D09C] focus:border-transparent transition-all rounded-xl",
-                                                errors.password && "ring-2 ring-red-500/50"
+                                                "pl-12 h-14 bg-white/[0.02] border-white/5 focus:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all rounded-xl text-sm",
+                                                errors.password && "border-red-500/50 ring-4 ring-red-500/10"
                                             )}
                                         />
                                     </div>
-                                    {errors.password?.message && <p className="text-xs text-red-500 font-bold mt-1">{t(errors.password.message as any)}</p>}
+                                    {errors.password?.message && <p className="text-[10px] text-red-500 font-bold mt-1 ml-1">{t(errors.password.message as any)}</p>}
                                 </div>
                             )}
+
 
                             {error && (
                                 <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold text-center">

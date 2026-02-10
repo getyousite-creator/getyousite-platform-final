@@ -5,11 +5,16 @@ import { motion } from 'framer-motion';
 import { CheckCircle2, Rocket, Globe, Shield, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { getStoreStatusAction } from '@/app/actions/store-actions';
+import { getStoreStatusAction, activateStoreSimulationAction } from '@/app/actions/store-actions';
+import { useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 export default function SuccessPage({ params }: { params: { siteId: string, locale: string } }) {
     const [status, setStatus] = useState<'verifying' | 'deploying' | 'active' | 'pending_payment'>('verifying');
     const [liveUrl, setLiveUrl] = useState<string | null>(null);
+    const searchParams = useSearchParams();
+    const isSimulated = searchParams.get('simulated') === 'true';
+    const t = useTranslations('Success');
 
     useEffect(() => {
         let pollCount = 0;
@@ -31,6 +36,14 @@ export default function SuccessPage({ params }: { params: { siteId: string, loca
             return false;
         };
 
+
+        // Simulation Trigger
+        if (isSimulated) {
+            activateStoreSimulationAction(params.siteId).then(() => {
+                checkStatus(); // Immediate re-check
+            });
+        }
+
         const interval = setInterval(async () => {
             const isDone = await checkStatus();
             pollCount++;
@@ -39,7 +52,7 @@ export default function SuccessPage({ params }: { params: { siteId: string, loca
 
         checkStatus();
         return () => clearInterval(interval);
-    }, [params.siteId]);
+    }, [params.siteId, isSimulated]);
 
     return (
         <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center p-6">
@@ -71,20 +84,20 @@ export default function SuccessPage({ params }: { params: { siteId: string, loca
                 {/* CELEBRATION TEXT */}
                 <div className="space-y-4">
                     <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase">
-                        {status === 'active' ? "Empire Live" : "Orchestrating..."}
+                        {status === 'active' ? t('emp_live') : t('orchestrating')}
                     </h1>
                     <p className="text-zinc-500 text-lg max-w-md mx-auto">
                         {status === 'active'
-                            ? "Your sovereign digital infrastructure is now active and deployed to the global network."
-                            : "Verifying financial entitlement and syncing blueprint with Sovereign Cloud nodes."}
+                            ? t('active_msg')
+                            : t('verifying_msg')}
                     </p>
                 </div>
 
                 {/* DEPLOYMENT SPECS */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <SpecCard label="ID_CODE" value={params.siteId?.slice(0, 8).toUpperCase()} icon={<Shield size={14} />} />
-                    <SpecCard label="STATUS" value={status.toUpperCase()} icon={<Globe size={14} />} color={status === 'active' ? 'text-emerald-400' : 'text-blue-400'} />
-                    <SpecCard label="REGION" value="EU_CENTRAL_1" icon={<ExternalLink size={14} />} />
+                    <SpecCard label={t('id_code')} value={params.siteId?.slice(0, 8).toUpperCase()} icon={<Shield size={14} />} />
+                    <SpecCard label={t('status')} value={status.toUpperCase()} icon={<Globe size={14} />} color={status === 'active' ? 'text-emerald-400' : 'text-blue-400'} />
+                    <SpecCard label={t('region')} value="EU_CENTRAL_1" icon={<ExternalLink size={14} />} />
                 </div>
 
                 {/* FINAL ACTIONS */}
@@ -99,7 +112,7 @@ export default function SuccessPage({ params }: { params: { siteId: string, loca
                             asChild
                         >
                             <a href={liveUrl || `https://${params.siteId}.getyousite.com`} target="_blank" rel="noopener noreferrer">
-                                Visit Live Empire <ExternalLink size={16} className="ml-2" />
+                                {t('visit_live')} <ExternalLink size={16} className="ml-2" />
                             </a>
                         </Button>
                         <Button
@@ -107,7 +120,7 @@ export default function SuccessPage({ params }: { params: { siteId: string, loca
                             className="w-full text-zinc-500 hover:text-white uppercase text-[10px] font-bold tracking-widest mt-4"
                             asChild
                         >
-                            <Link href="/">Return to Control Center</Link>
+                            <Link href="/">{t('return_dashboard')}</Link>
                         </Button>
                     </motion.div>
                 )}

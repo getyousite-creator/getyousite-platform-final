@@ -22,11 +22,15 @@ export interface Store {
     paid_at?: string;
     payment_id?: string;
     amount?: number;
+    is_public?: boolean;
 }
+
 
 export abstract class StoreRepository {
     abstract getStoreBySlug(slug: string): Promise<Store | null>;
     abstract saveStore(store: Partial<Store>): Promise<Store>;
     abstract listUserStores(userId: string): Promise<Store[]>;
+    abstract getPublicStores(limit?: number): Promise<Store[]>;
     abstract deleteStore(id: string): Promise<void>;
 }
+

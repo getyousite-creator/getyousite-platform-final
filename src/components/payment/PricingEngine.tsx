@@ -15,7 +15,6 @@ const plans = [
         price: { USD: "0", SAR: "0", AED: "0" },
         icon: Globe,
         color: "zinc",
-        desc: "Proof of Concept Protocol - Ideal for early visionaries.",
         features: ["ai_generation_basic", "subdomain_access", "gys_branding", "community_support"]
     },
     {
@@ -24,7 +23,6 @@ const plans = [
         icon: Zap,
         color: "blue",
         popular: true,
-        desc: "Professional Growth Engine - High-status digital presence.",
         features: ["3_sovereign_sites", "custom_domain_link", "brand_removal", "priority_logic_support", "advanced_analytics"]
     },
     {
@@ -32,13 +30,13 @@ const plans = [
         price: { USD: "49", SAR: "185", AED: "185" },
         icon: Shield,
         color: "emerald",
-        desc: "Digital Empire Infrastructure - Full architectural control.",
         features: ["10_sovereign_sites", "ai_seo_sovereign", "live_logic_chat", "nightly_backups", "api_access_token"]
     }
 ];
 
 export default function PricingEngine() {
     const t = useTranslations("Pricing");
+    const tCommon = useTranslations("Common");
 
     return (
         <section id="pricing" className="py-32 bg-[#020617] relative overflow-hidden">
@@ -53,7 +51,7 @@ export default function PricingEngine() {
                         viewport={{ once: true }}
                         className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-white/40 text-[11px] font-bold uppercase tracking-[0.3em] mb-10"
                     >
-                        Access Protocol v2.0
+                        {t('badge')}
                     </motion.div>
                     <h2 className="text-5xl md:text-7xl font-bold text-white mb-8 tracking-tight">
                         {t("title")}
@@ -70,7 +68,7 @@ export default function PricingEngine() {
                 }}>
                     <div className="grid md:grid-cols-3 gap-10">
                         {plans.map((plan) => (
-                            <PlanCard key={plan.id} plan={plan} t={t} />
+                            <PlanCard key={plan.id} plan={plan} t={t} tCommon={tCommon} />
                         ))}
                     </div>
                 </PayPalScriptProvider>
@@ -79,7 +77,7 @@ export default function PricingEngine() {
     );
 }
 
-function PlanCard({ plan, t }: { plan: any, t: any }) {
+function PlanCard({ plan, t, tCommon }: { plan: any, t: any, tCommon: any }) {
     const { profile } = useAuth();
     const router = useRouter();
 
@@ -96,7 +94,7 @@ function PlanCard({ plan, t }: { plan: any, t: any }) {
             {plan.popular && (
                 <div className="absolute -top-5 left-1/2 -translate-x-1/2">
                     <span className="bg-primary text-[#020617] text-[10px] font-bold uppercase tracking-[0.2em] px-5 py-2 rounded-full shadow-lg shadow-primary/20">
-                        Most Popular
+                        {t('most_popular')}
                     </span>
                 </div>
             )}
@@ -107,15 +105,15 @@ function PlanCard({ plan, t }: { plan: any, t: any }) {
                 </div>
             </div>
 
-            <h3 className="text-2xl font-bold uppercase tracking-widest mb-3 text-white">{t(plan.id)}</h3>
+            <h3 className="text-2xl font-bold uppercase tracking-widest mb-3 text-white">{t(`${plan.id}`)}</h3>
             <div className="flex items-baseline gap-2 mb-6">
                 <span className="text-5xl font-bold text-white tracking-tighter">{currency === 'USD' ? '$' : ''}{priceValue}{currency !== 'USD' ? ` ${currency}` : ''}</span>
                 <div className="flex flex-col">
-                    <span className="text-xs text-white/30 font-medium uppercase tracking-widest">/ month</span>
-                    <span className="text-[10px] text-white/20 font-medium uppercase tracking-widest">billed yearly</span>
+                    <span className="text-xs text-white/30 font-medium uppercase tracking-widest">{t('per_month')}</span>
+                    <span className="text-[10px] text-white/20 font-medium uppercase tracking-widest">{t('billed_yearly')}</span>
                 </div>
             </div>
-            <p className="text-sm text-white/40 mb-10 leading-relaxed font-light">{plan.desc}</p>
+            <p className="text-sm text-white/40 mb-10 leading-relaxed font-light">{t(`desc.${plan.id}`)}</p>
 
             <ul className="space-y-4 mb-12 flex-grow">
                 {plan.features.map((feat: string) => (
@@ -134,7 +132,7 @@ function PlanCard({ plan, t }: { plan: any, t: any }) {
                         onClick={() => router.push('/dashboard')}
                         className="w-full h-[58px] rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-white font-bold uppercase tracking-widest text-xs transition-all"
                     >
-                        Start Free Protocol
+                        {t('start_free')}
                     </button>
                 ) : (
                     <PayPalButtons
@@ -148,7 +146,7 @@ function PlanCard({ plan, t }: { plan: any, t: any }) {
                         createOrder={() => createPayPalOrder(plan.id, priceValue).then(res => res.orderID)}
                         onApprove={async (data) => {
                             if (!profile?.id) {
-                                toast.error("Authentication required.");
+                                toast.error(tCommon('auth_required') || "Authentication required.");
                                 return;
                             }
                             const res = await capturePayPalOrder(data.orderID, profile.id, plan.id);

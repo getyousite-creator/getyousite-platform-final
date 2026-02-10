@@ -19,6 +19,7 @@ import {
 import { SovereignTemplateProps } from "@/lib/types/template";
 import Image from "next/image";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
+import { useTranslations } from "next-intl";
 
 interface Course {
     title: string;
@@ -29,6 +30,7 @@ interface Course {
 }
 
 export default function MasterLMS(props: SovereignTemplateProps) {
+    const t = useTranslations("Templates.lms");
     const { settings, blueprint } = props;
     const { headline, subheadline, primaryColor = "#6366f1" } = settings;
 
@@ -46,11 +48,11 @@ export default function MasterLMS(props: SovereignTemplateProps) {
         students: `${(i + 1) * 450}+`,
         rating: "4.9",
         img: item.image || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop",
-        duration: `${(i + 4) * 2}h`
+        duration: `${(i + 4) * 2}${t("duration")}`
     })) : [
-        { title: "Architecture of Sovereignty", students: "1.2k", rating: "4.9", img: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop", duration: "12h" },
-        { title: "Neural Logic Masterclass", students: "800", rating: "4.8", img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop", duration: "8h" },
-        { title: "Digital Empire Economics", students: "2.5k", rating: "5.0", img: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop", duration: "24h" }
+        { title: t("architecture_sovereignty"), students: "1.2k", rating: "4.9", img: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop", duration: `12${t("duration")}` },
+        { title: t("neural_logic_masterclass"), students: "800", rating: "4.8", img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop", duration: `8${t("duration")}` },
+        { title: t("digital_empire_economics"), students: "2.5k", rating: "5.0", img: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop", duration: `24${t("duration")}` }
     ];
 
     const onOpen = useLaunchModal((state) => state.onOpen);
@@ -62,11 +64,11 @@ export default function MasterLMS(props: SovereignTemplateProps) {
                     {/* LMS NAVIGATION */}
                     <nav className="h-20 px-8 lg:px-20 flex items-center justify-between sticky top-0 bg-white/80 backdrop-blur-xl z-[100] border-b border-indigo-50">
                         <div className="flex items-center gap-12">
-                            <span className="text-xl font-black tracking-tight uppercase border-b-2 border-indigo-600">{blueprint?.name || "ACADEMY"}</span>
+                            <span className="text-xl font-black tracking-tight uppercase border-b-2 border-indigo-600">{blueprint?.name || t("academy")}</span>
                             <div className="hidden lg:flex items-center gap-10 text-[10px] font-black uppercase tracking-widest text-indigo-300">
-                                <span className="hover:text-indigo-900 cursor-pointer">Curriculum</span>
-                                <span className="hover:text-indigo-900 cursor-pointer">Instructors</span>
-                                <span className="hover:text-indigo-900 cursor-pointer">Resources</span>
+                                <span className="hover:text-indigo-900 cursor-pointer">{t("curriculum")}</span>
+                                <span className="hover:text-indigo-900 cursor-pointer">{t("instructors")}</span>
+                                <span className="hover:text-indigo-900 cursor-pointer">{t("resources")}</span>
                             </div>
                         </div>
 
@@ -74,7 +76,7 @@ export default function MasterLMS(props: SovereignTemplateProps) {
                             onClick={() => onOpen("Enroll")}
                             className="h-12 px-6 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:shadow-lg hover:shadow-indigo-500/25 transition-all"
                         >
-                            Get_Access
+                            {t("get_access")}
                         </button>
                     </nav>
 
@@ -91,7 +93,7 @@ export default function MasterLMS(props: SovereignTemplateProps) {
                             >
                                 <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white border border-indigo-50 shadow-sm">
                                     <GraduationCap className="w-4 h-4 text-indigo-600" />
-                                    <span className="text-[10px] font-black uppercase text-indigo-400 tracking-widest">Global Accreditation Verified</span>
+                                    <span className="text-[10px] font-black uppercase text-indigo-400 tracking-widest">{t("accreditation_verified")}</span>
                                 </div>
                                 <h1 className="text-6xl lg:text-[7vw] font-black uppercase tracking-tighter leading-[0.9] text-indigo-950">
                                     {heroHeadline}
@@ -104,13 +106,13 @@ export default function MasterLMS(props: SovereignTemplateProps) {
                                         className="h-16 px-10 rounded-2xl text-white font-black uppercase tracking-widest text-[11px] shadow-2xl hover:scale-105 transition-transform"
                                         style={{ backgroundColor: primaryColor }}
                                     >
-                                        Explore_Courses
+                                        {t("explore_courses")}
                                     </button>
                                     <div className="flex items-center gap-4 px-6">
                                         <div className="flex -space-x-3">
                                             {[1, 2, 3].map(i => <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-indigo-100" />)}
                                         </div>
-                                        <span className="text-xs font-bold text-indigo-300">Join 12k+ Scholars</span>
+                                        <span className="text-xs font-bold text-indigo-300">{t("join_scholars")}</span>
                                     </div>
                                 </div>
                             </motion.div>
@@ -134,9 +136,9 @@ export default function MasterLMS(props: SovereignTemplateProps) {
                                             <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white">
                                                 <PlayCircle className="w-6 h-6" />
                                             </div>
-                                            <span className="text-[10px] font-black uppercase tracking-widest">Mastery_Module_01</span>
+                                            <span className="text-[10px] font-black uppercase tracking-widest">{t("mastery_module")}</span>
                                         </div>
-                                        <p className="text-sm font-bold leading-tight">Begin your sovereign education protocol today.</p>
+                                        <p className="text-sm font-bold leading-tight">{t("sovereign_education")}</p>
                                     </div>
                                 </div>
                             </motion.div>
@@ -147,10 +149,10 @@ export default function MasterLMS(props: SovereignTemplateProps) {
                     <section className="py-24 border-y border-indigo-50 bg-white">
                         <div className="container mx-auto px-8 grid grid-cols-2 md:grid-cols-4 gap-12">
                             {[
-                                { icon: Users, value: "12,400+", label: "Total Scholars" },
-                                { icon: BookOpen, value: "140", label: "Modules" },
-                                { icon: Award, value: "98%", label: "Certification" },
-                                { icon: Clock, value: "480h+", label: "Intelligence" }
+                                { icon: Users, value: "12,400+", label: t("total_scholars") },
+                                { icon: BookOpen, value: "140", label: t("modules") },
+                                { icon: Award, value: "98%", label: t("certification_rate") },
+                                { icon: Clock, value: "480h+", label: t("intelligence_stat") }
                             ].map((stat, i) => (
                                 <div key={i} className="text-center group">
                                     <div className="w-12 h-12 rounded-xl bg-indigo-50 mx-auto mb-6 flex items-center justify-center group-hover:bg-indigo-600 transition-colors">
@@ -168,8 +170,8 @@ export default function MasterLMS(props: SovereignTemplateProps) {
                         <div className="container mx-auto px-6">
                             <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
                                 <div>
-                                    <h2 className="text-6xl font-black uppercase tracking-tighter italic">Intelligence_Matrix.</h2>
-                                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-300 mt-4">Verified Sovereign Curriculum</p>
+                                    <h2 className="text-6xl font-black uppercase tracking-tighter italic">{t("intelligence_matrix")}</h2>
+                                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-300 mt-4">{t("verified_curriculum")}</p>
                                 </div>
                                 <div className="flex gap-4">
                                     <button className="h-12 w-12 rounded-full border border-indigo-100 flex items-center justify-center bg-white hover:bg-indigo-50 transition-colors">
@@ -192,20 +194,20 @@ export default function MasterLMS(props: SovereignTemplateProps) {
                                                 fill
                                                 className="object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
                                             />
-                                            <div className="absolute top-6 left-6 px-4 py-2 bg-indigo-600 text-white text-[9px] font-black uppercase tracking-widest rounded-full">CERTIFIED</div>
+                                            <div className="absolute top-6 left-6 px-4 py-2 bg-indigo-600 text-white text-[9px] font-black uppercase tracking-widest rounded-full">{t("certified")}</div>
                                         </div>
                                         <div className="p-10 space-y-6">
                                             <div className="flex items-center justify-between">
                                                 <div className="flex gap-1">
                                                     {[1, 2, 3, 4, 5].map(j => <Star key={j} className="w-3 h-3 text-amber-400 fill-amber-400" />)}
                                                 </div>
-                                                <span className="text-[10px] font-black text-indigo-300 uppercase tracking-widest">{course.rating} Rating</span>
+                                                <span className="text-[10px] font-black text-indigo-300 uppercase tracking-widest">{course.rating} {t("rating")}</span>
                                             </div>
                                             <h3 className="text-2xl font-black uppercase tracking-tight italic leading-none">{course.title}</h3>
                                             <div className="flex items-center gap-6 py-6 border-y border-indigo-50">
                                                 <div className="flex items-center gap-2">
                                                     <Users className="w-4 h-4 text-indigo-200" />
-                                                    <span className="text-[10px] font-bold uppercase tracking-widest">{course.students} Scholars</span>
+                                                    <span className="text-[10px] font-bold uppercase tracking-widest">{course.students} {t("scholars_count")}</span>
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <Clock className="w-4 h-4 text-indigo-200" />
@@ -213,7 +215,7 @@ export default function MasterLMS(props: SovereignTemplateProps) {
                                                 </div>
                                             </div>
                                             <button className="w-full h-16 bg-white border border-indigo-50 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-4 hover:bg-indigo-950 hover:text-white transition-all">
-                                                Enroll_Now <ChevronRight className="w-4 h-4" />
+                                                {t("enroll_now")} <ChevronRight className="w-4 h-4" />
                                             </button>
                                         </div>
                                     </motion.div>
@@ -225,12 +227,12 @@ export default function MasterLMS(props: SovereignTemplateProps) {
                     {/* CTA BLOCK */}
                     <section className="py-40 bg-indigo-950 text-white">
                         <div className="container mx-auto px-6 text-center space-y-12">
-                            <h2 className="text-5xl lg:text-8xl font-black uppercase tracking-tighter italic leading-none">
-                                Accelerate <br /> Your <span className="text-indigo-500">Intelligence.</span>
+                            <h2 className="text-5xl lg:text-8xl font-black uppercase tracking-tighter italic leading-none whitespace-pre-line">
+                                {t("accelerate_intelligence")}
                             </h2>
-                            <p className="text-xl text-indigo-400 max-w-2xl mx-auto leading-relaxed">Join the most advanced digital education protocol on the planet.</p>
+                            <p className="text-xl text-indigo-400 max-w-2xl mx-auto leading-relaxed">{t("advanced_protocol_desc")}</p>
                             <button className="h-20 px-16 bg-white text-indigo-950 rounded-3xl font-black text-xs uppercase tracking-[0.4em] hover:scale-105 transition-transform">
-                                INITIATE_LEARNING
+                                {t("initiate_learning")}
                             </button>
                         </div>
                     </section>
@@ -239,12 +241,12 @@ export default function MasterLMS(props: SovereignTemplateProps) {
                     <footer className="py-24 bg-white border-t border-indigo-50 flex flex-col items-center gap-10">
                         <span className="text-2xl font-black tracking-tight uppercase border-b-2 border-indigo-600">{blueprint?.name}</span>
                         <div className="flex gap-10 text-[9px] font-black uppercase tracking-[0.4em] text-indigo-300">
-                            <span>Courses</span>
-                            <span>Community</span>
-                            <span>Legal</span>
-                            <span>Certificates</span>
+                            <span>{t("courses")}</span>
+                            <span>{t("community")}</span>
+                            <span>{t("legal")}</span>
+                            <span>{t("certificates")}</span>
                         </div>
-                        <p className="text-[9px] text-indigo-200 font-bold uppercase tracking-[1em] mt-8">© 2026 Sovereign Intelligence Academy. All Logic Verified.</p>
+                        <p className="text-[9px] text-indigo-200 font-bold uppercase tracking-[1em] mt-8">{t("academy_stat")}</p>
                     </footer>
                 </div>
             )}

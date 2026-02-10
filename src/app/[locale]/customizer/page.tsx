@@ -4,6 +4,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useTemplateEditor } from '@/hooks/use-template-editor';
 import { useAutoSave } from "@/hooks/use-auto-save";
 import { CustomizerEngine } from '@/lib/engine/customizer';
+import { refineBlueprintAction } from '@/app/actions/ai-actions';
+
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { CommandCenter } from '@/components/customizer/CommandCenter';
 import { PreviewCanvas } from '@/components/customizer/PreviewCanvas';
@@ -13,7 +15,7 @@ import { StorageService } from '@/lib/services/storage-service';
 import AuthModal from '@/components/auth/AuthModal';
 import ClaimOverlay from '@/components/customizer/ClaimOverlay';
 import AICommandBar from '@/components/customizer/AICommandBar';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams, useRouter, useParams } from 'next/navigation';
 import { Loader2, Activity, Rocket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLaunchModal } from '@/hooks/use-launch-modal';
@@ -23,9 +25,12 @@ import { toast } from 'sonner';
 export default function CustomizerPage() {
     // 1. Hooks & State
     const { onOpen } = useLaunchModal();
-    const { blueprint, updateBlueprint, isGenerating, setIsGenerating, saveStatus } = useTemplateEditor();
+    const { blueprint, updateBlueprint, isGenerating, setIsGenerating, saveStatus, undo, redo, history } = useTemplateEditor();
+
     const searchParams = useSearchParams();
     const router = useRouter();
+    const params = useParams();
+    const locale = params.locale as string || 'ar'; // Default to 'ar' if not found
     const storeIdParam = searchParams.get('id');
 
     const [vision, setVision] = useState("");
@@ -266,7 +271,12 @@ export default function CustomizerPage() {
                         blueprint={blueprint}
                         selectedPageSlug={selectedPageSlug}
                         onSelectPage={setSelectedPageSlug}
+                        undo={undo}
+                        redo={redo}
+                        canUndo={history.past.length > 0}
+                        canRedo={history.future.length > 0}
                     />
+
 
                     {showPay && (
                         <PaymentModule siteId={activeStoreId || blueprint?.id || "temp_id"} />
@@ -279,11 +289,29 @@ export default function CustomizerPage() {
                     <div className="w-full flex justify-center mb-8 relative z-[60]">
                         <AICommandBar
                             isProcessing={isGenerating}
-                            onCommand={(cmd) => {
-                                setVision(prev => prev + " | Update Request: " + cmd);
-                                // triggerGeneration will follow because vision changed
+                            onCommand={async (cmd: string) => {
+                                if (!blueprint) return;
+                                setIsGenerating(true);
+                                try {
+                                    const modifiedBlueprint = await refineBlueprintAction({
+                                        currentBlueprint: blueprint,
+                                        command: cmd,
+                                        businessName: businessName,
+                                        niche: niche,
+                                        locale: locale || 'ar'
+                                    });
+                                    updateBlueprint(modifiedBlueprint);
+                                    await handleSave(modifiedBlueprint);
+                                    toast.success("Blueprint refined by AI");
+                                } catch (e) {
+                                    console.error(e);
+                                    toast.error("Refinement failed");
+                                } finally {
+                                    setIsGenerating(false);
+                                }
                             }}
                         />
+
                     </div>
 
                     <div className="flex-1 relative flex items-center justify-center">

@@ -57,7 +57,9 @@ export function IntelligenceDashboard() {
         try {
             const { getAuditDetailsAction } = await import('@/app/actions/intelligence-actions');
             const details = await getAuditDetailsAction(storeId);
-            setSelectedAudit(details);
+            // If we have the deep 'details' JSON, use it. Otherwise fallback to flat structure.
+            const deepAudit = details?.details || details;
+            setSelectedAudit(deepAudit);
             setShowDiagnostics(true);
         } catch (error) {
             console.error("Fetch Details Error:", error);
@@ -214,16 +216,32 @@ export function IntelligenceDashboard() {
 
                     <div className="p-8 space-y-8 max-h-[70vh] overflow-y-auto">
                         {/* Summary Block */}
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="p-6 rounded-3xl bg-white/5 border border-white/5">
-                                <span className="text-[10px] text-gray-500 uppercase font-black block mb-2">{t('overall_integrity')}</span>
-                                <span className="text-3xl font-black text-[#00D09C]">{selectedAudit?.overall_score}%</span>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div className="p-6 rounded-3xl bg-white/5 border border-white/5 text-center">
+                                <span className="text-[10px] text-gray-500 uppercase font-black block mb-2">SEO</span>
+                                <span className="text-3xl font-black text-[#00D09C]">{selectedAudit?.vectors?.seo?.score ?? selectedAudit?.seo_score}%</span>
                             </div>
-                            <div className="p-6 rounded-3xl bg-white/5 border border-white/5">
-                                <span className="text-[10px] text-gray-500 uppercase font-black block mb-2">{t('semantic_depth')}</span>
-                                <span className="text-3xl font-black text-amber-500">{selectedAudit?.performance_score}%</span>
+                            <div className="p-6 rounded-3xl bg-white/5 border border-white/5 text-center">
+                                <span className="text-[10px] text-gray-500 uppercase font-black block mb-2">Conv.</span>
+                                <span className="text-3xl font-black text-blue-500">{selectedAudit?.vectors?.conversion?.score ?? selectedAudit?.performance_score}%</span>
+                            </div>
+                            <div className="p-6 rounded-3xl bg-white/5 border border-white/5 text-center">
+                                <span className="text-[10px] text-gray-500 uppercase font-black block mb-2">Visual</span>
+                                <span className="text-3xl font-black text-purple-500">{selectedAudit?.vectors?.visual?.score ?? selectedAudit?.accessibility_score}%</span>
+                            </div>
+                            <div className="p-6 rounded-3xl bg-white/5 border border-white/5 text-center">
+                                <span className="text-[10px] text-gray-500 uppercase font-black block mb-2">Content</span>
+                                <span className="text-3xl font-black text-amber-500">{selectedAudit?.vectors?.content?.score ?? selectedAudit?.best_practices_score}%</span>
                             </div>
                         </div>
+
+                        {/* Executive Summary */}
+                        {selectedAudit?.executive_summary && (
+                            <div className="p-6 rounded-2xl bg-blue-500/10 border border-blue-500/20">
+                                <h5 className="text-[10px] font-black uppercase text-blue-400 mb-2">Executive Summary</h5>
+                                <p className="text-sm text-blue-100/80 leading-relaxed italic">"{selectedAudit.executive_summary}"</p>
+                            </div>
+                        )}
 
                         {/* Critical Issues */}
                         <div>
@@ -258,9 +276,10 @@ export function IntelligenceDashboard() {
                             </h5>
                             <div className="p-6 rounded-[32px] bg-[#00D09C]/5 border border-[#00D09C]/10">
                                 <ul className="space-y-3">
-                                    {selectedAudit?.recommendations?.map((rec: string, idx: number) => (
+                                    {/* Handle both flat recommendations array and vectors-based recommendations */}
+                                    {(selectedAudit?.action_plan || selectedAudit?.recommendations || []).map((rec: string, idx: number) => (
                                         <li key={idx} className="text-xs text-blue-100 flex gap-3 items-center">
-                                            <div className="w-1 h-1 bg-[#00D09C] rounded-full" />
+                                            <div className="w-1 h-1 bg-[#00D09C] rounded-full flex-shrink-0" />
                                             {rec}
                                         </li>
                                     ))}

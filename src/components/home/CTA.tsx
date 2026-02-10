@@ -3,8 +3,11 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function CTA() {
+    const t = useTranslations('CTA');
+
     return (
         <section className="py-32 relative overflow-hidden flex items-center justify-center bg-[#020617]">
             {/* GYS-V2 HIGH-DENSITY GLOW */}
@@ -23,16 +26,8 @@ export default function CTA() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     className="text-5xl md:text-8xl font-bold text-white mb-10 tracking-tight leading-[1.05]"
-                >
-                    Ready to <span className="text-primary relative inline-block">
-                        Scale?
-                        <motion.div
-                            className="absolute -inset-1 bg-primary/20 blur-xl -z-10 rounded-full"
-                            animate={{ opacity: [0.2, 0.5, 0.2] }}
-                            transition={{ duration: 3, repeat: Infinity }}
-                        />
-                    </span>
-                </motion.h2>
+                    dangerouslySetInnerHTML={{ __html: t('title') }}
+                />
 
                 <motion.p
                     initial={{ opacity: 0, y: 20 }}
@@ -41,8 +36,7 @@ export default function CTA() {
                     transition={{ delay: 0.1 }}
                     className="text-xl md:text-2xl text-white/40 mb-14 max-w-3xl mx-auto font-light leading-relaxed"
                 >
-                    High-performance infrastructure is ready. Move beyond simple builders.
-                    Launch your professional business asset today.
+                    {t('subtitle')}
                 </motion.p>
 
                 <motion.div
@@ -55,7 +49,7 @@ export default function CTA() {
                         onClick={() => window.location.href = '/signup'}
                         className="text-xl px-14 py-8 rounded-[1.2rem] bg-primary hover:bg-[#2563eb] text-[#020617] font-bold shadow-[0_0_50px_rgba(59,130,246,0.5)] hover:shadow-[0_0_70px_rgba(59,130,246,0.7)] transition-all hover:scale-[1.03] active:scale-[0.97] border-none"
                     >
-                        Start Your Project <ArrowRight className="ml-3 w-6 h-6" />
+                        {t('button')} <ArrowRight className="ml-3 w-6 h-6" />
                     </Button>
                 </motion.div>
             </div>

@@ -12,6 +12,7 @@ import { AuthService } from '@/lib/services/auth-service';
 import { SiteBlueprint } from '@/lib/schemas';
 import { ActionResult } from './auth-actions';
 import { revalidatePath } from 'next/cache';
+import { createClient } from '@/lib/supabase/server';
 
 /**
  * Save a store blueprint
@@ -151,5 +152,55 @@ export async function getStoreAction(storeId: string): Promise<ActionResult<{ id
         };
     } catch (error) {
         return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+    }
+}
+/**
+ * Get public stores for showcase
+ */
+export async function getPublicStoresAction(limit: number = 20): Promise<ActionResult<any[]>> {
+    try {
+        const result = await StoreService.getPublicStores(limit);
+        if (result.error) return { success: false, error: result.error.message };
+
+        return {
+            success: true,
+            data: result.data || []
+        };
+    } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+    }
+}
+
+/**
+ * SIMULATION ACTION: Manually activate store for Dev/Demo
+ * ONLY works if NODE_ENV is development or simulation mode is explicit.
+ */
+export async function activateStoreSimulationAction(storeId: string): Promise<ActionResult> {
+    // 1. Safety Gate
+    if (process.env.NODE_ENV === 'production' && !process.env.NEXT_PUBLIC_ALLOW_SIMULATION) {
+        return { success: false, error: "Simulation not allowed in production." };
+    }
+
+    try {
+        const user = await AuthService.getCurrentUser();
+        if (!user.data) return { success: false, error: 'Unauthorized' };
+
+        // 2. Mock Activation
+        // We bypass the restriction logic for simulation
+        // In a real scenario, this would be updated via Stripe Webhook
+        await StoreService.updateStore(storeId, {
+            status: 'deployed',
+            deployment_url: `https://${storeId}.simulated-empire.com`
+        });
+
+        // Also update User Tier if needed (Mock)
+        const supabase = await createClient();
+        await supabase.from('users').update({ tier: 'pro' }).eq('id', user.data.id);
+
+        revalidatePath(`/success/${storeId}`);
+        revalidatePath(`/dashboard`);
+        return { success: true };
+    } catch (e) {
+        return { success: false, error: "Simulation Failed" };
     }
 }

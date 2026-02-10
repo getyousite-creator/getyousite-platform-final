@@ -8,39 +8,21 @@ import { ArrowRight, Calendar, User, Tag, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { KnowledgeService } from "@/lib/services/knowledge-service";
+import { useEffect, useState } from "react";
+import { Post } from "@/lib/schemas";
+
 export default function BlogPage() {
     const t = useTranslations('Blog');
+    const [posts, setPosts] = useState<Post[]>([]);
 
-    // Generate posts from translations
-    const posts = [
-        {
-            slug: "ai-ecommerce-future",
-            title: t('posts.post1.title'),
-            excerpt: t('posts.post1.excerpt'),
-            author: t('posts.post1.author'),
-            category: t('posts.post1.category'),
-            date: t('posts.post1.date'),
-            image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2070&auto=format&fit=crop"
-        },
-        {
-            slug: "seo-strategies-2026",
-            title: t('posts.post2.title'),
-            excerpt: t('posts.post2.excerpt'),
-            author: t('posts.post2.author'),
-            category: t('posts.post2.category'),
-            date: t('posts.post2.date'),
-            image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop"
-        },
-        {
-            slug: "psychology-minimalist-design",
-            title: t('posts.post3.title'),
-            excerpt: t('posts.post3.excerpt'),
-            author: t('posts.post3.author'),
-            category: t('posts.post3.category'),
-            date: t('posts.post3.date'),
-            image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop"
-        }
-    ];
+    useEffect(() => {
+        const fetchPosts = async () => {
+            const data = await KnowledgeService.getRecentPosts(6);
+            setPosts(data);
+        };
+        fetchPosts();
+    }, []);
 
     return (
         <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
@@ -102,7 +84,7 @@ export default function BlogPage() {
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
                                         <span className="flex items-center gap-2"><Calendar className="w-3 h-3 text-primary" /> {post.date}</span>
-                                        <span className="flex items-center gap-2"><User className="w-3 h-3 text-muted-foreground" /> {post.author}</span>
+                                        <span className="flex items-center gap-2"><User className="w-3 h-3 text-muted-foreground" /> {post.author.name}</span>
                                     </div>
                                     <h2 className="text-3xl font-black italic tracking-tighter leading-tight group-hover:text-primary transition-colors">
                                         {post.title}

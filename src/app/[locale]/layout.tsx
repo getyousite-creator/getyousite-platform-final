@@ -3,7 +3,7 @@ import { getMessages, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import "@/app/globals.css";
-import { Inter, IBM_Plex_Sans_Arabic } from "next/font/google";
+// import { Inter, IBM_Plex_Sans_Arabic } from "next/font/google"; // BYPASS_FONT_FETCH
 import { cn } from "@/lib/utils";
 import JsonLd from "@/components/seo/JsonLd";
 import LaunchModal from "@/components/forms/LaunchModal";
@@ -15,6 +15,11 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import SupabaseProvider from "@/components/providers/SupabaseProvider";
 import { PwaProvider } from "@/components/providers/PwaProvider";
 
+// MOCK FONTS FOR OFFLINE BUILD
+const inter = { variable: "font-sans" };
+const ibmPlexArabic = { variable: "font-arabic" };
+
+/*
 const inter = Inter({
     subsets: ["latin"],
     variable: "--font-inter",
@@ -27,6 +32,7 @@ const ibmPlexArabic = IBM_Plex_Sans_Arabic({
     variable: "--font-arabic",
     display: "swap",
 });
+*/
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;

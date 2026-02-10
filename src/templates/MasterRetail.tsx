@@ -20,6 +20,7 @@ import { SovereignImage } from "@/components/ui/sovereign-image";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
 import Logo from "@/components/ui/Logo";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 interface Product {
     name: string;
@@ -28,6 +29,8 @@ interface Product {
 }
 
 export default function MasterRetail(props: SovereignTemplateProps) {
+    const t = useTranslations("Templates.retail");
+    const tc = useTranslations("Templates.common");
     const { settings, blueprint } = props;
     const { headline, subheadline, primaryColor = "#1a1a1a" } = settings;
 
@@ -43,28 +46,28 @@ export default function MasterRetail(props: SovereignTemplateProps) {
     // Inject dynamic products if available, with intelligent fallback mapping
     const products = (productsSection?.content?.products as Product[]) || [
         {
-            name: productsSection?.content?.items?.[0]?.title || "Industrial Essential",
+            name: productsSection?.content?.items?.[0]?.title || t("prod_essential"),
             price: "$120",
             img:
                 productsSection?.content?.items?.[0]?.image ||
                 "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=2099&auto=format&fit=crop",
         },
         {
-            name: productsSection?.content?.items?.[1]?.title || "Classic Performance",
+            name: productsSection?.content?.items?.[1]?.title || t("prod_performance"),
             price: "$450",
             img:
                 productsSection?.content?.items?.[1]?.image ||
                 "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2430",
         },
         {
-            name: productsSection?.content?.items?.[2]?.title || "Core Asset",
+            name: productsSection?.content?.items?.[2]?.title || t("prod_asset"),
             price: "$890",
             img:
                 productsSection?.content?.items?.[2]?.image ||
                 "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2430",
         },
         {
-            name: productsSection?.content?.items?.[3]?.title || "Shift 01",
+            name: productsSection?.content?.items?.[3]?.title || t("prod_shift"),
             price: "$65",
             img:
                 productsSection?.content?.items?.[3]?.image ||
@@ -82,14 +85,14 @@ export default function MasterRetail(props: SovereignTemplateProps) {
                     <nav className="h-24 px-10 border-b border-zinc-100 flex items-center justify-between sticky top-0 bg-white/80 backdrop-blur-xl z-[100]">
                         <div className="flex items-center gap-10">
                             <span className="text-2xl font-black tracking-tighter uppercase italic">
-                                {blueprint?.name || "RETAIL"}
+                                {blueprint?.name || t("retail_name")}
                             </span>
                             <div className="hidden lg:flex items-center gap-8 text-[10px] font-black uppercase tracking-widest text-zinc-400">
-                                <span className="hover:text-zinc-900 cursor-pointer">Shop</span>
+                                <span className="hover:text-zinc-900 cursor-pointer">{tc('shop')}</span>
                                 <span className="hover:text-zinc-900 cursor-pointer">
-                                    New_Arrivals
+                                    {tc('new_arrivals')}
                                 </span>
-                                <span className="hover:text-zinc-900 cursor-pointer">Archive</span>
+                                <span className="hover:text-zinc-900 cursor-pointer">{tc('archive')}</span>
                             </div>
                         </div>
 
@@ -109,7 +112,7 @@ export default function MasterRetail(props: SovereignTemplateProps) {
                         <div className="lg:col-span-8 relative aspect-[16/9] lg:aspect-auto lg:h-[700px] rounded-[48px] overflow-hidden group">
                             <Image
                                 src={heroImage}
-                                alt="Collection"
+                                alt={t("collection_alt")}
                                 fill
                                 className="object-cover transition-transform duration-[3s] group-hover:scale-105"
                                 priority
@@ -123,17 +126,17 @@ export default function MasterRetail(props: SovereignTemplateProps) {
                                     className="px-10 h-16 text-white font-black uppercase tracking-widest text-[10px] hover:scale-105 transition-transform shadow-2xl"
                                     style={{ backgroundColor: primaryColor }}
                                 >
-                                    Explore_Collection
+                                    {t('explore')}
                                 </button>
                             </div>
                         </div>
                         <div className="lg:col-span-4 bg-zinc-50 rounded-[48px] p-12 flex flex-col justify-between border border-zinc-100 relative overflow-hidden">
                             <div className="relative z-10">
                                 <div className="flex items-center gap-2 text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-10">
-                                    <Tag className="w-4 h-4" /> Limited_Release
+                                    <Tag className="w-4 h-4" /> {t('limited')}
                                 </div>
-                                <h2 className="text-5xl font-black tracking-tightest leading-none mb-6">
-                                    Strategic <br /> Materiality 01.
+                                <h2 className="text-5xl font-black tracking-tightest leading-none mb-6 uppercase">
+                                    {t('strategic')}
                                 </h2>
                                 <p className="text-zinc-500 font-medium leading-relaxed">
                                     {heroSubheadline}
@@ -143,7 +146,7 @@ export default function MasterRetail(props: SovereignTemplateProps) {
                             <div className="p-6 bg-white rounded-3xl border border-zinc-200 shadow-sm relative z-10">
                                 <div className="flex items-center justify-between mb-4">
                                     <span className="text-[10px] font-black uppercase text-zinc-400">
-                                        Next_Drop
+                                        {t('next_drop')}
                                     </span>
                                     <span className="text-xs font-black">48:12:00</span>
                                 </div>
@@ -171,18 +174,18 @@ export default function MasterRetail(props: SovereignTemplateProps) {
                             {[
                                 {
                                     icon: Truck,
-                                    title: "Global Logistics",
-                                    desc: "Express delivery protocol to 180+ countries.",
+                                    title: t("benefit_logistics"),
+                                    desc: t("benefit_logistics_desc"),
                                 },
                                 {
                                     icon: Shield,
-                                    title: "Secure Checkout",
-                                    desc: "Identity protection via end-to-end encryption.",
+                                    title: t("benefit_checkout"),
+                                    desc: t("benefit_checkout_desc"),
                                 },
                                 {
                                     icon: CheckCircle2,
-                                    title: "Quality Audit",
-                                    desc: "Every asset hand-verified for engineering truth.",
+                                    title: t("benefit_quality"),
+                                    desc: t("benefit_quality_desc"),
                                 },
                             ].map((item, i) => (
                                 <div key={i} className="flex gap-4 items-start">
@@ -208,14 +211,14 @@ export default function MasterRetail(props: SovereignTemplateProps) {
                             <div className="flex items-end justify-between mb-20">
                                 <div>
                                     <h2 className="text-6xl font-black uppercase tracking-tighter italic">
-                                        The_Archives.
+                                        {t('archive')}.
                                     </h2>
                                     <p className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400 mt-2">
-                                        Filter by high-fidelity category
+                                        {t('manifest')}
                                     </p>
                                 </div>
                                 <button className="h-14 px-8 border border-zinc-200 text-[10px] font-black uppercase tracking-widest hover:border-zinc-900 transition-colors flex items-center gap-3 bg-white">
-                                    <Filter className="w-4 h-4" /> Filter_Silo
+                                    <Filter className="w-4 h-4" /> {t('filter')}
                                 </button>
                             </div>
 
@@ -231,7 +234,7 @@ export default function MasterRetail(props: SovereignTemplateProps) {
                                             />
                                             <div className="absolute inset-x-6 bottom-6 flex gap-2 translate-y-20 group-hover:translate-y-0 transition-transform duration-500">
                                                 <button className="flex-1 h-16 text-[10px] font-black uppercase tracking-widest bg-white shadow-xl hover:bg-zinc-950 hover:text-white transition-all">
-                                                    Quick_Buy
+                                                    {t('buy')}
                                                 </button>
                                                 <button className="w-16 h-16 bg-white shadow-xl flex items-center justify-center hover:bg-zinc-950 hover:text-white transition-all">
                                                     <Plus className="w-5 h-5" />
@@ -268,13 +271,13 @@ export default function MasterRetail(props: SovereignTemplateProps) {
                             {blueprint?.name}
                         </span>
                         <div className="flex gap-10 text-[9px] font-black uppercase tracking-[0.3em] text-zinc-400">
-                            <span>Privacy</span>
-                            <span>Orders</span>
-                            <span>Sustainability</span>
-                            <span>Legal</span>
+                            <span>{tc('privacy')}</span>
+                            <span>{tc('orders')}</span>
+                            <span>{tc('sustainability')}</span>
+                            <span>{tc('legal')}</span>
                         </div>
                         <p className="text-[10px] text-zinc-300 font-bold uppercase tracking-widest mt-10">
-                            © 2026 Professional Retail Infrastructure.
+                            {t('copyright')}
                         </p>
                     </footer>
                 </div>

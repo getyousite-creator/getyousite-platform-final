@@ -24,6 +24,8 @@ export interface Store {
     paid_at: string | null;
     payment_id: string | null;
     amount: number | null;
+    is_public: boolean;
+    is_featured: boolean;
     created_at: string;
     updated_at: string;
 }
@@ -435,4 +437,43 @@ export const StoreService = {
             };
         }
     },
+    /**
+     * Get all public/featured stores (for showcase)
+     */
+    async getPublicStores(limit: number = 20): Promise<StoreServiceResult<Store[]>> {
+        try {
+            const supabase = await createClient();
+
+            const { data: stores, error } = await supabase
+                .from('stores')
+                .select('*')
+                .eq('is_public', true)
+                .eq('status', 'deployed')
+                .order('created_at', { ascending: false })
+                .limit(limit);
+
+            if (error) {
+                return {
+                    data: null,
+                    error: {
+                        message: error.message,
+                        code: error.code,
+                    },
+                };
+            }
+
+            return {
+                data: stores as Store[],
+                error: null,
+            };
+        } catch (err) {
+            return {
+                data: null,
+                error: {
+                    message: err instanceof Error ? err.message : 'Unknown error occurred',
+                },
+            };
+        }
+    },
 };
+

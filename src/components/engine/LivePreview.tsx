@@ -68,31 +68,46 @@ export const LivePreview: React.FC<PreviewProps> = ({ config, isGenerating, sele
     );
 };
 
-const DynamicRenderer = ({ blueprint, selectedPageSlug = 'index' }: any) => {
-    if (!blueprint) return (
+const DynamicRenderer = ({ blueprint, selectedPageSlug = 'index', isGenerating }: any) => {
+    if (!blueprint && !isGenerating) return (
         <div className="flex flex-col items-center justify-center p-20 text-center space-y-4">
             <div className="w-12 h-12 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
             <p className="text-muted-foreground font-mono text-xs uppercase tracking-widest">Initializing Neural Link...</p>
         </div>
     );
 
-    const primaryColor = blueprint.theme?.primary || '#3b82f6';
+    const primaryColor = blueprint?.theme?.primary || '#3b82f6';
 
     // Extract layout based on selected page
-    let activeLayout = blueprint.layout || [];
-    if (blueprint.pages && blueprint.pages[selectedPageSlug]) {
+    let activeLayout = blueprint?.layout || [];
+    if (blueprint?.pages && blueprint?.pages[selectedPageSlug]) {
         activeLayout = blueprint.pages[selectedPageSlug].layout || [];
+    }
+
+    // If generating and no layout yet, show skeleton sequence
+    if (isGenerating && activeLayout.length === 0) {
+        return (
+            <div className="p-12 space-y-12">
+                <div className="h-20 bg-white/[0.03] rounded-3xl animate-pulse w-full" />
+                <div className="h-[400px] bg-white/[0.03] rounded-[3rem] animate-pulse w-full" />
+                <div className="grid grid-cols-3 gap-8">
+                    <div className="h-48 bg-white/[0.03] rounded-3xl animate-pulse" />
+                    <div className="h-48 bg-white/[0.03] rounded-3xl animate-pulse" />
+                    <div className="h-48 bg-white/[0.03] rounded-3xl animate-pulse" />
+                </div>
+            </div>
+        );
     }
 
     return (
         <div style={{ '--primary-color': primaryColor } as any} className="min-h-full">
             {/* 1. Header Rendering */}
-            <section id="preview-header" className={`border-b border-border p-4 flex justify-between items-center bg-background/80 backdrop-blur-md sticky top-0 z-10 ${blueprint.navigation?.transparent ? 'absolute inset-x-0 bg-transparent border-none' : ''}`}>
-                <div className="font-black text-xl tracking-tighter" style={{ color: primaryColor }}>
-                    {blueprint.navigation?.logo || blueprint.name || "Sovereign_Site"}
+            <section id="preview-header" className={`border-b border-white/5 p-6 md:p-8 flex justify-between items-center bg-background/80 backdrop-blur-md sticky top-0 z-10 ${blueprint?.navigation?.transparent ? 'absolute inset-x-0 bg-transparent border-none' : ''}`}>
+                <div className="font-black text-2xl tracking-tighter" style={{ color: primaryColor }}>
+                    {blueprint?.navigation?.logo || blueprint?.name || "Sovereign_Site"}
                 </div>
-                <div className="flex gap-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                    {blueprint.navigation?.links ? (
+                <div className="flex gap-8 text-[11px] font-black uppercase tracking-[0.3em] text-white/40">
+                    {blueprint?.navigation?.links ? (
                         blueprint.navigation.links.map((link: any, i: number) => (
                             <span key={i} className={selectedPageSlug === (link.href === '/' ? 'index' : link.href.replace('/', '')) ? 'text-primary' : ''}>
                                 {link.label}
@@ -100,9 +115,9 @@ const DynamicRenderer = ({ blueprint, selectedPageSlug = 'index' }: any) => {
                         ))
                     ) : (
                         <>
-                            <span>Home</span>
-                            <span>Features</span>
-                            <span>Contact</span>
+                            <span>Logic_Home</span>
+                            <span>Capabilities</span>
+                            <span>Empire_Contact</span>
                         </>
                     )}
                 </div>
@@ -113,43 +128,51 @@ const DynamicRenderer = ({ blueprint, selectedPageSlug = 'index' }: any) => {
                 activeLayout.map((section: any, index: number) => (
                     <motion.div
                         key={section.id || index}
-                        initial={{ y: 20, opacity: 0 }}
+                        initial={{ y: 40, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{
-                            delay: index * 0.1,
+                            delay: index * 0.15,
                             type: "spring",
-                            stiffness: 100
+                            stiffness: 70
                         }}
-                        className={section.animation === 'fade-in' ? 'animate-fade-in' : ''}
                     >
-                        <ComponentLibrary type={section.type} content={section.content} primaryColor={primaryColor} />
+                        <ComponentLibrary
+                            type={section.type}
+                            content={section.content}
+                            primaryColor={primaryColor}
+                            backgroundColor={blueprint?.theme?.backgroundColor}
+                            textColor={blueprint?.theme?.textColor}
+                        />
                     </motion.div>
+
                 ))
             ) : (
-                <div className="flex flex-col items-center justify-center p-20 text-center space-y-6 min-h-[400px]">
-                    <div className="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center">
-                        <Layout className="w-8 h-8 text-muted-foreground" />
+                <div className="flex flex-col items-center justify-center p-32 text-center space-y-8 min-h-[600px]">
+                    <div className="w-20 h-20 rounded-full bg-white/5 border border-white/10 flex items-center justify-center animate-pulse">
+                        <Layout className="w-8 h-8 text-white/20" />
                     </div>
                     <div>
-                        <h3 className="text-lg font-bold">This page is a draft</h3>
-                        <p className="text-sm text-muted-foreground max-w-xs mx-auto">Generate this page in the Sovereign Architect to see it live.</p>
+                        <h3 className="text-xl font-black uppercase tracking-widest text-white/80">Draft_Neural_Silo</h3>
+                        <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] max-w-xs mx-auto mt-4 leading-relaxed">
+                            Generate this page in the Sovereign Architect to reveal the structural logic.
+                        </p>
                     </div>
                 </div>
             )}
 
             {/* 3. Footer Rendering */}
-            <footer className="p-12 bg-background border-t border-border text-center">
-                <div className="mb-6 flex justify-center gap-6">
-                    {blueprint.footer?.links?.map((link: any, i: number) => (
-                        <span key={i} className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest cursor-pointer hover:text-foreground transition-colors">{link.label}</span>
+            <footer className="p-20 bg-black/40 border-t border-white/5 text-center">
+                <div className="mb-10 flex justify-center gap-10">
+                    {blueprint?.footer?.links?.map((link: any, i: number) => (
+                        <span key={i} className="text-[10px] text-white/30 uppercase font-black tracking-[0.3em] cursor-pointer hover:text-white transition-colors">{link.label}</span>
                     ))}
                 </div>
-                <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">
-                    {blueprint.footer?.copyright || "© 2024 GetYouSite Sovereign Engine"}
+                <p className="text-[11px] text-white/10 uppercase tracking-[0.5em] font-black mb-6">
+                    {blueprint?.footer?.copyright || `© 2026 ${blueprint?.name || 'Sovereign'} Systems Verified`}
                 </p>
-                <div className="mt-4 flex justify-center gap-4 text-muted-foreground">
-                    {blueprint.footer?.social && Object.entries(blueprint.footer.social).map(([platform, url]: any) => (
-                        <span key={platform} className="text-[10px] font-bold uppercase">{platform}</span>
+                <div className="flex justify-center gap-6 text-white/20">
+                    {blueprint?.footer?.social && Object.entries(blueprint.footer.social).map(([platform, url]: any) => (
+                        <span key={platform} className="text-[9px] font-black uppercase tracking-widest">{platform}_Secure</span>
                     ))}
                 </div>
             </footer>
@@ -157,22 +180,30 @@ const DynamicRenderer = ({ blueprint, selectedPageSlug = 'index' }: any) => {
     );
 };
 
+
 const AIProcessingHUD = () => (
     <div className="absolute inset-0 bg-primary/5 backdrop-blur-[2px] pointer-events-none flex items-center justify-center z-50">
         <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-card/90 text-primary-foreground p-6 font-mono text-[10px] rounded-xl border border-border shadow-2xl space-y-2"
+            className="bg-[#020617]/90 text-primary p-8 font-mono text-[10px] rounded-[2rem] border border-primary/20 shadow-[0_32px_120px_rgba(0,0,0,0.5)] space-y-4 min-w-[300px]"
         >
-            <div className="flex gap-2 items-center">
-                <div className="w-2 h-2 bg-blue-500 rounded-full animate-blink" />
-                <span className="animate-pulse">{">"} INJECTING_GERMAN_LOGIC...</span>
+            <div className="flex gap-4 items-center border-b border-white/5 pb-4">
+                <div className="w-2 h-2 bg-primary rounded-full animate-ping" />
+                <span className="font-black uppercase tracking-[0.3em]">Neural_Link_Status: Active</span>
             </div>
-            <div>{">"} SYNCING_STYLING_MATRIX...</div>
-            <div>{">"} DEPLOYING_ASSETS_TO_CLOUD...</div>
+            <div className="space-y-2 opacity-60">
+                <div className="flex justify-between"><span>{">"} INJECTING_STRATEGIC_LOGIC</span><span>DONE</span></div>
+                <div className="flex justify-between"><span>{">"} SYNTHESIZING_ATOMIC_STACK</span><span className="animate-pulse">RUNNING</span></div>
+                <div className="flex justify-between"><span>{">"} DEPLOYING_TO_EDGE</span><span>PENDING</span></div>
+            </div>
+            <div className="pt-4 border-t border-white/5 text-center text-white/20 uppercase tracking-[0.2em]">
+                Protocol_v2_Sovereign
+            </div>
         </motion.div>
     </div>
 );
+
 
 const GenerationSkeleton = () => (
     <div className="w-full h-full bg-background flex items-center justify-center rounded-2xl border border-border">

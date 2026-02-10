@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-export default function Stats({ content, primaryColor }: any) {
+export default function Stats({ content, primaryColor, backgroundColor, textColor }: any) {
     const stats = content?.items || [
         { label: 'عميل سعيد', value: '500+' },
         { label: 'مشروع منجز', value: '1,200+' },
@@ -11,7 +11,11 @@ export default function Stats({ content, primaryColor }: any) {
     ];
 
     return (
-        <section className="py-20 px-8 bg-card relative">
+        <section
+            className="py-20 px-8 relative"
+            style={{ backgroundColor: backgroundColor || 'transparent', color: textColor }}
+        >
+
             <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12">
                 {stats.map((stat: any, i: number) => (
                     <div key={i} className="text-center space-y-2 group">

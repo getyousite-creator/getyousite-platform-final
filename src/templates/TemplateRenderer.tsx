@@ -37,7 +37,10 @@ const ZenKitchen = dynamic<SovereignTemplateProps>(() => import('./restaurant/Ze
 
 import { SovereignTemplateProps } from "@/lib/types/template";
 
-const templateMap: Record<string, React.ComponentType<SovereignTemplateProps>> = {
+const AtomicRenderer = dynamic<any>(() => import('./AtomicRenderer'));
+
+const templateMap: Record<string, React.ComponentType<any>> = {
+    'atomic-quantum': AtomicRenderer, // THE NEW ENGINE
     // MEDICAL PILLAR
     'vital-care': VitalCare,
     'dr-khalil': DrKhalilDental,
@@ -124,20 +127,34 @@ const templateMap: Record<string, React.ComponentType<SovereignTemplateProps>> =
 export default function TemplateRenderer({
     templateId,
     blueprint: overrideBlueprint,
-    meta
+    meta,
+    selectedPageSlug
 }: {
+
     templateId: string,
     blueprint?: any,
-    meta?: { id: string; name: string }
-}) {
-    const Template = templateMap[templateId as keyof typeof templateMap] || MasterProfessional;
+    meta?: { id: string; name: string },
+    selectedPageSlug?: string
 
+}) {
     const editorSettings = useTemplateEditor(state => state.settings);
     const editorBlueprint = useTemplateEditor(state => state.blueprint);
 
     // If overrideBlueprint is provided (from the renderer), use it. Otherwise use editor state.
     const activeBlueprint = overrideBlueprint || editorBlueprint;
 
+    // PROTOCOL 5 INTEGRATION:
+    // If templateId is 'atomic-quantum' OR if we want to force atomic rendering for new builds or missing mappings.
+    if (templateId === 'atomic-quantum' || !templateMap[templateId]) {
+        return <AtomicRenderer blueprint={activeBlueprint} meta={meta} selectedPageSlug={selectedPageSlug} />;
+    }
+
+
+    const Template = templateMap[templateId] || AtomicRenderer;
+
     // Sovereign Update: Inject full architecture metadata
-    return <Template settings={editorSettings} blueprint={activeBlueprint} meta={meta} />;
+    return <Template settings={editorSettings} blueprint={activeBlueprint} meta={meta} selectedPageSlug={selectedPageSlug} />;
+
 }
+
+

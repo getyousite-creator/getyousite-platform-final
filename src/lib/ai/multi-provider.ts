@@ -1,6 +1,7 @@
 import { AuthService } from "@/lib/services/auth-service";
 import { searchUnsplashImages } from "@/lib/images/unsplash";
-import { Section } from "@/lib/schemas";
+import { Section, SiteBlueprint } from "@/lib/schemas";
+
 
 /**
  * Multi-Provider AI System
@@ -169,8 +170,11 @@ function generateIntelligentMock(prompt: string): string {
             secondary: "#1e293b",
             accent: "#10b981",
             fontFamily: "Inter",
+            backgroundColor: "#ffffff",
+            textColor: "#000000",
             mode: "light",
         },
+
         footer: {
             copyright: "© 2026 All Rights Reserved",
             links: [
@@ -297,7 +301,7 @@ async function refineUserVision(params: {
 }) {
     const refinerPrompt = `
 أنت "المحلل الاستراتيجي السيادي" (Strategic Sovereign Analyst). 
-مهمتك: تحويل مدخلات العميل البسيطة إلى "مخطط عمل استراتيجي" (Strategic Business Brief).
+مهمتك: تحويل مدخلات العميل البسيطة إلى "مخطط عمل استراتيجي" (Strategic Business Brief) فائق القوة.
 
 البيانات الخام:
 الاسم: ${params.businessName}
@@ -305,16 +309,16 @@ async function refineUserVision(params: {
 الوصف: ${params.vision}
 اللغة: ${params.locale}
 
-المطلوب: قم بتحليل البيانات وتوليد تقرير استراتيجي مكثف يركز على:
-1. تحليل سيكولوجية الجمهور المستهدف ونقاط الألم لديهم.
-2. تحديد "نبرة الصوت" (Brand Voice) - يجب أن تكون "عالية المكانة" (High-Status).
-3. اقتراح 3 مميزات تنافسية فريدة (Unique Selling Points) لهذا النشاط تحديداً.
-4. تحديد الهيكل الوظيفي المثالي (الصفحات والمكونات الضرورية للتحويل).
-5. توجيهات بصرية (Aesthetic Logic) تتناسب مع النيش.
+المطلوب: قم بتحليل البيانات وتوليد تقرير استراتيجي "عالي المكانة" (High-Status) يغطي:
+1. تحليل جمهور العميل النفسي (Psychographic Analysis) ونقاط الألم العميقة لديهم.
+2. نبرة الصوت (Brand Voice): يجب أن تكون سلطوية، تقنية، ومطمئنة (Commanding & Tech-Forward).
+3. هندسة الـ USP: صغ 3 ميزات تنافسية تجعل المنافسين يبدون بدائيين.
+4. الهيكل الوظيفي: ما هي العناصر التي ستحول الزائر إلى "مؤمن بالعلامة التجارية" (Brand Believer)؟
+5. التموضع الجمالي: كيف يجب أن يبدو الموقع ليوحي بالثقة الفورية؟
 
-اللغة: يجب أن يكون الرد بنفس لغة العميل (${params.locale}).
-القاعدة: كن صارماً، ذكياً، وموجزاً (بحد أقصى 300 كلمة).
+القاعدة: المخرج يجب أن يكون بنفس لغة العميل (${params.locale}). كن صارماً، حكيماً، وموجزاً جداً.
     `;
+
 
     try {
         const result = await generateWithFallback({
@@ -372,23 +376,34 @@ export async function generateCompleteWebsite(params: {
 
     const systemPrompt = `
 أنت "المهندس السيادي" (Sovereign Architect) لمنصة GetYouSite.
-يجب أن تتبع بدقة متناهية "بروتوكول العبقرية" (Abqari Protocol):
+يجب أن تتبع بدقة متناهية "بروتوكول العبقرية" (Abqari Logic v2):
 
-1. التحليل الاستراتيجي والـ SEO (Mandate #11):
-- ولد تلقائياً: (Title, Meta Description, Keywords) لكل صفحة.
-- العناوين يجب أن تكون H1 واحدة فقط لكل صفحة وصديقة لمحركات البحث.
+1. السيادة اللغوية والإقناع (Protocol 7 - Sales Copy / AIDA):
+- اتبع نموذج AIDA (Attention, Interest, Desire, Action) في صياغة كل قسم.
+- اللغة العربية: استخدم حصراً اللغة العربية الفصحى الحديثة (Modern Standard Arabic) بروح "العبقري".
+- التميز: تجنب العبارات المبتذلة. استخدم لغة استراتيجية، تقنية، ومقنعة (Commanding & Persuasive).
+- الهيكل: (عنوان يصيد الانتباه -> وصف يثير الاهتمام -> فوائد تخلق الرغبة -> زر نداء للعمل CTA قوي).
 
-2. قواعد المحتوى والتحويل (Mandate #6):
-- لا تستخدم لوريم إيبسوم.
-- اللغة العربية: فصحى، حديثة، قوية.
-- الهيكل: (عنوان صادم -> وصف يركز على الفائدة -> CTA).
+2. العمارة الذرية (Protocol 5 - Atomic Logic):
+- ابنِ الصفحة كسرد قصصي تقني متكامل باستخدام الأقسام الذرية.
+- الأقسام المتاحة: (HERO_PRIME, FEATURE_GRID, LOGIC_SERVICES, SMART_FORM, PRICE_ENGINE, LEGAL_NOTICE, APPOINTMENT_WIDGET).
+- الثيم: حدد (backgroundColor) و (textColor) لضمان تباين فني (High-Contrast) مع الـ (primaryColor).
 
-3. التصميم والوسائط (Mandate #10):
-- اختر Design Mode يناسب النيش.
-- كل قسم يحتوي على صورة يجب أن يتضمن "alt" وصفي ذكي جداً للـ SEO.
+3. الذكاء البصري (Protocol 6 - Smart visuals):
+- لكل قسم، ولد قائمة "imageKeywords" تضم 5-7 كلمات مفتاحية سينمائية باللغة الإنجليزية (Cinematic, High-Tech, Professional).
+- الكلمات يجب أن تصف (Lighting, Mood, Subject, Style) بدقة لضمان نتائج مذهلة من Unsplash.
+- اضف "alt" وصفي ذكي جداً للـ SEO باللغة العربية لكل صورة.
 
-المخرج يجب أن يكون JSON يتبع الـ Schema ويضم كائن "seo" في الجذر.
+
+4. الأداء والـ SEO (Protocol 11):
+- ولد تلقائياً: (Title, Meta Description, Keywords) بذكاء استراتيجي.
+- استخدم الـ keywords الإنجليزية الملائمة للصور داخل الـ content الخاص بكل قسم.
+
+المخرج يجب أن يكون JSON يتبع الـ Schema ويضم كائن "seo" في الجذر، مع ضبط templateId على "atomic-quantum".
 `;
+
+
+
 
     const userPrompt = `
 إصدار أمر البناء لـ: ${params.businessName}. 
@@ -413,34 +428,62 @@ export async function generateCompleteWebsite(params: {
 
         // HYBRID VISUAL ENGINE: Context-Aware Image Injection
         const sectionsSupportingImages = blueprint.layout.filter((s: Section) =>
-            ["hero", "about", "split", "gallery", "cta"].includes(s.type)
+            ["hero", "HERO_PRIME", "about", "split", "gallery", "cta", "FEATURE_GRID"].includes(s.type)
         );
 
         for (const section of sectionsSupportingImages) {
-            const keywords = section.content.imageKeywords || blueprint.imageKeywords || params.niche;
-            const query = Array.isArray(keywords) ? keywords.join(", ") : keywords;
+            // Priority: Use section-specific keywords generated by AI
+            const rawKeywords = section.content.imageKeywords || blueprint.imageKeywords || params.niche;
+
+            // Logic: If AI generated keywords, use them directly, else fallback to niche orchestration
+            let query = Array.isArray(rawKeywords) ? rawKeywords.join(", ") : rawKeywords;
+
+            // Optimization: If query is too short or generic, append high-quality cinematic modifiers
+            if (query.length < 20) {
+                query = `${query}, cinematic lighting, high resolution, minimalist, professional, 8k`;
+            }
 
             // LOGIC: Hero/Backgrounds get Landscape, specific content gets Portrait/Square
-            const orientation = section.type === "hero" ? "landscape" : "portrait";
+            const orientation = ["hero", "HERO_PRIME"].includes(section.type) ? "landscape" : "portrait";
 
-            console.log(`🖼️ Hybrid Engine: Fetching visuals for [${section.type}] via query: [${query}]`);
+            console.log(`🖼️ Masterpiece Engine: Synthesizing visuals for [${section.type}] via query: [${query}]`);
             const visuals = await searchUnsplashImages(query, 1, orientation);
 
             if (visuals.length > 0) {
                 const visual = visuals[0];
-                if (section.type === "hero" || section.type === "split") {
+                if (["hero", "HERO_PRIME", "split", "cta"].includes(section.type)) {
                     section.content.image = visual.url;
                     section.content.alt = visual.alt;
-                } else if (section.type === "about") {
+                } else if (section.type === "about" || section.type === "FEATURE_GRID") {
                     section.content.image = visual.url;
                     section.content.imageAlt = visual.alt;
+                    // If FEATURE_GRID items need images, this logic could be extended
                 }
             }
         }
 
+
         // Sync pages[index].layout with mutated layout
         if (blueprint.pages && blueprint.pages.index) {
             blueprint.pages.index.layout = blueprint.layout;
+        }
+
+        // SOVEREIGN SEO ENGINE (Protocol 11)
+        if (!blueprint.seo) {
+            blueprint.seo = {
+                title: blueprint.name || params.businessName,
+                description: blueprint.description || `Sovereign digital presence for ${params.businessName}`,
+                keywords: params.niche + ", innovation, " + params.locale
+            };
+        }
+
+        // Automatic Favicon & OG Image Orchestration
+        if (blueprint.seo && !blueprint.seo.ogImage && (blueprint as any).layout?.[0]?.content?.image) {
+            blueprint.seo.ogImage = (blueprint as any).layout[0].content.image;
+        }
+
+        if (blueprint.seo && !blueprint.seo.favicon) {
+            blueprint.seo.favicon = "https://api.dicebear.com/7.x/identicon/svg?seed=" + (blueprint.id || "gys");
         }
 
         const sovereignAsset = {
@@ -460,6 +503,7 @@ export async function generateCompleteWebsite(params: {
         };
 
         return sovereignAsset;
+
     } catch (error) {
         console.error("Failed to parse AI response:", error);
         throw new Error("Invalid AI response format: protocol mismatch.");
@@ -603,9 +647,62 @@ async function refineSiteBlueprint(params: {
     }
 }
 
+/**
+ * REFINEMENT ENGINE (Protocol 9)
+ * Surgically refines an existing blueprint based on an AI command.
+ */
+export async function refineBlueprint(params: {
+    currentBlueprint: SiteBlueprint;
+    command: string;
+    businessName: string;
+    niche: string;
+    locale: string;
+}): Promise<SiteBlueprint> {
+    const { currentBlueprint, command, businessName, niche, locale } = params;
+
+    const systemPrompt = `
+You are the SOVEREIGN REFINEMENT ARCHITECT.
+TASK: Modify the existing SITE BLUEPRINT (JSON) based on the user's COMMAND.
+
+CONSTRAINTS:
+1. **Surgical Precision**: Only modify the parts of the JSON related to the command.
+2. **Preservation**: Keep all existing section IDs and general structure unless asked to delete or move them.
+3. **Persuasion**: If the command is text-based, use AIDA modeling for the new copy.
+4. **Visuals**: If asked for visual changes, update only relevant theme colors or imageKeywords.
+5. **JSON ONLY**: Return ONLY the modified SiteBlueprint JSON object.
+
+CURRENT BLUEPRINT: ${JSON.stringify(currentBlueprint)}
+USER COMMAND: ${command}
+BUSINESS: ${businessName} (${niche})
+LOCALE: ${locale}
+
+Return the COMPLETE modified SiteBlueprint JSON.
+`;
+
+    try {
+        const result = await generateWithFallback({
+            prompt: `Execute Command: ${command}`,
+            systemPrompt: systemPrompt,
+            jsonMode: true
+        });
+
+        const modifiedBlueprint = JSON.parse(result.content) as SiteBlueprint;
+
+        // Ensure theme continuity if not explicitly changed
+        if (!modifiedBlueprint.theme) modifiedBlueprint.theme = currentBlueprint.theme;
+
+        return modifiedBlueprint;
+    } catch (e) {
+        console.error("Refinement Engine Failure:", e);
+        return currentBlueprint; // Fallback to current
+    }
+
+}
+
 export default {
     generateWithFallback,
     generateCompleteWebsite,
     generateSinglePage,
-    refineSiteBlueprint,
+    refineBlueprint,
 };
+

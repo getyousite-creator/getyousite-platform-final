@@ -24,7 +24,8 @@ export default function Hero() {
     };
 
     return (
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-[#020617]">
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-background">
+
             {/* GYS-V2 HIGH-TECH BACKGROUND */}
             <div className="absolute inset-0 z-0">
                 {/* Electric Blue & Deep Navy Mesh */}
@@ -55,65 +56,73 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1, duration: 0.8 }}
-                    className="text-5xl md:text-7xl lg:text-[5rem] font-bold tracking-tight text-white mb-8 max-w-5xl leading-[1.05]"
+                    className="text-6xl md:text-8xl lg:text-[7rem] font-black tracking-tighter text-white mb-6 max-w-5xl leading-[0.9]"
                 >
                     {t('headline')}
                 </motion.h1>
 
-                {/* Subheadline - Logic Flow */}
+                {/* Subheadline - Logic Flow (Simplified for Zero Friction) */}
                 <motion.p
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="text-lg md:text-[1.35rem] text-white/60 mb-14 max-w-3xl leading-relaxed font-light"
+                    transition={{ delay: 0.2 }}
+                    className="text-lg md:text-xl text-white/40 mb-16 max-w-2xl leading-relaxed font-medium uppercase tracking-[0.3em]"
                 >
                     {t('subheadline')}
                 </motion.p>
 
-                {/* THE LOGIC UI (PROMPT BOX) - HERO OF THE PAGE */}
+                {/* THE EXPLOSION BOX (PROMPT UI) - Protocol 2.1 */}
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.98 }}
+                    initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.4, type: "spring", stiffness: 100 }}
-                    className="w-full max-w-3xl relative group mb-24"
+                    transition={{ delay: 0.3, type: "spring", stiffness: 100 }}
+                    className="w-full max-w-4xl relative group mb-32"
                 >
-                    {/* OUTER GLOW (Electric Blue Pulse) */}
-                    <div className="absolute -inset-1.5 bg-primary/30 rounded-2xl blur-2xl opacity-40 group-focus-within:opacity-100 group-focus-within:animate-pulse transition duration-500" />
+                    {/* NEURAL GLOW */}
+                    <div className="absolute -inset-4 bg-primary/20 rounded-[3rem] blur-3xl opacity-0 group-focus-within:opacity-100 transition-all duration-1000" />
 
-                    <div className="relative flex items-center bg-[#1e293b]/50 backdrop-blur-xl border border-white/10 rounded-2xl p-2 shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden transition-all duration-300 group-focus-within:border-primary/50 group-focus-within:bg-[#1e293b]/70">
+                    <div className="relative flex flex-col md:flex-row items-center bg-white/[0.03] backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-3 shadow-[0_32px_120px_rgba(0,0,0,0.8)] transition-all duration-500 group-focus-within:border-primary/40 group-focus-within:bg-white/[0.05]">
                         <input
                             type="text"
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
                             onKeyDown={handleKeyDown}
                             placeholder={t('placeholder')}
-                            className="w-full bg-transparent text-white px-8 py-5 focus:outline-none placeholder:text-white/30 font-medium text-xl"
+                            className="w-full bg-transparent text-white px-8 py-6 focus:outline-none placeholder:text-white/20 font-medium text-2xl lg:text-3xl tracking-tight"
                         />
                         <Button
-                            className="shrink-0 h-16 px-10 rounded-xl bg-gradient-to-br from-primary to-[#2563eb] hover:scale-[1.02] active:scale-[0.98] text-white shadow-[0_0_40px_rgba(59,130,246,0.5)] transition-all duration-200 text-lg font-bold border-none"
+                            className="w-full md:w-auto shrink-0 h-20 px-12 rounded-[1.8rem] bg-primary hover:bg-primary/90 text-white shadow-2xl shadow-primary/40 transition-all duration-300 text-xl font-black uppercase tracking-widest border-none group/btn"
                             onClick={() => {
-                                if (inputValue.length > 5) {
+                                if (inputValue.length > 2) {
                                     window.location.href = `/${locale}/customizer?vision=${encodeURIComponent(inputValue)}`;
                                 }
                             }}
                         >
                             {t('generate')}
+                            <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform" />
                         </Button>
                     </div>
 
-                    {/* SMART SUGGESTIONS */}
-                    <div className="mt-8 flex flex-wrap justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-300">
-                        {['مطعم سمك فاخر', 'وكالة تسويق رقمي', 'عيادة أسنان عصرية', 'متجر أثاث مودرن'].map((hint) => (
+                    {/* QUICK SUGGESTIONS (NLP_ASSIST) */}
+                    <div className="mt-10 flex flex-wrap justify-center gap-4 animate-in fade-in slide-in-from-top-4 duration-1000">
+                        {[
+                            { ar: 'مطعم فاخر في الرياض', en: 'Luxury Fine Dining in London' },
+                            { ar: 'وكالة تسويق سيادية', en: 'Sovereign Growth Agency' },
+                            { ar: 'عيادة تجميل ذكية', en: 'Smart Aesthetic Clinic' },
+                            { ar: 'منصة عقارات بأسلوب تقني', en: 'Tech-First Real Estate Hub' }
+                        ].map((hint) => (
                             <button
-                                key={hint}
-                                onClick={() => setInputValue(hint)}
-                                className="px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-[10px] text-white/40 uppercase font-black hover:bg-white/10 hover:text-white hover:border-white/30 transition-all active:scale-95"
+                                key={hint.en}
+                                onClick={() => setInputValue(locale === 'ar' ? hint.ar : hint.en)}
+                                className="px-6 py-3 rounded-full bg-white/5 border border-white/5 text-[10px] text-white/40 uppercase font-black tracking-widest hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all active:scale-95"
                             >
-                                + {hint}
+                                <span className="opacity-40 mr-2">/</span>
+                                {locale === 'ar' ? hint.ar : hint.en}
                             </button>
                         ))}
                     </div>
                 </motion.div>
+
 
                 {/* TRUST LOGIC MESH */}
                 <motion.div

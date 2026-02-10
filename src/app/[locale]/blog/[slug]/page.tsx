@@ -11,46 +11,33 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { useTranslations } from "next-intl";
 
-// REDUNDANT BUT LOGICAL REPRODUCTION OF MOCK DATA
-const POSTS = [
-    {
-        slug: "sovereign-ai-the-future-of-digital-commerce",
-        title: "Sovereign AI: The Future of Digital Commerce",
-        excerpt: "Why traditional e-commerce is failing and how the new AI-orchestrated infrastructure is decentralizing market power.",
-        content: `
-            <p className="text-xl text-muted-foreground font-medium leading-relaxed mb-8">
-                In the last decade, we have seen the rise of centralized platforms that dictate the terms of digital existence. From high commissions to rigid templates, the 'old' internet has become a cage for visionaries.
-            </p>
-            <h2 className="text-3xl font-black italic uppercase italic tracking-tightest mt-12 mb-6">The Death of Standard Templates</h2>
-            <p className="text-muted-foreground mb-6 leading-relaxed">
-                Standard templates are no longer enough. The modern consumer demands a dynamic experience that feels alive. That's where Sovereign AI comes in. It doesn't just display content; it orchestrates an ecosystem.
-            </p>
-            <blockquote className="border-l-4 border-primary pl-10 my-12 py-4 italic text-2xl font-black text-foreground">
-                "Digital sovereignty is not a luxury; it is the fundamental requirement for high-frequency commerce in 2026."
-            </blockquote>
-            <h2 className="text-3xl font-black italic uppercase italic tracking-tightest mt-12 mb-6">Engineered for Success</h2>
-            <p className="text-muted-foreground mb-6 leading-relaxed">
-                By leveraging server-side rendering and edge computation, platforms like GetYouSite ensure that your digital empire is never offline and never slow. We are moving from 'websites' to 'digital organisms'.
-            </p>
-        `,
-        image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2070&auto=format&fit=crop",
-        date: "Feb 05, 2026",
-        author: "Architect Prime",
-        category: "AI Ethics"
-    }
-];
+import { KnowledgeService } from "@/lib/services/knowledge-service";
+import { useEffect, useState } from "react";
+import { Post } from "@/lib/schemas";
 
 export default function BlogPostPage() {
+    //@ts-expect-error - translations not typed yet
     const t = useTranslations("Blog");
     const params = useParams();
     const slug = params.slug as string;
+    const [post, setPost] = useState<Post | null>(null);
+    const [loading, setLoading] = useState(true);
 
-    // LOGICAL SEARCH
-    const post = POSTS.find(p => p.slug === slug);
+    useEffect(() => {
+        const fetchPost = async () => {
+            if (!slug) return;
+            const data = await KnowledgeService.getPostBySlug(slug);
+            if (!data) {
+                notFound();
+            }
+            setPost(data);
+            setLoading(false);
+        };
+        fetchPost();
+    }, [slug]);
 
-    if (!post) {
-        notFound();
-    }
+    if (loading) return <div className="min-h-screen flex items-center justify-center bg-background text-primary animate-pulse">LOADING KNOWLEDGE ENGINE...</div>;
+    if (!post) return null;
 
     return (
         <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
@@ -72,7 +59,7 @@ export default function BlogPostPage() {
                         <div className="flex flex-wrap items-center gap-8 text-[10px] font-black uppercase tracking-widest text-primary">
                             <span className="flex items-center gap-2 px-3 py-1 rounded bg-primary/10 border border-primary/20">{post.category}</span>
                             <span className="flex items-center gap-2 text-muted-foreground"><Calendar className="w-3 h-3" /> {post.date}</span>
-                            <span className="flex items-center gap-2 text-muted-foreground"><User className="w-3 h-3" /> {post.author}</span>
+                            <span className="flex items-center gap-2 text-muted-foreground"><User className="w-3 h-3" /> {post.author.name}</span>
                         </div>
 
                         <h1 className="text-5xl md:text-7xl font-black tracking-tightest italic uppercase leading-[0.9]">
@@ -107,7 +94,7 @@ export default function BlogPostPage() {
                                 </div>
                                 <div>
                                     <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Authenticated Author</p>
-                                    <p className="text-xl font-bold">{post.author}</p>
+                                    <p className="text-xl font-bold">{post.author.name}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-4">

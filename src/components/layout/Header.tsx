@@ -26,6 +26,7 @@ import { useAuthModal } from "@/hooks/use-auth-modal";
 
 export default function Header() {
     const t = useTranslations('Header');
+    const tAuth = useTranslations('Auth');
     const locale = useLocale();
     const router = useRouter();
     const pathname = usePathname();
@@ -109,7 +110,7 @@ export default function Header() {
                                         const supabase = createClient();
                                         await supabase.auth.signOut();
                                         window.location.href = '/';
-                                        toast.success("Security sequence: Session Terminated.");
+                                        toast.success(tAuth('signout_success'));
                                     }}
                                 >
                                     <LogOut className="w-4 h-4" />

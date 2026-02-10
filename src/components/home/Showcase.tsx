@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
+import { useTranslations } from "next-intl";
 
 import { categories, templates, Template } from "@/data/template-data";
 import TemplateCard from "./showcase/TemplateCard";
@@ -14,6 +15,7 @@ import ShowcaseEditor from "./showcase/ShowcaseEditor";
 import ShowcaseGallery from "./showcase/ShowcaseGallery";
 
 export default function Showcase() {
+    const t = useTranslations('Showcase');
     const openLaunchModal = useLaunchModal((state) => state.onOpen);
 
     return (
@@ -32,25 +34,24 @@ export default function Showcase() {
                             viewport={{ once: true }}
                             className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-white/40 text-[11px] font-bold uppercase tracking-[0.3em] mb-10"
                         >
-                            Professional Architecture Library
+                            {t('header.badge')}
                         </motion.div>
                         <motion.h2
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             className="text-5xl md:text-8xl font-bold text-white mb-10 leading-[1.05] tracking-tight"
-                        >
-                            Engineered for <span className="text-primary italic font-light">Peak Performance</span>
-                        </motion.h2>
+                            dangerouslySetInnerHTML={{ __html: t('header.title') }}
+                        />
                         <p className="text-white/40 text-xl leading-relaxed max-w-2xl font-light">
-                            Every template is a battle-tested industrial blueprint. Optimized for global speed and ready to be deployed as a high-performance business asset.
+                            {t('header.desc')}
                         </p>
                     </div>
                     <Button
                         className="h-16 px-12 bg-primary hover:bg-[#2563eb] text-[#020617] font-bold tracking-widest uppercase text-xs shadow-[0_0_40px_rgba(59,130,246,0.3)] group transition-all rounded-xl"
                         onClick={() => openLaunchModal()}
                     >
-                        Custom Build Request <ArrowUpRight className="ml-3 w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                        {t('header.button')} <ArrowUpRight className="ml-3 w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                     </Button>
                 </div>
 

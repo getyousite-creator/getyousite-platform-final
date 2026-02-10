@@ -47,7 +47,12 @@ interface CommandCenterProps {
     blueprint?: any;
     selectedPageSlug?: string;
     onSelectPage?: (slug: string) => void;
+    undo: () => void;
+    redo: () => void;
+    canUndo: boolean;
+    canRedo: boolean;
 }
+
 
 // Unified template source
 const AVAILABLE_TEMPLATES: CommandTemplate[] = SHARED_TEMPLATES.map(t => ({
@@ -147,11 +152,36 @@ export function CommandCenter(props: CommandCenterProps) {
                         <p className="text-xs text-muted-foreground">Generates conversion-optimized sites</p>
                     </div>
                 </div>
-                <Badge variant="outline" className="bg-[#00D09C]/10 text-[#00D09C] border-[#00D09C]/20">
-                    <Sparkles className="w-3 h-3 mr-1" />
-                    GPT-4o-mini
-                </Badge>
+                <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 mr-4">
+                        <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={props.undo}
+                            disabled={!props.canUndo}
+                            className="w-8 h-8 text-white/40 hover:text-white"
+                            title="Undo (Ctrl+Z)"
+                        >
+                            <RefreshCw className="w-4 h-4 -scale-x-100" />
+                        </Button>
+                        <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={props.redo}
+                            disabled={!props.canRedo}
+                            className="w-8 h-8 text-white/40 hover:text-white"
+                            title="Redo (Ctrl+Y)"
+                        >
+                            <RefreshCw className="w-4 h-4" />
+                        </Button>
+                    </div>
+                    <Badge variant="outline" className="bg-[#00D09C]/10 text-[#00D09C] border-[#00D09C]/20">
+                        <Sparkles className="w-3 h-3 mr-1" />
+                        GPT-4o-mini
+                    </Badge>
+                </div>
             </div>
+
 
             {/* Tabs */}
             <Tabs defaultValue="details" onValueChange={setActiveTab}>

@@ -19,8 +19,10 @@ import {
 import { SovereignTemplateProps } from "@/lib/types/template";
 import Image from "next/image";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
+import { useTranslations } from "next-intl";
 
 export default function MasterLanding(props: SovereignTemplateProps) {
+    const t = useTranslations("Templates.landing");
     const { settings, blueprint } = props;
     const { headline, subheadline, primaryColor = "#2563eb" } = settings;
 
@@ -38,9 +40,9 @@ export default function MasterLanding(props: SovereignTemplateProps) {
         title: item.title,
         desc: item.description
     })) : [
-        { icon: Zap, title: "Neural Latency", desc: "42ms response timing globally via Edge Node architecture." },
-        { icon: Cpu, title: "Logic Synthesis", desc: "AI-driven decision matrix that optimizes user conversion paths." },
-        { icon: Globe, title: "Sovereign Scale", desc: "Elastic infrastructure that expands autonomously with demand." }
+        { icon: Zap, title: t("neural_latency"), desc: t("neural_latency_desc") },
+        { icon: Cpu, title: t("logic_synthesis"), desc: t("logic_synthesis_desc") },
+        { icon: Globe, title: t("sovereign_scale"), desc: t("sovereign_scale_desc") }
     ];
 
     const onOpen = useLaunchModal((state) => state.onOpen);
@@ -56,17 +58,17 @@ export default function MasterLanding(props: SovereignTemplateProps) {
                                 <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-900 shadow-lg shadow-slate-900/10">
                                     <Target className="text-white w-5 h-5" />
                                 </div>
-                                <span className="text-lg font-black tracking-tighter uppercase">{blueprint?.name || "PROTOCOL"}</span>
+                                <span className="text-lg font-black tracking-tighter uppercase">{blueprint?.name || t("protocol")}</span>
                             </div>
                             <div className="hidden lg:flex items-center gap-10 text-xs font-bold text-slate-500 uppercase tracking-widest">
-                                <span className="hover:text-slate-900 cursor-pointer">Features</span>
-                                <span className="hover:text-slate-900 cursor-pointer">Security</span>
-                                <span className="hover:text-slate-900 cursor-pointer">Pricing</span>
+                                <span className="hover:text-slate-900 cursor-pointer">{t("features")}</span>
+                                <span className="hover:text-slate-900 cursor-pointer">{t("security")}</span>
+                                <span className="hover:text-slate-900 cursor-pointer">{t("pricing")}</span>
                                 <button
                                     onClick={() => onOpen("Primary CTA")}
                                     className="px-8 py-3 bg-slate-900 text-white rounded-full hover:scale-105 transition-transform"
                                 >
-                                    Get_Access
+                                    {t("get_access")}
                                 </button>
                             </div>
                         </div>
@@ -88,7 +90,7 @@ export default function MasterLanding(props: SovereignTemplateProps) {
                             >
                                 <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-slate-100 bg-slate-50 shadow-sm">
                                     <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                                    <span className="text-[10px] font-black uppercase text-slate-500 tracking-widest leading-none">V2.4_Production_Network_Stable</span>
+                                    <span className="text-[10px] font-black uppercase text-slate-500 tracking-widest leading-none">{t("network_stable")}</span>
                                 </div>
                                 <h1 className="text-[14vw] lg:text-[10vw] font-black uppercase tracking-tighter leading-[0.82] text-slate-900">
                                     {heroHeadline.split(' ')[0]} <br />
@@ -110,10 +112,10 @@ export default function MasterLanding(props: SovereignTemplateProps) {
                                     className="w-full sm:w-auto h-20 px-12 rounded-3xl text-white font-black uppercase tracking-widest text-[11px] shadow-2xl hover:scale-105 transition-all flex items-center justify-center gap-3"
                                     style={{ backgroundColor: primaryColor }}
                                 >
-                                    Start_Free_Trial <ArrowRight className="w-5 h-5" />
+                                    {t("start_trial")} <ArrowRight className="w-5 h-5" />
                                 </button>
                                 <button className="w-full sm:w-auto h-20 px-12 rounded-3xl border border-slate-200 bg-white font-black uppercase tracking-widest text-[11px] hover:bg-slate-50 transition-all flex items-center justify-center gap-3">
-                                    <Play className="w-4 h-4 fill-slate-900" /> Watch_Demo
+                                    <Play className="w-4 h-4 fill-slate-900" /> {t("watch_demo")}
                                 </button>
                             </motion.div>
                         </div>
@@ -138,7 +140,7 @@ export default function MasterLanding(props: SovereignTemplateProps) {
                                     </div>
                                     <div className="h-12 px-6 bg-white/10 backdrop-blur-xl border border-white/10 rounded-full flex items-center gap-3">
                                         <Lock className="w-4 h-4 text-emerald-400" />
-                                        <span className="text-[10px] font-black uppercase text-white tracking-widest">End_to_End_Encrypted</span>
+                                        <span className="text-[10px] font-black uppercase text-white tracking-widest">{t("encrypted")}</span>
                                     </div>
                                 </div>
                             </motion.div>
@@ -172,17 +174,17 @@ export default function MasterLanding(props: SovereignTemplateProps) {
                             style={{ backgroundColor: primaryColor }}
                         >
                             <div className="absolute top-0 left-0 w-full h-full bg-slate-900/10 backdrop-blur-[2px]" />
-                            <h2 className="text-5xl lg:text-8xl font-black uppercase tracking-tighter italic leading-none relative z-10">
-                                Ready to <br /> Command_Logic?
+                            <h2 className="text-5xl lg:text-8xl font-black uppercase tracking-tighter italic leading-none relative z-10 whitespace-pre-line">
+                                {t("ready_to_command")}
                             </h2>
                             <p className="text-xl opacity-80 max-w-2xl mx-auto relative z-10">
-                                Join 45,000+ architects who have hardened their infrastructure with the Sovereign Protocol.
+                                {t("join_architects")}
                             </p>
                             <button
                                 onClick={() => onOpen("Final Conversion")}
                                 className="h-20 px-16 bg-white text-slate-950 rounded-3xl font-black text-xs uppercase tracking-[0.4em] hover:scale-105 transition-transform shadow-3xl relative z-10"
                             >
-                                DEPLOY_NOW
+                                {t("deploy_now")}
                             </button>
                         </div>
                     </section>
@@ -191,12 +193,12 @@ export default function MasterLanding(props: SovereignTemplateProps) {
                     <footer className="py-20 border-t border-slate-100 flex flex-col items-center gap-10">
                         <span className="text-2xl font-black tracking-widest uppercase italic">{blueprint?.name}</span>
                         <div className="flex gap-12 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                            <span>Privacy</span>
-                            <span>Security</span>
-                            <span>Infrastructure</span>
-                            <span>Legal</span>
+                            <span>{t("privacy")}</span>
+                            <span>{t("security")}</span>
+                            <span>{t("infrastructure_footer")}</span>
+                            <span>{t("legal")}</span>
                         </div>
-                        <p className="text-[10px] text-slate-300 font-bold uppercase tracking-[0.5em] mt-8">© 2026 Sovereign Landing System. All Protocols Verified.</p>
+                        <p className="text-[10px] text-slate-300 font-bold uppercase tracking-[0.5em] mt-8">{t("system_verified")}</p>
                     </footer>
                 </div>
             )}

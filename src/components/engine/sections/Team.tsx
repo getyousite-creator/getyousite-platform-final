@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-export default function Team({ content, primaryColor }: any) {
+export default function Team({ content, primaryColor, backgroundColor, textColor }: any) {
     const members = content?.members || [
         { name: 'أمين العلمي', role: 'المدير التنفيذي', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80' },
         { name: 'سارة بناني', role: 'مديرة التصميم', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80' },
@@ -10,7 +10,11 @@ export default function Team({ content, primaryColor }: any) {
     ];
 
     return (
-        <section className="py-24 px-8 bg-background">
+        <section
+            className="py-24 px-8"
+            style={{ backgroundColor: backgroundColor || 'transparent', color: textColor }}
+        >
+
             <div className="max-w-6xl mx-auto space-y-16">
                 <div className="text-center space-y-4 max-w-2xl mx-auto">
                     <h2 className="text-4xl font-black tracking-tight">فريقنا المبدع</h2>

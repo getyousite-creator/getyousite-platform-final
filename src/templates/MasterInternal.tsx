@@ -22,8 +22,10 @@ import {
 import { SovereignTemplateProps } from "@/lib/types/template";
 import Image from "next/image";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
+import { useTranslations } from "next-intl";
 
 export default function MasterInternal(props: SovereignTemplateProps) {
+    const t = useTranslations("Templates.internal");
     const { settings, blueprint } = props;
     const { headline } = settings;
 
@@ -31,7 +33,7 @@ export default function MasterInternal(props: SovereignTemplateProps) {
     const dashboardSection = blueprint?.layout?.find((s) => s.type === 'features');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const itemsRaw = (dashboardSection?.content?.items as any[]) || [];
-    
+
     const sidebarItems = itemsRaw.slice(0, 5).map(item => ({
         label: item.title || "Module",
         icon: LayoutDashboard // Default icon, could be dynamic mapped if needed
@@ -46,17 +48,17 @@ export default function MasterInternal(props: SovereignTemplateProps) {
 
     // If no AI data, fallbacks must be generic but strictly typed
     const navigationItems = sidebarItems.length > 0 ? sidebarItems : [
-        { icon: LayoutDashboard, label: "Overview_Logic" },
-        { icon: Users2, label: "Neural_Registry" },
-        { icon: Package, label: "Asset_Inventory" },
-        { icon: Activity, label: "System_Flux" },
-        { icon: Database, label: "Data_Silo" }
+        { icon: LayoutDashboard, label: t("overview_logic") },
+        { icon: Users2, label: t("neural_registry") },
+        { icon: Package, label: t("asset_inventory") },
+        { icon: Activity, label: t("system_flux") },
+        { icon: Database, label: t("data_silo") }
     ];
 
     const stats = statsRaw.length > 0 ? statsRaw : [
-        { label: "CPU_Load", val: "12.4%", icon: Cpu, color: "text-blue-500" },
-        { label: "Memory_Usage", val: "4.2 GB", icon: Layers, color: "text-purple-500" },
-        { icon: Zap, label: "latency", val: "14ms", color: "text-emerald-500" }
+        { label: t("cpu_load"), val: "12.4%", icon: Cpu, color: "text-blue-500" },
+        { label: t("memory_usage"), val: "4.2 GB", icon: Layers, color: "text-purple-500" },
+        { icon: Zap, label: t("latency"), val: "14ms", color: "text-emerald-500" }
     ];
 
     const onOpen = useLaunchModal((state) => state.onOpen);
@@ -71,7 +73,7 @@ export default function MasterInternal(props: SovereignTemplateProps) {
                             <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-2xl shadow-blue-600/30">
                                 <Cpu className="w-6 h-6" />
                             </div>
-                            <span className="text-white font-black tracking-tighter uppercase text-sm">{blueprint?.name || "CORE_INTEL"}</span>
+                            <span className="text-white font-black tracking-tighter uppercase text-sm">{blueprint?.name || t("core_intel")}</span>
                         </div>
 
                         <nav className="space-y-2 flex-grow">
@@ -87,7 +89,7 @@ export default function MasterInternal(props: SovereignTemplateProps) {
                             <div className="p-4 bg-zinc-900 rounded-2xl space-y-3">
                                 <div className="flex items-center gap-3">
                                     <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                                    <span className="text-[8px] font-black text-white/40 uppercase tracking-widest">Sovereign_Server_v4</span>
+                                    <span className="text-[8px] font-black text-white/40 uppercase tracking-widest">{t("server_status")}</span>
                                 </div>
                                 <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
                                     <div className="h-full w-2/3 bg-blue-600" />
@@ -102,7 +104,7 @@ export default function MasterInternal(props: SovereignTemplateProps) {
                         <header className="flex items-center justify-between pb-10 border-b border-white/5">
                             <div className="space-y-1">
                                 <h1 className="text-2xl font-black text-white uppercase tracking-tighter">{headline}</h1>
-                                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-600">Root_Admin_Terminal_01</p>
+                                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-600">{t("root_terminal")}</p>
                             </div>
                             <div className="flex items-center gap-6">
                                 <Search className="w-5 h-5 text-zinc-600 cursor-pointer" />
@@ -140,7 +142,7 @@ export default function MasterInternal(props: SovereignTemplateProps) {
                             <div className="p-8 border-b border-white/5 flex items-center justify-between">
                                 <div className="flex items-center gap-4">
                                     <Terminal className="w-5 h-5 text-blue-500" />
-                                    <span className="text-xs font-black uppercase tracking-[0.3em] text-white">System_Logs_CLI</span>
+                                    <span className="text-xs font-black uppercase tracking-[0.3em] text-white">{t("system_logs")}</span>
                                 </div>
                                 <div className="flex gap-2">
                                     <div className="w-3 h-3 rounded-full bg-zinc-800" />
@@ -166,11 +168,11 @@ export default function MasterInternal(props: SovereignTemplateProps) {
                         {/* INTERNAL FOOTER */}
                         <footer className="pt-20 pb-10 flex flex-col md:flex-row items-center justify-between gap-6 opacity-30 group cursor-default">
                             <div className="flex items-center gap-6 text-[8px] font-black uppercase tracking-widest lg:ml-0">
-                                <span>Security_Audit</span>
-                                <span>Registry_V3</span>
-                                <span>Node_Status</span>
+                                <span>{t("security_audit")}</span>
+                                <span>{t("registry_v3")}</span>
+                                <span>{t("node_status")}</span>
                             </div>
-                            <p className="text-[8px] font-black uppercase tracking-widest">Sovereign Internal Engine. Total Autonomy Active.</p>
+                            <p className="text-[8px] font-black uppercase tracking-widest">{t("engine_status")}</p>
                         </footer>
                     </main>
                 </div>

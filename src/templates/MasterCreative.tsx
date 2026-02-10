@@ -19,6 +19,7 @@ import {
 import { SovereignTemplateProps } from "@/lib/types/template";
 import Image from "next/image";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
+import { useTranslations } from "next-intl";
 
 interface CaseStudy {
     title: string;
@@ -28,6 +29,7 @@ interface CaseStudy {
 }
 
 export default function MasterCreative(props: SovereignTemplateProps) {
+    const t = useTranslations("Templates.creative");
     const { settings, blueprint } = props;
     const { headline, subheadline, primaryColor = "#1d1d1f" } = settings;
 
@@ -41,15 +43,15 @@ export default function MasterCreative(props: SovereignTemplateProps) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const projectsRaw = (portfolioSection?.content?.items as any[]) || [];
     const projects: CaseStudy[] = projectsRaw.length > 0 ? projectsRaw.map(item => ({
-        title: item.title || "Untitled Project",
-        category: item.description?.substring(0, 15) || "Creative_Work",
+        title: item.title || t("untitled"),
+        category: item.description?.substring(0, 15) || t("creative_work"),
         img: item.image || "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2400&auto=format&fit=crop",
         year: "2024"
     })) : [
-        { title: "Kinetic Fluidity", category: "Motion_Audit", img: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2400&auto=format&fit=crop", year: "2026" },
-        { title: "Sovereign UI", category: "Eco_System", img: "https://images.unsplash.com/photo-1581291518151-0ca98316f31f?q=80&w=2400&auto=format&fit=crop", year: "2025" },
-        { title: "Neural Branding", category: "Identity_Shift", img: "https://images.unsplash.com/photo-1618556450991-2f1af64e8191?q=80&w=2400&auto=format&fit=crop", year: "2026" },
-        { title: "Void Minimal", category: "Visual_Zero", img: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?q=80&w=2400&auto=format&fit=crop", year: "2024" }
+        { title: t("proj_kinetic"), category: t("cat_motion"), img: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2400&auto=format&fit=crop", year: "2026" },
+        { title: t("proj_ui"), category: t("cat_eco"), img: "https://images.unsplash.com/photo-1581291518151-0ca98316f31f?q=80&w=2400&auto=format&fit=crop", year: "2025" },
+        { title: t("proj_branding"), category: t("cat_identity"), img: "https://images.unsplash.com/photo-1618556450991-2f1af64e8191?q=80&w=2400&auto=format&fit=crop", year: "2026" },
+        { title: t("proj_minimal"), category: t("cat_zero"), img: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?q=80&w=2400&auto=format&fit=crop", year: "2024" }
     ];
 
     const onOpen = useLaunchModal((state) => state.onOpen);
@@ -60,12 +62,12 @@ export default function MasterCreative(props: SovereignTemplateProps) {
                 <div className="bg-[#0a0a0a] text-white min-h-screen selection:bg-white selection:text-black font-sans">
                     {/* CREATIVE NAVIGATION */}
                     <nav className="fixed top-0 w-full px-8 lg:px-16 h-20 flex items-center justify-between z-[500] mix-blend-difference">
-                        <span className="text-lg font-black tracking-widest uppercase">{blueprint?.name || "STUDIO_ZERO"}</span>
+                        <span className="text-lg font-black tracking-widest uppercase">{blueprint?.name || t("studio_zero")}</span>
                         <div className="flex items-center gap-12 text-[9px] font-black uppercase tracking-[0.4em] opacity-40 hover:opacity-100 transition-opacity">
-                            <span className="cursor-pointer hover:text-white transition-colors">Works</span>
-                            <span className="cursor-pointer hover:text-white transition-colors">About</span>
+                            <span className="cursor-pointer hover:text-white transition-colors">{t("works")}</span>
+                            <span className="cursor-pointer hover:text-white transition-colors">{t("about")}</span>
                             <div className="w-10 h-[1px] bg-white/20" />
-                            <span className="cursor-pointer hover:text-white transition-colors">Archive</span>
+                            <span className="cursor-pointer hover:text-white transition-colors">{t("archive")}</span>
                         </div>
                     </nav>
 
@@ -95,7 +97,7 @@ export default function MasterCreative(props: SovereignTemplateProps) {
                                     <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center">
                                         <Sparkles className="w-5 h-5 opacity-40" />
                                     </div>
-                                    <span className="text-[10px] font-black uppercase tracking-[0.6em] opacity-40">Absolute Aesthetic Intelligence</span>
+                                    <span className="text-[10px] font-black uppercase tracking-[0.6em] opacity-40">{t("aesthetic_intelligence")}</span>
                                 </div>
                                 <h1 className="text-[12vw] font-black uppercase tracking-tighter leading-[0.75] mb-12 italic">
                                     {heroHeadline.split(' ')[0]} <br />
@@ -117,8 +119,8 @@ export default function MasterCreative(props: SovereignTemplateProps) {
                                     onClick={() => onOpen("Initiate")}
                                 >
                                     <div className="absolute inset-0 border border-white/10 rounded-full animate-spin-slow" />
-                                    <div className="text-[10px] font-black uppercase tracking-widest text-center">
-                                        Work <br /> With <br /> Us
+                                    <div className="text-[10px] font-black uppercase tracking-widest text-center whitespace-pre-line">
+                                        {t("work_with_us")}
                                     </div>
                                     <MousePointer2 className="absolute top-4 right-4 w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                                 </div>
@@ -127,8 +129,8 @@ export default function MasterCreative(props: SovereignTemplateProps) {
 
                         {/* Bottom Decor */}
                         <div className="absolute bottom-12 right-16 flex gap-12 text-[10px] font-black uppercase tracking-widest opacity-20">
-                            <span>Lon_Archive_26.0</span>
-                            <span>Sovereign_Creative</span>
+                            <span>{t("archive_code")}</span>
+                            <span>{t("creative_label")}</span>
                         </div>
                     </section>
 
@@ -136,12 +138,16 @@ export default function MasterCreative(props: SovereignTemplateProps) {
                     <section className="py-40 bg-white text-black rounded-[60px] lg:rounded-[100px] relative z-20">
                         <div className="px-8 lg:px-16 grid grid-cols-1 lg:grid-cols-2 gap-32">
                             <div>
-                                <h2 className="text-7xl font-black uppercase tracking-tightest mb-16 leading-none">Core <br /> Pillars.</h2>
+                                <h2 className="text-7xl font-black uppercase tracking-tightest mb-16 leading-none flex flex-col">
+                                    {t("pillars").split('\n').map((line, i) => (
+                                        <span key={i}>{line}</span>
+                                    ))}
+                                </h2>
                                 <div className="space-y-12">
                                     {[
-                                        { title: "Neural Brand Design", icon: Layers, desc: "Constructing identities that survive market fluctuations." },
-                                        { title: "Kinetic UI/UX", icon: MousePointer2, desc: "Motion-adaptive interfaces built for human behavior." },
-                                        { title: "Visual Strategy", icon: Eye, desc: "Art direction that commands absolute attention." }
+                                        { title: t("neural_design"), icon: Layers, desc: t("neural_design_desc") },
+                                        { title: t("kinetic_ux"), icon: MousePointer2, desc: t("kinetic_ux_desc") },
+                                        { title: t("visual_strategy"), icon: Eye, desc: t("visual_strategy_desc") }
                                     ].map((item, i) => (
                                         <div key={i} className="group cursor-pointer flex gap-10 items-center">
                                             <span className="text-4xl font-black opacity-10 group-hover:opacity-100 transition-opacity italic">0{i + 1}</span>
@@ -162,7 +168,7 @@ export default function MasterCreative(props: SovereignTemplateProps) {
                                     className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
                                 />
                                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black/40 backdrop-blur-sm">
-                                    <button className="h-16 px-10 bg-white text-black font-black uppercase tracking-widest text-[10px] rounded-full">Explore_Process</button>
+                                    <button className="h-16 px-10 bg-white text-black font-black uppercase tracking-widest text-[10px] rounded-full">{t("explore_process")}</button>
                                 </div>
                             </div>
                         </div>
@@ -212,7 +218,7 @@ export default function MasterCreative(props: SovereignTemplateProps) {
                         </div>
                         <div className="text-center space-y-4">
                             <span className="text-3xl font-black tracking-widest uppercase italic">{blueprint?.name}</span>
-                            <p className="text-[8px] font-black uppercase tracking-[1em] opacity-20">Sovereign Visual Engine. v1.0. Zero-Human Logic.</p>
+                            <p className="text-[8px] font-black uppercase tracking-[1em] opacity-20">{t("visual_engine")}</p>
                         </div>
                     </footer>
                 </div>

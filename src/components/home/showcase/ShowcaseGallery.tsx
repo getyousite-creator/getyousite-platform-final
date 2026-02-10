@@ -15,6 +15,8 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { categories, templates, Template } from "@/data/template-data";
 import CategoryFilter from "./CategoryFilter";
+import { getPublicStoresAction } from "@/app/actions/store-actions";
+
 
 export default function ShowcaseGallery() {
     const t = useTranslations('Showcase');
@@ -32,18 +34,14 @@ export default function ShowcaseGallery() {
 
     useEffect(() => {
         const fetchFeatured = async () => {
-            const supabase = createClient();
-            const { data } = await supabase
-                .from('stores')
-                .select('*')
-                .eq('is_featured', true)
-                .order('created_at', { ascending: false })
-                .limit(6);
-
-            if (data) setFeaturedSites(data);
+            const result = await getPublicStoresAction(6);
+            if (result.success && result.data) {
+                setFeaturedSites(result.data);
+            }
         };
         fetchFeatured();
     }, []);
+
 
     const filteredTemplates = activeCategory === "all"
         ? templates

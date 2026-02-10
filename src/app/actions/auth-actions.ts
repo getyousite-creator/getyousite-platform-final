@@ -9,6 +9,12 @@ import { redirect } from 'next/navigation';
  * All actions use Supabase Auth via server-side client for security
  */
 
+export type ActionResult<T = void> = {
+  success: boolean;
+  error?: string;
+  data?: T;
+};
+
 type AuthResponse = {
   success: boolean;
   error?: string;

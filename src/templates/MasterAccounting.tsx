@@ -21,8 +21,10 @@ import {
 import { SovereignTemplateProps } from "@/lib/types/template";
 import Image from "next/image";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
+import { useTranslations } from "next-intl";
 
 export default function MasterAccounting(props: SovereignTemplateProps) {
+    const t = useTranslations("Templates.accounting");
     const { settings, blueprint } = props;
     const { headline, subheadline } = settings;
 
@@ -34,11 +36,11 @@ export default function MasterAccounting(props: SovereignTemplateProps) {
     const integrations = integrationsRaw.length > 0 ? integrationsRaw.slice(0, 3).map(item => ({
         icon: Database,
         label: item.title,
-        val: "Active"
+        val: t("active")
     })) : [
-        { icon: Database, label: "Excel & QuickBooks Sync", val: "Active" },
-        { icon: ShieldCheck, label: "Tax Compliance Logic", val: "Secure" },
-        { icon: LineChart, label: "Real-time Cash Flow", val: "99.9% Acc" }
+        { icon: Database, label: t("integration_excel"), val: t("active") },
+        { icon: ShieldCheck, label: t("integration_tax"), val: t("secure") },
+        { icon: LineChart, label: t("integration_cashflow"), val: `99.9% ${t("accuracy")}` }
     ];
 
     const onOpen = useLaunchModal((state) => state.onOpen);
@@ -51,12 +53,12 @@ export default function MasterAccounting(props: SovereignTemplateProps) {
                     <nav className="fixed top-0 w-full z-50 bg-white border-b border-slate-200 h-20 px-8 flex items-center justify-between">
                         <div className="flex items-center gap-10">
                             <span className="text-xl font-black tracking-tighter uppercase flex items-center gap-2">
-                                <Calculator className="w-5 h-5 text-teal-600" /> {blueprint?.name || "FINANCE_CORE"}
+                                <Calculator className="w-5 h-5 text-teal-600" /> {blueprint?.name || t("finance_core")}
                             </span>
                             <div className="hidden lg:flex items-center gap-8 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                                <span className="hover:text-teal-600 cursor-pointer">Ledger</span>
-                                <span className="hover:text-teal-600 cursor-pointer">Invoicing</span>
-                                <span className="hover:text-teal-600 cursor-pointer">Tax_Portal</span>
+                                <span className="hover:text-teal-600 cursor-pointer">{t("ledger")}</span>
+                                <span className="hover:text-teal-600 cursor-pointer">{t("invoicing")}</span>
+                                <span className="hover:text-teal-600 cursor-pointer">{t("tax_portal")}</span>
                             </div>
                         </div>
 
@@ -68,7 +70,7 @@ export default function MasterAccounting(props: SovereignTemplateProps) {
                                 onClick={() => onOpen("Upgrade")}
                                 className="h-10 px-6 bg-teal-600 text-white text-[10px] font-black uppercase tracking-widest rounded-md hover:bg-teal-700 transition-all shadow-lg shadow-teal-600/20"
                             >
-                                Get_Access
+                                {t("get_access")}
                             </button>
                         </div>
                     </nav>
@@ -97,14 +99,14 @@ export default function MasterAccounting(props: SovereignTemplateProps) {
                                             <div className="w-12 h-12 bg-teal-50 rounded-2xl flex items-center justify-center">
                                                 <Wallet className="w-6 h-6 text-teal-600" />
                                             </div>
-                                            <span className="text-[10px] font-black text-teal-600 bg-teal-50 px-3 py-1 rounded-full uppercase">Verified_Flow</span>
+                                            <span className="text-[10px] font-black text-teal-600 bg-teal-50 px-3 py-1 rounded-full uppercase">{t("verified_flow")}</span>
                                         </div>
                                         <div className="space-y-1">
-                                            <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">Total_Revenue</p>
+                                            <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">{t("total_revenue")}</p>
                                             <p className="text-4xl font-black tabular-nums">$1,248,390.00</p>
                                         </div>
                                         <div className="pt-4 flex items-center gap-2 text-xs font-black text-teal-600">
-                                            <ArrowUpCircle className="w-4 h-4" /> 24% Growth_Logic
+                                            <ArrowUpCircle className="w-4 h-4" /> 24% {t("growth_logic")}
                                         </div>
                                     </motion.div>
 
@@ -118,14 +120,14 @@ export default function MasterAccounting(props: SovereignTemplateProps) {
                                             <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
                                                 <CreditCard className="w-6 h-6 text-teal-400" />
                                             </div>
-                                            <span className="text-[10px] font-black text-teal-400 bg-teal-400/10 px-3 py-1 rounded-full uppercase">Operating_Margin</span>
+                                            <span className="text-[10px] font-black text-teal-400 bg-teal-400/10 px-3 py-1 rounded-full uppercase">{t("operating_margin")}</span>
                                         </div>
                                         <div className="space-y-1">
-                                            <p className="text-sm font-bold text-slate-500 uppercase tracking-widest text-white/40">Total_Expenses</p>
+                                            <p className="text-sm font-bold text-slate-500 uppercase tracking-widest text-white/40">{t("total_expenses")}</p>
                                             <p className="text-4xl font-black tabular-nums">$384,120.00</p>
                                         </div>
                                         <div className="pt-4 flex items-center gap-2 text-xs font-black text-rose-400">
-                                            <ArrowDownCircle className="w-4 h-4" /> 12% Cost_Reduction
+                                            <ArrowDownCircle className="w-4 h-4" /> 12% {t("cost_reduction")}
                                         </div>
                                     </motion.div>
                                 </div>
@@ -133,7 +135,7 @@ export default function MasterAccounting(props: SovereignTemplateProps) {
                                 {/* SIDEBAR TOOLS */}
                                 <div className="lg:col-span-4 space-y-8">
                                     <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm h-full">
-                                        <h3 className="text-xs font-black uppercase tracking-[0.3em] text-slate-400 mb-8">Industrial_Integrations</h3>
+                                        <h3 className="text-xs font-black uppercase tracking-[0.3em] text-slate-400 mb-8">{t("industrial_integrations")}</h3>
                                         <div className="space-y-6">
                                             {integrations.map((item, i) => (
                                                 <div key={i} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100 group cursor-pointer hover:border-teal-200 transition-colors">
@@ -146,7 +148,7 @@ export default function MasterAccounting(props: SovereignTemplateProps) {
                                             ))}
                                         </div>
                                         <button className="w-full mt-10 h-14 bg-slate-950 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-teal-600 transition-colors flex items-center justify-center gap-3">
-                                            Configure_Imports <Plus className="w-4 h-4" />
+                                            {t("configure_imports")} <Plus className="w-4 h-4" />
                                         </button>
                                     </div>
                                 </div>
@@ -159,20 +161,20 @@ export default function MasterAccounting(props: SovereignTemplateProps) {
                         <div className="container mx-auto">
                             <div className="bg-white rounded-[40px] border border-slate-200 shadow-sm overflow-hidden">
                                 <div className="p-10 border-b border-slate-100 flex items-center justify-between">
-                                    <h2 className="text-2xl font-black uppercase tracking-tight italic">Transaction_Intelligence</h2>
+                                    <h2 className="text-2xl font-black uppercase tracking-tight italic">{t("transaction_intelligence")}</h2>
                                     <button className="text-[10px] font-black uppercase tracking-widest text-teal-600 flex items-center gap-2 hover:gap-4 transition-all">
-                                        Export_Report <ChevronRight className="w-4 h-4" />
+                                        {t("export_report")} <ChevronRight className="w-4 h-4" />
                                     </button>
                                 </div>
                                 <div className="overflow-x-auto">
                                     <table className="w-full text-left">
                                         <thead>
                                             <tr className="bg-slate-50 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                                                <th className="px-10 py-6">Reference</th>
-                                                <th className="px-10 py-6">Category</th>
-                                                <th className="px-10 py-6">Date</th>
-                                                <th className="px-10 py-6">Amount</th>
-                                                <th className="px-10 py-6 text-right">Logic_Status</th>
+                                                <th className="px-10 py-6">{t("reference")}</th>
+                                                <th className="px-10 py-6">{t("category")}</th>
+                                                <th className="px-10 py-6">{t("date")}</th>
+                                                <th className="px-10 py-6">{t("amount")}</th>
+                                                <th className="px-10 py-6 text-right">{t("logic_status")}</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-slate-100">
@@ -203,13 +205,13 @@ export default function MasterAccounting(props: SovereignTemplateProps) {
                     <footer className="bg-slate-950 py-32 text-center text-white/20">
                         <div className="container mx-auto px-10 space-y-10">
                             <div className="flex justify-center gap-12 text-[10px] font-black uppercase tracking-widest">
-                                <span className="hover:text-white cursor-pointer transition-colors">Encryption_Log</span>
-                                <span className="hover:text-white cursor-pointer transition-colors">FCA_Compliance</span>
-                                <span className="hover:text-white cursor-pointer transition-colors">SWIFT_Bypass</span>
-                                <span className="hover:text-white cursor-pointer transition-colors">Legal_Ledger</span>
+                                <span className="hover:text-white cursor-pointer transition-colors">{t("encryption_log")}</span>
+                                <span className="hover:text-white cursor-pointer transition-colors">{t("fca_compliance")}</span>
+                                <span className="hover:text-white cursor-pointer transition-colors">{t("swift_bypass")}</span>
+                                <span className="hover:text-white cursor-pointer transition-colors">{t("legal_ledger")}</span>
                             </div>
                             <span className="block text-2xl font-black tracking-tighter uppercase italic text-white/10">{blueprint?.name}</span>
-                            <p className="text-[10px] uppercase font-black tracking-[1em]">Sovereign Financial Terminal v2.0. Bank Intelligence Integrated.</p>
+                            <p className="text-[10px] uppercase font-black tracking-[1em]">{t("copyright")}</p>
                         </div>
                     </footer>
                 </div>

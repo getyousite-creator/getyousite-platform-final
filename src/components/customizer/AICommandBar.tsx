@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Command, ArrowRight, Zap, RefreshCcw } from 'lucide-react';
 
 interface AICommandBarProps {
-    onCommand: (cmd: string) => void;
+    onCommand: (cmd: string) => Promise<void> | void;
     isProcessing: boolean;
 }
 

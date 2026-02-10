@@ -3,9 +3,13 @@
 import React from 'react';
 import { Send, Phone, Mail, MapPin } from 'lucide-react';
 
-export default function ContactForm({ content, primaryColor }: any) {
+export default function ContactForm({ content, primaryColor, backgroundColor, textColor }: any) {
     return (
-        <section className="py-24 px-8 bg-background relative overflow-hidden">
+        <section
+            className="py-24 px-8 relative overflow-hidden"
+            style={{ backgroundColor: backgroundColor || 'transparent', color: textColor }}
+        >
+
             <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
                 <div className="space-y-8">
                     <div className="space-y-4">

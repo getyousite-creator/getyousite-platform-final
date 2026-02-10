@@ -49,6 +49,24 @@ export class SupabaseStoreRepository extends StoreRepository {
         return data as Store[];
     }
 
+    async getPublicStores(limit: number = 20): Promise<Store[]> {
+        const { data, error } = await supabase
+            .from('stores')
+            .select('*')
+            .eq('is_public', true)
+            .eq('status', 'deployed')
+            .order('updated_at', { ascending: false })
+            .limit(limit);
+
+        if (error) {
+            console.error('Error fetching public stores:', error.message);
+            return [];
+        }
+
+        return data as Store[];
+    }
+
+
     async deleteStore(id: string): Promise<void> {
         const { error } = await supabase
             .from('stores')

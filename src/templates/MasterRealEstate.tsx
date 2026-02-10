@@ -21,6 +21,7 @@ import {
 import { SovereignTemplateProps } from "@/lib/types/template";
 import Image from "next/image";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
+import { useTranslations } from "next-intl";
 
 interface Property {
     title: string;
@@ -33,6 +34,7 @@ interface Property {
 }
 
 export default function MasterRealEstate(props: SovereignTemplateProps) {
+    const t = useTranslations("Templates.realestate");
     const { settings, blueprint } = props;
     const { headline, subheadline, primaryColor = "#0f172a" } = settings;
 
@@ -49,8 +51,8 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
     // Dynamic Property Injection
     const properties = (propertySection?.content?.properties as Property[]) || [
         {
-            title: propertySection?.content?.items?.[0]?.title || "Sovereign Heights",
-            location: propertySection?.content?.items?.[0]?.description || "Skyline District",
+            title: propertySection?.content?.items?.[0]?.title || t("prop_heights"),
+            location: propertySection?.content?.items?.[0]?.description || t("prop_skyline"),
             price: "$4.5M",
             img:
                 propertySection?.content?.items?.[0]?.image ||
@@ -60,8 +62,8 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
             sqft: "4,500",
         },
         {
-            title: propertySection?.content?.items?.[1]?.title || "The Obsidian Loft",
-            location: propertySection?.content?.items?.[1]?.description || "Urban Core",
+            title: propertySection?.content?.items?.[1]?.title || t("prop_obsidian"),
+            location: propertySection?.content?.items?.[1]?.description || t("prop_urban"),
             price: "$1.2M",
             img:
                 propertySection?.content?.items?.[1]?.image ||
@@ -71,8 +73,8 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
             sqft: "1,800",
         },
         {
-            title: propertySection?.content?.items?.[2]?.title || "Azure Waterfront",
-            location: propertySection?.content?.items?.[2]?.description || "Coastal Road",
+            title: propertySection?.content?.items?.[2]?.title || t("prop_azure"),
+            location: propertySection?.content?.items?.[2]?.description || t("prop_coastal"),
             price: "$8.9M",
             img:
                 propertySection?.content?.items?.[2]?.image ||
@@ -93,17 +95,17 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
                     <nav className="h-24 px-8 lg:px-20 flex items-center justify-between sticky top-0 bg-white/80 backdrop-blur-2xl z-[100] border-b border-slate-100">
                         <div className="flex items-center gap-12">
                             <span className="text-2xl font-black tracking-tighter uppercase">
-                                {blueprint?.name || "ESTATE_HUB"}
+                                {blueprint?.name || t("estate_hub")}
                             </span>
                             <div className="hidden lg:flex items-center gap-10 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
                                 <span className="hover:text-slate-900 cursor-pointer">
-                                    Inventory
+                                    {t("inventory")}
                                 </span>
                                 <span className="hover:text-slate-900 cursor-pointer">
-                                    Neighborhoods
+                                    {t("neighborhoods")}
                                 </span>
                                 <span className="hover:text-slate-900 cursor-pointer">
-                                    Sovereign_Mgmt
+                                    {t("sovereign_mgmt")}
                                 </span>
                             </div>
                         </div>
@@ -116,7 +118,7 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
                                 onClick={() => onOpen("Consultation")}
                                 className="h-14 px-8 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-transform"
                             >
-                                Contact_Agent
+                                {t("contact_agent")}
                             </button>
                         </div>
                     </nav>
@@ -136,7 +138,7 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
                                 <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 mb-8">
                                     <div className="w-2 h-2 rounded-full bg-emerald-400" />
                                     <span className="text-[10px] font-black uppercase text-white tracking-widest">
-                                        New Acquisition Available
+                                        {t("new_acquisition")}
                                     </span>
                                 </div>
                                 <h1 className="text-white text-6xl md:text-[8vw] font-black uppercase tracking-tightest leading-[0.82] mb-10 drop-shadow-2xl italic">
@@ -144,7 +146,7 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
                                 </h1>
                                 <div className="flex gap-4">
                                     <button className="h-16 px-12 bg-white text-slate-900 font-black uppercase tracking-widest text-[11px] shadow-2xl hover:scale-105 transition-transform">
-                                        Explore_Listings
+                                        {t("explore")}
                                     </button>
                                 </div>
                             </div>
@@ -152,10 +154,10 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
                         <div className="lg:col-span-3 bg-white rounded-[48px] p-10 border border-slate-200 flex flex-col justify-between shadow-sm">
                             <div className="space-y-8">
                                 <div className="flex items-center gap-4 text-slate-400 text-[10px] font-black uppercase tracking-widest">
-                                    <Map className="w-5 h-5" /> Area Search
+                                    <Map className="w-5 h-5" /> {t("area_search")}
                                 </div>
                                 <h2 className="text-4xl font-black tracking-tight leading-none uppercase italic">
-                                    Market <br /> Intelligence.
+                                    {t("market_intelligence").split(' ').slice(0, 1).join(' ')} <br /> {t("market_intelligence").split(' ').slice(1).join(' ')}
                                 </h2>
                                 <p className="text-slate-500 text-sm font-medium leading-relaxed">
                                     {heroSub}
@@ -165,7 +167,7 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
                             <div className="p-8 bg-slate-50 rounded-[32px] border border-slate-100 space-y-6">
                                 <div className="flex items-center justify-between">
                                     <span className="text-[10px] font-black uppercase text-slate-400">
-                                        Total Asset Value
+                                        {t("total_asset_value")}
                                     </span>
                                     <span className="text-xl font-bold font-mono text-emerald-600">
                                         $450M+
@@ -175,15 +177,15 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                            Growth
+                                            {t("growth")}
                                         </p>
                                         <p className="text-lg font-bold">12.4%</p>
                                     </div>
                                     <div>
                                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                            Portfolio
+                                            {t("portfolio")}
                                         </p>
-                                        <p className="text-lg font-bold">18 Assets</p>
+                                        <p className="text-lg font-bold">18 {t("assets")}</p>
                                     </div>
                                 </div>
                             </div>
@@ -196,14 +198,14 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
                             <div className="flex items-end justify-between mb-24 gap-4">
                                 <div>
                                     <h2 className="text-6xl font-black uppercase tracking-tighter italic">
-                                        Asset_Silos.
+                                        {t("asset_silos")}
                                     </h2>
                                     <p className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mt-4">
-                                        Verified Property Intelligence
+                                        {t("verified_intelligence")}
                                     </p>
                                 </div>
                                 <button className="h-16 px-10 border border-slate-200 bg-white text-[10px] font-black uppercase tracking-widest flex items-center gap-4 hover:border-slate-900 transition-colors">
-                                    <Filter className="w-4 h-4" /> Filter_Architecture
+                                    <Filter className="w-4 h-4" /> {t("filter")}
                                 </button>
                             </div>
 
@@ -224,7 +226,7 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
                                                 className="object-cover group-hover:scale-105 transition-transform duration-1000"
                                             />
                                             <div className="absolute top-6 left-6 px-4 py-2 bg-white/80 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest">
-                                                EXCLUSIVE
+                                                {t("exclusive")}
                                             </div>
                                             <div className="absolute bottom-6 right-6 px-6 py-3 bg-slate-900 text-white text-lg font-bold italic shadow-2xl">
                                                 {prop.price}
@@ -243,24 +245,24 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
                                                 <div className="flex flex-col gap-1">
                                                     <BedDouble className="w-5 h-5 text-slate-300" />
                                                     <span className="text-xs font-bold">
-                                                        {prop.beds} Beds
+                                                        {prop.beds} {t("beds")}
                                                     </span>
                                                 </div>
                                                 <div className="flex flex-col gap-1">
                                                     <Bath className="w-5 h-5 text-slate-300" />
                                                     <span className="text-xs font-bold">
-                                                        {prop.baths} Baths
+                                                        {prop.baths} {t("baths")}
                                                     </span>
                                                 </div>
                                                 <div className="flex flex-col gap-1">
                                                     <Maximize className="w-5 h-5 text-slate-300" />
                                                     <span className="text-xs font-bold">
-                                                        {prop.sqft} FT²
+                                                        {prop.sqft} {t("sqft")}
                                                     </span>
                                                 </div>
                                             </div>
                                             <button className="w-full h-16 rounded-2xl border border-slate-100 bg-slate-50 text-[10px] font-black uppercase tracking-[0.2em] group-hover:bg-slate-950 group-hover:text-white transition-all flex items-center justify-center gap-4">
-                                                View_Full_Spec <ArrowUpRight className="w-4 h-4" />
+                                                {t("view_spec")} <ArrowUpRight className="w-4 h-4" />
                                             </button>
                                         </div>
                                     </motion.div>
@@ -277,8 +279,7 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
                                     {blueprint?.name}
                                 </span>
                                 <p className="text-slate-400 text-lg max-w-sm leading-relaxed font-medium">
-                                    Providing high-status architectural assets with absolute
-                                    persistence logic.
+                                    {t("footer_desc")}
                                 </p>
                                 <div className="flex gap-6">
                                     <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer">
@@ -291,35 +292,35 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
                             </div>
                             <div className="space-y-6">
                                 <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500">
-                                    Navigation
+                                    {t("navigation")}
                                 </h4>
                                 <div className="flex flex-col gap-4 text-xs font-bold">
                                     <span className="hover:text-white transition-colors cursor-pointer">
-                                        Portfolio
+                                        {t("portfolio")}
                                     </span>
                                     <span className="hover:text-white transition-colors cursor-pointer">
-                                        Intelligence
+                                        {t("intelligence")}
                                     </span>
                                     <span className="hover:text-white transition-colors cursor-pointer">
-                                        Network
+                                        {t("network")}
                                     </span>
                                 </div>
                             </div>
                             <div className="space-y-6">
                                 <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500">
-                                    Emergency
+                                    {t("emergency")}
                                 </h4>
                                 <div className="flex items-center gap-4 text-xs font-black italic">
                                     <Phone className="w-5 h-5 text-emerald-400" /> +212 5XX XX XX
                                 </div>
                                 <div className="flex items-center gap-4 text-xs font-black italic">
-                                    <Calendar className="w-5 h-5 text-emerald-400" /> Mon - Sat
+                                    <Calendar className="w-5 h-5 text-emerald-400" /> {t("working_days")}
                                 </div>
                             </div>
                         </div>
                         <div className="mt-40 border-t border-white/5 py-10 text-center">
                             <p className="text-[9px] font-black uppercase tracking-[0.8em] text-slate-600">
-                                © 2026 Sovereign Estate Infrastructure. Logic-Lock Enabled.
+                                {t("copyright")}
                             </p>
                         </div>
                     </footer>
