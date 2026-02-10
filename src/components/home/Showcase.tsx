@@ -17,39 +17,40 @@ export default function Showcase() {
     const openLaunchModal = useLaunchModal((state) => state.onOpen);
 
     return (
-        <section id="showcase" className="py-32 bg-background relative overflow-hidden">
-            {/* Background Orbs - Sovereign Spectrum */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#00D09C]/5 rounded-full blur-[140px] -translate-y-1/2 translate-x-1/2 opacity-70" />
-            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#0A2540]/10 rounded-full blur-[140px] translate-y-1/2 -translate-x-1/2 opacity-70" />
+        <section id="showcase" className="py-32 bg-[#020617] relative overflow-hidden">
+            {/* Logic Mesh Background */}
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[140px] -translate-y-1/2 translate-x-1/2 opacity-70" />
+            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#10B981]/5 rounded-full blur-[140px] translate-y-1/2 -translate-x-1/2 opacity-70" />
 
             <div className="container mx-auto px-6 relative z-10">
-                {/* Header Section - Sovereign Precision */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
-                    <div className="max-w-3xl">
+                {/* Header Section - GYS-V2 Precision */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-12">
+                    <div className="max-w-4xl">
                         <motion.div
                             initial={{ opacity: 0, x: -20 }}
                             whileInView={{ opacity: 1, x: 0 }}
-                            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#0A2540]/5 border border-[#00D09C]/20 text-[#00D09C] text-[10px] font-black uppercase tracking-[0.2em] mb-8"
+                            viewport={{ once: true }}
+                            className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-white/40 text-[11px] font-bold uppercase tracking-[0.3em] mb-10"
                         >
                             Professional Architecture Library
                         </motion.div>
                         <motion.h2
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            className="text-5xl md:text-8xl font-black text-foreground mb-10 leading-[0.85] tracking-tighter uppercase"
+                            viewport={{ once: true }}
+                            className="text-5xl md:text-8xl font-bold text-white mb-10 leading-[1.05] tracking-tight"
                         >
-                            Engineered for <span className="text-[#00D09C]">Peak Performance</span>
+                            Engineered for <span className="text-primary italic font-light">Peak Performance</span>
                         </motion.h2>
-                        <p className="text-muted-foreground text-xl leading-relaxed max-w-xl font-medium">
+                        <p className="text-white/40 text-xl leading-relaxed max-w-2xl font-light">
                             Every template is a battle-tested industrial blueprint. Optimized for global speed and ready to be deployed as a high-performance business asset.
                         </p>
                     </div>
                     <Button
-                        variant="default"
-                        className="h-16 px-10 bg-[#00D09C] hover:bg-[#00B085] border-none text-white font-black tracking-widest uppercase text-xs shadow-[0_0_25px_rgba(0,208,156,0.3)] group transition-all"
+                        className="h-16 px-12 bg-primary hover:bg-[#2563eb] text-[#020617] font-bold tracking-widest uppercase text-xs shadow-[0_0_40px_rgba(59,130,246,0.3)] group transition-all rounded-xl"
                         onClick={() => openLaunchModal()}
                     >
-                        Custom Build Request <ArrowUpRight className="ml-2 w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                        Custom Build Request <ArrowUpRight className="ml-3 w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                     </Button>
                 </div>
 

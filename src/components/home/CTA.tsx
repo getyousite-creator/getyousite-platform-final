@@ -6,22 +6,32 @@ import { ArrowRight } from "lucide-react";
 
 export default function CTA() {
     return (
-        <section className="py-24 relative overflow-hidden flex items-center justify-center bg-black">
-            {/* Background Sovereign Mesh */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[#0A2540] to-black opacity-90" />
-            <div className="absolute top-0 left-0 w-full h-full bg-[#00D09C]/5 blur-[120px] rounded-full -translate-y-1/2" />
+        <section className="py-32 relative overflow-hidden flex items-center justify-center bg-[#020617]">
+            {/* GYS-V2 HIGH-DENSITY GLOW */}
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
 
-            {/* Animated Particles (CSS only for perf) */}
-            <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }} />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
+                <div className="absolute top-0 left-1/4 w-[50%] h-[50%] bg-primary/10 blur-[140px] rounded-full animate-pulse" />
+                <div className="absolute bottom-0 right-1/4 w-[40%] h-[40%] bg-[#10B981]/5 blur-[120px] rounded-full" />
+            </div>
+
+            <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }} />
 
             <div className="container relative z-10 text-center px-6">
                 <motion.h2
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="text-4xl md:text-7xl font-black text-white mb-8 tracking-tighter uppercase italic"
+                    className="text-5xl md:text-8xl font-bold text-white mb-10 tracking-tight leading-[1.05]"
                 >
-                    Ready to <span className="text-[#00D09C]">Scale?</span>
+                    Ready to <span className="text-primary relative inline-block">
+                        Scale?
+                        <motion.div
+                            className="absolute -inset-1 bg-primary/20 blur-xl -z-10 rounded-full"
+                            animate={{ opacity: [0.2, 0.5, 0.2] }}
+                            transition={{ duration: 3, repeat: Infinity }}
+                        />
+                    </span>
                 </motion.h2>
 
                 <motion.p
@@ -29,28 +39,28 @@ export default function CTA() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.1 }}
-                    className="text-xl text-blue-100/60 mb-10 max-w-2xl mx-auto font-medium"
+                    className="text-xl md:text-2xl text-white/40 mb-14 max-w-3xl mx-auto font-light leading-relaxed"
                 >
                     High-performance infrastructure is ready. Move beyond simple builders.
                     Launch your professional business asset today.
                 </motion.p>
 
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.2 }}
                 >
                     <Button
                         onClick={() => window.location.href = '/signup'}
-                        variant="premium"
-                        size="lg"
-                        className="text-lg px-12 py-8 rounded-full shadow-[0_0_50px_rgba(0,208,156,0.3)] hover:shadow-[0_0_60px_rgba(0,208,156,0.5)] transition-all hover:scale-105 active:scale-95 border-none"
+                        className="text-xl px-14 py-8 rounded-[1.2rem] bg-primary hover:bg-[#2563eb] text-[#020617] font-bold shadow-[0_0_50px_rgba(59,130,246,0.5)] hover:shadow-[0_0_70px_rgba(59,130,246,0.7)] transition-all hover:scale-[1.03] active:scale-[0.97] border-none"
                     >
-                        Start Your Project <ArrowRight className="ml-2 w-5 h-5" />
+                        Start Your Project <ArrowRight className="ml-3 w-6 h-6" />
                     </Button>
                 </motion.div>
             </div>
+
+            <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
         </section>
     );
 }

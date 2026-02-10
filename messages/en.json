@@ -14,11 +14,11 @@
         "sovereign_access": "Secure Access Active"
     },
     "Hero": {
-        "badge": "Professional Website Builder v2.0",
-        "headline": "Create a professional website in minutes.",
-        "subheadline": "No code, no complexity. Just your business, beautifully online.",
-        "placeholder": "Describe your business niche...",
-        "generate": "Start Free",
+        "badge": "Sovereign Website Builder 2026",
+        "headline": "Manifest Your Digital Empire in Seconds.",
+        "subheadline": "AI that doesn't just design, but engineers total business logic. From a single prompt to high-yield digital assets.",
+        "placeholder": "Describe your commercial vision here...",
+        "generate": "Initiate Neural Build",
         "gdpr": "GDPR & Security Compliant",
         "uptime": "99.9% Uptime SLA",
         "aiCore": "AI Infrastructure",
@@ -398,31 +398,44 @@
         "vision_text": "To be the leading platform that enables anyone to create and manage their professional website without needing complex technical expertise."
     },
     "LaunchModal": {
-        "init_sequence": "Start Building",
-        "title": "Launch Your Project",
-        "desc": "Confirm your business details to initiate the automated design sequence.",
-        "email_label": "Contact Email",
-        "email_placeholder": "info@yourdomain.com",
-        "type_label": "What are you building?",
+        "init_sequence": "Establish Protocol",
+        "title": "Protocol Initialization",
+        "desc": "Begin the sequence to manifest your digital asset.",
+        "steps": {
+            "email": "Identity Access",
+            "name": "Protocol Domain",
+            "activity": "Action Core",
+            "goal": "Logic Goal"
+        },
+        "labels": {
+            "email": "Official Contact Node",
+            "name": "Entity Name",
+            "activity": "Operational Definition",
+            "goal": "Primary Objective"
+        },
+        "placeholders": {
+            "email": "operator@domain.com",
+            "name": "Nexus Solutions",
+            "activity": "High-frequency trading algorithms...",
+            "goal": "Select Objective"
+        },
         "type_options": {
-            "blog": "Personal / Blog",
-            "business": "Professional Business",
-            "store": "E-commerce Store"
+            "showcase": "Visual Showcase",
+            "lead_gen": "Lead Generation",
+            "cv": "Professional Dossier",
+            "landing_page": "High-Conversion Unit"
         },
-        "vision_label": "Business Description",
-        "vision_placeholder": "B2B consulting firm focusing on logistics...",
-        "tier_label": "Service Plan",
-        "tier_options": {
-            "starter": "Starter Plan",
-            "pro": "Professional Plan",
-            "business": "Business Infrastructure",
-            "enterprise": "Enterprise Solution"
+        "buttons": {
+            "next": "Next Protocol",
+            "back": "Rewind Logic",
+            "submit": "Synthesize Asset",
+            "transmitting": "Processing Logic..."
         },
-        "submit": "Launch Site",
-        "submitting": "Processing...",
         "success": {
-            "title": "Project Initiated",
-            "desc": "Your site infrastructure is ready. Redirecting to workspace..."
+            "title": "PROTOCOL SECURED",
+            "desc": "Your site architecture has been synthesized. Redirecting to command...",
+            "transmission_title": "Transmission Successful",
+            "transmission_desc": "Your data packet has been routed to the sovereign node."
         }
     },
     "Help": {
@@ -482,6 +495,70 @@
         "view_analytics": "View Analytics",
         "recent_activity": "Recent Activity",
         "vs_last_month": "vs last month",
-        "syncing": "SYNCING_DASHBOARD..."
+        "syncing": "SYNCING_DASHBOARD...",
+        "leads": {
+            "title": "Lead Command",
+            "subtitle": "Direct transmission logs from sovereign nodes",
+            "loading": "Retrieving Inbound Signals...",
+            "no_data": "No Inbound Data",
+            "no_data_desc": "Your nodes are active but no transmissions have been captured yet.",
+            "anonymous": "Anonymous Operator",
+            "no_message": "No content transmitted.",
+            "node": "Node:",
+            "contacted": "Contacted",
+            "archive": "Archive",
+            "ago": "ago"
+        },
+        "intelligence": {
+            "title": "Intelligence Hub",
+            "subtitle": "Neural velocity synchronization active",
+            "loading": "Scanning Neural Nodes & Propagating Truth...",
+            "global_avg": "Global SEO Avg",
+            "scanning": "Reconstructing Neural Map...",
+            "traffic_velocity": "Traffic Velocity",
+            "seo_score": "Neural SEO Score",
+            "rescan": "Re-Scan",
+            "diagnostics": "View Neural Diagnostics",
+            "expand": "Expand Digital Empire",
+            "integrity_warning": "Neural Integrity Warning",
+            "integrity_protocol": "Global Integrity Protocol",
+            "breach_msg": "Protocol Breach: {count} node(s) exhibiting critical SEO degradation. Immediate neural reconstruction mandated.",
+            "synchronized_msg": "All nodes are currently synchronized with the Sovereign protocol. Security anomalies: 0.",
+            "report_title": "Neural Diagnostic Report",
+            "overall_integrity": "Overall Integrity",
+            "semantic_depth": "Semantic Depth",
+            "anomalies": "Protocol Anomalies",
+            "no_anomalies": "Zero Anomalies Detected",
+            "roadmap": "Optimization Roadmap",
+            "acknowledge": "Acknowledge Intelligence"
+        }
+    },
+    "AIEngine": {
+        "badge": "Neural Architecture Synthesis",
+        "title": "The Engine That <br /> <span class='text-transparent bg-clip-text bg-gradient-to-r from-[#00D09C] to-[#00D09C]/40'>Manifests Reality.</span>",
+        "desc": "Our Sovereign design system analyzes your mission and generates a high-frequency architecture in seconds. It orchestrates layout, copy, and performance parameters for absolute dominance.",
+        "features": {
+            "refinement": "Intelligent Prompt Refinement",
+            "arabic": "Professional Arabic-First UI",
+            "seo": "Semantic SEO Injection",
+            "edge": "Global Edge Propagation",
+            "ux": "Logical Interface Engineering",
+            "security": "Hardened Enterprise Security"
+        },
+        "stats": {
+            "lighthouse": "Lighthouse Score",
+            "propagation": "Edge Propagation",
+            "standard": "Sovereign Standard"
+        },
+        "terminal": {
+            "init": "Initializing Engine Core...",
+            "loading": "Loading modules: [Design, Content, Analytics]...",
+            "mesh": "Connecting to High-Perf Mesh...",
+            "opt": "OPTIMIZATION_LEVEL: MAXIMUM",
+            "online": "Status: ONLINE",
+            "ready": "Ready to construct."
+        },
+        "gpt_active": "GPT-4o Mini active",
+        "edge_synthesis": "Edge Synthesis"
     }
 }

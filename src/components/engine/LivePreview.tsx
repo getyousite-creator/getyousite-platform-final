@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Layout } from 'lucide-react';
 import { ComponentLibrary } from './ComponentLibrary';
 
 interface PreviewProps {

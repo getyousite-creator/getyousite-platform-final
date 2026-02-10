@@ -287,6 +287,48 @@ function generateIntelligentMock(prompt: string): string {
 }
 
 /**
+ * PROMPT REFINER: Expands vague user descriptions into high-status business briefs - SOVEREIGN LOGIC
+ */
+async function refineUserVision(params: {
+    businessName: string;
+    niche: string;
+    vision: string;
+    locale: string;
+}) {
+    const refinerPrompt = `
+أنت "المحلل الاستراتيجي السيادي" (Strategic Sovereign Analyst). 
+مهمتك: تحويل مدخلات العميل البسيطة إلى "مخطط عمل استراتيجي" (Strategic Business Brief).
+
+البيانات الخام:
+الاسم: ${params.businessName}
+النشاط: ${params.niche}
+الوصف: ${params.vision}
+اللغة: ${params.locale}
+
+المطلوب: قم بتحليل البيانات وتوليد تقرير استراتيجي مكثف يركز على:
+1. تحليل سيكولوجية الجمهور المستهدف ونقاط الألم لديهم.
+2. تحديد "نبرة الصوت" (Brand Voice) - يجب أن تكون "عالية المكانة" (High-Status).
+3. اقتراح 3 مميزات تنافسية فريدة (Unique Selling Points) لهذا النشاط تحديداً.
+4. تحديد الهيكل الوظيفي المثالي (الصفحات والمكونات الضرورية للتحويل).
+5. توجيهات بصرية (Aesthetic Logic) تتناسب مع النيش.
+
+اللغة: يجب أن يكون الرد بنفس لغة العميل (${params.locale}).
+القاعدة: كن صارماً، ذكياً، وموجزاً (بحد أقصى 300 كلمة).
+    `;
+
+    try {
+        const result = await generateWithFallback({
+            prompt: refinerPrompt,
+            maxTokens: 1000,
+            temperature: 0.3,
+        });
+        return result.content;
+    } catch (e) {
+        return params.vision;
+    }
+}
+
+/**
  * Website generation with full features - SOVEREIGN CONSTRUCTION PROTOCOL
  */
 export async function generateCompleteWebsite(params: {
@@ -308,6 +350,11 @@ export async function generateCompleteWebsite(params: {
         );
     }
 
+    // 2. SOVEREIGN_PROMPT_REFINER: Human-to-Machine Logic Bridge
+    console.log("🧠 Sovereign Refiner: Synthesizing Intelligent Business Brief...");
+    const refinedVision = await refineUserVision(params);
+    console.log("✅ Sovereign Refiner: Brief Synthesized.");
+
     // SOVEREIGN LOGIC: Template Mapping
     let recommendedTemplate = "corp-global";
     const normalizedNiche = params.niche.toLowerCase();
@@ -324,42 +371,31 @@ export async function generateCompleteWebsite(params: {
     else if (normalizedNiche.match(/fitness|gym|trainer/)) recommendedTemplate = "fitness-neon";
 
     const systemPrompt = `
-You are the SOVEREIGN AI ARCHITECT. You write MILLION-DOLLAR SALES COPY. 
-Execute the RADICAL IMPLEMENTATION PROTOCOL.
+أنت "المهندس السيادي" (Sovereign Architect) لمنصة GetYouSite.
+يجب أن تتبع بدقة متناهية "بروتوكول العبقرية" (Abqari Protocol):
 
-CRITICAL ARCHITECTURAL RULES:
-1. **Result-First Headlines**: Never use generic "Welcome" text. Headlines must state the ultimate benefit.
-2. **Economic Protocol**: Every sentence must justify a $1M+ valuation. Use power verbs and high-status vocabulary.
-3. **Phased Generation (MVP)**: Generate ONLY the Home page ("index") layout for now. Do NOT generate sub-pages.
-4. **Logic Hardening**: Output strict JSON following the SiteBlueprintSchema.
+1. التحليل الاستراتيجي والـ SEO (Mandate #11):
+- ولد تلقائياً: (Title, Meta Description, Keywords) لكل صفحة.
+- العناوين يجب أن تكون H1 واحدة فقط لكل صفحة وصديقة لمحركات البحث.
 
-// IMAGE SEARCH KEYWORD GENERATION protocol
-For every section requiring a visual, generate a field "imageKeywords" containing 5-7 cinematic, descriptive, and professional keywords.
-Example: "luxury real estate, minimalist interior, cinematic lighting, 8k, architectural photography".
+2. قواعد المحتوى والتحويل (Mandate #6):
+- لا تستخدم لوريم إيبسوم.
+- اللغة العربية: فصحى، حديثة، قوية.
+- الهيكل: (عنوان صادم -> وصف يركز على الفائدة -> CTA).
 
-OUTPUT STRUCTURE:
-{
-  "templateId": "${recommendedTemplate}",
-  "theme": { "mode": "dark" | "luxury" | "clean" | "neon" | "medical" },
-  "navigation": { "logo": "${params.businessName}", "links": [{"label": "Home", "href": "/"}], "transparent": true },
-  "layout": [ /* ONLY HOME PAGE SECTIONS HERE */ ],
-  "pages": {
-     "index": { "id": "p-idx", "slug": "index", "name": "Home", "layout": [ /* SAME AS LAYOUT FIELD */ ], "status": "published" },
-     "about": { "id": "p-abt", "slug": "about", "name": "About Us", "layout": [], "status": "draft" },
-     "services": { "id": "p-srv", "slug": "services", "name": "Services", "layout": [], "status": "draft" },
-     "contact": { "id": "p-con", "slug": "contact", "name": "Contact", "layout": [], "status": "draft" }
-  },
-  "footer": { "copyright": "© 2026 ${params.businessName}", "links": [], "social": {} }
-}
+3. التصميم والوسائط (Mandate #10):
+- اختر Design Mode يناسب النيش.
+- كل قسم يحتوي على صورة يجب أن يتضمن "alt" وصفي ذكي جداً للـ SEO.
+
+المخرج يجب أن يكون JSON يتبع الـ Schema ويضم كائن "seo" في الجذر.
 `;
 
     const userPrompt = `
-BUSINESS: ${params.businessName}
-NICHE: ${params.niche}
-VISION: ${params.vision}
-LOCALE: ${params.locale}
-
-Execute Sovereign Construction Protocol for Home Page.
+إصدار أمر البناء لـ: ${params.businessName}. 
+النشاط: ${params.niche}. 
+الرؤية: ${refinedVision}. 
+اللغة: ${params.locale}.
+التموضع: ${recommendedTemplate}.
 `;
 
     const result = await generateWithFallback({
@@ -468,15 +504,20 @@ export async function generateSinglePage(params: {
     locale: string;
     targetPage: { slug: string; name: string };
 }) {
+    // 1. Refine the vision for the specific page context
+    console.log(`🧠 Sovereign Refiner: Synthesizing Intelligent Brief for [${params.targetPage.name}]...`);
+    const refinedVision = await refineUserVision(params);
+
     const systemPrompt = `
 You are the SOVEREIGN AI ARCHITECT. 
 TASK: Generate the COMPLETE LAYOUT JSON for the "${params.targetPage.name}" page (slug: ${params.targetPage.slug}).
 
 RULES:
 1. **Million-Dollar Copy**: Use Result-First headlines and high-status vocabulary.
-2. **Coherence**: Ensure the content is consistent with a business called "${params.businessName}" in the ${params.niche} industry.
-3. **Sections**: Include 4-6 high-quality sections relevant to a ${params.targetPage.name} page.
-4. **Visual Keywords**: Every section must include "imageKeywords" (5-7 cinematic keywords).
+2. **Arabic USP (RTL Optimization)**: If locale is 'ar', use professional, minimalist Arabic copy.
+3. **Coherence**: Ensure the content is consistent with a business called "${params.businessName}" based on this vision: ${refinedVision}.
+4. **Sections**: Include 4-6 high-quality sections relevant to a ${params.targetPage.name} page.
+5. **Visual Keywords**: Every section must include "imageKeywords" (5-7 cinematic keywords).
 
 OUTPUT FORMAT:
 {
@@ -522,8 +563,49 @@ OUTPUT FORMAT:
     }
 }
 
+/**
+ * REFINEMENT ENGINE: Smart Blueprint Mutation (Mandate #9)
+ */
+async function refineSiteBlueprint(params: {
+    currentBlueprint: any,
+    command: string,
+    locale: string
+}) {
+    const systemPrompt = `
+أنت "محول الـ Blueprint" الذكي. 
+مهمتك: تعديل الـ Blueprint الحالي (JSON) بناءً على طلب العميل.
+القواعد:
+1. حافظ على بنية الـ Blueprint الأصلية.
+2. عدل فقط الأجزاء المطلوبة (نصوص، ألوان، ترتيب أقسام).
+3. المخرج يجب أن يكون Blueprint كامل (Valid JSON) يحمل التعديلات الجديدة.
+4. حافظ على جودة الـ SEO واللغة السيادية.
+    `;
+
+    const userPrompt = `
+الـ Blueprint الحالي: ${JSON.stringify(params.currentBlueprint)}
+الأمر الجديد: ${params.command}
+اللغة: ${params.locale}
+    `;
+
+    const result = await generateWithFallback({
+        prompt: userPrompt,
+        systemPrompt,
+        maxTokens: 8000,
+        temperature: 0.5, // Lower temperature for structural integrity
+        jsonMode: true,
+    });
+
+    try {
+        return JSON.parse(result.content);
+    } catch (e) {
+        console.error("Mutation Failure:", e);
+        return params.currentBlueprint;
+    }
+}
+
 export default {
     generateWithFallback,
     generateCompleteWebsite,
     generateSinglePage,
+    refineSiteBlueprint,
 };

@@ -8,8 +8,11 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
+import { useTranslations } from 'next-intl';
+
 export function IntelligenceDashboard() {
     const { user } = useAuth();
+    const t = useTranslations("Dashboard.intelligence");
     const params = useParams();
     const locale = params.locale as string || 'en';
     const [data, setData] = useState<any[]>([]);
@@ -62,9 +65,9 @@ export function IntelligenceDashboard() {
     };
 
     if (loading) return (
-        <div className="p-24 bg-[#0A2540]/50 rounded-[40px] border border-white/5 flex flex-col items-center justify-center text-center">
+        <div className="p-24 bg-[#051423]/50 rounded-[40px] border border-white/5 flex flex-col items-center justify-center text-center">
             <Activity className="w-12 h-12 text-[#00D09C] animate-spin mb-6" />
-            <div className="text-muted-foreground animate-pulse uppercase text-[10px] tracking-widest font-black">Scanning Neural Nodes & Propagating Truth...</div>
+            <div className="text-muted-foreground animate-pulse uppercase text-[10px] tracking-widest font-black">{t('loading')}</div>
         </div>
     );
 
@@ -79,15 +82,15 @@ export function IntelligenceDashboard() {
             {/* Header: Velocity Terminal */}
             <div className="flex justify-between items-end border-b border-white/5 pb-8">
                 <div>
-                    <h2 className="text-3xl font-black italic uppercase tracking-tightest text-white">Intelligence Hub</h2>
+                    <h2 className="text-3xl font-black italic uppercase tracking-tightest text-white">{t('title')}</h2>
                     <p className="text-[10px] text-[#00D09C] uppercase tracking-widest mt-2 flex items-center gap-2 font-bold">
                         <Activity className="w-3 h-3 animate-pulse" />
-                        Neural velocity synchronization active
+                        {t('subtitle')}
                     </p>
                 </div>
                 <div className="flex gap-4">
                     <div className="text-right">
-                        <span className="text-[8px] text-gray-400 uppercase font-black block mb-1">Global SEO Avg</span>
+                        <span className="text-[8px] text-gray-400 uppercase font-black block mb-1">{t('global_avg')}</span>
                         <span className={`text-xl font-black ${globalAvg > 80 ? 'text-[#00D09C]' : 'text-amber-500'}`}>{globalAvg}%</span>
                     </div>
                 </div>
@@ -96,11 +99,11 @@ export function IntelligenceDashboard() {
             {/* Performance Matrix */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {data.map((site) => (
-                    <div key={site.id} className="p-8 rounded-[32px] bg-[#0A2540]/50 border border-white/5 hover:border-[#00D09C]/30 transition-all group backdrop-blur-md relative overflow-hidden flex flex-col">
+                    <div key={site.id} className="p-8 rounded-[32px] bg-[#051423]/50 border border-white/5 hover:border-[#00D09C]/30 transition-all group backdrop-blur-md relative overflow-hidden flex flex-col">
                         {auditLoading === site.id && (
                             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-10 flex flex-col items-center justify-center text-center p-6">
                                 <Zap className="w-8 h-8 text-[#00D09C] animate-bounce mb-4" />
-                                <span className="text-[10px] font-black uppercase tracking-widest text-white">Reconstructing Neural Map...</span>
+                                <span className="text-[10px] font-black uppercase tracking-widest text-white">{t('scanning')}</span>
                             </div>
                         )}
                         <div className="flex justify-between items-start mb-8">
@@ -123,7 +126,7 @@ export function IntelligenceDashboard() {
                         <div className="space-y-6 flex-1">
                             <div>
                                 <div className="flex justify-between items-end mb-2">
-                                    <span className="text-[10px] text-gray-500 uppercase font-black tracking-widest">Traffic Velocity</span>
+                                    <span className="text-[10px] text-gray-500 uppercase font-black tracking-widest">{t('traffic_velocity')}</span>
                                     <span className="text-[10px] text-white font-black">{site.views} PV</span>
                                 </div>
                                 <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
@@ -136,7 +139,7 @@ export function IntelligenceDashboard() {
 
                             <div>
                                 <div className="flex justify-between items-end mb-2">
-                                    <span className="text-[10px] text-gray-500 uppercase font-black tracking-widest">Neural SEO Score</span>
+                                    <span className="text-[10px] text-gray-500 uppercase font-black tracking-widest">{t('seo_score')}</span>
                                     <span className="text-[10px] text-white font-black">{site.seoScore}%</span>
                                 </div>
                                 <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
@@ -154,15 +157,15 @@ export function IntelligenceDashboard() {
                             <button
                                 onClick={() => handleAudit(site.id)}
                                 disabled={!!auditLoading}
-                                className="flex-1 py-4 rounded-2xl bg-[#0A2540] border border-white/10 text-[10px] font-black uppercase tracking-widest text-[#00D09C] hover:bg-[#00D09C] hover:text-black transition-all disabled:opacity-50"
+                                className="flex-1 py-4 rounded-2xl bg-[#051423] border border-white/10 text-[10px] font-black uppercase tracking-widest text-[#00D09C] hover:bg-[#00D09C] hover:text-black transition-all disabled:opacity-50"
                             >
-                                Re-Scan
+                                {t('rescan')}
                             </button>
                             {site.seoScore > 0 && (
                                 <button
                                     onClick={() => handleViewDiagnostics(site.id)}
                                     className="p-4 rounded-2xl bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all"
-                                    title="View Neural Diagnostics"
+                                    title={t('diagnostics')}
                                 >
                                     <Search className="w-4 h-4" />
                                 </button>
@@ -173,10 +176,10 @@ export function IntelligenceDashboard() {
 
                 {/* Node Expansion Slot */}
                 <Link href={`/${locale}/customizer`} className="p-8 rounded-[32px] border border-dashed border-white/10 flex flex-col items-center justify-center text-center group cursor-pointer hover:border-[#00D09C]/50 transition-all bg-white/5 min-h-[300px]">
-                    <div className="w-12 h-12 rounded-full bg-[#0A2540] border border-white/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-[0_0_20px_rgba(0,208,156,0.1)]">
+                    <div className="w-12 h-12 rounded-full bg-[#051423] border border-white/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-[0_0_20px_rgba(0,208,156,0.1)]">
                         <TrendingUp className="w-6 h-6 text-[#00D09C]" />
                     </div>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 group-hover:text-white transition-colors">Expand Digital Empire</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 group-hover:text-white transition-colors">{t('expand')}</span>
                 </Link>
             </div>
 
@@ -188,12 +191,12 @@ export function IntelligenceDashboard() {
                     </div>
                     <div>
                         <h4 className="text-lg font-black italic uppercase tracking-tight text-white mb-1">
-                            {criticalNodes > 0 ? 'Neural Integrity Warning' : 'Global Integrity Protocol'}
+                            {criticalNodes > 0 ? t('integrity_warning') : t('integrity_protocol')}
                         </h4>
                         <p className="text-xs text-blue-200/70 leading-relaxed max-w-2xl font-medium">
                             {criticalNodes > 0
-                                ? `Protocol Breach: ${criticalNodes} node(s) exhibiting critical SEO degradation. Immediate neural reconstruction mandated to maintain search dominance.`
-                                : `All nodes are currently synchronized with the Sovereign protocol. Security anomalies: 0. Success velocity: Trending +${globalAvg > 90 ? '22' : '14'}%. Global uptime remains constant at 100%.`}
+                                ? t('breach_msg', { count: criticalNodes })
+                                : t('synchronized_msg')}
                         </p>
                     </div>
                 </div>
@@ -201,11 +204,11 @@ export function IntelligenceDashboard() {
 
             {/* DIAGNOSTICS MODAL */}
             <Dialog open={showDiagnostics} onOpenChange={setShowDiagnostics}>
-                <DialogContent className="max-w-2xl bg-[#0A2540] border-white/10 text-white rounded-[40px] p-0 overflow-hidden">
+                <DialogContent className="max-w-2xl bg-[#051423] border-white/10 text-white rounded-[40px] p-0 overflow-hidden">
                     <DialogHeader className="p-8 border-b border-white/5 bg-[#051423]/50">
                         <DialogTitle className="text-2xl font-black uppercase italic tracking-tighter flex items-center gap-4">
                             <Activity className="w-6 h-6 text-[#00D09C]" />
-                            Neural Diagnostic Report
+                            {t('report_title')}
                         </DialogTitle>
                     </DialogHeader>
 
@@ -213,11 +216,11 @@ export function IntelligenceDashboard() {
                         {/* Summary Block */}
                         <div className="grid grid-cols-2 gap-4">
                             <div className="p-6 rounded-3xl bg-white/5 border border-white/5">
-                                <span className="text-[10px] text-gray-500 uppercase font-black block mb-2">Overall Integrity</span>
+                                <span className="text-[10px] text-gray-500 uppercase font-black block mb-2">{t('overall_integrity')}</span>
                                 <span className="text-3xl font-black text-[#00D09C]">{selectedAudit?.overall_score}%</span>
                             </div>
                             <div className="p-6 rounded-3xl bg-white/5 border border-white/5">
-                                <span className="text-[10px] text-gray-500 uppercase font-black block mb-2">Semantic Depth</span>
+                                <span className="text-[10px] text-gray-500 uppercase font-black block mb-2">{t('semantic_depth')}</span>
                                 <span className="text-3xl font-black text-amber-500">{selectedAudit?.performance_score}%</span>
                             </div>
                         </div>
@@ -226,7 +229,7 @@ export function IntelligenceDashboard() {
                         <div>
                             <h5 className="text-[10px] font-black uppercase tracking-widest text-[#00D09C] mb-4 flex items-center gap-2">
                                 <AlertTriangle className="w-3 h-3" />
-                                Protocol Anomalies
+                                {t('anomalies')}
                             </h5>
                             <div className="space-y-3">
                                 {selectedAudit?.issues?.map((issue: any, idx: number) => (
@@ -241,7 +244,7 @@ export function IntelligenceDashboard() {
                                 {(!selectedAudit?.issues || selectedAudit.issues.length === 0) && (
                                     <div className="p-12 text-center text-gray-600 border border-white/5 rounded-[32px]">
                                         <CheckCircle className="w-8 h-8 mx-auto mb-4 text-[#00D09C]/20" />
-                                        <p className="text-[10px] font-black uppercase">Zero Anomalies Detected</p>
+                                        <p className="text-[10px] font-black uppercase">{t('no_anomalies')}</p>
                                     </div>
                                 )}
                             </div>
@@ -251,7 +254,7 @@ export function IntelligenceDashboard() {
                         <div>
                             <h5 className="text-[10px] font-black uppercase tracking-widest text-blue-500 mb-4 flex items-center gap-2">
                                 <TrendingUp className="w-3 h-3" />
-                                Optimization Roadmap
+                                {t('roadmap')}
                             </h5>
                             <div className="p-6 rounded-[32px] bg-[#00D09C]/5 border border-[#00D09C]/10">
                                 <ul className="space-y-3">
@@ -262,7 +265,7 @@ export function IntelligenceDashboard() {
                                         </li>
                                     ))}
                                     {(!selectedAudit?.recommendations || selectedAudit.recommendations.length === 0) && (
-                                        <li className="text-[10px] uppercase font-bold text-zinc-500 italic">No recommendations required. Node is currently at peak efficiency.</li>
+                                        <li className="text-[10px] uppercase font-bold text-zinc-500 italic">{t('peak_efficiency')}</li>
                                     )}
                                 </ul>
                             </div>
@@ -274,7 +277,7 @@ export function IntelligenceDashboard() {
                             onClick={() => setShowDiagnostics(false)}
                             className="px-10 py-4 rounded-2xl bg-[#00D09C] text-black text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-transform"
                         >
-                            Acknowledge Intelligence
+                            {t('acknowledge')}
                         </button>
                     </div>
                 </DialogContent>

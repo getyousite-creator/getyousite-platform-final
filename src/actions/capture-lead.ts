@@ -59,12 +59,13 @@ export async function captureLead(prevState: ActionState, formData: FormData): P
         const { AuthService } = await import("@/lib/services/auth-service");
         const { data: user } = await AuthService.getCurrentUser();
 
-        // 1. GENERATE FINAL BLUEPRINT VIA CUSTOMIZER ENGINE
-        const finalBlueprint = await CustomizerEngine.generateFinalBlueprint({
-            businessName: vision.split(' ').slice(0, 2).join(' '),
-            niche: siteType === 'blog' ? 'Blogging & Content' : siteType === 'store' ? 'E-commerce & Retail' : 'Professional Business',
-            vision: vision,
-            selectedId: "t1-quantum"
+        // 1. GENERATE FINAL BLUEPRINT VIA SOVEREIGN ORCHESTRATOR
+        const { AIOrchestrator } = await import("@/lib/ai/orchestrator");
+        const finalBlueprint = await AIOrchestrator.generateCompleteSite({
+            brandName: vision.split(' ').slice(0, 3).join(' '), // Better extraction
+            description: vision,
+            goal: siteType,
+            style: "modern" // Default/Heuristic
         });
 
         // 2. PERSISTENCE BRIDGE (SUPABASE)

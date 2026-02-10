@@ -17,6 +17,19 @@ export const SectionSchema = z.object({
     id: z.string(),
     type: z.enum([
         "hero",
+        "HERO_PRIME",
+        "FEATURE_GRID",
+        "LOGIC_SERVICES",
+        "IMAGE_MUSEUM",
+        "TRUST_BAR",
+        "PRO_OFFER",
+        "SMART_FORM",
+        "TEAM_STATION",
+        "FAQ_MASTER",
+        "PRICE_ENGINE",
+        "TESTIMONIAL_STREAM",
+        "COUNTDOWN_LOGIC",
+        "SOCIAL_ORBIT",
         "features",
         "pricing",
         "testimonials",
@@ -25,6 +38,7 @@ export const SectionSchema = z.object({
         "benefits",
         "trust_bar",
         "faq",
+        "contact",
         "contact_map",
         "about",
         "split",
@@ -78,6 +92,7 @@ export const SiteBlueprintSchema = z.object({
         logic_verified: z.boolean().default(true)
     }),
     ai_insight: z.string().optional(),
+    whiteLabel: z.boolean().default(false),
     timestamp: z.string(),
 });
 

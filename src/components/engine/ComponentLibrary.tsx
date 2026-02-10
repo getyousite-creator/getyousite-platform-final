@@ -3,44 +3,80 @@
 import React from 'react';
 import { Search } from 'lucide-react';
 
+import ContactForm from './sections/ContactForm';
+import Stats from './sections/Stats';
+import Team from './sections/Team';
+import Services from './sections/Services';
+import Booking from './sections/Booking';
+
 interface ComponentLibraryProps {
     type: string;
     content: any;
     primaryColor: string;
+    isEditable?: boolean;
+    onEdit?: (type: string, content: any) => void;
 }
 
-/**
- * SOVEREIGN COMPONENT LIBRARY
- * 
- * Maps blueprint types to high-fidelity visual components.
- */
-export function ComponentLibrary({ type, content, primaryColor }: ComponentLibraryProps) {
-    switch (type) {
-        case 'hero':
-            return <PreviewHero content={content} primaryColor={primaryColor} />;
-        case 'features':
-            return <PreviewFeatures content={content} primaryColor={primaryColor} />;
-        case 'benefits':
-            return <PreviewBenefits content={content} primaryColor={primaryColor} />;
-        case 'trust_bar':
-            return <PreviewTrustBar content={content} primaryColor={primaryColor} />;
-        case 'faq':
-            return <PreviewFAQ content={content} primaryColor={primaryColor} />;
-        case 'cta':
-            return <PreviewCTA content={content} primaryColor={primaryColor} />;
-        case 'testimonials':
-            return <PreviewTestimonials content={content} primaryColor={primaryColor} />;
-        case 'gallery':
-            return <PreviewGallery content={content} primaryColor={primaryColor} />;
-        default:
-            return (
-                <div className="p-12 text-center border-b border-border bg-background">
-                    <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">
-                        [{type}] Section_Pending_Orchestration
-                    </p>
+export function ComponentLibrary({ type, content, primaryColor, isEditable, onEdit }: ComponentLibraryProps) {
+    const renderComponent = () => {
+        switch (type) {
+            case 'hero':
+                return <PreviewHero content={content} primaryColor={primaryColor} />;
+            case 'features':
+                return <PreviewFeatures content={content} primaryColor={primaryColor} />;
+            case 'benefits':
+                return <PreviewBenefits content={content} primaryColor={primaryColor} />;
+            case 'trust_bar':
+            case 'logo-bar':
+                return <PreviewTrustBar content={content} primaryColor={primaryColor} />;
+            case 'faq':
+                return <PreviewFAQ content={content} primaryColor={primaryColor} />;
+            case 'cta':
+                return <PreviewCTA content={content} primaryColor={primaryColor} />;
+            case 'testimonials':
+                return <PreviewTestimonials content={content} primaryColor={primaryColor} />;
+            case 'gallery':
+                return <PreviewGallery content={content} primaryColor={primaryColor} />;
+            case 'contact':
+                return <ContactForm content={content} primaryColor={primaryColor} />;
+            case 'booking':
+                return <Booking content={content} />;
+            case 'stats':
+                return <Stats content={content} primaryColor={primaryColor} />;
+            case 'team':
+                return <Team content={content} primaryColor={primaryColor} />;
+            case 'services':
+                return <Services content={content} primaryColor={primaryColor} />;
+            default:
+                return (
+                    <div className="p-12 text-center border-b border-border bg-background">
+                        <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">
+                            [{type}] Section_Pending_Orchestration
+                        </p>
+                    </div>
+                );
+        }
+    };
+
+    return (
+        <div className="relative group/section">
+            {renderComponent()}
+
+            {isEditable && (
+                <div className="absolute top-4 right-4 opacity-0 group-hover/section:opacity-100 transition-opacity z-30 flex gap-2">
+                    <button
+                        onClick={() => onEdit?.(type, content)}
+                        className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full text-[10px] font-black uppercase tracking-widest shadow-2xl hover:scale-105 active:scale-95 transition-all"
+                    >
+                        تعديل بالذكاء الاصطناعي <Search className="w-3 h-3" />
+                    </button>
+                    <button className="p-2 bg-background border border-border text-foreground rounded-full hover:bg-secondary transition-colors">
+                        <Search className="w-4 h-4" />
+                    </button>
                 </div>
-            );
-    }
+            )}
+        </div>
+    );
 }
 
 function PreviewTestimonials({ content, primaryColor }: any) {

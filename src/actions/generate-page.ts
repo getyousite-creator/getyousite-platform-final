@@ -1,35 +1,31 @@
 'use server';
 
 import { generateSinglePage } from '@/lib/ai/multi-provider';
-import { SupabaseStoreRepository } from '@/lib/repositories/SupabaseStoreRepository';
+import { createClient } from '@/lib/supabase/server';
 import { SiteBlueprint } from '@/lib/schemas';
-
-const storeRepo = new SupabaseStoreRepository();
+import { revalidatePath } from 'next/cache';
 
 export async function generateNewPageAction(storeId: string, slug: string, name: string) {
     try {
-        // 1. Fetch current store state
-        // We'll use a hacky way to get the store by ID if getStoreById doesn't exist, 
-        // but SupabaseStoreRepository should have a way.
-        // Let's assume listUserStores and filter, or add getStoreById.
-        // Actually, listUserStores isn't ideal. Let's check if getStoreById is in the repo.
+        const supabase = await createClient();
 
-        const { supabase } = await import("@/lib/supabase");
+        // 1. Fetch current store state securely
         const { data: store, error } = await supabase
             .from('stores')
             .select('*')
             .eq('id', storeId)
             .single();
 
-        if (error || !store) throw new Error("Store not found");
+        if (error || !store) throw new Error("Store not found or access denied.");
 
         const blueprint = store.settings.blueprint as SiteBlueprint;
         const businessName = store.name;
+        // Basic heuristic fallback if metadata is missing
         const niche = blueprint.metadata?.niche || "Professional Business";
         const vision = blueprint.description || store.description || "";
         const locale = blueprint.metadata?.locale || "en";
 
-        // 2. Trigger AI Generation
+        // 2. Trigger AI Generation (Sovereign Engine)
         console.log(`🚀 SOVEREIGN_PAGE_GEN: Starting synthesis for [${name}] in [${businessName}]...`);
         const newPage = await generateSinglePage({
             businessName,
@@ -39,20 +35,25 @@ export async function generateNewPageAction(storeId: string, slug: string, name:
             targetPage: { slug, name }
         });
 
-        // 3. Update Blueprint
+        // 3. Update Blueprint Logic
         const updatedBlueprint = { ...blueprint };
         if (!updatedBlueprint.pages) updatedBlueprint.pages = {};
         updatedBlueprint.pages[slug] = newPage;
 
-        // 4. Persist
-        await storeRepo.saveStore({
-            id: storeId,
-            settings: {
-                ...store.settings,
-                blueprint: updatedBlueprint
-            }
-        });
+        // 4. Persist Updates via Server Client
+        const { error: updateError } = await supabase
+            .from('stores')
+            .update({
+                settings: {
+                    ...store.settings,
+                    blueprint: updatedBlueprint
+                }
+            })
+            .eq('id', storeId);
 
+        if (updateError) throw new Error(`Persistence failure: ${updateError.message}`);
+
+        revalidatePath(`/dashboard/sites/${storeId}`);
         return { success: true, page: newPage };
     } catch (error: any) {
         console.error("PAGE_GENERATION_ERROR:", error);

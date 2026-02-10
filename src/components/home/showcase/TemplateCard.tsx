@@ -23,8 +23,7 @@ export default function TemplateCard({ template, onClick }: TemplateCardProps) {
             exit={{ opacity: 0, scale: 0.95 }}
             className="group relative"
         >
-            <div className="relative aspect-[4/3] rounded-[2.5rem] overflow-hidden border border-border bg-card transition-all duration-700 group-hover:border-blue-500/40 group-hover:shadow-[0_8px_16px_rgba(59,130,246,0.2)]"
-                {/* Browser Chrome UI - Clinical */}
+            <div className="relative aspect-[4/3] rounded-[2.5rem] overflow-hidden border border-border bg-card transition-all duration-700 group-hover:border-blue-500/40 group-hover:shadow-[0_8px_16px_rgba(59,130,246,0.2)]">
                 <div className="absolute top-0 left-0 right-0 h-10 bg-card/80 backdrop-blur-xl flex items-center px-6 justify-between z-20 border-b border-border">
                     <div className="flex gap-2">
                         <div className="w-2.5 h-2.5 rounded-full bg-secondary transition-colors group-hover:bg-red-500/30" />

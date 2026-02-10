@@ -48,19 +48,35 @@ const HeuristicSovereignGenerator = {
             };
         }
 
-        if (niche.includes('law') || niche.includes('legal') || niche.includes('court') || vision.includes('justice')) {
+        if (niche.includes('beauty') || niche.includes('spa') || niche.includes('salon') || vision.includes('relax') || vision.includes('skincare')) {
             return {
-                headline: `Unyielding Advocacy. Strategic Counsel.`,
-                subheadline: `Protecting your interests and legacy with the sovereign legal framework of ${biz}.`,
-                features: ["Precedent-Logic", "Client-Confidentiality-v2", "High-Stakes-Litigation"]
+                headline: `${biz}: The Science of Aesthetic Perfection`,
+                subheadline: `Curating high-status beauty and wellness rituals designed for the modern elite.`,
+                features: ["Precision-Aesthetic-Logic", "VIP-Booking-Protocol", "Skin-Intel-Integration"]
+            };
+        }
+
+        if (niche.includes('education') || niche.includes('course') || niche.includes('school') || vision.includes('learn') || vision.includes('knowledge')) {
+            return {
+                headline: `Empowering Minds via ${biz} Wisdom`,
+                subheadline: `Accelerated learning frameworks and knowledge synthesis for global intellectual expansion.`,
+                features: ["Cognitive-Mapping-v1", "Neural-Courseware-Engine", "Global-Literacy-Nodes"]
+            };
+        }
+
+        if (niche.includes('commerce') || niche.includes('store') || niche.includes('shop') || vision.includes('buy') || vision.includes('retail')) {
+            return {
+                headline: `Quantum Commerce: Scalability Refined by ${biz}`,
+                subheadline: `High-frequency transactional logic and inventory synchronization for the borderless market.`,
+                features: ["Infinite-Inventory-Sync", "Global-Payment-Gateway", "Conversion-Vector-v4"]
             };
         }
 
         // 2. Intent-Based Synthesis (Catch-All)
         const intent = vision.length > 5 ? vision : `Optimal ${niche} services`;
         return {
-            headline: `Reinventing ${niche} through the ${biz} Logic`,
-            subheadline: `A sovereign digital asset built to dominate the ${niche} market: ${intent}.`,
+            headline: `Constructing Excellence: The ${biz} Protocol`,
+            subheadline: `A sovereign digital asset engineered for maximum market dominance in the ${niche} sector.`,
             features: ["Structural-Efficiency", "Growth-Velocity-v1", "Clean-Architecture-Standard"]
         };
     }

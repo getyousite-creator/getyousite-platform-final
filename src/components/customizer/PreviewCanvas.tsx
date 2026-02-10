@@ -25,7 +25,19 @@ export function PreviewCanvas({ blueprint, isGenerating, selectedPageSlug }: Pre
 
                 <LivePreview config={blueprint} isGenerating={isGenerating} selectedPageSlug={selectedPageSlug} />
 
-                {/* Generation Overlay Logic is handled inside LivePreview, but we can add a frame here if needed */}
+                {/* ZERO FRICTION HUD */}
+                {isGenerating && (
+                    <div className="absolute top-8 left-8 p-6 bg-black/80 backdrop-blur-2xl rounded-2xl border border-white/10 z-50 pointer-events-none space-y-3 shadow-2xl animate-in fade-in zoom-in duration-500">
+                        <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 rounded-full bg-blue-500 animate-ping" />
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white">جري إعادة بناء رؤيتك...</span>
+                        </div>
+                        <div className="w-48 h-1 bg-white/5 rounded-full overflow-hidden">
+                            <div className="h-full bg-blue-500 animate-load" style={{ width: '60%' }} />
+                        </div>
+                        <p className="text-[9px] text-white/40 font-mono uppercase">Neural_Link: Established</p>
+                    </div>
+                )}
             </div>
 
             <div className="flex gap-8 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">

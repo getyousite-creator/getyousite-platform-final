@@ -123,5 +123,30 @@ export const StorageService = {
         } catch (e) {
             console.error("Store Purge Error:", e);
         }
+    },
+
+    /**
+     * MISSION: Sovereign Asset Acquisition (Mandate #15)
+     * Fetches an external image (e.g. Unsplash) and saves it permanently to our storage.
+     */
+    async persistExternalImage(imageUrl: string, userId: string, storeId: string): Promise<string | null> {
+        try {
+            const response = await fetch(imageUrl);
+            if (!response.ok) return null;
+
+            const blob = await response.blob();
+            const contentType = response.headers.get('content-type') || 'image/jpeg';
+            const fileExt = contentType.split('/')[1] || 'jpg';
+            const fileName = `persisted_${uuidv4()}.${fileExt}`;
+
+            const file = new File([blob], fileName, { type: contentType });
+            const { data, error } = await this.uploadAsset(file, userId, storeId);
+
+            if (error || !data) return null;
+            return data.url;
+        } catch (e) {
+            console.error("Asset Persistence Exception:", e);
+            return null;
+        }
     }
 };

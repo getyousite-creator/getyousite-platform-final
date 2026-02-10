@@ -28,22 +28,22 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
         value?: string;
         label?: string;
     }[]) || [
-        {
-            title: "Strategic Security",
-            icon: Shield,
-            description: "End-to-end encryption for all corporate assets.",
-        },
-        {
-            title: "Edge Delivery",
-            icon: Zap,
-            description: "High-performance infrastructure with 99.9% uptime.",
-        },
-        {
-            title: "Global Expansion",
-            icon: Globe,
-            description: "Ready for international market growth.",
-        },
-    ];
+            {
+                title: "Strategic Security",
+                icon: Shield,
+                description: "End-to-end encryption for all corporate assets.",
+            },
+            {
+                title: "Edge Delivery",
+                icon: Zap,
+                description: "High-performance infrastructure with 99.9% uptime.",
+            },
+            {
+                title: "Global Expansion",
+                icon: Globe,
+                description: "Ready for international market growth.",
+            },
+        ];
 
     return (
         <SovereignWrapper {...props}>
@@ -170,11 +170,11 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
                             {(features.length > 0
                                 ? features.slice(0, 4)
                                 : [
-                                      { icon: Shield, value: "100%", label: "Security" },
-                                      { icon: Zap, value: "42ms", label: "Latency" },
-                                      { icon: Globe, value: "Node-G", label: "Scale" },
-                                      { icon: BarChart3, value: "12X", label: "Efficiency" },
-                                  ]
+                                    { icon: Shield, value: "100%", label: "Security" },
+                                    { icon: Zap, value: "42ms", label: "Latency" },
+                                    { icon: Globe, value: "Node-G", label: "Scale" },
+                                    { icon: BarChart3, value: "12X", label: "Efficiency" },
+                                ]
                             ).map((stat, i) => (
                                 <div key={i} className="text-center group">
                                     <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/5 mx-auto mb-6 flex items-center justify-center group-hover:bg-white/10 transition-colors">
@@ -192,7 +192,7 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
                                         {stat.value || "99.9%"}
                                     </div>
                                     <div className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.3em]">
-                                        {stat.label || stat.title || "Metric"}
+                                        {stat.label || (stat as any).title || "Metric"}
                                     </div>
                                 </div>
                             ))}
@@ -240,7 +240,7 @@ export default function MasterProfessional(props: SovereignTemplateProps) {
                                             {feature.title}
                                         </h3>
                                         <p className="text-zinc-500 text-sm leading-relaxed font-medium">
-                                            {feature.desc}
+                                            {feature.description}
                                         </p>
 
                                         {/* Hover Decor */}

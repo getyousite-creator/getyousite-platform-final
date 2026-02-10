@@ -99,6 +99,12 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 social: {}
             },
             metadata: {},
+            pages: {},
+            economic_impact: {
+                estimated_savings: "$2.4M",
+                valuation: 3200000,
+                logic_verified: true
+            },
             timestamp: new Date().toISOString()
         }
     },
@@ -138,6 +144,12 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 social: {}
             },
             metadata: {},
+            pages: {},
+            economic_impact: {
+                estimated_savings: "$2.4M",
+                valuation: 3200000,
+                logic_verified: true
+            },
             timestamp: new Date().toISOString()
         }
     },
@@ -178,6 +190,12 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 social: {}
             },
             metadata: {},
+            pages: {},
+            economic_impact: {
+                estimated_savings: "$2.4M",
+                valuation: 3200000,
+                logic_verified: true
+            },
             timestamp: new Date().toISOString()
         }
     },
@@ -217,6 +235,12 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 social: {}
             },
             metadata: {},
+            pages: {},
+            economic_impact: {
+                estimated_savings: "$2.4M",
+                valuation: 3200000,
+                logic_verified: true
+            },
             timestamp: new Date().toISOString()
         }
     },
@@ -257,6 +281,12 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 social: {}
             },
             metadata: {},
+            pages: {},
+            economic_impact: {
+                estimated_savings: "$2.4M",
+                valuation: 3200000,
+                logic_verified: true
+            },
             timestamp: new Date().toISOString()
         }
     },
@@ -296,6 +326,12 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 social: {}
             },
             metadata: {},
+            pages: {},
+            economic_impact: {
+                estimated_savings: "$2.4M",
+                valuation: 3200000,
+                logic_verified: true
+            },
             timestamp: new Date().toISOString()
         }
     },
@@ -336,6 +372,12 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 social: {}
             },
             metadata: {},
+            pages: {},
+            economic_impact: {
+                estimated_savings: "$2.4M",
+                valuation: 3200000,
+                logic_verified: true
+            },
             timestamp: new Date().toISOString()
         }
     },
@@ -375,6 +417,12 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 social: {}
             },
             metadata: {},
+            pages: {},
+            economic_impact: {
+                estimated_savings: "$2.4M",
+                valuation: 3200000,
+                logic_verified: true
+            },
             timestamp: new Date().toISOString()
         }
     },

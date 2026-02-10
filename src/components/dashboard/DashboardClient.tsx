@@ -155,17 +155,17 @@ export default function DashboardClient() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#0A2540] flex items-center justify-center sovereign">
+            <div className="min-h-screen bg-[#051423] flex items-center justify-center sovereign">
                 <div className="text-center">
                     <Zap className="w-12 h-12 text-[#00D09C] animate-pulse mx-auto mb-6" />
-                    <p className="text-[#00D09C] text-[10px] font-black uppercase tracking-widest animate-pulse">Synchronizing Neural Channels...</p>
+                    <p className="text-[#00D09C] text-[10px] font-black uppercase tracking-widest animate-pulse">{t('syncing')}</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[#0A2540] p-4 md:p-12 sovereign selection:bg-[#00D09C] selection:text-[#0A2540]">
+        <div className="min-h-screen bg-[#051423] p-4 md:p-12 sovereign selection:bg-[#00D09C] selection:text-[#051423]">
             <div className="max-w-7xl mx-auto space-y-12">
 
                 {/* SOVEREIGN ID & HEADER */}
@@ -175,14 +175,16 @@ export default function DashboardClient() {
                             <div className="w-10 h-10 rounded-xl bg-[#00D09C]/10 border border-[#00D09C]/20 flex items-center justify-center">
                                 <Shield className="w-5 h-5 text-[#00D09C]" />
                             </div>
-                            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400/60 leading-none">Status: AUTHENTICATED // GRID_ID: SG-882-X</span>
+                            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400/60 leading-none">
+                                {locale === 'ar' ? 'الحالة: مفعل // المعرف: SG-882-X' : 'Status: AUTHENTICATED // GRID_ID: SG-882-X'}
+                            </span>
                         </div>
                         <motion.h1
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             className="text-5xl md:text-7xl font-black text-white italic tracking-tighter uppercase leading-none"
                         >
-                            Neural Hub
+                            {t('title')}
                         </motion.h1>
                     </div>
 
@@ -198,12 +200,12 @@ export default function DashboardClient() {
                             className="h-14 border-white/5 bg-white/5 hover:bg-white/10 text-white font-black uppercase tracking-widest px-8 rounded-2xl"
                         >
                             <LogOut className="w-4 h-4 mr-2" />
-                            Sign Out
+                            {locale === 'ar' ? 'خروج' : 'Sign Out'}
                         </Button>
                         <Button asChild className="h-14 bg-[#00D09C] hover:bg-[#00B085] text-[#0A2540] font-black uppercase tracking-widest px-10 rounded-2xl shadow-[0_0_30px_rgba(0,208,156,0.2)] border-0">
                             <Link href={`/${locale}/customizer`}>
                                 <Plus size={18} className="mr-2" />
-                                Launch New Node
+                                {t('launch_new')}
                             </Link>
                         </Button>
                     </div>
@@ -212,16 +214,16 @@ export default function DashboardClient() {
                 <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-12">
                     <TabsList className="bg-white/5 border border-white/5 p-1 h-14 rounded-2xl w-fit flex gap-1">
                         <TabsTrigger value="overview" className="h-full px-8 rounded-xl data-[state=active]:bg-[#00D09C] data-[state=active]:text-[#0A2540] text-white/40 text-[10px] font-black uppercase tracking-widest transition-all">
-                            Overview
+                            {locale === 'ar' ? 'نظرة عامة' : 'Overview'}
                         </TabsTrigger>
                         <TabsTrigger value="leads" className="h-full px-8 rounded-xl data-[state=active]:bg-[#00D09C] data-[state=active]:text-[#0A2540] text-white/40 text-[10px] font-black uppercase tracking-widest transition-all">
-                            Leads
+                            {locale === 'ar' ? 'العملاء' : 'Leads'}
                         </TabsTrigger>
                         <TabsTrigger value="analytics" className="h-full px-8 rounded-xl data-[state=active]:bg-[#00D09C] data-[state=active]:text-[#0A2540] text-white/40 text-[10px] font-black uppercase tracking-widest transition-all">
-                            Growth Matrix
+                            {locale === 'ar' ? 'مصفوفة النمو' : 'Growth Matrix'}
                         </TabsTrigger>
                         <TabsTrigger value="seo" className="h-full px-8 rounded-xl data-[state=active]:bg-[#00D09C] data-[state=active]:text-[#0A2540] text-white/40 text-[10px] font-black uppercase tracking-widest transition-all">
-                            Intelligence
+                            {locale === 'ar' ? 'الذكاء' : 'Intelligence'}
                         </TabsTrigger>
                     </TabsList>
 

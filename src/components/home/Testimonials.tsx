@@ -37,43 +37,61 @@ export default function Testimonials() {
     ];
 
     return (
-        <section className="py-24 bg-background overflow-hidden relative">
-            <div className="container mx-auto px-6 mb-16 text-center">
-                <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">{t('title')}</h2>
-                <p className="text-muted-foreground">{t('subtitle')}</p>
+        <section className="py-32 bg-[#020617] overflow-hidden relative">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+
+            <div className="container mx-auto px-6 mb-24 text-center">
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-white/40 text-[11px] font-bold uppercase tracking-[0.3em] mb-10"
+                >
+                    Testimonial Validation Layer
+                </motion.div>
+                <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">{t('title')}</h2>
+                <p className="text-white/40 text-xl font-light max-w-2xl mx-auto">{t('subtitle')}</p>
             </div>
 
-            {/* Marquee Container */}
+            {/* Marquee Container with GYS-V2 Styling */}
             <div className="relative flex overflow-x-hidden group">
-                <div className="animate-marquee whitespace-nowrap flex gap-8 py-4">
+                <div className="animate-marquee whitespace-nowrap flex gap-10 py-10">
                     {[...testimonials, ...testimonials, ...testimonials].map((testimonial, i) => (
                         <div
                             key={i}
-                            className="inline-block w-[350px] bg-[#0A2540]/5 border border-white/5 rounded-3xl p-8 hover:border-[#00D09C]/30 transition-all whitespace-normal backdrop-blur-sm shadow-xl"
+                            className="inline-block w-[400px] bg-[#1e293b]/40 border border-white/5 rounded-[2rem] p-10 hover:border-primary/30 transition-all whitespace-normal backdrop-blur-2xl shadow-2xl relative overflow-hidden"
                         >
-                            <div className="flex items-center gap-1 mb-4">
+                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                            <div className="flex items-center gap-1.5 mb-8">
                                 {[1, 2, 3, 4, 5].map((star) => (
-                                    <Star key={star} className="w-4 h-4 fill-[#00D09C] text-[#00D09C]" />
+                                    <Star key={star} className="w-4 h-4 fill-[#10B981] text-[#10B981]" />
                                 ))}
                             </div>
-                            <p className="text-blue-100/60 mb-6 italic leading-relaxed text-sm">"{testimonial.content}"</p>
-                            <div className="flex items-center gap-4">
-                                <div className="relative w-10 h-10 rounded-full overflow-hidden border border-[#00D09C]/20 bg-[#00D09C]/10">
-                                    <Image
-                                        src={testimonial.image}
-                                        alt={testimonial.name}
-                                        fill
-                                        className="object-cover grayscale hover:grayscale-0 transition-all"
-                                    />
+                            <p className="text-white/60 mb-10 leading-relaxed text-base font-light">"{testimonial.content}"</p>
+                            <div className="flex items-center gap-5">
+                                <div className="relative w-12 h-12 rounded-2xl overflow-hidden border border-white/10 bg-white/5 p-1">
+                                    <div className="relative w-full h-full rounded-xl overflow-hidden">
+                                        <Image
+                                            src={testimonial.image}
+                                            alt={testimonial.name}
+                                            fill
+                                            className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                        />
+                                    </div>
                                 </div>
                                 <div>
-                                    <h4 className="text-white font-black uppercase tracking-tighter text-sm italic">{testimonial.name}</h4>
-                                    <p className="text-[#00D09C] text-[10px] font-black uppercase tracking-widest">{testimonial.role}</p>
+                                    <h4 className="text-white font-bold uppercase tracking-wider text-sm">{testimonial.name}</h4>
+                                    <p className="text-primary text-[10px] font-bold uppercase tracking-[0.2em] mt-1">{testimonial.role}</p>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
+
+                {/* Edge Fades for better visual flow */}
+                <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-[#020617] to-transparent z-10" />
+                <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-[#020617] to-transparent z-10" />
             </div>
         </section>
     );

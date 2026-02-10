@@ -3,7 +3,7 @@ import { getMessages, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import "@/app/globals.css";
-// import { Inter, Noto_Sans_Arabic } from "next/font/google";
+import { Inter, IBM_Plex_Sans_Arabic } from "next/font/google";
 import { cn } from "@/lib/utils";
 import JsonLd from "@/components/seo/JsonLd";
 import LaunchModal from "@/components/forms/LaunchModal";
@@ -15,9 +15,18 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import SupabaseProvider from "@/components/providers/SupabaseProvider";
 import { PwaProvider } from "@/components/providers/PwaProvider";
 
-// LOGIC UPDATE: Use system fonts to prevent build blocking on external fetch
-const inter = { variable: "--font-inter" };
-const notoArabic = { variable: "--font-noto-arabic" };
+const inter = Inter({
+    subsets: ["latin"],
+    variable: "--font-inter",
+    display: "swap",
+});
+
+const ibmPlexArabic = IBM_Plex_Sans_Arabic({
+    subsets: ["arabic"],
+    weight: ["100", "200", "300", "400", "500", "600", "700"],
+    variable: "--font-arabic",
+    display: "swap",
+});
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -60,13 +69,14 @@ export default async function LocaleLayout({
     return (
         <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className="scroll-smooth">
             <body className={cn(
-                locale === 'ar' ? notoArabic.variable : inter.variable,
-                "bg-background text-foreground antialiased font-sans transition-colors duration-500"
+                inter.variable,
+                ibmPlexArabic.variable,
+                "bg-background text-foreground antialiased transition-colors duration-500 min-h-screen"
             )}>
                 <NextIntlClientProvider messages={messages}>
                     <ThemeProvider
                         attribute="class"
-                        defaultTheme="light"
+                        defaultTheme="dark"
                         enableSystem={false}
                         disableTransitionOnChange
                         themes={["light", "dark", "medical", "luxury", "sovereign"]}

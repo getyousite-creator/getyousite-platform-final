@@ -1,6 +1,7 @@
 "use client";
 
 import { ActionState, captureLead } from "@/actions/capture-lead";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -17,75 +18,92 @@ import { motion } from "framer-motion";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
 import DeploymentLoader from "@/components/ui/DeploymentLoader";
 import { toast } from "sonner";
+import { AIConversation } from "@/components/engine/AIConversation";
 
 export default function LaunchModal() {
     const { isOpen, onClose, visionPrefill, storeContext } = useLaunchModal();
     const t = useTranslations('LaunchModal');
-    const [success, setSuccess] = useState(false);
+    const [step, setStep] = useState(0);
     const [isDeploying, setIsDeploying] = useState(false);
+    const [success, setSuccess] = useState(false);
     const { updateBlueprint } = useTemplateEditor();
 
-    // 1. FORM SETUP (Context Aware)
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-        reset
-    } = useForm<LeadFormValues & { fullName?: string, message?: string }>({
-        resolver: zodResolver(LeadSchema.extend({
-            fullName: z.string().optional(),
-            message: z.string().optional()
-        })),
-        defaultValues: {
-            vision: visionPrefill || "",
-            budget: "pro",
-            email: "",
-            siteType: "business",
-            fullName: "",
-            message: ""
-        }
+    const [formValues, setFormValues] = useState({
+        email: "",
+        businessName: "",
+        activity: visionPrefill || "",
+        goal: "showcase",
+        pages: "Home, About, Services, Contact",
+        style: "Modern Dark"
     });
 
     useEffect(() => {
         if (isOpen) {
-            reset({
-                vision: visionPrefill || "",
-                budget: "pro",
-                email: "",
-                siteType: "business",
-                fullName: "",
-                message: ""
-            });
+            setStep(0);
             setSuccess(false);
             setIsDeploying(false);
+            setFormValues(prev => ({ ...prev, activity: visionPrefill || "" }));
         }
-    }, [isOpen, visionPrefill, reset]);
+    }, [isOpen, visionPrefill]);
 
-    const onSubmit = async (data: any) => {
-        if (storeContext) {
-            // GENIUS PATH: Site Lead Capture
-            try {
-                const { captureStoreLeadAction } = await import("@/actions/lead-actions");
-                const res = await captureStoreLeadAction({
-                    storeId: storeContext.id,
-                    email: data.email,
-                    fullName: data.fullName,
-                    message: data.message || data.vision
-                });
-                if (res.success) setSuccess(true);
-            } catch (err) {
-                console.error("LEAD_CAPTURE_CRITICAL_FAILURE", err);
-            }
-            return;
+    const steps = [
+        {
+            id: 'email',
+            title: "Identity Access",
+            label: "What is your professional email?",
+            field: 'email',
+            placeholder: "operator@domain.com",
+            icon: Rocket
+        },
+        {
+            id: 'name',
+            title: "Protocol Domain",
+            label: "What is your business name?",
+            field: 'businessName',
+            placeholder: "Nexus Solutions",
+            icon: Activity
+        },
+        {
+            id: 'activity',
+            title: "Action Core",
+            label: "Describe your activity in one sentence.",
+            field: 'activity',
+            placeholder: "A high-end restaurant serving global fusion cuisine...",
+            icon: Sparkles
+        },
+        {
+            id: 'goal',
+            title: "Logic Goal",
+            label: "What is the primary target of this site?",
+            field: 'goal',
+            type: 'select',
+            options: ['showcase', 'lead_gen', 'cv', 'landing_page'],
+            icon: MessageSquare
         }
+    ];
 
-        // LEGACY PATH: GetYouSite Blueprint Initiation
+    const currentStepData = steps[step];
+
+    const handleNext = () => {
+        if (step < steps.length - 1) {
+            setStep(step + 1);
+        } else {
+            handleFinalSubmit();
+        }
+    };
+
+    const handleBack = () => {
+        if (step > 0) setStep(step - 1);
+    };
+
+    const handleFinalSubmit = async () => {
         setIsDeploying(true);
+
         const formData = new FormData();
-        formData.append("email", data.email);
-        formData.append("vision", data.vision);
-        formData.append("budget", data.budget);
-        formData.append("siteType", data.siteType);
+        formData.append("email", formValues.email);
+        formData.append("vision", `${formValues.businessName}: ${formValues.activity}. Goal: ${formValues.goal}`);
+        formData.append("siteType", "business");
+        formData.append("budget", "pro");
 
         try {
             const { captureLead } = await import("@/actions/capture-lead");
@@ -96,11 +114,11 @@ export default function LaunchModal() {
                 setSuccess(true);
             } else {
                 setIsDeploying(false);
-                toast.error(result.message || "Failed to initialize protocol.");
+                toast.error(result.message || "Protocol Breach: Generation failed.");
             }
-        } catch (error: unknown) {
+        } catch (error) {
             setIsDeploying(false);
-            console.error("ORCHESTRATION_BREACH:", error);
+            toast.error("Critical Failure in AI Orchestration.");
         }
     };
 
@@ -115,118 +133,56 @@ export default function LaunchModal() {
             <DeploymentLoader isVisible={isDeploying} onComplete={handleDeploymentComplete} />
 
             <Dialog open={isOpen && !isDeploying} onOpenChange={onClose}>
-                <DialogContent className="sm:max-w-[500px] bg-[#0A2540] border-white/10 p-0 overflow-hidden outline-none sovereign">
-                    <div className="relative p-8 font-sans">
+                <DialogContent className="sm:max-w-[600px] bg-[#020617] border-white/5 p-0 overflow-hidden outline-none shadow-[0_0_100px_rgba(59,130,246,0.1)]">
+                    <div className="relative p-12 font-sans overflow-hidden">
+                        {/* Logic Mesh Overlay */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 blur-[100px] -z-10 rounded-full" />
+
                         {success ? (
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                className="text-center py-12 space-y-6"
+                                className="text-center py-16 space-y-8"
                             >
-                                <div className="w-20 h-20 bg-[#00D09C]/20 rounded-full flex items-center justify-center mx-auto border border-[#00D09C]/30 shadow-[0_0_30px_rgba(0,208,156,0.2)]">
-                                    <CheckCircle2 className="w-10 h-10 text-[#00D09C]" />
+                                <div className="w-24 h-24 bg-primary/20 rounded-[2rem] flex items-center justify-center mx-auto border border-primary/30 shadow-[0_0_50px_rgba(59,130,246,0.2)]">
+                                    <CheckCircle2 className="w-12 h-12 text-primary" />
                                 </div>
-                                <div>
-                                    <h3 className="text-2xl font-black text-white mb-2 tracking-tight uppercase italic">
-                                        {storeContext ? "Transmission Successful" : t('success.title')}
+                                <div className="space-y-4">
+                                    <h3 className="text-3xl font-bold text-white tracking-tight text-center">
+                                        تم تأمين البروتوكول بنجاح
                                     </h3>
-                                    <p className="text-blue-100/60 text-[10px] uppercase font-bold tracking-widest">
-                                        {storeContext ? `Your request has been routed to the administrative hub of ${storeContext.name}.` : t('success.desc')}
+                                    <p className="text-white/40 text-[11px] uppercase font-bold tracking-[0.3em] text-center">
+                                        لقد تم تحليل وتجميع معمارية موقعك بنجاح.
                                     </p>
                                 </div>
                             </motion.div>
                         ) : (
-                            <>
-                                <DialogHeader className="mb-8">
-                                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#00D09C]/10 border border-[#00D09C]/20 text-[#00D09C] text-[10px] font-black uppercase tracking-widest w-fit mb-4">
-                                        <Activity className="w-3 h-3" />
-                                        {storeContext ? "Sovereign Link" : t('init_sequence')}
-                                    </div>
-                                    <DialogTitle className="text-3xl font-black text-white tracking-tighter uppercase leading-none italic">
-                                        {storeContext ? `Contact ${storeContext.name}` : t('title')}
-                                    </DialogTitle>
-                                    <DialogDescription className="text-blue-200/50 text-[10px] uppercase font-bold tracking-widest mt-4">
-                                        {storeContext ? "Establish a direct communication line with the node operator." : t('desc')}
-                                    </DialogDescription>
-                                </DialogHeader>
+                            <div className="space-y-8">
+                                <div className="text-center space-y-2">
+                                    <h2 className="text-3xl font-bold text-white tracking-tight">
+                                        إطلاق الإمبراطورية الرقمية
+                                    </h2>
+                                    <p className="text-white/40 text-sm">
+                                        أكد البروتوكول النهائي لنشر موقعك على الإنترنت فوراً
+                                    </p>
+                                </div>
 
-                                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                                <div className="space-y-6">
                                     <div className="space-y-4">
-                                        {storeContext && (
-                                            <div className="space-y-2">
-                                                <Label htmlFor="fullName" className="text-[10px] font-black text-blue-200/40 uppercase tracking-widest">Operator Name</Label>
-                                                <Input
-                                                    id="fullName"
-                                                    {...register("fullName")}
-                                                    placeholder="Identification required"
-                                                    className="bg-white/5 border-white/10 text-white h-12 focus:ring-[#00D09C]/50 rounded-xl"
-                                                />
-                                            </div>
-                                        )}
-
-                                        <div className="space-y-2">
-                                            <Label htmlFor="email" className="text-[10px] font-black text-blue-200/40 uppercase tracking-widest">{t('email_label')}</Label>
-                                            <Input
-                                                id="email"
-                                                {...register("email")}
-                                                placeholder={t('email_placeholder')}
-                                                className="bg-white/5 border-white/10 text-white h-12 focus:ring-[#00D09C]/50 rounded-xl"
-                                            />
-                                            {errors.email && (
-                                                <p className="text-[10px] text-red-400 font-bold flex items-center gap-1 mt-1 uppercase">
-                                                    <AlertCircle className="w-3 h-3" /> {errors.email.message}
-                                                </p>
-                                            )}
+                                        <Label className="text-xs font-black uppercase tracking-widest text-[#00D09C]">رابط موقعك السيادي</Label>
+                                        <div className="flex items-center gap-2 p-4 rounded-xl bg-white/5 border border-white/10 text-white/60">
+                                            <span className="text-sm font-mono">{storeContext?.name?.toLowerCase().replace(/\s+/g, '-') || 'my-site'}.getyousite.com</span>
                                         </div>
-
-                                        {!storeContext ? (
-                                            <>
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="siteType" className="text-[10px] font-black text-blue-200/40 uppercase tracking-widest">{t('type_label')}</Label>
-                                                    <select
-                                                        id="siteType"
-                                                        {...register("siteType")}
-                                                        className="w-full bg-white/5 border-white/10 rounded-xl h-12 text-sm text-white px-3 focus:outline-none focus:ring-[#00D09C]/50 appearance-none"
-                                                    >
-                                                        <option value="blog" className="bg-[#0A2540]">{t('type_options.blog')}</option>
-                                                        <option value="business" className="bg-[#0A2540]">{t('type_options.business')}</option>
-                                                        <option value="store" className="bg-[#0A2540]">{t('type_options.store')}</option>
-                                                    </select>
-                                                </div>
-
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="vision" className="text-[10px] font-black text-blue-200/40 uppercase tracking-widest">{t('vision_label')}</Label>
-                                                    <Input
-                                                        id="vision"
-                                                        {...register("vision")}
-                                                        placeholder={t('vision_placeholder')}
-                                                        className="bg-white/5 border-white/10 text-white h-12 focus:ring-[#00D09C]/50 rounded-xl"
-                                                    />
-                                                </div>
-                                            </>
-                                        ) : (
-                                            <div className="space-y-2">
-                                                <Label htmlFor="message" className="text-[10px] font-black text-blue-200/40 uppercase tracking-widest">Transmission Message</Label>
-                                                <textarea
-                                                    id="message"
-                                                    {...register("message")}
-                                                    placeholder="Enter your inquiry..."
-                                                    className="w-full bg-white/5 border-white/10 rounded-xl p-4 text-sm text-white focus:outline-none focus:ring-[#00D09C]/50 min-h-[100px]"
-                                                />
-                                            </div>
-                                        )}
                                     </div>
 
                                     <Button
-                                        type="submit"
-                                        disabled={isSubmitting}
-                                        className="w-full h-14 font-black uppercase tracking-widest bg-[#00D09C] text-[#0A2540] hover:bg-[#00D09C]/90 border-0 rounded-2xl shadow-[0_0_20px_rgba(0,208,156,0.3)] transition-all"
+                                        onClick={() => handleFinalSubmit()}
+                                        className="w-full h-14 rounded-xl bg-[#00D09C] hover:bg-[#00B085] text-white font-black uppercase tracking-widest text-xs shadow-lg shadow-[#00D09C]/20"
                                     >
-                                        {isSubmitting ? "Transmitting..." : (storeContext ? "Submit Inquiry" : t('submit'))}
-                                        <Rocket className="ml-2 w-4 h-4" />
+                                        تأكيد ونشر البروتوكول <Rocket className="w-4 h-4 ml-2" />
                                     </Button>
-                                </form>
-                            </>
+                                </div>
+                            </div>
                         )}
                     </div>
                 </DialogContent>

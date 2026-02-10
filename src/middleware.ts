@@ -14,7 +14,7 @@ export default async function middleware(request: NextRequest) {
     // In production, this would use Redis/Upstash for global coordination.
     const isBot = request.headers.get("user-agent")?.toLowerCase().includes("bot");
     if (isBot && !hostname.includes("localhost")) {
-        console.warn(`[SHIELD_TRIGGER] Blocked bot request from ${request.ip} to ${hostname}`);
+        console.warn(`[SHIELD_TRIGGER] Blocked bot request from ${(request as any).ip} to ${hostname}`);
         return new NextResponse("Access Denied: Shield Protocol Active.", { status: 403 });
     }
 
@@ -31,18 +31,12 @@ export default async function middleware(request: NextRequest) {
         "www.getyuosite.com",
         "www.getyousite.com",
     ];
-    const isMainApp = allowedDomains.some((domain) => hostname.includes(domain));
+    const isMainApp = allowedDomains.some((domain) => hostname === domain || hostname.endsWith(`.${domain}`));
 
-    if (!isMainApp) {
-        // Note: For absolute rigor, we would fetch the siteId from Supabase here,
-        // but since middleware must be edge-fast, we'll use a rewrite pattern
-        // that the renderer uses to fetch data.
-
-        // SOVEREIGN REPAIR:
-        // The _site-renderer directory lives inside [locale], so we MUST include a locale in the rewrite.
-        // We force 'en' as the structural locale for the renderer, while the actual content
-        // will be determined by the site's blueprint data.
-        url.pathname = `/en/_site-renderer/${hostname}`;
+    if (!isMainApp && !hostname.startsWith('localhost:')) {
+        // MISSION: Instant Subdomain Deployment
+        const siteSlug = hostname.split('.')[0];
+        url.pathname = `/ar/_site-renderer/${siteSlug}`;
         return NextResponse.rewrite(url);
     }
 

@@ -54,57 +54,57 @@ export default function Header() {
                 className={cn(
                     "fixed top-0 left-0 right-0 z-[100] transition-all duration-700",
                     isScrolled
-                        ? "bg-black/90 backdrop-blur-xl border-b border-white/5 py-4 shadow-2xl"
+                        ? "bg-[#020617]/80 backdrop-blur-xl border-b border-white/5 py-4 shadow-2xl"
                         : "bg-transparent py-8"
                 )}
             >
                 <div className="container mx-auto px-6 flex items-center justify-between">
                     <Logo onClick={() => router.push('/')} />
 
-                    {/* Desktop Navigation - Refined Structure */}
+                    {/* Desktop Navigation - GYS-V2 Protocol */}
                     <nav className="hidden lg:flex items-center gap-10">
-                        <a href="#services" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C] transition-all">{t('services')}</a>
-                        <a href="#pricing" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C] transition-all">{t('pricing')}</a>
-                        <a href="#showcase" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C] transition-all">{t('portfolio')}</a>
-                        <Link href="/blog" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C] transition-all font-mono">{t('blog')}</Link>
-                        <Link href="/contact" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C] transition-all font-mono">{t('contact')}</Link>
+                        <a href="#services" className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 hover:text-primary transition-all">{t('services')}</a>
+                        <a href="#pricing" className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 hover:text-primary transition-all">{t('pricing')}</a>
+                        <a href="#showcase" className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 hover:text-primary transition-all">{t('portfolio')}</a>
+                        <Link href="/blog" className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 hover:text-primary transition-all">{t('blog')}</Link>
+                        <Link href="/contact" className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 hover:text-primary transition-all">{t('contact')}</Link>
                     </nav>
 
                     {/* Actions */}
-                    <div className="hidden md:flex items-center gap-4">
+                    <div className="hidden md:flex items-center gap-6">
                         {/* Lang Selector */}
                         <div className="relative group">
-                            <button className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors uppercase">
+                            <button className="flex items-center gap-2 text-[11px] font-bold text-white/40 hover:text-white transition-colors uppercase tracking-widest">
                                 <Globe className="w-4 h-4" />
                                 <span>{locale}</span>
                             </button>
-                            <div className="absolute top-full right-0 mt-2 w-32 bg-black/90 border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all backdrop-blur-xl">
+                            <div className="absolute top-full right-0 mt-3 w-40 bg-[#020617]/95 border border-white/10 rounded-2xl shadow-3xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 backdrop-blur-2xl overflow-hidden p-1.5">
                                 {languages.map((lang) => (
                                     <button
                                         key={lang.code}
                                         onClick={() => changeLocale(lang.code)}
-                                        className="w-full text-left px-4 py-2 text-xs hover:bg-[#00D09C]/10 flex items-center gap-2 text-gray-500 hover:text-white transition-colors"
+                                        className="w-full text-left px-4 py-3 text-[10px] font-bold rounded-xl hover:bg-primary/10 flex items-center gap-3 text-white/40 hover:text-white transition-all tracking-wider"
                                     >
-                                        <span>{lang.flag}</span>
-                                        <span>{lang.code.toUpperCase()}</span>
+                                        <span className="text-base">{lang.flag}</span>
+                                        <span>{lang.label.toUpperCase()}</span>
                                     </button>
                                 ))}
                             </div>
                         </div>
 
                         {!loading && user ? (
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-6">
                                 <Link
                                     href="/dashboard"
-                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-[#00D09C] flex items-center gap-2 hover:text-[#00D09C]/80 transition-colors"
+                                    className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary flex items-center gap-2 hover:scale-[1.05] transition-all"
                                 >
-                                    <UserIcon className="w-3.5 h-3.5" />
+                                    <UserIcon className="w-4 h-4" />
                                     {t('dashboard')}
                                 </Link>
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-red-500 gap-2 h-9"
+                                    className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/20 hover:text-red-500 hover:bg-red-500/5 gap-2 h-10 px-4 rounded-xl transition-all"
                                     onClick={async () => {
                                         const supabase = createClient();
                                         await supabase.auth.signOut();
@@ -112,7 +112,7 @@ export default function Header() {
                                         toast.success("Security sequence: Session Terminated.");
                                     }}
                                 >
-                                    <LogOut className="w-3.5 h-3.5" />
+                                    <LogOut className="w-4 h-4" />
                                     {t('signout')}
                                 </Button>
                             </div>
@@ -120,14 +120,14 @@ export default function Header() {
                             <>
                                 <Button
                                     variant="ghost"
-                                    className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-white"
+                                    className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 hover:text-white hover:bg-white/5 h-10 px-6 rounded-xl transition-all"
                                     onClick={() => router.push('/login')}
                                 >
                                     {t('login')}
                                 </Button>
                                 <Button
                                     variant="default"
-                                    className="bg-[#00D09C] hover:bg-[#00B085] text-white border-none h-10 px-6 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(0,208,156,0.3)] transition-all"
+                                    className="bg-primary hover:bg-[#2563eb] text-[#020617] h-10 px-8 rounded-xl text-[11px] font-bold uppercase tracking-[0.15em] shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:shadow-[0_0_40px_rgba(59,130,246,0.6)] transition-all transform hover:scale-[1.02]"
                                     onClick={() => router.push('/signup')}
                                 >
                                     {t('launch')}
@@ -137,8 +137,8 @@ export default function Header() {
                     </div>
 
                     {/* Mobile Toggle */}
-                    <button className="md:hidden text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                        {isMobileMenuOpen ? <X /> : <Menu />}
+                    <button className="md:hidden text-white/60 hover:text-white p-2" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                        {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                     </button>
                 </div>
 
@@ -147,22 +147,22 @@ export default function Header() {
                     <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
-                        className="md:hidden bg-black border-b border-white/5"
+                        className="md:hidden bg-[#020617] border-b border-white/5 backdrop-blur-3xl"
                     >
-                        <div className="flex flex-col p-6 gap-6">
-                            <a href="#services" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C]">{t('services')}</a>
-                            <a href="#pricing" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C]">{t('pricing')}</a>
-                            <a href="#showcase" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C]">{t('portfolio')}</a>
-                            <Link href="/blog" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C]">{t('blog')}</Link>
-                            <Link href="/contact" className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-[#00D09C]">{t('contact')}</Link>
-                            <div className="flex flex-col gap-3 pt-4 border-t border-white/5">
-                                <Button variant="ghost" className="w-full text-[10px] font-black uppercase tracking-[0.3em] text-gray-500 hover:text-white" onClick={() => router.push('/login')}>{t('login')}</Button>
-                                <Button className="w-full bg-[#00D09C] text-white text-[10px] font-black uppercase tracking-[0.3em] border-none shadow-[0_0_20px_rgba(0,208,156,0.3)]" onClick={() => router.push('/signup')}>{t('launch')}</Button>
+                        <div className="flex flex-col p-8 gap-8">
+                            <a href="#services" className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 hover:text-primary transition-all">{t('services')}</a>
+                            <a href="#pricing" className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 hover:text-primary transition-all">{t('pricing')}</a>
+                            <a href="#showcase" className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 hover:text-primary transition-all">{t('portfolio')}</a>
+                            <Link href="/blog" className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 hover:text-primary transition-all">{t('blog')}</Link>
+                            <Link href="/contact" className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 hover:text-primary transition-all">{t('contact')}</Link>
+                            <div className="flex flex-col gap-4 pt-8 border-t border-white/5">
+                                <Button variant="ghost" className="w-full text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 h-12 rounded-xl" onClick={() => router.push('/login')}>{t('login')}</Button>
+                                <Button className="w-full bg-primary text-[#020617] text-[11px] font-bold uppercase tracking-[0.2em] h-12 rounded-xl shadow-lg" onClick={() => router.push('/signup')}>{t('launch')}</Button>
                             </div>
 
-                            <div className="flex gap-4 mt-4 pt-4 border-t border-border justify-center">
+                            <div className="flex gap-6 mt-4 pt-8 border-t border-white/5 justify-center">
                                 {languages.map((lang) => (
-                                    <button key={lang.code} onClick={() => changeLocale(lang.code)} className="text-2xl">
+                                    <button key={lang.code} onClick={() => changeLocale(lang.code)} className="text-3xl hover:scale-110 transition-transform grayscale hover:grayscale-0">
                                         {lang.flag}
                                     </button>
                                 ))}

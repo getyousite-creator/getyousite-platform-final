@@ -168,7 +168,47 @@ export function CommandCenter(props: CommandCenterProps) {
                     <TabsTrigger value="style" className="data-[state=active]:bg-secondary/20 text-[10px] font-black uppercase">
                         Style
                     </TabsTrigger>
+                    <TabsTrigger value="agency" className="data-[state=active]:bg-secondary/20 text-[10px] font-black uppercase">
+                        Agency
+                    </TabsTrigger>
                 </TabsList>
+
+                {/* Agency & Security Tab */}
+                <TabsContent value="agency" className="space-y-6 mt-6">
+                    <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
+                        <div className="flex items-center gap-2 mb-2">
+                            <Shield className="w-4 h-4 text-emerald-400" />
+                            <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400">حصن الأمان السيادي</span>
+                        </div>
+                        <p className="text-[10px] text-white/40 leading-relaxed uppercase tracking-wide">
+                            حماية البيانات: نشطة | نسخة احتياطية: فورية | تشفير SSL: 256-bit
+                        </p>
+                    </div>
+
+                    <div className="space-y-4">
+                        <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">إعدادات الوكالة (White-Label)</Label>
+                        <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 group hover:border-[#00D09C]/30 transition-all">
+                            <div>
+                                <h4 className="text-sm font-bold text-white">إخفاء علامة GetYouSite</h4>
+                                <p className="text-[9px] text-white/40 font-mono">SOVEREIGN_MODE: ENABLED</p>
+                            </div>
+                            <div
+                                onClick={() => {/* Toggle Logic */ }}
+                                className="w-12 h-6 rounded-full bg-[#00D09C]/20 border border-[#00D09C]/40 relative cursor-pointer"
+                            >
+                                <div className="absolute top-1 left-1 w-4 h-4 rounded-full bg-[#00D09C] shadow-[0_0_10px_rgba(0,208,156,0.5)]" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="space-y-3">
+                        <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">الدعم الفني الذكي (AI Support)</Label>
+                        <Button className="w-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black tracking-widest hover:bg-blue-500/20">
+                            <RefreshCw className="w-3 h-3 mr-2" />
+                            إصلاح الأخطاء تلقائياً
+                        </Button>
+                    </div>
+                </TabsContent>
 
                 {/* Pages Tab */}
                 <TabsContent value="pages" className="space-y-6 mt-6">
