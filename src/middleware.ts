@@ -9,12 +9,33 @@ export default async function middleware(request: NextRequest) {
     const url = request.nextUrl;
     const hostname = request.headers.get("host") || "";
 
-    // MISSION 6.3: SHIELD PROTOCOL (WAF LITE)
-    // Logic: Block suspicious high-frequency requests to rendered sites.
-    // In production, this would use Redis/Upstash for global coordination.
-    const isBot = request.headers.get("user-agent")?.toLowerCase().includes("bot");
-    if (isBot && !hostname.includes("localhost")) {
-        console.warn(`[SHIELD_TRIGGER] Blocked bot request from ${(request as any).ip} to ${hostname}`);
+    // MISSION 6.3: SHIELD PROTOCOL (SEO-Aware WAF)
+    // Logic: Allow legitimate search engines and social crawlers, block malicious bots.
+    const userAgent = request.headers.get("user-agent")?.toLowerCase() || "";
+
+    // Whitelist: Legitimate crawlers for SEO and social sharing
+    const legitimateBots = [
+        "googlebot",
+        "bingbot",
+        "slackbot",
+        "twitterbot",
+        "facebookexternalhit",
+        "linkedinbot",
+        "whatsapp",
+        "telegrambot",
+        "discordbot",
+        "slurp", // Yahoo
+        "duckduckbot",
+        "baiduspider",
+        "yandexbot",
+        "applebot",
+    ];
+
+    const isLegitimateBot = legitimateBots.some((bot) => userAgent.includes(bot));
+    const isSuspiciousBot = userAgent.includes("bot") && !isLegitimateBot;
+
+    if (isSuspiciousBot && !hostname.includes("localhost")) {
+        console.warn(`[SHIELD_TRIGGER] Blocked suspicious bot: ${userAgent.substring(0, 100)}`);
         return new NextResponse("Access Denied: Shield Protocol Active.", { status: 403 });
     }
 
@@ -31,11 +52,13 @@ export default async function middleware(request: NextRequest) {
         "www.getyuosite.com",
         "www.getyousite.com",
     ];
-    const isMainApp = allowedDomains.some((domain) => hostname === domain || hostname.endsWith(`.${domain}`));
+    const isMainApp = allowedDomains.some(
+        (domain) => hostname === domain || hostname.endsWith(`.${domain}`),
+    );
 
-    if (!isMainApp && !hostname.startsWith('localhost:')) {
+    if (!isMainApp && !hostname.startsWith("localhost:")) {
         // MISSION: Instant Subdomain Deployment
-        const siteSlug = hostname.split('.')[0];
+        const siteSlug = hostname.split(".")[0];
         url.pathname = `/ar/_site-renderer/${siteSlug}`;
         return NextResponse.rewrite(url);
     }
