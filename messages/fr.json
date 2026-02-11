@@ -352,5 +352,22 @@
         "badge": "Hub de Support",
         "faq_title": "Questions Fréquentes",
         "contact_support": "Contacter le Support Technique"
+    },
+    "wrapper": {
+        "shield": "Bouclier Industriel: Actif",
+        "sync": "Sync Cloud: Synchronisé",
+        "asset_valuation": "Évaluation des Actifs",
+        "state_persistent": "État: Persistant",
+        "pending": "Mise en œuvre en attente...",
+        "our_story": "Notre Histoire",
+        "success": "Succès",
+        "support": "Support",
+        "pricing_title": "Tarification Transparente",
+        "pricing_subtitle": "Sélectionnez le plan adapté à votre échelle.",
+        "select_plan": "Choisir le Plan",
+        "get_in_touch": "Contactez-nous",
+        "contact_desc": "Nous sommes prêts à démarrer votre projet.",
+        "contact_us": "Contactez-nous",
+        "enter_email": "Entrez votre email"
     }
 }
