@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidatePath, revalidateTag } from "next/cache";
 
 /**
  * SOVEREIGN PROVISIONING ACTION
@@ -11,27 +11,38 @@ export async function provisionSiteOnEdge(hostname: string) {
     console.log(`[PROVISIONING] Initiating Edge hard-reset for: ${hostname}`);
 
     try {
+        if (!hostname || hostname.length < 3) {
+            throw new Error("Invalid hostname provided for provisioning.");
+        }
+
         // 1. Purge the ISR cache for the site-renderer path
         // This ensures the next request for this hostname fetches fresh data from DB
-        revalidatePath(`/_site-renderer/${hostname}`, 'page');
+        revalidatePath(`/_site-renderer/${hostname}`, "page");
 
         // 2. Clear global site tags if applicable
-        revalidateTag('sites');
+        revalidateTag("sites");
 
         // MISSION 6.1: VERCEL DOMAIN LINKAGE
-        const { VercelService } = await import('@/lib/services/vercel-service');
+        const { VercelService } = await import("@/lib/services/vercel-service");
         const domainResult = await VercelService.addDomain(hostname);
 
+        const isFullyProvisioned = domainResult.success;
+
         if (!domainResult.success) {
-            console.warn(`[GOVERNANCE_WARNING] Domain linking failed for ${hostname}:`, domainResult.error);
+            console.warn(
+                `[GOVERNANCE_WARNING] Domain linking failed for ${hostname}. Site will render on subdomain only.`,
+            );
         }
 
         return {
-            success: true,
+            success: true, // Revalidation always works if cache is accessible
             hostname,
             provisioned: true,
             domainLinked: domainResult.success,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            governance_alert: !domainResult.success
+                ? "Custom domain linking pending manual verification."
+                : null,
         };
     } catch (error) {
         console.error(`[PROVISIONING_ERROR] Failed to purge edge for ${hostname}:`, error);
