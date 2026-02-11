@@ -7,9 +7,9 @@ import { redirect } from "next/navigation";
 
 // MAPPING: Secure Server-Side Price ID Resolution
 const STRIPE_PRICE_MAP: Record<string, string> = {
-    'starter': process.env.STRIPE_PRICE_STARTER || 'price_1QjXXXX_MOCK_STARTER',
-    'pro': process.env.STRIPE_PRICE_PRO || 'price_1QjXXXX_MOCK_PRO',
-    'business': process.env.STRIPE_PRICE_BUSINESS || 'price_1QjXXXX_MOCK_BUSINESS'
+    starter: process.env.STRIPE_PRICE_STARTER || "price_1QjXXXX_MOCK_STARTER",
+    pro: process.env.STRIPE_PRICE_PRO || "price_1QjXXXX_MOCK_PRO",
+    business: process.env.STRIPE_PRICE_BUSINESS || "price_1QjXXXX_MOCK_BUSINESS",
 };
 
 /**
@@ -19,7 +19,9 @@ const STRIPE_PRICE_MAP: Record<string, string> = {
  */
 export async function createStripeCheckoutAction(planId: string, siteId: string) {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
         throw new Error("Authentication required for checkout protocol.");
@@ -33,7 +35,7 @@ export async function createStripeCheckoutAction(planId: string, siteId: string)
         }
 
         // Logic: Resolve secure price ID from plan mapping
-        const securePriceId = STRIPE_PRICE_MAP[planId.toLowerCase()] || STRIPE_PRICE_MAP['starter'];
+        const securePriceId = STRIPE_PRICE_MAP[planId.toLowerCase()] || STRIPE_PRICE_MAP["starter"];
 
         const session = await stripe.checkout.sessions.create({
             customer_email: user.email,
@@ -43,13 +45,13 @@ export async function createStripeCheckoutAction(planId: string, siteId: string)
                     quantity: 1,
                 },
             ],
-            mode: 'subscription',
+            mode: "subscription",
             success_url: `${host}/success/${siteId}?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${host}/dashboard`,
             metadata: {
                 userId: user.id,
                 siteId: siteId,
-                planId: planId
+                planId: planId,
             },
         });
 
@@ -61,13 +63,12 @@ export async function createStripeCheckoutAction(planId: string, siteId: string)
     } catch (error) {
         console.error("[STRIPE_ERROR] Checkout session creation failed:", error);
 
-        // SOVEREIGN FALLBACK: Simulation Mode (Dev/Demo Only)
-        // If real Stripe keys are missing or price IDs are invalid, we simulate a successful redirect
-        // so the User Flow is not blocked during development.
-        if (process.env.NODE_ENV === 'development' || !process.env.STRIPE_SECRET_KEY) {
+        // SOVEREIGN FALLBACK: Simulation Mode (Dev Only)
+        // CRITICAL SEC: We disable simulation in production to prevent accidental free access.
+        if (process.env.NODE_ENV === "development") {
             console.warn("⚠️ SOVEREIGN SIMULATION: Redirecting to success (Mock Payment)");
             return {
-                url: `${host}/success/${siteId}?session_id=mock_session_${Date.now()}&simulated=true`
+                url: `${host}/success/${siteId}?session_id=mock_session_${Date.now()}&simulated=true`,
             };
         }
 

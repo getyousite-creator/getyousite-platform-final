@@ -1,4 +1,3 @@
-import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/payments/stripe";
 import { createClient } from "@/lib/supabase/server";
@@ -17,16 +16,18 @@ const relevantEvents = new Set([
 
 export async function POST(req: Request) {
     const body = await req.text();
-    const sig = headers().get("Stripe-Signature") as string;
+    const sig = req.headers.get("stripe-signature") as string;
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
     let event: Stripe.Event;
 
     try {
-        if (!sig || !webhookSecret) return new Response("Webhook secret or signature missing", { status: 400 });
+        if (!sig || !webhookSecret)
+            return new Response("Webhook secret or signature missing", { status: 400 });
         event = stripe!.webhooks.constructEvent(body, sig, webhookSecret);
-    } catch (err: any) {
-        console.error(`❌ Error message: ${err.message}`);
-        return new Response(`Webhook Error: ${err.message}`, { status: 400 });
+    } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : "Unknown error";
+        console.error(`❌ Webhook Error: ${errorMessage}`);
+        return new Response(`Webhook Error: ${errorMessage}`, { status: 400 });
     }
 
     if (relevantEvents.has(event.type)) {
@@ -34,7 +35,6 @@ export async function POST(req: Request) {
             const supabase = await createClient();
 
             switch (event.type) {
-
                 // 1. CHECKOUT COMPLETED -> Provision Access
                 case "checkout.session.completed":
                     const checkoutSession = event.data.object as Stripe.Checkout.Session;
@@ -47,36 +47,61 @@ export async function POST(req: Request) {
                         // Logic: Update user tier and link Stripe info
                         if (userId) {
                             await supabase
-                                .from('users')
+                                .from("users")
                                 .update({
-                                    tier: planId === 'price_pro' ? 'pro' : 'enterprise', // Simplified mapping logic
-                                    credits: 100 // Grant credits on upgrade
+                                    tier: planId === "business" ? "enterprise" : "pro", // Robust mapping
+                                    credits: planId === "business" ? 500 : 100,
                                 })
-                                .eq('id', userId);
+                                .eq("id", userId);
 
                             await supabase
-                                .from('profiles')
+                                .from("profiles")
                                 .update({
                                     stripe_customer_id: customerId,
                                     subscription_id: subscriptionId,
-                                    subscription_status: 'active',
-                                    plan_id: planId
+                                    subscription_status: "active",
+                                    plan_id: planId,
                                 })
-                                .eq('id', userId);
+                                .eq("id", userId);
                         }
                     }
                     break;
 
-                // 2. SUBSCRIPTION UPDATED -> Sync Status
+                // 2. SUBSCRIPTION UPDATED -> Sync Status (DOWNGRADE LOGIC)
                 case "customer.subscription.updated":
+                case "customer.subscription.deleted":
                     const subscription = event.data.object as Stripe.Subscription;
                     const status = subscription.status;
 
                     // Logic: Downgrade if canceled/past_due
-                    if (status === 'canceled' || status === 'unpaid') {
-                        // Find user by subscription_id and downgrade
-                        // (Implementation requires a reverse lookup or storing user_id in subscription metadata)
-                        console.log(`Subscription ${subscription.id} status changed to ${status}`);
+                    if (status === "canceled" || status === "unpaid" || status === "past_due") {
+                        // Reverse lookup: Find user by subscription_id
+                        const { data: profile } = await supabase
+                            .from("profiles")
+                            .select("id")
+                            .eq("subscription_id", subscription.id)
+                            .single();
+
+                        if (profile) {
+                            console.log(
+                                `[STRIPE_SYNC] Downgrading user ${profile.id} due to ${status} subscription.`,
+                            );
+
+                            // Reset User Table
+                            await supabase
+                                .from("users")
+                                .update({ tier: "starter" })
+                                .eq("id", profile.id);
+
+                            // Update Profile Table
+                            await supabase
+                                .from("profiles")
+                                .update({
+                                    subscription_status: status,
+                                    plan_id: "starter",
+                                })
+                                .eq("id", profile.id);
+                        }
                     }
                     break;
 
@@ -85,7 +110,7 @@ export async function POST(req: Request) {
             }
         } catch (error) {
             console.error(error);
-            return new Response('Webhook handler failed. View logs.', { status: 400 });
+            return new Response("Webhook handler failed. View logs.", { status: 400 });
         }
     }
 
