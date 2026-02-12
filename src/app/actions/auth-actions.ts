@@ -23,6 +23,18 @@ type AuthResponse = {
 };
 
 /**
+ * Logic: Construct redirect URL dynamically
+ * We use headers to detect the current origin, ensuring it works in Local, Preview, and Prod.
+ */
+async function getSiteUrl() {
+  const { headers } = await import('next/headers');
+  const headerList = await headers();
+  const host = headerList.get('host');
+  const protocol = host?.includes('localhost') ? 'http' : 'https';
+  return host ? `${protocol}://${host}` : (process.env.NEXT_PUBLIC_SITE_URL || '');
+}
+
+/**
  * Sign up a new user with email and password
  */
 export async function signUpAction(email: string, password: string): Promise<AuthResponse> {
@@ -60,7 +72,7 @@ export async function signUpAction(email: string, password: string): Promise<Aut
       email,
       password,
       options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || ''}/auth/callback`,
+        emailRedirectTo: `${await getSiteUrl()}/auth/callback`,
       },
     });
 
@@ -144,6 +156,8 @@ export async function signInAction(email: string, password: string): Promise<Aut
  * Sign in with OAuth provider (Google, Apple, Microsoft)
  */
 export async function signInWithOAuthAction(provider: 'google' | 'apple' | 'azure'): Promise<AuthResponse> {
+  let redirectUrl: string | null = null;
+
   try {
     if (!isSupabaseConfigured()) {
       console.error('[AUTH] Supabase not configured');
@@ -172,10 +186,14 @@ export async function signInWithOAuthAction(provider: 'google' | 'apple' | 'azur
       };
     }
 
+    const siteUrl = await getSiteUrl();
+
+    console.log('[AUTH-OAUTH] Redirecting back to:', siteUrl);
+
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: providerName,
       options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || ''}/auth/callback?next=/dashboard`,
+        redirectTo: `${siteUrl}/auth/callback?next=/dashboard`,
       },
     });
 
@@ -188,19 +206,30 @@ export async function signInWithOAuthAction(provider: 'google' | 'apple' | 'azur
     }
 
     if (data.url) {
-      redirect(data.url);
+      redirectUrl = data.url;
+    }
+  } catch (err) {
+    // Logic: In Next.js, redirect() throws a special error. 
+    // We must check if the error is a redirect and re-throw it.
+    if (err instanceof Error && err.message === 'NEXT_REDIRECT') {
+      throw err;
     }
 
-    return {
-      success: true,
-    };
-  } catch (err) {
     console.error('[AUTH-OAUTH] Exception:', err);
     return {
       success: false,
       error: 'OAuth sign in failed. Please try again.',
     };
   }
+
+  // Final Action: Perform redirect outside the try-catch
+  if (redirectUrl) {
+    redirect(redirectUrl);
+  }
+
+  return {
+    success: true,
+  };
 }
 
 /**
@@ -227,7 +256,7 @@ export async function resetPasswordAction(email: string): Promise<AuthResponse> 
     console.log('[AUTH-RESET] Requesting password reset for:', email);
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || ''}/reset-password`,
+      redirectTo: `${await getSiteUrl()}/reset-password`,
     });
 
     if (error) {
