@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
 
     // 2. Sovereign AI Execution
     console.log(`[API/Generate] Initiating Sovereign Protocol for: ${businessName}`);
-    
+
     const blueprint = await generateCompleteWebsite({
       businessName,
       niche,
@@ -38,6 +38,13 @@ export async function POST(req: NextRequest) {
       locale,
       features,
     });
+
+    // 3. CREDIT_ACCOUNTABILITY_PROTOCOL
+    const user = await AuthService.getCurrentUser();
+    if (user.data?.id) {
+      await AuthService.consumeCredit(user.data.id);
+      console.log(`[SOVEREIGN_WALLET] 1 Credit consumed for User: ${user.data.id}`);
+    }
 
     // 3. Response Synthesis
     return NextResponse.json({

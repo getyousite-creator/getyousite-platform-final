@@ -67,7 +67,7 @@ export default function AIEngine() {
                             viewport={{ once: true }}
                             transition={{ delay: 0.1 }}
                             className="text-5xl md:text-6xl font-bold text-white tracking-tight leading-[1.1]"
-                            dangerouslySetInnerHTML={{ __html: t('title') }}
+                            dangerouslySetInnerHTML={{ __html: t.raw('title') }}
                         />
 
                         <motion.p

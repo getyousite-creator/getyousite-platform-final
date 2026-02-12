@@ -15,6 +15,7 @@ interface TemplateStore {
     settings: TemplateState;
     blueprint: SiteBlueprint | null;
     isGenerating: boolean;
+    activeStoreId: string | null;
     updatePulse: number;
     saveStatus: 'idle' | 'saving' | 'saved' | 'error';
     lastSavedAt: Date | null;
@@ -25,6 +26,7 @@ interface TemplateStore {
     updateSetting: (key: keyof TemplateState, value: string) => void;
     updateBlueprint: (blueprint: SiteBlueprint, skipHistory?: boolean) => void;
     updateSectionContent: (sectionId: string, newContent: any) => void;
+    setActiveStoreId: (id: string | null) => void;
     undo: () => void;
     redo: () => void;
     setIsGenerating: (isGenerating: boolean) => void;
@@ -48,10 +50,13 @@ export const useTemplateEditor = create<TemplateStore>()(
             },
             blueprint: null,
             isGenerating: false,
+            activeStoreId: null,
             saveStatus: 'idle',
             lastSavedAt: null,
             updatePulse: 0,
             history: { past: [], future: [] },
+
+            setActiveStoreId: (id) => set({ activeStoreId: id }),
 
             updateSetting: (key, value) => set((state) => ({
                 settings: { ...state.settings, [key]: value },

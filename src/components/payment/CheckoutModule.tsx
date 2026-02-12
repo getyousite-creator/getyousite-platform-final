@@ -72,13 +72,13 @@ export function CheckoutModule({ siteId, planId, amount, onSuccess }: CheckoutMo
                         label: "pay",
                         height: 54
                     }}
-                    createOrder={() => createPayPalOrder(planId, amount).then(res => res.orderID)}
+                    createOrder={() => createPayPalOrder(planId).then(res => res.orderID)}
                     onApprove={async (data) => {
                         if (!profile?.id) {
                             toast.error(t('auth_required'));
                             return;
                         }
-                        const res = await capturePayPalOrder(data.orderID, profile.id, planId);
+                        const res = await capturePayPalOrder(data.orderID, profile.id, planId, siteId);
                         if (res?.success) {
                             toast.success(t('success'));
                             if (onSuccess) onSuccess();

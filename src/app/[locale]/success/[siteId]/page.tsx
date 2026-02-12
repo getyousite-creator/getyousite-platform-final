@@ -9,7 +9,9 @@ import { getStoreStatusAction, activateStoreSimulationAction } from '@/app/actio
 import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-export default function SuccessPage({ params }: { params: { siteId: string, locale: string } }) {
+export default function SuccessPage({ params }: { params: Promise<{ siteId: string, locale: string }> }) {
+    const paramsU = React.use(params);
+    const siteId = paramsU.siteId;
     const [status, setStatus] = useState<'verifying' | 'deploying' | 'active' | 'pending_payment'>('verifying');
     const [liveUrl, setLiveUrl] = useState<string | null>(null);
     const searchParams = useSearchParams();
@@ -19,13 +21,20 @@ export default function SuccessPage({ params }: { params: { siteId: string, loca
     useEffect(() => {
         let pollCount = 0;
         const checkStatus = async () => {
-            const result = await getStoreStatusAction(params.siteId);
+            if (!siteId) return false;
+            const { getStoreStatusAction } = await import('@/app/actions/store-actions');
+            const result = await getStoreStatusAction(siteId);
 
             if (result.success && result.data) {
                 const data = result.data;
                 if (data.status === 'deployed') {
                     setStatus('active');
                     setLiveUrl(data.deployment_url ?? null);
+
+                    // PROTOCOL: TRACK CONVERSION TRUTH
+                    const { trackEventAction } = await import('@/app/actions/analytics-actions');
+                    trackEventAction(siteId, '/success', 'monetization_conversion', { amount: '49.00', currency: 'USD' }).catch(() => { });
+
                     return true;
                 } else if (data.status === 'paid' || data.status === 'deploying') {
                     setStatus('deploying');
@@ -36,23 +45,23 @@ export default function SuccessPage({ params }: { params: { siteId: string, loca
             return false;
         };
 
-
         // Simulation Trigger
-        if (isSimulated) {
-            activateStoreSimulationAction(params.siteId).then(() => {
-                checkStatus(); // Immediate re-check
+        if (isSimulated && siteId) {
+            const { activateStoreSimulationAction } = require('@/app/actions/store-actions');
+            activateStoreSimulationAction(siteId).then(() => {
+                checkStatus();
             });
         }
 
         const interval = setInterval(async () => {
             const isDone = await checkStatus();
             pollCount++;
-            if (isDone || pollCount > 60) clearInterval(interval); // Timeout after 5 mins
+            if (isDone || pollCount > 60) clearInterval(interval);
         }, 5000);
 
         checkStatus();
         return () => clearInterval(interval);
-    }, [params.siteId, isSimulated]);
+    }, [siteId, isSimulated]);
 
     return (
         <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center p-6">

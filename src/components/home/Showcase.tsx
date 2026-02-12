@@ -41,7 +41,7 @@ export default function Showcase() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             className="text-5xl md:text-8xl font-bold text-white mb-10 leading-[1.05] tracking-tight"
-                            dangerouslySetInnerHTML={{ __html: t('header.title') }}
+                            dangerouslySetInnerHTML={{ __html: t.raw('header.title') }}
                         />
                         <p className="text-white/40 text-xl leading-relaxed max-w-2xl font-light">
                             {t('header.desc')}

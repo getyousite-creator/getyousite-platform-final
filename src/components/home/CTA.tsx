@@ -26,7 +26,7 @@ export default function CTA() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     className="text-5xl md:text-8xl font-bold text-white mb-10 tracking-tight leading-[1.05]"
-                    dangerouslySetInnerHTML={{ __html: t('title') }}
+                    dangerouslySetInnerHTML={{ __html: t.raw('title') }}
                 />
 
                 <motion.p

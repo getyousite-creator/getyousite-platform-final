@@ -16,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
 interface AuthHubProps {
-    initialMode?: "signin" | "signup";
+    initialMode?: "signin" | "signup" | "forgot-password" | "reset-password";
 }
 
 const authSchema = z.object({

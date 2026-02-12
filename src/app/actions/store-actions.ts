@@ -172,11 +172,44 @@ export async function getPublicStoresAction(limit: number = 20): Promise<ActionR
 }
 
 /**
+ * verifyDomainAction
+ * Logic: Interfaces with Vercel to check DNS/SSL propagation for a custom domain.
+ */
+export async function verifyDomainAction(storeId: string): Promise<ActionResult<{ verified: boolean }>> {
+    try {
+        const user = await AuthService.getCurrentUser();
+        if (!user.data) return { success: false, error: 'Unauthorized' };
+
+        // 1. Fetch store and ensure user owns it
+        const { data: store, error: fetchError } = await StoreService.getStoreById(storeId);
+        if (fetchError || !store) return { success: false, error: 'Store node not found.' };
+        if (store.user_id !== user.data.id) return { success: false, error: 'Permission denied for this asset.' };
+
+        const hostname = store.custom_domain || (store.slug ? `${store.slug}.getyousite.com` : null);
+        if (!hostname) return { success: false, error: 'No hostname assigned to this node.' };
+
+        // 2. Perform Vercel Verification
+        const { VercelService } = await import('@/lib/services/vercel-service');
+        const verification = await VercelService.verifyDomain(hostname);
+
+        if (!verification.success) {
+            return { success: false, error: verification.error || "Dynamic verification link failure." };
+        }
+
+        return {
+            success: true,
+            data: { verified: verification.verified }
+        };
+    } catch (error) {
+        return { success: false, error: "Network anomaly in verifyDomainAction." };
+    }
+}
+
+/**
  * SIMULATION ACTION: Manually activate store for Dev/Demo
  * ONLY works if NODE_ENV is development or simulation mode is explicit.
  */
 export async function activateStoreSimulationAction(storeId: string): Promise<ActionResult> {
-    // 1. Safety Gate
     if (process.env.NODE_ENV === 'production' && !process.env.NEXT_PUBLIC_ALLOW_SIMULATION) {
         return { success: false, error: "Simulation not allowed in production." };
     }
@@ -185,15 +218,11 @@ export async function activateStoreSimulationAction(storeId: string): Promise<Ac
         const user = await AuthService.getCurrentUser();
         if (!user.data) return { success: false, error: 'Unauthorized' };
 
-        // 2. Mock Activation
-        // We bypass the restriction logic for simulation
-        // In a real scenario, this would be updated via Stripe Webhook
         await StoreService.updateStore(storeId, {
             status: 'deployed',
             deployment_url: `https://${storeId}.simulated-empire.com`
         });
 
-        // Also update User Tier if needed (Mock)
         const supabase = await createClient();
         await supabase.from('users').update({ tier: 'pro' }).eq('id', user.data.id);
 

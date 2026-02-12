@@ -40,23 +40,22 @@ export function SubscriptionGate({
     if (!hasAccess) {
         return (
             fallback || (
-                <div className="p-10 rounded-[32px] bg-card/5 border border-border flex flex-col items-center justify-center text-center space-y-4">
-                    <div className="w-12 h-12 rounded-2xl bg-card/5 flex items-center justify-center">
-                        <Lock className="w-6 h-6 text-muted-foreground" />
+                <div className="p-12 rounded-[40px] bg-[#051423]/50 border border-white/5 flex flex-col items-center justify-center text-center space-y-6 backdrop-blur-md">
+                    <div className="w-16 h-16 rounded-[24px] bg-[#00D09C]/5 border border-[#00D09C]/10 flex items-center justify-center">
+                        <Lock className="w-8 h-8 text-[#00D09C]" />
                     </div>
-                    <div className="space-y-1">
-                        <h3 className="text-sm font-black uppercase tracking-widest text-foreground">
-                            Premium Mandate Required
+                    <div className="space-y-2">
+                        <h3 className="text-xl font-black uppercase italic tracking-tighter text-white">
+                            {t("gate_title")}
                         </h3>
-                        <p className="text-[10px] text-muted-foreground max-w-[240px]">
-                            This feature is gated behind the Pro subscription protocol.
+                        <p className="text-[10px] text-blue-200/40 uppercase tracking-widest leading-relaxed max-w-[280px] font-bold">
+                            {t("gate_desc", { tier: requiredTier.toUpperCase() })}
                         </p>
                     </div>
-                    <Link href="/pricing">
+                    <Link href={`/${locale}/pricing`}>
                         <Button
-                            variant="premium"
-                            size="sm"
-                            className="h-9 px-6 text-[9px] font-black uppercase tracking-widest"
+                            variant="glow"
+                            className="h-12 px-10 text-[10px] font-black uppercase tracking-widest rounded-2xl"
                         >
                             {t("upgrade")}
                         </Button>

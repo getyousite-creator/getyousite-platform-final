@@ -16,6 +16,7 @@ export function IntelligenceDashboard() {
     const params = useParams();
     const locale = params.locale as string || 'en';
     const [data, setData] = useState<any[]>([]);
+    const [securityLogs, setSecurityLogs] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [auditLoading, setAuditLoading] = useState<string | null>(null);
     const [selectedAudit, setSelectedAudit] = useState<any | null>(null);
@@ -29,15 +30,19 @@ export function IntelligenceDashboard() {
 
     const refreshData = () => {
         setLoading(true);
-        getGlobalPerformanceAction(user!.id)
-            .then(res => {
-                setData(res);
-                setLoading(false);
-            })
-            .catch(err => {
-                console.error("Intelligence Fetch Error:", err);
-                setLoading(false);
-            });
+        const { getSecurityPulseAction } = require('@/app/actions/intelligence-actions');
+
+        Promise.all([
+            getGlobalPerformanceAction(user!.id),
+            getSecurityPulseAction()
+        ]).then(([perf, logs]) => {
+            setData(perf);
+            setSecurityLogs(logs);
+            setLoading(false);
+        }).catch(err => {
+            console.error("Intelligence Fetch Error:", err);
+            setLoading(false);
+        });
     };
 
     const handleAudit = async (storeId: string) => {
@@ -141,6 +146,19 @@ export function IntelligenceDashboard() {
 
                             <div>
                                 <div className="flex justify-between items-end mb-2">
+                                    <span className="text-[10px] text-[#6366f1] uppercase font-black tracking-widest">{t('neural_resonance')}</span>
+                                    <span className="text-[10px] text-white font-black">{site.logicalResonance}%</span>
+                                </div>
+                                <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+                                    <div
+                                        className="h-full bg-gradient-to-r from-[#6366f1]/20 to-[#6366f1] transition-all duration-1000 shadow-[0_0_10px_rgba(99,102,241,0.5)]"
+                                        style={{ width: `${site.logicalResonance}%` }}
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <div className="flex justify-between items-end mb-2">
                                     <span className="text-[10px] text-gray-500 uppercase font-black tracking-widest">{t('seo_score')}</span>
                                     <span className="text-[10px] text-white font-black">{site.seoScore}%</span>
                                 </div>
@@ -204,6 +222,32 @@ export function IntelligenceDashboard() {
                 </div>
             </div>
 
+            {/* Sovereign Security Pulse (The Sentry Log) */}
+            {securityLogs.length > 0 && (
+                <div className="space-y-6">
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-[#00D09C] flex items-center gap-2">
+                        <Shield className="w-3 h-3" />
+                        Sovereign Defense Pulse (SPD-1)
+                    </h4>
+                    <div className="grid gap-4">
+                        {securityLogs.map((log, idx: number) => (
+                            <div key={idx} className="p-6 rounded-[24px] bg-[#051423]/30 border border-white/5 flex justify-between items-center group hover:bg-[#051423]/50 transition-all backdrop-blur-sm">
+                                <div className="flex items-center gap-4">
+                                    <div className={`w-2 h-2 rounded-full ${log.level === 'critical' ? 'bg-red-500 animate-pulse shadow-[0_0_10px_red]' : 'bg-amber-500 shadow-[0_0_10px_orange]'}`} />
+                                    <div>
+                                        <p className="text-[10px] font-black text-white uppercase tracking-tight">{log.message}</p>
+                                        <p className="text-[8px] text-zinc-500 uppercase font-bold tracking-widest mt-1">
+                                            Origin: {log.source} • {new Date(log.created_at).toLocaleTimeString()}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="text-[8px] font-black text-zinc-600 uppercase tracking-[0.2em] group-hover:text-[#00D09C] transition-colors">Integrity_Verified</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             {/* DIAGNOSTICS MODAL */}
             <Dialog open={showDiagnostics} onOpenChange={setShowDiagnostics}>
                 <DialogContent className="max-w-2xl bg-[#051423] border-white/10 text-white rounded-[40px] p-0 overflow-hidden">
@@ -230,8 +274,8 @@ export function IntelligenceDashboard() {
                                 <span className="text-3xl font-black text-purple-500">{selectedAudit?.vectors?.visual?.score ?? selectedAudit?.accessibility_score}%</span>
                             </div>
                             <div className="p-6 rounded-3xl bg-white/5 border border-white/5 text-center">
-                                <span className="text-[10px] text-gray-500 uppercase font-black block mb-2">Content</span>
-                                <span className="text-3xl font-black text-amber-500">{selectedAudit?.vectors?.content?.score ?? selectedAudit?.best_practices_score}%</span>
+                                <span className="text-[10px] text-gray-500 uppercase font-black block mb-2">Logic</span>
+                                <span className="text-3xl font-black text-amber-500">{selectedAudit?.vectors?.logical_clarity?.score ?? selectedAudit?.best_practices_score}%</span>
                             </div>
                         </div>
 

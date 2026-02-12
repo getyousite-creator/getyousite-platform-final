@@ -85,6 +85,8 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 secondary: "#1e40af",
                 accent: "#06b6d4",
                 fontFamily: "Inter",
+                backgroundColor: "#0f172a",
+                textColor: "#f8fafc",
                 mode: "dark"
             },
             navigation: {
@@ -105,6 +107,7 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 valuation: 3200000,
                 logic_verified: true
             },
+            whiteLabel: false,
             timestamp: new Date().toISOString()
         }
     },
@@ -130,6 +133,8 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 secondary: "#be185d",
                 accent: "#f97316",
                 fontFamily: "Playfair Display",
+                backgroundColor: "#ffffff",
+                textColor: "#000000",
                 mode: "light"
             },
             navigation: {
@@ -150,6 +155,7 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 valuation: 3200000,
                 logic_verified: true
             },
+            whiteLabel: false,
             timestamp: new Date().toISOString()
         }
     },
@@ -176,6 +182,8 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 secondary: "#15803d",
                 accent: "#eab308",
                 fontFamily: "Inter",
+                backgroundColor: "#ffffff",
+                textColor: "#111827",
                 mode: "light"
             },
             navigation: {
@@ -196,6 +204,7 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 valuation: 3200000,
                 logic_verified: true
             },
+            whiteLabel: false,
             timestamp: new Date().toISOString()
         }
     },
@@ -221,6 +230,8 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 secondary: "#0369a1",
                 accent: "#14b8a6",
                 fontFamily: "Inter",
+                backgroundColor: "#ffffff",
+                textColor: "#0f172a",
                 mode: "light"
             },
             navigation: {
@@ -241,6 +252,7 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 valuation: 3200000,
                 logic_verified: true
             },
+            whiteLabel: false,
             timestamp: new Date().toISOString()
         }
     },
@@ -267,6 +279,8 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 secondary: "#78350f",
                 accent: "#d97706",
                 fontFamily: "Playfair Display",
+                backgroundColor: "#0c0a09",
+                textColor: "#fafaf9",
                 mode: "dark"
             },
             navigation: {
@@ -287,6 +301,7 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 valuation: 3200000,
                 logic_verified: true
             },
+            whiteLabel: false,
             timestamp: new Date().toISOString()
         }
     },
@@ -312,6 +327,8 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 secondary: "#4338ca",
                 accent: "#8b5cf6",
                 fontFamily: "Inter",
+                backgroundColor: "#ffffff",
+                textColor: "#111827",
                 mode: "light"
             },
             navigation: {
@@ -332,6 +349,7 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 valuation: 3200000,
                 logic_verified: true
             },
+            whiteLabel: false,
             timestamp: new Date().toISOString()
         }
     },
@@ -358,6 +376,8 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 secondary: "#6d28d9",
                 accent: "#06b6d4",
                 fontFamily: "Inter",
+                backgroundColor: "#030014",
+                textColor: "#ffffff",
                 mode: "dark"
             },
             navigation: {
@@ -378,6 +398,7 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 valuation: 3200000,
                 logic_verified: true
             },
+            whiteLabel: false,
             timestamp: new Date().toISOString()
         }
     },
@@ -403,6 +424,8 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 secondary: "#0f172a",
                 accent: "#3b82f6",
                 fontFamily: "Inter",
+                backgroundColor: "#ffffff",
+                textColor: "#0f172a",
                 mode: "light"
             },
             navigation: {
@@ -423,6 +446,7 @@ const DEFAULT_TEMPLATES: Omit<Template, 'id' | 'created_at' | 'updated_at' | 'us
                 valuation: 3200000,
                 logic_verified: true
             },
+            whiteLabel: false,
             timestamp: new Date().toISOString()
         }
     },

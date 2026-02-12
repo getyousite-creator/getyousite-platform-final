@@ -15,6 +15,7 @@ import { useParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { debounce } from "lodash";
 import { SubscriptionGate } from "@/components/auth/SubscriptionGate";
+import { useTranslations } from "next-intl";
 
 type SiteFormData = z.infer<typeof SiteBlueprintSchema>;
 
@@ -35,6 +36,8 @@ export default function SiteEditorPage() {
     const [saving, setSaving] = useState(false);
     const [storeData, setStoreData] = useState<StoreData | null>(null);
     const supabase = createClient();
+    const t = useTranslations("Editor");
+    const tc = useTranslations("Common");
 
     const {
         register,
@@ -56,7 +59,7 @@ export default function SiteEditorPage() {
                 .single();
 
             if (error || !data) {
-                toast.error("Critical: Store data could not be retrieved.");
+                toast.error(tc("error") + ": Store data could not be retrieved.");
                 return;
             }
 
@@ -85,9 +88,9 @@ export default function SiteEditorPage() {
                     .eq("id", siteId);
 
                 if (error) {
-                    toast.error("Sync Failure: Changes not persisted.");
+                    toast.error(tc("error") + ": Changes not persisted.");
                 } else {
-                    toast.success("Sovereign Sync: Changes secured.");
+                    toast.success(t("secured"));
                 }
                 setSaving(false);
             }, 2000);
@@ -99,8 +102,7 @@ export default function SiteEditorPage() {
 
     // Watch for changes to trigger auto-save
     useEffect(() => {
-        const subscription = watch((value) => {
-            // eslint-disable-line react-hooks/incompatible-library
+        const subscription = watch((value) => { // eslint-disable-line react-hooks/incompatible-library
             if (isDirty) {
                 saveToSupabase(value as SiteFormData);
             }
@@ -123,30 +125,23 @@ export default function SiteEditorPage() {
                 <div className="flex items-center gap-4">
                     <Layout className="w-5 h-5 text-blue-500" />
                     <h1 className="text-[11px] font-black uppercase tracking-[0.3em]">
-                        Site Engine <span className="text-zinc-500 ml-2">/</span>{" "}
+                        {t("title")} <span className="text-zinc-500 ml-2">/</span>{" "}
                         <span className="text-blue-400 ml-2">{storeData?.name}</span>
                     </h1>
                 </div>
-                <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2 text-[8px] font-black uppercase tracking-widest text-zinc-500">
-                        {saving ? (
-                            <>
-                                <Loader2 className="w-3 h-3 animate-spin" />
-                                Syncing...
-                            </>
-                        ) : (
-                            <>
-                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                                Secured
-                            </>
-                        )}
+                <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-3">
+                        <div className={`w-2 h-2 rounded-full animate-pulse ${saving ? 'bg-amber-400' : 'bg-emerald-500'}`} />
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-500">
+                            {saving ? t("syncing") : t("secured")}
+                        </span>
                     </div>
+
                     <Button
-                        variant="glow"
-                        size="sm"
-                        className="h-9 px-6 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all"
+                        variant="outline"
+                        className="rounded-full px-8 py-5 bg-white/5 border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 text-[9px] font-black uppercase tracking-widest transition-all h-auto"
                     >
-                        Publish Site
+                        {t("publish")}
                     </Button>
                 </div>
             </div>
@@ -160,28 +155,28 @@ export default function SiteEditorPage() {
                                 className="gap-2 text-[9px] font-black uppercase tracking-widest px-6 py-3 data-[state=active]:bg-white/10"
                             >
                                 <Database className="w-3.5 h-3.5" />
-                                Basics
+                                {t("basics")}
                             </TabsTrigger>
                             <TabsTrigger
                                 value="content"
                                 className="gap-2 text-[9px] font-black uppercase tracking-widest px-6 py-3 data-[state=active]:bg-white/10"
                             >
                                 <Layout className="w-3.5 h-3.5" />
-                                Content
+                                {t("content")}
                             </TabsTrigger>
                             <TabsTrigger
                                 value="design"
                                 className="gap-2 text-[9px] font-black uppercase tracking-widest px-6 py-3 data-[state=active]:bg-white/10"
                             >
                                 <Palette className="w-3.5 h-3.5" />
-                                Design
+                                {t("design")}
                             </TabsTrigger>
                             <TabsTrigger
                                 value="domain"
                                 className="gap-2 text-[9px] font-black uppercase tracking-widest px-6 py-3 data-[state=active]:bg-white/10"
                             >
                                 <Globe className="w-3.5 h-3.5" />
-                                Domain
+                                {t("domain")}
                             </TabsTrigger>
                         </TabsList>
 
@@ -195,7 +190,7 @@ export default function SiteEditorPage() {
                                 <div className="grid gap-8 p-10 rounded-[32px] bg-white/[0.02] border border-white/5">
                                     <div className="space-y-2">
                                         <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">
-                                            Site Title
+                                            {t("siteTitle")}
                                         </Label>
                                         <Input
                                             {...register("name")}
@@ -204,12 +199,50 @@ export default function SiteEditorPage() {
                                     </div>
                                     <div className="space-y-2">
                                         <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">
-                                            Logo Text / URL
+                                            {t("logoText")}
                                         </Label>
                                         <Input
                                             {...register("navigation.logo")}
                                             className="bg-black/40 border-white/5 h-14 rounded-2xl text-sm placeholder:text-zinc-800"
                                             placeholder="Enter Logo Identity"
+                                        />
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-8 pt-4 border-t border-white/5">
+                                        <div className="space-y-2">
+                                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">
+                                                {t("estimatedSavings")}
+                                            </Label>
+                                            <Input
+                                                {...register("economic_impact.estimated_savings")}
+                                                className="bg-black/40 border-white/5 h-14 rounded-2xl text-sm"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">
+                                                {t("valuation")}
+                                            </Label>
+                                            <Input
+                                                type="number"
+                                                {...register("economic_impact.valuation", { valueAsNumber: true })}
+                                                className="bg-black/40 border-white/5 h-14 rounded-2xl text-sm"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center justify-between p-6 rounded-2xl bg-white/[0.03] border border-white/5">
+                                        <div className="space-y-0.5">
+                                            <Label className="text-[11px] font-bold uppercase tracking-widest text-white">
+                                                {t("whiteLabel")}
+                                            </Label>
+                                            <p className="text-[9px] text-zinc-500 uppercase font-black">
+                                                Remove GetYouSite branding from production
+                                            </p>
+                                        </div>
+                                        <input
+                                            type="checkbox"
+                                            {...register("whiteLabel")}
+                                            className="w-10 h-6 rounded-full bg-zinc-800 checked:bg-blue-600 appearance-none transition-all relative cursor-pointer before:content-[''] before:absolute before:w-4 before:h-4 before:bg-white before:rounded-full before:top-1 before:left-1 checked:before:translate-x-4 before:transition-transform"
                                         />
                                     </div>
                                 </div>
@@ -219,7 +252,7 @@ export default function SiteEditorPage() {
                                 <div className="grid gap-8 p-10 rounded-[32px] bg-white/[0.02] border border-white/5">
                                     <div className="space-y-2">
                                         <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">
-                                            About Us Description
+                                            {t("aboutDescription")}
                                         </Label>
                                         <textarea
                                             {...register("description")}
@@ -228,7 +261,7 @@ export default function SiteEditorPage() {
                                     </div>
                                     <div className="space-y-2">
                                         <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">
-                                            Services Summary
+                                            {t("servicesSummary")}
                                         </Label>
                                         <Input
                                             {...register("metadata.services_summary")}
@@ -243,7 +276,7 @@ export default function SiteEditorPage() {
                                 <div className="grid grid-cols-2 gap-8 p-10 rounded-[32px] bg-white/[0.02] border border-white/5">
                                     <div className="space-y-2">
                                         <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">
-                                            Primary Color
+                                            {t("primaryColor")}
                                         </Label>
                                         <div className="flex gap-4">
                                             <Input
@@ -258,18 +291,102 @@ export default function SiteEditorPage() {
                                     </div>
                                     <div className="space-y-2">
                                         <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">
-                                            Typography (Font)
+                                            {t("secondaryColor")}
+                                        </Label>
+                                        <div className="flex gap-4">
+                                            <Input
+                                                {...register("theme.secondary")}
+                                                className="bg-black/40 border-white/5 h-14 rounded-2xl text-sm"
+                                            />
+                                            <div
+                                                className="w-14 h-14 rounded-2xl border border-white/10"
+                                                style={{ backgroundColor: watch("theme.secondary") }}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">
+                                            {t("accentColor")}
+                                        </Label>
+                                        <div className="flex gap-4">
+                                            <Input
+                                                {...register("theme.accent")}
+                                                className="bg-black/40 border-white/5 h-14 rounded-2xl text-sm"
+                                            />
+                                            <div
+                                                className="w-14 h-14 rounded-2xl border border-white/10"
+                                                style={{ backgroundColor: watch("theme.accent") }}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">
+                                            {t("backgroundColor")}
+                                        </Label>
+                                        <div className="flex gap-4">
+                                            <Input
+                                                {...register("theme.backgroundColor")}
+                                                className="bg-black/40 border-white/5 h-14 rounded-2xl text-sm"
+                                            />
+                                            <div
+                                                className="w-14 h-14 rounded-2xl border border-white/10"
+                                                style={{ backgroundColor: watch("theme.backgroundColor") }}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">
+                                            {t("textColor")}
+                                        </Label>
+                                        <div className="flex gap-4">
+                                            <Input
+                                                {...register("theme.textColor")}
+                                                className="bg-black/40 border-white/5 h-14 rounded-2xl text-sm"
+                                            />
+                                            <div
+                                                className="w-14 h-14 rounded-2xl border border-white/10"
+                                                style={{ backgroundColor: watch("theme.textColor") }}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">
+                                            {t("visualMode")}
+                                        </Label>
+                                        <select
+                                            {...register("theme.mode")}
+                                            className="w-full bg-black/40 border border-white/5 h-14 rounded-2xl px-4 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 appearance-none"
+                                        >
+                                            <option value="light">{t("modes.light")}</option>
+                                            <option value="dark">{t("modes.dark")}</option>
+                                            <option value="industrial">{t("modes.industrial")}</option>
+                                            <option value="quantum">{t("modes.quantum")}</option>
+                                            <option value="medical">{t("modes.medical")}</option>
+                                            <option value="luxury">{t("modes.luxury")}</option>
+                                            <option value="clean">{t("modes.clean")}</option>
+                                            <option value="neon">{t("modes.neon")}</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">
+                                            {t("typography")}
                                         </Label>
                                         <select
                                             {...register("theme.fontFamily")}
                                             className="w-full bg-black/40 border border-white/5 h-14 rounded-2xl px-4 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 appearance-none"
                                         >
-                                            <option value="Inter">Inter (Industrial)</option>
-                                            <option value="Outfit">Outfit (Modern)</option>
+                                            <option value="Inter">{t("fonts.inter")}</option>
+                                            <option value="Outfit">{t("fonts.outfit")}</option>
                                             <option value="Playfair Display">
-                                                Playfair (Prestige)
+                                                {t("fonts.playfair")}
                                             </option>
-                                            <option value="Roboto">Roboto (Technical)</option>
+                                            <option value="IBM Plex Sans Arabic">{t("fonts.ibm")}</option>
+                                            <option value="Roboto">{t("fonts.roboto")}</option>
                                         </select>
                                     </div>
                                 </div>

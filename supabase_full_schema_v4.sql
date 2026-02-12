@@ -101,19 +101,38 @@ CREATE TABLE IF NOT EXISTS public.store_leads (
     created_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Enable RLS
+-- Enable RLS on all tables
+ALTER TABLE public.analytics ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.seo_audits ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.media ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.system_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.store_leads ENABLE ROW LEVEL SECURITY;
 
--- Policy: Public can insert (contact form)
+-- 1. ANALYTICS POLICIES
+CREATE POLICY "owners_view_analytics" ON public.analytics FOR SELECT 
+USING (EXISTS (SELECT 1 FROM public.stores WHERE id = analytics.store_id AND user_id = auth.uid()));
+
+CREATE POLICY "public_insert_analytics" ON public.analytics FOR INSERT 
+WITH CHECK (true); -- Analytics are collected from public visitors
+
+-- 2. SEO POLICIES
+CREATE POLICY "owners_view_seo" ON public.seo_audits FOR SELECT 
+USING (EXISTS (SELECT 1 FROM public.stores WHERE id = seo_audits.store_id AND user_id = auth.uid()));
+
+-- 3. MEDIA POLICIES
+CREATE POLICY "owners_manage_media" ON public.media FOR ALL 
+USING (EXISTS (SELECT 1 FROM public.stores WHERE id = media.store_id AND user_id = auth.uid()));
+
+-- 4. SYSTEM LOGS POLICIES
+CREATE POLICY "admin_view_logs" ON public.system_logs FOR SELECT 
+USING (auth.jwt() ->> 'role' = 'service_role'); -- Typically service role or admin only
+
+-- 5. CONVERSION ENGINE (STORE LEADS)
 CREATE POLICY "public_insert_leads" ON public.store_leads FOR INSERT WITH CHECK (true);
 
--- Policy: Store owners can view leads for their stores
 CREATE POLICY "owners_view_leads" ON public.store_leads FOR SELECT 
-USING (
-    EXISTS (
-        SELECT 1 FROM public.stores 
-        WHERE id = store_leads.store_id AND user_id = auth.uid()
-    )
-);
+USING (EXISTS (SELECT 1 FROM public.stores WHERE id = store_leads.store_id AND user_id = auth.uid()));
 
 CREATE INDEX IF NOT EXISTS idx_store_leads_store_id ON public.store_leads(store_id);
+CREATE INDEX IF NOT EXISTS idx_analytics_store_id ON public.analytics(store_id);
+CREATE INDEX IF NOT EXISTS idx_media_store_id ON public.media(store_id);

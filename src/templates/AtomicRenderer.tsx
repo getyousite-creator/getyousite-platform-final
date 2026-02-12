@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ComponentLibrary } from '@/components/engine/ComponentLibrary';
 import { SiteBlueprint } from '@/lib/schemas';
+import { useSovereignAnalytics } from '@/hooks/use-sovereign-analytics';
 
 interface AtomicRendererProps {
     blueprint: SiteBlueprint;
@@ -16,6 +17,9 @@ export default function AtomicRenderer({
     meta,
     selectedPageSlug = 'index'
 }: AtomicRendererProps) {
+    // IGNITION: Start Sovereign Analytics Loop
+    useSovereignAnalytics(meta?.id);
+
     if (!blueprint) return null;
 
     const primaryColor = blueprint.theme?.primary || '#3b82f6';

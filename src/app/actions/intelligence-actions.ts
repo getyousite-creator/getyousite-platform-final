@@ -12,7 +12,7 @@ export async function getGlobalPerformanceAction(userId: string) {
             id, 
             name, 
             status, 
-            analytics(views, visitors), 
+            analytics(views, visitors, session_duration), 
             seo_audits(overall_score)
         `)
         .eq('user_id', userId);
@@ -24,9 +24,14 @@ export async function getGlobalPerformanceAction(userId: string) {
 
     // 2. Map Intelligence Matrix
     return stores.map(store => {
-        // Aggregating analytics records (if multiple exist for different dates)
         const analytics = (store.analytics as any[]) || [];
         const totalViews = analytics.reduce((acc, a) => acc + (a.views || 0), 0);
+        const totalDuration = analytics.reduce((acc, a) => acc + (a.session_duration || 0), 0);
+        const sessions = analytics.length;
+
+        // Logic: Resonance is high if avg session > 45 seconds
+        const avgSession = sessions > 0 ? totalDuration / sessions : 0;
+        const logicalResonance = Math.min(100, Math.round((avgSession / 45) * 100));
 
         // Getting the most recent SEO score
         const seoAudits = (store.seo_audits as any[]) || [];
@@ -41,6 +46,7 @@ export async function getGlobalPerformanceAction(userId: string) {
             name: store.name,
             views: totalViews,
             seoScore,
+            logicalResonance,
             status: store.status,
             health: seoScore > 80 ? 'Optimal' : seoScore > 50 ? 'Degraded' : 'Critical'
         };
@@ -102,4 +108,26 @@ export async function getAuditDetailsAction(storeId: string) {
     }
 
     return audits[0];
+}
+
+/**
+ * getSecurityPulseAction
+ * Logic: Fetch global security anomalies for the Command Center.
+ */
+export async function getSecurityPulseAction() {
+    const supabase = await createClient();
+
+    const { data: logs, error } = await supabase
+        .from('system_logs')
+        .select('*')
+        .or('level.eq.critical,level.eq.error')
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+    if (error) {
+        console.error("SEC_PULSE_FETCH_FAILURE:", error);
+        return [];
+    }
+
+    return logs || [];
 }

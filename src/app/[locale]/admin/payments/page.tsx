@@ -38,8 +38,8 @@ export default function AdminPaymentsPage() {
     const fetchRequests = React.useCallback(async () => {
         setIsLoading(true);
         try {
-            const data = (await getPendingRequestsAction()) as PaymentRequest[];
-            setRequests(data);
+            const response = await getPendingRequestsAction();
+            setRequests((response.data as PaymentRequest[]) || []);
         } catch {
             toast.error("Failed to load requests.");
         } finally {

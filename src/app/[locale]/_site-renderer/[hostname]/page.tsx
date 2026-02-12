@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import TemplateRenderer from "@/templates/TemplateRenderer";
 import { notFound } from "next/navigation";
 
-export const revalidate = 3600; // 1 hour ISR
+export const revalidate = 0; // Sovereign Logic: Real-time rendering enabled.
 
 interface SiteRendererProps {
     params: Promise<{ locale: string; hostname: string }>;

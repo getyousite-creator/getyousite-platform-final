@@ -128,6 +128,7 @@ export default function SovereignWrapper({ children, meta }: SovereignWrapperPro
  * The bridge between JSON logic and React UI.
  */
 function BlueprintSectionRenderer({ section }: { section: Section }) {
+    const t = useTranslations("wrapper");
     // This will eventually map all sections to high-fidelity components
     switch (section.type) {
         case "hero":
@@ -185,6 +186,7 @@ function DynamicFeatures({ content }: { content: Record<string, any> }) {
 }
 
 function DynamicAbout({ content }: { content: Record<string, any> }) {
+    const t = useTranslations("wrapper");
     return (
         <section className="py-24 px-6 md:px-10 max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
@@ -216,6 +218,7 @@ function DynamicAbout({ content }: { content: Record<string, any> }) {
 }
 
 function DynamicPricing({ content }: { content: Record<string, any> }) {
+    const t = useTranslations("wrapper");
     return (
         <section className="py-24 px-6 md:px-10 bg-slate-900 text-white">
             <div className="max-w-7xl mx-auto">

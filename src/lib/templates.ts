@@ -27,8 +27,11 @@ const constructBlueprint = (name: string, primary: string, sections: string[]): 
         secondary: "#a855f7",
         accent: "#a855f7",
         fontFamily: "var(--font-inter)",
+        backgroundColor: "#000000",
+        textColor: "#ffffff",
         mode: "quantum"
     },
+    whiteLabel: false,
     navigation: {
         logo: name,
         links: [],

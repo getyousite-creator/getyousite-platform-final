@@ -15,6 +15,7 @@ import { StorageService } from '@/lib/services/storage-service';
 import AuthModal from '@/components/auth/AuthModal';
 import ClaimOverlay from '@/components/customizer/ClaimOverlay';
 import AICommandBar from '@/components/customizer/AICommandBar';
+import AITweakerPanel from '@/components/editor/AITweakerPanel';
 import { useSearchParams, useRouter, useParams } from 'next/navigation';
 import { Loader2, Activity, Rocket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -25,12 +26,23 @@ import { toast } from 'sonner';
 export default function CustomizerPage() {
     // 1. Hooks & State
     const { onOpen } = useLaunchModal();
-    const { blueprint, updateBlueprint, isGenerating, setIsGenerating, saveStatus, undo, redo, history } = useTemplateEditor();
+    const {
+        blueprint,
+        updateBlueprint,
+        isGenerating,
+        setIsGenerating,
+        saveStatus,
+        undo,
+        redo,
+        history,
+        activeStoreId,
+        setActiveStoreId
+    } = useTemplateEditor();
 
     const searchParams = useSearchParams();
     const router = useRouter();
     const params = useParams();
-    const locale = params.locale as string || 'ar'; // Default to 'ar' if not found
+    const locale = params.locale as string || 'ar';
     const storeIdParam = searchParams.get('id');
 
     const [vision, setVision] = useState("");
@@ -41,8 +53,7 @@ export default function CustomizerPage() {
     const [showPay, setShowPay] = useState(false);
 
     const [isLoadingStore, setIsLoadingStore] = useState(false);
-    const [activeStoreId, setActiveStoreId] = useState<string | null>(null);
-    const [userId, setUserId] = useState<string>(""); // User State: Needed for RLS storage paths
+    const [userId, setUserId] = useState<string>("");
     const [showAuthModal, setShowAuthModal] = useState(false);
 
     const visionParam = searchParams.get('vision');
@@ -135,7 +146,7 @@ export default function CustomizerPage() {
         };
 
         loadStore();
-    }, [storeIdParam, updateBlueprint]);
+    }, [storeIdParam, updateBlueprint, setActiveStoreId]);
 
     // 2. Initialize from URL
     useEffect(() => {
@@ -321,6 +332,7 @@ export default function CustomizerPage() {
                 </main>
             </div>
 
+            <AITweakerPanel />
             <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
 
             <ClaimOverlay

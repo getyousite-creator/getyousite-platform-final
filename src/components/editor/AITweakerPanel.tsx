@@ -6,24 +6,55 @@ import { Sparkles, Send, X, Wand2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useTemplateEditor } from "@/hooks/use-template-editor";
+import { refineBlueprintAction } from "@/app/actions/ai-actions";
+import { toast } from "sonner";
+import { useParams } from "next/navigation";
 
 export default function AITweakerPanel() {
     const [isOpen, setIsOpen] = useState(false);
     const [prompt, setPrompt] = useState("");
-    const [isProcessing, setIsProcessing] = useState(false);
+    const {
+        blueprint,
+        updateBlueprint,
+        isGenerating,
+        setIsGenerating,
+        activeStoreId
+    } = useTemplateEditor();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const params = useParams();
+    const locale = params.locale as string || "ar";
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!prompt.trim()) return;
+        if (!prompt.trim() || isGenerating || !blueprint) return;
 
-        setIsProcessing(true);
-        // Simulate AI Processing
-        setTimeout(() => {
-            setIsProcessing(false);
-            setPrompt("");
-            // In a real scenario, this would call an API to update the blueprint
-        }, 2000);
+        setIsGenerating(true);
+        try {
+            // Logic: High-status architectural refinement
+            const modifiedBlueprint = await refineBlueprintAction({
+                currentBlueprint: blueprint,
+                command: prompt,
+                businessName: blueprint.name || "Sovereign Asset",
+                niche: (blueprint.metadata as any)?.niche || "Professional",
+                locale: locale
+            });
+
+            if (modifiedBlueprint) {
+                updateBlueprint(modifiedBlueprint);
+                toast.success(locale === 'ar' ? "تم تحديث المخطط بنجاح" : "Blueprint successfully refined");
+                setPrompt("");
+                setIsOpen(false);
+            }
+        } catch (error) {
+            console.error("REFINE_ERROR", error);
+            toast.error(locale === 'ar' ? "فشل تحديث المخطط" : "Neural refinement failed");
+        } finally {
+            setIsGenerating(false);
+        }
     };
+
+    if (!blueprint) return null;
 
     return (
         <>
@@ -33,8 +64,8 @@ export default function AITweakerPanel() {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
-                    "fixed bottom-8 right-8 z-40 w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300",
-                    isOpen ? "bg-red-500 rotate-45" : "bg-primary hover:bg-blue-600"
+                    "fixed bottom-8 right-8 z-50 w-16 h-16 rounded-full flex items-center justify-center shadow-[0_0_50px_rgba(0,208,156,0.3)] transition-all duration-500",
+                    isOpen ? "bg-red-500/80 rotate-90" : "bg-[#00D09C] hover:bg-[#00B085]"
                 )}
             >
                 {isOpen ? <X className="text-white w-6 h-6" /> : <Wand2 className="text-[#020617] w-6 h-6" />}
@@ -63,13 +94,15 @@ export default function AITweakerPanel() {
                         {/* Body */}
                         <div className="p-4 space-y-4">
                             <div className="bg-white/5 rounded-xl p-4 min-h-[120px] text-xs text-white/60 leading-relaxed font-mono">
-                                {isProcessing ? (
-                                    <div className="flex items-center gap-2 text-primary animate-pulse">
-                                        <span className="w-2 h-2 rounded-full bg-primary" />
-                                        Analyzing prompt matrix...
+                                {isGenerating ? (
+                                    <div className="flex items-center gap-2 text-[#00D09C] animate-pulse">
+                                        <span className="w-2 h-2 rounded-full bg-[#00D09C]" />
+                                        {locale === 'ar' ? 'جاري تحليل الأوامر...' : 'Analyzing prompt matrix...'}
                                     </div>
                                 ) : (
-                                    "Ready for instructions. Tell me how to modify the design, content, or structure."
+                                    locale === 'ar'
+                                        ? 'جاهز للأوامر. أخبرني كيف تريد تعديل التصميم أو المحتوى.'
+                                        : 'Ready for instructions. Tell me how to modify the design or content.'
                                 )}
                             </div>
 
@@ -77,15 +110,15 @@ export default function AITweakerPanel() {
                                 <Input
                                     value={prompt}
                                     onChange={(e) => setPrompt(e.target.value)}
-                                    placeholder="e.g. Make the hero darker..."
-                                    className="pr-12 bg-black/40 border-white/10 text-white placeholder:text-white/20 h-12 rounded-xl focus:ring-primary/50"
-                                    disabled={isProcessing}
+                                    placeholder={locale === 'ar' ? "اجعل الموقع داكناً أكثر..." : "e.g. Make it darker..."}
+                                    className="pr-12 bg-black/40 border-white/10 text-white placeholder:text-white/20 h-12 rounded-xl focus:ring-[#00D09C]/50"
+                                    disabled={isGenerating}
                                 />
                                 <Button
                                     type="submit"
-                                    disabled={!prompt || isProcessing}
+                                    disabled={!prompt || isGenerating}
                                     size="icon"
-                                    className="absolute right-1 top-1 h-10 w-10 bg-primary/20 hover:bg-primary text-primary hover:text-[#020617] rounded-lg transition-all"
+                                    className="absolute right-1 top-1 h-10 w-10 bg-[#00D09C]/20 hover:bg-[#00D09C] text-[#00D09C] hover:text-[#020617] rounded-lg transition-all"
                                 >
                                     <Send className="w-4 h-4" />
                                 </Button>

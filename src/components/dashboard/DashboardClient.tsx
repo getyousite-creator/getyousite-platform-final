@@ -39,6 +39,7 @@ interface AnalyticsSummary {
     totalViews: number;
     totalVisitors: number;
     uniqueVisitors: number;
+    conversionRate: number;
     avgSessionDuration: number;
     bounceRate: number;
     topPages: { path: string; views: number }[];
@@ -60,6 +61,12 @@ interface DashboardData {
     analytics: AnalyticsSummary | null;
     seo: SEOScore | null;
     recentActivity: { type: string; message: string; date: string }[];
+}
+
+interface DashboardActivity {
+    type: string;
+    message: string;
+    date: string;
 }
 
 export default function DashboardClient() {
@@ -108,21 +115,29 @@ export default function DashboardClient() {
         fetchDashboardData();
     }, []);
 
-    const fetchDashboardData = async () => {
+    const fetchDashboardData = async (targetStoreId?: string) => {
         try {
             const storesResponse = await fetch('/api/dashboard/stores');
             const storesData = await storesResponse.json();
+            const stores = storesData.stores || [];
+
+            // Logic: Determine which store to analyze
+            const activeId = targetStoreId || stores[0]?.id;
+            if (activeId && !selectedStore) setSelectedStore(activeId);
+
             let analyticsData = null;
-            if (storesData.stores?.length > 0) {
-                const analyticsResponse = await fetch(`/api/dashboard/analytics?storeId=${storesData.stores[0].id}`);
+            if (activeId) {
+                const analyticsResponse = await fetch(`/api/dashboard/analytics?storeId=${activeId}`);
                 analyticsData = await analyticsResponse.json();
             }
+
             let seoData = null;
-            if (storesData.stores?.length > 0) {
-                const seoResponse = await fetch(`/api/dashboard/seo?storeId=${storesData.stores[0].id}`);
+            if (activeId) {
+                const seoResponse = await fetch(`/api/dashboard/seo?storeId=${activeId}`);
                 seoData = await seoResponse.json();
             }
-            const synthesizedActivity = (storesData.stores || []).map((store: any) => ({
+
+            const synthesizedActivity = stores.map((store: DashboardStore): DashboardActivity => ({
                 type: store.status === 'deployed' ? 'success' : store.status === 'pending_payment' ? 'warning' : 'info',
                 message: store.status === 'deployed'
                     ? `Site "${store.name}" successfully established on global CDN`
@@ -130,10 +145,10 @@ export default function DashboardClient() {
                         ? `Action required: Activate premium nodes for "${store.name}"`
                         : `Neural draft created: "${store.name}"`,
                 date: store.updated_at || store.created_at
-            })).sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 5);
+            })).sort((a: DashboardActivity, b: DashboardActivity) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 5);
 
             setData({
-                stores: storesData.stores || [],
+                stores,
                 analytics: analyticsData,
                 seo: seoData,
                 recentActivity: synthesizedActivity.length > 0 ? synthesizedActivity : [
@@ -151,6 +166,13 @@ export default function DashboardClient() {
         if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
         if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
         return num.toString();
+    };
+
+    const formatSessionDuration = (seconds: number): string => {
+        if (seconds < 60) return `${seconds}s`;
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}m ${secs}s`;
     };
 
     if (loading) {
@@ -176,7 +198,7 @@ export default function DashboardClient() {
                                 <Shield className="w-5 h-5 text-[#00D09C]" />
                             </div>
                             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400/60 leading-none">
-                                {locale === 'ar' ? 'الحالة: مفعل // المعرف: SG-882-X' : 'Status: AUTHENTICATED // GRID_ID: SG-882-X'}
+                                {t('status_auth')}
                             </span>
                         </div>
                         <motion.h1
@@ -199,8 +221,7 @@ export default function DashboardClient() {
                             variant="outline"
                             className="h-14 border-white/5 bg-white/5 hover:bg-white/10 text-white font-black uppercase tracking-widest px-8 rounded-2xl"
                         >
-                            <LogOut className="w-4 h-4 mr-2" />
-                            {locale === 'ar' ? 'خروج' : 'Sign Out'}
+                            {t('sign_out')}
                         </Button>
                         <Button asChild className="h-14 bg-[#00D09C] hover:bg-[#00B085] text-[#0A2540] font-black uppercase tracking-widest px-10 rounded-2xl shadow-[0_0_30px_rgba(0,208,156,0.2)] border-0">
                             <Link href={`/${locale}/customizer`}>
@@ -214,16 +235,16 @@ export default function DashboardClient() {
                 <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-12">
                     <TabsList className="bg-white/5 border border-white/5 p-1 h-14 rounded-2xl w-fit flex gap-1">
                         <TabsTrigger value="overview" className="h-full px-8 rounded-xl data-[state=active]:bg-[#00D09C] data-[state=active]:text-[#0A2540] text-white/40 text-[10px] font-black uppercase tracking-widest transition-all">
-                            {locale === 'ar' ? 'نظرة عامة' : 'Overview'}
+                            {t('overview')}
                         </TabsTrigger>
                         <TabsTrigger value="leads" className="h-full px-8 rounded-xl data-[state=active]:bg-[#00D09C] data-[state=active]:text-[#0A2540] text-white/40 text-[10px] font-black uppercase tracking-widest transition-all">
-                            {locale === 'ar' ? 'العملاء' : 'Leads'}
+                            {t('leads_tab')}
                         </TabsTrigger>
                         <TabsTrigger value="analytics" className="h-full px-8 rounded-xl data-[state=active]:bg-[#00D09C] data-[state=active]:text-[#0A2540] text-white/40 text-[10px] font-black uppercase tracking-widest transition-all">
-                            {locale === 'ar' ? 'مصفوفة النمو' : 'Growth Matrix'}
+                            {t('growth_matrix')}
                         </TabsTrigger>
                         <TabsTrigger value="seo" className="h-full px-8 rounded-xl data-[state=active]:bg-[#00D09C] data-[state=active]:text-[#0A2540] text-white/40 text-[10px] font-black uppercase tracking-widest transition-all">
-                            {locale === 'ar' ? 'الذكاء' : 'Intelligence'}
+                            {t('intelligence_tab')}
                         </TabsTrigger>
                     </TabsList>
 
@@ -232,9 +253,9 @@ export default function DashboardClient() {
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
                             <div className="lg:col-span-2 space-y-8">
                                 <div className="flex items-center justify-between">
-                                    <h3 className="text-xl font-black italic uppercase text-white">Active Nodes</h3>
+                                    <h3 className="text-xl font-black italic uppercase text-white">{t('active_nodes')}</h3>
                                     <Badge className="bg-white/5 border-white/10 text-blue-400 uppercase text-[9px] px-3 py-1 font-black tracking-widest">
-                                        Total Assets: {data?.stores.length}
+                                        {t('total_assets')}: {data?.stores.length}
                                     </Badge>
                                 </div>
 
@@ -275,8 +296,33 @@ export default function DashboardClient() {
                                                         </Badge>
                                                     </div>
                                                     <p className="text-blue-200/40 text-xs font-medium max-w-md leading-relaxed">
-                                                        {store.description || "No mission description assigned to this asset."}
+                                                        {store.description || t('no_description')}
                                                     </p>
+
+                                                    {store.status === 'deployed' && (
+                                                        <div className="flex items-center gap-4 pt-2">
+                                                            <button
+                                                                onClick={async () => {
+                                                                    const { verifyDomainAction } = await import('@/app/actions/store-actions');
+                                                                    const res = await verifyDomainAction(store.id);
+                                                                    if (res.success && res.data?.verified) {
+                                                                        toast.success("Connection Verified: Node is live on global edge.");
+                                                                    } else {
+                                                                        toast.error(res.error || "Connection Pending: DNS/SSL propagation in progress.");
+                                                                    }
+                                                                }}
+                                                                className="flex items-center gap-2 text-[8px] font-black uppercase tracking-widest text-[#00D09C]/60 hover:text-[#00D09C] transition-colors"
+                                                            >
+                                                                <Activity className="w-3 h-3" />
+                                                                Check Connectivity
+                                                            </button>
+                                                            {store.custom_domain && (
+                                                                <span className="text-[8px] font-black text-zinc-600 uppercase tracking-widest border-l border-white/10 pl-4">
+                                                                    Asset: {store.custom_domain}
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    )}
 
                                                     {store.status === 'pending_payment' && (
                                                         <button
@@ -284,7 +330,7 @@ export default function DashboardClient() {
                                                             className="flex items-center gap-3 text-[#00D09C] text-[10px] font-black uppercase tracking-widest pt-4 group/btn"
                                                         >
                                                             <Zap className="w-3 h-3 animate-pulse" />
-                                                            Authorize Deployment Sequence
+                                                            {t('authorize_deployment')}
                                                             <ArrowUpRight className="w-3 h-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                                                         </button>
                                                     )}
@@ -296,7 +342,7 @@ export default function DashboardClient() {
                             </div>
 
                             <div className="space-y-8">
-                                <h3 className="text-xl font-black italic uppercase text-white">Recent Activity</h3>
+                                <h3 className="text-xl font-black italic uppercase text-white">{t('recent_activity')}</h3>
                                 <div className="space-y-4">
                                     {data?.recentActivity.map((activity, i) => (
                                         <div key={i} className="p-6 rounded-[32px] bg-white/2 border border-white/5 flex gap-4 items-start">
@@ -318,13 +364,38 @@ export default function DashboardClient() {
                     </TabsContent>
 
                     <TabsContent value="analytics" className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        {/* SELECTOR & HEADER */}
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                            <div>
+                                <h3 className="text-2xl font-black italic uppercase text-white">{t('growth_matrix')}</h3>
+                                <p className="text-[10px] text-[#00D09C] uppercase tracking-widest font-bold mt-1">Live behavioral transmission tracking</p>
+                            </div>
+
+                            <div className="flex items-center gap-4 bg-white/5 p-2 rounded-2xl border border-white/5">
+                                <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500 pl-4">Target_Asset:</span>
+                                <select
+                                    value={selectedStore || ""}
+                                    onChange={(e) => {
+                                        const id = e.target.value;
+                                        setSelectedStore(id);
+                                        fetchDashboardData(id);
+                                    }}
+                                    className="bg-transparent text-white font-black uppercase text-[10px] tracking-widest border-none outline-none focus:ring-0 cursor-pointer pr-10"
+                                >
+                                    {data?.stores.map(s => (
+                                        <option key={s.id} value={s.id} className="bg-[#051423]">{s.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+
                         {/* STATS TILES */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                             {[
-                                { label: 'Total Transmissions', value: data?.analytics?.totalViews, icon: Eye, color: '#00D09C' },
-                                { label: 'Unique Operators', value: data?.analytics?.uniqueVisitors, icon: Users, color: '#6366f1' },
-                                { label: 'Conversion Velocity', value: '4.2%', icon: Target, color: '#f59e0b' },
-                                { label: 'Attention Span', value: '3m 12s', icon: Clock, color: '#ec4899' }
+                                { label: t('total_transmissions'), value: formatNumber(data?.analytics?.totalViews || 0), icon: Eye, color: '#00D09C' },
+                                { label: t('unique_operators'), value: formatNumber(data?.analytics?.uniqueVisitors || 0), icon: Users, color: '#6366f1' },
+                                { label: t('conversion_velocity'), value: `${(data?.analytics?.conversionRate || 0).toFixed(2)}%`, icon: Target, color: '#f59e0b' },
+                                { label: t('attention_span'), value: formatSessionDuration(data?.analytics?.avgSessionDuration || 0), icon: Clock, color: '#ec4899' }
                             ].map((stat, i) => (
                                 <div key={stat.label} className="p-8 rounded-[40px] bg-white/5 border border-white/5 relative overflow-hidden group">
                                     <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/5 to-transparent rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700" />
@@ -345,8 +416,8 @@ export default function DashboardClient() {
                         <div className="p-10 rounded-[40px] bg-white/5 border border-white/5">
                             <div className="flex items-center justify-between mb-12">
                                 <div>
-                                    <h4 className="text-xl font-black italic uppercase text-white">Grid Traffic Patterns</h4>
-                                    <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mt-1">30-Day Transmission Density</p>
+                                    <h4 className="text-xl font-black italic uppercase text-white">{t('grid_traffic')}</h4>
+                                    <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mt-1">{t('transmission_density')}</p>
                                 </div>
                             </div>
                             <div className="h-64 flex items-end justify-between gap-3 px-4">

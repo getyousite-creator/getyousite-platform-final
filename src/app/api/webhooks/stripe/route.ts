@@ -46,14 +46,7 @@ export async function POST(req: Request) {
 
                         // Logic: Update user tier and link Stripe info
                         if (userId) {
-                            await supabase
-                                .from("users")
-                                .update({
-                                    tier: planId === "business" ? "enterprise" : "pro", // Robust mapping
-                                    credits: planId === "business" ? 500 : 100,
-                                })
-                                .eq("id", userId);
-
+                            // Update Profile Table
                             await supabase
                                 .from("profiles")
                                 .update({
@@ -63,6 +56,23 @@ export async function POST(req: Request) {
                                     plan_id: planId,
                                 })
                                 .eq("id", userId);
+
+                            // MISSION 5.3: TRUTHFUL PROVISIONING
+                            const siteId = checkoutSession.metadata?.siteId;
+                            if (siteId && siteId !== "temp") {
+                                console.log(`[STRIPE_WEBHOOK] Activating site ${siteId} for user ${userId}`);
+
+                                await supabase
+                                    .from("stores")
+                                    .update({ status: 'paid' })
+                                    .eq('id', siteId)
+                                    .eq('user_id', userId);
+
+                                const { DeploymentEngine } = await import("@/lib/engine/deployment");
+                                DeploymentEngine.deployToProduction(siteId).catch(e =>
+                                    console.error("[STRIPE_DEPLOY_FAILURE]", e)
+                                );
+                            }
                         }
                     }
                     break;

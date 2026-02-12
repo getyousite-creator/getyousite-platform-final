@@ -18,8 +18,7 @@ export async function generateNewPageAction(storeId: string, slug: string, name:
 
         if (error || !store) throw new Error("Store not found or access denied.");
 
-        const settings = store.settings || {};
-        const blueprint = (settings.blueprint || {}) as SiteBlueprint;
+        const blueprint = (store.blueprint || {}) as SiteBlueprint;
 
         // MISSION 8.4: DUPLICATE PREVENTION
         if (blueprint.pages && blueprint.pages[slug]) {
@@ -27,9 +26,9 @@ export async function generateNewPageAction(storeId: string, slug: string, name:
         }
 
         const businessName = store.name;
-        const niche = blueprint.metadata?.niche || "Professional Business";
-        const vision = blueprint.description || store.description || "";
-        const locale = blueprint.metadata?.locale || "en";
+        const niche = store.niche || "Professional Business";
+        const vision = store.description || "";
+        const locale = (blueprint.metadata as any)?.locale || "en";
 
         // 2. Trigger AI Generation (Sovereign Engine)
         console.log(
@@ -52,10 +51,7 @@ export async function generateNewPageAction(storeId: string, slug: string, name:
         const { error: updateError } = await supabase
             .from("stores")
             .update({
-                settings: {
-                    ...store.settings,
-                    blueprint: updatedBlueprint,
-                },
+                blueprint: updatedBlueprint,
             })
             .eq("id", storeId);
 

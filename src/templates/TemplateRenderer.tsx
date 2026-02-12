@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { useTemplateEditor } from '@/hooks/use-template-editor';
+import { NeuralBeacon } from '@/components/analytics/NeuralBeacon';
 
 const MasterMedical = dynamic<SovereignTemplateProps>(() => import('./MasterMedical'));
 const MasterRetail = dynamic<SovereignTemplateProps>(() => import('./MasterRetail'));
@@ -152,9 +153,13 @@ export default function TemplateRenderer({
 
     const Template = templateMap[templateId] || AtomicRenderer;
 
-    // Sovereign Update: Inject full architecture metadata
-    return <Template settings={editorSettings} blueprint={activeBlueprint} meta={meta} selectedPageSlug={selectedPageSlug} />;
-
+    // Sovereign Update: Inject full architecture metadata & Neural Beacon
+    return (
+        <>
+            {meta?.id && <NeuralBeacon storeId={meta.id} />}
+            <Template settings={editorSettings} blueprint={activeBlueprint} meta={meta} selectedPageSlug={selectedPageSlug} />
+        </>
+    );
 }
 
 

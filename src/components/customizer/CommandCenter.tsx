@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     Sparkles, Brain, Palette, Globe, Layout,
     Search, ChevronDown, Check, Star, Zap,
-    Eye, Edit3, Download, RefreshCw
+    Eye, Edit3, Download, RefreshCw, Shield
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

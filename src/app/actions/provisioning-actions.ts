@@ -20,7 +20,7 @@ export async function provisionSiteOnEdge(hostname: string) {
         revalidatePath(`/_site-renderer/${hostname}`, "page");
 
         // 2. Clear global site tags if applicable
-        revalidateTag("sites");
+        (revalidateTag as any)("sites");
 
         // MISSION 6.1: VERCEL DOMAIN LINKAGE
         const { VercelService } = await import("@/lib/services/vercel-service");

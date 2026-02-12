@@ -98,16 +98,15 @@ function PlanCard({ plan, t, tCommon }: { plan: Plan; t: TFunc; tCommon: TFunc }
     const { profile } = useAuth();
     const router = useRouter();
 
-    const currency = t("currency_code") || "USD";
+    const currency = (t("currency_code") || "USD") as keyof typeof plan.price;
     const priceValue = plan.price[currency] || plan.price["USD"];
 
     return (
         <div
-            className={`p-10 rounded-[2rem] border transition-all duration-500 flex flex-col relative group ${
-                plan.popular
-                    ? "bg-[#1e293b]/50 border-primary/50 shadow-[0_0_60px_rgba(59,130,246,0.15)] scale-105 z-10 backdrop-blur-2xl"
-                    : "bg-white/[0.02] border-white/5 hover:border-primary/20 hover:bg-white/[0.04]"
-            }`}
+            className={`p-10 rounded-[2rem] border transition-all duration-500 flex flex-col relative group ${plan.popular
+                ? "bg-[#1e293b]/50 border-primary/50 shadow-[0_0_60px_rgba(59,130,246,0.15)] scale-105 z-10 backdrop-blur-2xl"
+                : "bg-white/[0.02] border-white/5 hover:border-primary/20 hover:bg-white/[0.04]"
+                }`}
         >
             {plan.popular && (
                 <div className="absolute -top-5 left-1/2 -translate-x-1/2">
@@ -175,7 +174,7 @@ function PlanCard({ plan, t, tCommon }: { plan: Plan; t: TFunc; tCommon: TFunc }
                             color: "blue",
                             shape: "rect",
                             label: "pay",
-                            height: 58,
+                            height: 55,
                         }}
                         createOrder={() => createPayPalOrder(plan.id).then((res) => res.orderID)}
                         onApprove={async (data) => {

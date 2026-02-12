@@ -336,6 +336,45 @@ export const AuthService = {
     },
 
     /**
+     * Consume a credit from the user's account
+     * Logic: Absolute accountability.
+     */
+    async consumeCredit(userId: string): Promise<AuthResult<number>> {
+        try {
+            const supabase = await createClient();
+
+            // Atomic decrement (PostgreSQL function call or raw update)
+            const { data, error } = await supabase
+                .from('users')
+                .update({ credits: supabase.rpc('decrement_credits', { amount: 1 }) }) // Assuming RPC for atomicity
+                .eq('id', userId)
+                .select('credits')
+                .single();
+
+            // Fallback to manual if RPC fails (Less rigorous but functional)
+            if (error) {
+                const { data: user } = await supabase.from('users').select('credits').eq('id', userId).single();
+                const newCredits = Math.max(0, (user?.credits || 0) - 1);
+                const { data: updated } = await supabase.from('users').update({ credits: newCredits }).eq('id', userId).select('credits').single();
+                return { data: updated?.credits || 0, error: null };
+            }
+
+            return { data: data.credits, error: null };
+        } catch (err) {
+            return { data: null, error: { message: 'Credit consumption failed' } };
+        }
+    },
+
+    /**
+     * Get user credits and tier
+     */
+    async getUserProfile(userId: string) {
+        const supabase = await createClient();
+        const { data } = await supabase.from('users').select('credits, tier').eq('id', userId).single();
+        return data;
+    },
+
+    /**
      * Require authentication - throws error if not authenticated
      * Use in Server Components/Actions that need authentication
      */

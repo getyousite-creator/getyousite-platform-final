@@ -1,5 +1,6 @@
 import { SiteBlueprint } from '../schemas';
 import { StoreService } from '../services/store-service';
+import { SentryService } from '../services/sentry-service';
 
 /**
  * SOVEREIGN DEPLOYMENT ENGINE
@@ -9,6 +10,13 @@ import { StoreService } from '../services/store-service';
 export const DeploymentEngine = {
     async deployToProduction(siteId: string, providedBlueprint?: SiteBlueprint) {
         console.log("DEPLOYMENT_ENGINE: Ignition sequence start for", siteId);
+
+        await SentryService.logSecurityEvent({
+            level: 'info',
+            source: 'DeploymentEngine',
+            message: `Initiating provisioning for site node: ${siteId}`,
+            metadata: { siteId }
+        });
 
         try {
             // 1. Logic Hardening: Environment check
@@ -58,12 +66,19 @@ export const DeploymentEngine = {
             const hostname = store.custom_domain || `${slug}.getyousite.com`;
             console.log(`DEPLOYMENT_ENGINE: Provisioning Edge Node for ${hostname}`);
 
-            // Trigger the absolute truth provisioning action
-            const { provisionSiteOnEdge } = await import('@/app/actions/provisioning-actions');
-            const provisionResult = await provisionSiteOnEdge(hostname);
+            // Trigger the absolute truth provisioning action via VercelService
+            const { VercelService } = await import('../services/vercel-service');
+            const provisionResult = await VercelService.addDomain(hostname);
 
             if (!provisionResult.success) {
-                console.warn("[DEPLOYMENT_WARNING] Edge provisioning reported failure, but proceeding with DB establishment.");
+                console.error("[DEPLOYMENT_CRITICAL] Edge provisioning failed:", provisionResult.error);
+                await StoreService.updateStore(siteId, {
+                    status: 'failed'
+                });
+                return {
+                    success: false,
+                    error: provisionResult.error || "Edge provisioning failed."
+                };
             }
 
             const liveUrl = `https://${hostname}`;
@@ -85,13 +100,30 @@ export const DeploymentEngine = {
 
             console.log("DEPLOYMENT_ENGINE: Establish Protocol SUCCESS for", siteId);
 
+            // 9. SEO AUTO-PILOT: Notify crawlers (Protocol 11)
+            // Fire-and-forget to avoid blocking the user response
+            const { SEOAutomationService } = await import('../services/seo-automation-service');
+            SEOAutomationService.pingSearchEngines(hostname).catch(e => console.error("SEO_PING_FAILURE:", e));
+
+            await SentryService.logSecurityEvent({
+                level: 'info',
+                source: 'DeploymentEngine',
+                message: `Sovereign Presence established for ${hostname}`,
+                metadata: { siteId, liveUrl }
+            });
+
             return {
                 success: true,
                 url: liveUrl,
                 timestamp: new Date().toISOString()
             };
         } catch (error) {
-            console.error("DEPLOYMENT_ENGINE_CRITICAL_ERROR:", error);
+            await SentryService.logSecurityEvent({
+                level: 'critical',
+                source: 'DeploymentEngine',
+                message: `Deployment Anomaly detected for ${siteId}`,
+                metadata: { siteId, error: error instanceof Error ? error.message : 'Unknown' }
+            });
             await StoreService.updateStore(siteId, { status: 'failed' });
             throw error;
         }

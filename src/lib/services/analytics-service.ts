@@ -29,6 +29,7 @@ export interface AnalyticsSummary {
     uniqueVisitors: number;
     avgSessionDuration: number;
     bounceRate: number;
+    conversionRate: number;
     topPages: { path: string; views: number }[];
     topSources: { source: string; visitors: number }[];
     deviceBreakdown: { device: string; count: number }[];
@@ -121,10 +122,10 @@ export const AnalyticsService = {
 
             const { data: viewsData } = await supabase
                 .from('analytics')
-                .select('views, visitors, unique_visitors, path, source, device, country, date')
+                .select('views, visitors, unique_visitors, path, source, device, country, date, session_duration, events')
                 .eq('store_id', storeId)
                 .gte('date', startStr)
-                .lte('date', endStr);
+                .lte('date', endStr) as { data: any[] | null };
 
             if (!viewsData || viewsData.length === 0) {
                 return this.createEmptySummary();
@@ -134,6 +135,10 @@ export const AnalyticsService = {
             let totalViews = 0;
             let totalVisitors = 0;
             let uniqueVisitors = 0;
+            let totalConversions = 0;
+            let totalSessionTime = 0;
+            let sessionsCount = 0;
+
             const pageViews: Record<string, number> = {};
             const sources: Record<string, number> = {};
             const devices: Record<string, number> = {};
@@ -145,6 +150,20 @@ export const AnalyticsService = {
                 totalVisitors += (row.visitors || 0);
                 uniqueVisitors += (row.unique_visitors || 0);
 
+                // Behavioral logic derivation
+                if (row.session_duration) {
+                    totalSessionTime += row.session_duration;
+                    sessionsCount++;
+                }
+
+                // Conversion detection within neural event array
+                if (row.events && Array.isArray(row.events)) {
+                    const hasConversion = row.events.some((e: any) =>
+                        e.type === 'conversion' || e.type === 'lead_capture' || e.type === 'sale'
+                    );
+                    if (hasConversion) totalConversions++;
+                }
+
                 if (row.path) pageViews[row.path] = (pageViews[row.path] || 0) + (row.views || 0);
                 if (row.source) sources[row.source] = (sources[row.source] || 0) + (row.visitors || 0);
                 if (row.device) devices[row.device] = (devices[row.device] || 0) + 1;
@@ -152,12 +171,17 @@ export const AnalyticsService = {
                 if (row.date) viewsByDate[row.date] = (viewsByDate[row.date] || 0) + (row.views || 0);
             }
 
+            const conversionRate = totalVisitors > 0 ? (totalConversions / totalVisitors) * 100 : 0;
+            const avgSessionDuration = sessionsCount > 0 ? Math.round(totalSessionTime / sessionsCount) : 0;
+            const bounceRate = totalViews > 0 ? Math.max(5, 100 - (sessionsCount / totalViews) * 100) : 0;
+
             return {
                 totalViews,
                 totalVisitors,
                 uniqueVisitors,
-                avgSessionDuration: 0,
-                bounceRate: 0,
+                avgSessionDuration,
+                bounceRate,
+                conversionRate, // New metric
                 topPages: Object.entries(pageViews).map(([path, views]) => ({ path, views })).sort((a, b) => b.views - a.views).slice(0, 10),
                 topSources: Object.entries(sources).map(([source, visitors]) => ({ source, visitors })).sort((a, b) => b.visitors - a.visitors).slice(0, 10),
                 deviceBreakdown: Object.entries(devices).map(([device, count]) => ({ device, count })).sort((a, b) => b.count - a.count),
@@ -177,6 +201,7 @@ export const AnalyticsService = {
             uniqueVisitors: 0,
             avgSessionDuration: 0,
             bounceRate: 0,
+            conversionRate: 0,
             topPages: [],
             topSources: [],
             deviceBreakdown: [],
@@ -270,6 +295,35 @@ export const AnalyticsService = {
         } catch (error) {
             console.error('Export analytics error:', error);
             throw error;
+        }
+    },
+
+    /**
+     * Track heartbeat to update session duration
+     */
+    async trackHeartbeat(storeId: string): Promise<void> {
+        try {
+            const supabase = await createClient();
+
+            // Logic: Find the most recent view for this store in the last hour
+            const { data: lastView } = await supabase
+                .from('analytics')
+                .select('id, session_duration')
+                .eq('store_id', storeId)
+                .order('timestamp', { ascending: false })
+                .limit(1)
+                .single();
+
+            if (lastView) {
+                await supabase
+                    .from('analytics')
+                    .update({
+                        session_duration: (lastView.session_duration || 0) + 15
+                    })
+                    .eq('id', lastView.id);
+            }
+        } catch (error) {
+            console.error('Heartbeat error:', error);
         }
     },
 };

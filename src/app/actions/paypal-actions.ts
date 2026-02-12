@@ -44,7 +44,7 @@ export async function createPayPalOrder(planId: string) {
     }
 }
 
-export async function capturePayPalOrder(orderID: string, userId: string, planId: string) {
+export async function capturePayPalOrder(orderID: string, userId: string, planId: string, siteId?: string) {
     const request = new paypal.orders.OrdersCaptureRequest(orderID);
     request.requestBody({});
 
@@ -54,7 +54,8 @@ export async function capturePayPalOrder(orderID: string, userId: string, planId
         if (response.result.status === "COMPLETED") {
             const supabase = await createClient();
 
-            const { error } = await supabase
+            // 1. Logic Pillar: Standardize Profile Subscription (Global Access)
+            const { error: profileError } = await supabase
                 .from("profiles")
                 .update({
                     subscription_status: "active",
@@ -62,28 +63,26 @@ export async function capturePayPalOrder(orderID: string, userId: string, planId
                 })
                 .eq("id", userId);
 
-            if (error) throw error;
+            if (profileError) throw profileError;
 
-            revalidatePath("/dashboard");
+            // 2. Logic Pillar: Activate the Target Asset (Sovereign Order)
+            if (siteId && siteId !== "temp") {
+                console.log(`[PAYMENT_LOGIC] Moving site ${siteId} to PAID status.`);
+                const { error: storeError } = await supabase
+                    .from("stores")
+                    .update({ status: 'paid' })
+                    .eq('id', siteId)
+                    .eq('user_id', userId);
 
-            // MISSION 5.3: TRUTHFUL PROVISIONING
-            // We fetch the store associated with the transaction (if any) or all user stores requesting deployment
-            const { data: stores } = await supabase
-                .from("stores")
-                .select("id, slug, custom_domain, status")
-                .eq("user_id", userId)
-                .in("status", ["paid", "deploying"]);
+                if (storeError) console.error("Store status update failure:", storeError);
 
-            if (stores && stores.length > 0) {
+                // 3. MISSION 5.3: TRUTHFUL PROVISIONING
                 const { DeploymentEngine } = await import("@/lib/engine/deployment");
-                for (const store of stores) {
-                    console.log(
-                        `[SOVEREIGN_IGNITION] Automatically initiating deployment for store: ${store.id}`,
-                    );
-                    await DeploymentEngine.deployToProduction(store.id);
-                }
+                console.log(`[SOVEREIGN_IGNITION] Initiating atomic deployment for site: ${siteId}`);
+                await DeploymentEngine.deployToProduction(siteId);
             }
 
+            revalidatePath("/dashboard");
             return { success: true };
         }
     } catch (err) {

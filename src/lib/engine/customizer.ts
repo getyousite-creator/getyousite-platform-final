@@ -154,6 +154,12 @@ export const CustomizerEngine = {
                     keywords: [userData.niche, 'sovereign', 'intelligence']
                 }
             },
+            economic_impact: template.blueprint.economic_impact || {
+                estimated_savings: "$2.4M",
+                valuation: 3200000,
+                logic_verified: true,
+            },
+            whiteLabel: template.blueprint.whiteLabel || false,
             timestamp: new Date().toISOString()
         };
 

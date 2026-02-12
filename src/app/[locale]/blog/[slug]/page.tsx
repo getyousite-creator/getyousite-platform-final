@@ -16,7 +16,6 @@ import { useEffect, useState } from "react";
 import { Post } from "@/lib/schemas";
 
 export default function BlogPostPage() {
-    //@ts-expect-error - translations not typed yet
     const t = useTranslations("Blog");
     const params = useParams();
     const slug = params.slug as string;

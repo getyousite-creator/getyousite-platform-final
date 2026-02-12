@@ -1,5 +1,6 @@
 import { createOpenAI } from '@ai-sdk/openai';
-import { streamText } from 'ai';
+import { streamText, tool } from 'ai';
+import { z } from 'zod';
 import knowledge from '@/data/support-knowledge.json';
 
 // Note: Ensure OPENAI_API_KEY is in .env.local
@@ -11,8 +12,6 @@ if (!process.env.OPENAI_API_KEY) {
     console.warn("NEURAL_BRIDGE_WARNING: OPENAI_API_KEY is missing. Responses will fail.");
 }
 
-import { z } from 'zod';
-
 export const runtime = 'edge';
 
 export async function POST(req: Request) {
@@ -21,15 +20,15 @@ export async function POST(req: Request) {
 
         // 1. MASTER CONTEXT INJECTION (AI-SYNC PROTOCOL)
         const masterSchemaContext = `
-        DATABASE_SCHEMA_SOVEREIGN_V1:
-        - stores: (id, user_id, name, slug, status[draft, pending_payment, paid, deployed], blueprint[JSON], template_id[MasterMedical, MasterRetail, MasterProfessional])
-        - user_subscriptions: (user_id, plan_id[starter, pro, business, enterprise], site_type, status, expires_at)
+DATABASE_SCHEMA_SOVEREIGN_V1:
+- stores: (id, user_id, name, slug, status[draft, pending_payment, paid, deployed], blueprint[JSON], template_id[MasterMedical, MasterRetail, MasterProfessional])
+    - user_subscriptions: (user_id, plan_id[starter, pro, business, enterprise], site_type, status, expires_at)
         - payment_requests: (user_id, plan_id, status[pending, approved, rejected], method[paypal, cih, coupon_bypass])
-        
-        ARCHITECTURE_PILLARS:
-        1. MasterMedical: Clinical/Dental high-trust architecture.
-        2. MasterRetail: Transaction-optimized e-commerce infrastructure.
-        3. MasterProfessional: High-status B2B/Agency/Tech foundations.
+
+ARCHITECTURE_PILLARS:
+1. MasterMedical: Clinical / Dental high - trust architecture.
+        2. MasterRetail: Transaction - optimized e - commerce infrastructure.
+        3. MasterProfessional: High - status B2B / Agency / Tech foundations.
         `;
 
         const knowledgeContext = JSON.stringify(knowledge);
@@ -44,26 +43,19 @@ export async function POST(req: Request) {
             
             USE THIS KNOWLEDGE BASE: 
             ${knowledgeContext}
-            
-            PRODUCTION_ARCHITECTURE_SYNC:
+
+PRODUCTION_ARCHITECTURE_SYNC:
             ${masterSchemaContext}
             
             STRICT RULES:
-            1. If the user asks to change colors, fonts, or business name, use 'update_site_settings'.
+1. If the user asks to change colors, fonts, or business name, use 'update_site_settings'.
             2. If they ask to go live or publish, use 'trigger_deployment'.
-            3. Keep responses concise. Explain WHAT you did using the tool.
-            4. Never apologize. Be the authority.`,
+            3. Keep responses concise.Explain WHAT you did using the tool.
+4. Never apologize.Be the authority.`,
             messages,
             tools: {
-                update_site_settings: {
+                update_site_settings: tool({
                     description: "Updates the visual and metadata settings of a user's store.",
-                    parameters: z.object({
-                        storeId: z.string().describe("The ID of the store to modify"),
-                        primaryColor: z.string().optional(),
-                        fontFamily: z.string().optional(),
-                        businessName: z.string().optional(),
-                        businessDescription: z.string().optional(),
-                    }),
                     execute: async ({ storeId, ...settings }) => {
                         try {
                             const { SupabaseStoreRepository } = await import('@/lib/repositories/SupabaseStoreRepository');
@@ -78,10 +70,9 @@ export async function POST(req: Request) {
                                 ...(settings.businessName && { name: settings.businessName }),
                                 ...(settings.businessDescription && { description: settings.businessDescription }),
                                 settings: {
-                                    // Deep merge or partial update logic 
                                     ...(settings.primaryColor && { primaryColor: settings.primaryColor }),
                                     ...(settings.fontFamily && { fontFamily: settings.fontFamily }),
-                                }
+                                } as any
                             });
 
                             return { status: 'success', message: 'Neural Sync Complete: Assets hardened in Supabase.' };
@@ -89,33 +80,38 @@ export async function POST(req: Request) {
                             console.error('NEURAL_ACTION_ERROR', err);
                             return { status: 'error', message: 'Persistence Bridge Failure: Logic mismatch.' };
                         }
-                    }
-                },
-                trigger_deployment: {
-                    description: "Triggers the physical deployment of the site to Vercel/Production.",
-                    parameters: z.object({
-                        storeId: z.string().describe("The ID of the store to deploy"),
+                    },
+                    inputSchema: z.object({
+                        storeId: z.string().describe("The ID of the store to modify"),
+                        primaryColor: z.string().optional(),
+                        fontFamily: z.string().optional(),
+                        businessName: z.string().optional(),
+                        businessDescription: z.string().optional(),
                     }),
+                }),
+                trigger_deployment: tool({
+                    description: "Triggers the physical deployment of the site to Vercel/Production.",
                     execute: async ({ storeId }) => {
                         try {
                             const { SupabaseStoreRepository } = await import('@/lib/repositories/SupabaseStoreRepository');
                             const repo = new SupabaseStoreRepository();
 
-                            // 1. Update status to 'deploying'
                             await repo.saveStore({
                                 id: storeId,
                                 status: 'deploying'
                             });
 
-                            // 2. Logic: In a real prod environment, this triggers a Vercel Webhook or CI pipeline
                             console.log(`NEURAL_ACTION: Deployment Sequence Initiated for ${storeId}`);
 
                             return { status: 'deploying', url: `https://${storeId}.getyousite.app`, message: 'Physical Sovereignty Protocol initiated: Building on Vercel Node-G...' };
                         } catch (err) {
                             return { status: 'error', message: 'Deployment Protocol Failure.' };
                         }
-                    }
-                }
+                    },
+                    inputSchema: z.object({
+                        storeId: z.string().describe("The ID of the store to deploy"),
+                    }),
+                })
             }
         });
 

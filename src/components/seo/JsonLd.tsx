@@ -1,22 +1,19 @@
-export default function JsonLd() {
+interface JsonLdProps {
+    name?: string;
+    url?: string;
+    description?: string;
+    logo?: string;
+}
+
+export default function JsonLd({ name, url, description, logo }: JsonLdProps) {
     const jsonLd = {
         '@context': 'https://schema.org',
-        '@type': 'Organization',
-        name: 'GetYouSite Platform',
-        url: 'https://getyousite.platform',
-        logo: 'https://getyousite.platform/logo.png',
-        sameAs: [
-            'https://twitter.com/getyousite',
-            'https://github.com/getyousite',
-            'https://linkedin.com/company/getyousite'
-        ],
-        contactPoint: {
-            '@type': 'ContactPoint',
-            telephone: '+1-555-555-5555',
-            contactType: 'Sales',
-            areaServed: 'Global',
-            availableLanguage: ['English', 'French', 'Spanish']
-        }
+        '@type': 'LocalBusiness',
+        name: name || 'GetYouSite Sovereign Node',
+        url: url || 'https://getyousite.com',
+        description: description || 'Professional AI-Orchestrated digital empire.',
+        logo: logo || 'https://getyousite.com/logo.png',
+        areaServed: 'Global',
     };
 
     return (
