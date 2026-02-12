@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2, Rocket, Globe, Shield, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+// unused imports: getStoreStatusAction, activateStoreSimulationAction
 import Link from 'next/link';
-import { getStoreStatusAction, activateStoreSimulationAction } from '@/app/actions/store-actions';
 import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
@@ -47,9 +47,10 @@ export default function SuccessPage({ params }: { params: Promise<{ siteId: stri
 
         // Simulation Trigger
         if (isSimulated && siteId) {
-            const { activateStoreSimulationAction } = require('@/app/actions/store-actions');
-            activateStoreSimulationAction(siteId).then(() => {
-                checkStatus();
+            import('@/app/actions/store-actions').then(({ activateStoreSimulationAction }) => {
+                activateStoreSimulationAction(siteId).then(() => {
+                    checkStatus();
+                });
             });
         }
 
@@ -104,7 +105,7 @@ export default function SuccessPage({ params }: { params: Promise<{ siteId: stri
 
                 {/* DEPLOYMENT SPECS */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <SpecCard label={t('id_code')} value={params.siteId?.slice(0, 8).toUpperCase()} icon={<Shield size={14} />} />
+                    <SpecCard label={t('id_code')} value={siteId?.slice(0, 8).toUpperCase()} icon={<Shield size={14} />} />
                     <SpecCard label={t('status')} value={status.toUpperCase()} icon={<Globe size={14} />} color={status === 'active' ? 'text-emerald-400' : 'text-blue-400'} />
                     <SpecCard label={t('region')} value="EU_CENTRAL_1" icon={<ExternalLink size={14} />} />
                 </div>
@@ -120,7 +121,7 @@ export default function SuccessPage({ params }: { params: Promise<{ siteId: stri
                             className="w-full h-16 bg-white text-black font-black uppercase tracking-widest text-sm hover:bg-zinc-200 shadow-2xl"
                             asChild
                         >
-                            <a href={liveUrl || `https://${params.siteId}.getyousite.com`} target="_blank" rel="noopener noreferrer">
+                            <a href={liveUrl || `https://${siteId}.getyousite.com`} target="_blank" rel="noopener noreferrer">
                                 {t('visit_live')} <ExternalLink size={16} className="ml-2" />
                             </a>
                         </Button>
@@ -138,7 +139,14 @@ export default function SuccessPage({ params }: { params: Promise<{ siteId: stri
     );
 }
 
-function SpecCard({ label, value, icon, color = "text-white" }: any) {
+interface SpecCardProps {
+    label: string | any;
+    value: string | undefined | null;
+    icon: React.ReactNode;
+    color?: string;
+}
+
+function SpecCard({ label, value, icon, color = "text-white" }: SpecCardProps) {
     return (
         <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-left space-y-2">
             <div className="flex items-center gap-2 text-zinc-500 text-[10px] font-black uppercase tracking-widest">
