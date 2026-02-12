@@ -81,7 +81,7 @@ export default function SupabaseProvider({
         });
 
         // Initial check
-        supabase.auth.getUser().then(({ data: { user } }) => {
+        supabase.auth.getUser().then(({ data: { user } }: { data: { user: User | null } }) => {
             if (user) {
                 setUser(user);
                 fetchProfile(user.id).finally(() => setLoading(false));

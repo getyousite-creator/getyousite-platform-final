@@ -117,7 +117,7 @@ export const StorageService = {
             if (!files || files.length === 0) return;
 
             // 2. Delete them
-            const filePaths = files.map(f => `${folderPath}/${f.name}`);
+            const filePaths = files.map((f: { name: string }) => `${folderPath}/${f.name}`);
             await supabase.storage.from(BUCKET_NAME).remove(filePaths);
 
         } catch (e) {

@@ -6,7 +6,7 @@ import Link from 'next/link';
 import {
     Plus, Edit, TrendingUp, Users, Eye, Globe, Search,
     Clock, Calendar, BarChart3, SearchCheck, Shield,
-    Zap, Target, ArrowUpRight, ArrowDownRight, Download, LogOut
+    Zap, Target, ArrowUpRight, ArrowDownRight, Download, LogOut, Activity
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
@@ -18,6 +18,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { CheckoutModule } from "@/components/payment/CheckoutModule";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LeadMatrix } from './LeadMatrix';
+import { toast } from 'sonner';
 
 // Types for dashboard data
 interface DashboardStore {
@@ -26,6 +27,7 @@ interface DashboardStore {
     description: string | null;
     status: string;
     deployment_url: string | null;
+    custom_domain?: string | null;
     created_at: string;
     updated_at: string;
     blueprint?: {
