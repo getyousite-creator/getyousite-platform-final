@@ -11,6 +11,7 @@ import { signInAction, signUpAction, signInWithOAuthAction, resetPasswordAction,
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Logo from "@/components/ui/Logo";
+import { useSupabase } from "@/components/providers/SupabaseProvider";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -30,6 +31,7 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
     const t = useTranslations("Auth");
     const locale = useLocale();
     const router = useRouter();
+    const { supabase } = useSupabase();
     const isRtl = locale === 'ar';
 
     const [searchParamsError, setSearchParamsError] = useState<string | null>(null);
@@ -67,10 +69,17 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
         setLoading(true);
         setError(null);
         try {
-            await signInWithOAuthAction(provider);
-        } catch (err) {
+            const siteUrl = typeof window !== 'undefined' ? window.location.origin : '';
+            const { error } = await supabase.auth.signInWithOAuth({
+                provider,
+                options: {
+                    redirectTo: `${siteUrl}/auth/callback?next=/dashboard`,
+                }
+            });
+            if (error) throw error;
+        } catch (err: any) {
             console.error(err);
-            setError("Authentication failed. Please try again.");
+            setError(err.message || "Authentication failed. Please try again.");
             setLoading(false);
         }
     };
