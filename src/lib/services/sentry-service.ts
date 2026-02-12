@@ -5,7 +5,8 @@
  * Protocol: SPD-1 (Sovereign Protection & Defense)
  */
 
-import { createClient } from '@/lib/supabase/server';
+// REMOVED TOP-LEVEL IMPORT to prevent Edge Runtime crash in Middleware
+// import { createClient } from '@/lib/supabase/server';
 
 export const SentryService = {
     /**
@@ -47,6 +48,8 @@ export const SentryService = {
         metadata?: any;
     }) {
         try {
+            // Dynamic import to avoid edge runtime errors
+            const { createClient } = await import('@/lib/supabase/server');
             const supabase = await createClient();
             await supabase.from('system_logs').insert({
                 level: event.level,
@@ -68,6 +71,8 @@ export const SentryService = {
      * Logic: Confirms that the store exists and is in a sovereign state.
      */
     async verifyNodeIntegrity(storeId: string): Promise<boolean> {
+        // Dynamic import
+        const { createClient } = await import('@/lib/supabase/server');
         const supabase = await createClient();
         const { data, error } = await supabase
             .from('stores')
