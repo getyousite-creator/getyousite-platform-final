@@ -1,45 +1,54 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { CheckCircle2, Rocket, Globe, Shield, ExternalLink } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { CheckCircle2, Rocket, Globe, Shield, ExternalLink } from "lucide-react";
+import { Button } from "@/components/ui/button";
 // unused imports: getStoreStatusAction, activateStoreSimulationAction
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { useTranslations } from 'next-intl';
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
-export default function SuccessPage({ params }: { params: Promise<{ siteId: string, locale: string }> }) {
+export default function SuccessPage({
+    params,
+}: {
+    params: Promise<{ siteId: string; locale: string }>;
+}) {
     const paramsU = React.use(params);
     const siteId = paramsU.siteId;
-    const [status, setStatus] = useState<'verifying' | 'deploying' | 'active' | 'pending_payment'>('verifying');
+    const [status, setStatus] = useState<"verifying" | "deploying" | "active" | "pending_payment">(
+        "verifying",
+    );
     const [liveUrl, setLiveUrl] = useState<string | null>(null);
     const searchParams = useSearchParams();
-    const isSimulated = searchParams.get('simulated') === 'true';
-    const t = useTranslations('Success');
+    const isSimulated = searchParams.get("simulated") === "true";
+    const t = useTranslations("Success");
 
     useEffect(() => {
         let pollCount = 0;
         const checkStatus = async () => {
             if (!siteId) return false;
-            const { getStoreStatusAction } = await import('@/app/actions/store-actions');
+            const { getStoreStatusAction } = await import("@/app/actions/store-actions");
             const result = await getStoreStatusAction(siteId);
 
             if (result.success && result.data) {
                 const data = result.data;
-                if (data.status === 'deployed') {
-                    setStatus('active');
+                if (data.status === "deployed") {
+                    setStatus("active");
                     setLiveUrl(data.deployment_url ?? null);
 
                     // PROTOCOL: TRACK CONVERSION TRUTH
-                    const { trackEventAction } = await import('@/app/actions/analytics-actions');
-                    trackEventAction(siteId, '/success', 'monetization_conversion', { amount: '49.00', currency: 'USD' }).catch(() => { });
+                    const { trackEventAction } = await import("@/app/actions/analytics-actions");
+                    trackEventAction(siteId, "/success", "monetization_conversion", {
+                        amount: "49.00",
+                        currency: "USD",
+                    }).catch(() => {});
 
                     return true;
-                } else if (data.status === 'paid' || data.status === 'deploying') {
-                    setStatus('deploying');
-                } else if (data.status === 'pending_payment') {
-                    setStatus('verifying');
+                } else if (data.status === "paid" || data.status === "deploying") {
+                    setStatus("deploying");
+                } else if (data.status === "pending_payment") {
+                    setStatus("verifying");
                 }
             }
             return false;
@@ -47,7 +56,7 @@ export default function SuccessPage({ params }: { params: Promise<{ siteId: stri
 
         // Simulation Trigger
         if (isSimulated && siteId) {
-            import('@/app/actions/store-actions').then(({ activateStoreSimulationAction }) => {
+            import("@/app/actions/store-actions").then(({ activateStoreSimulationAction }) => {
                 activateStoreSimulationAction(siteId).then(() => {
                     checkStatus();
                 });
@@ -76,13 +85,13 @@ export default function SuccessPage({ params }: { params: Promise<{ siteId: stri
                         animate={{ scale: 1 }}
                         className="w-24 h-24 bg-emerald-500/20 rounded-full flex items-center justify-center border border-emerald-500/30"
                     >
-                        {status === 'active' ? (
+                        {status === "active" ? (
                             <CheckCircle2 className="w-12 h-12 text-emerald-400" />
                         ) : (
                             <Rocket className="w-12 h-12 text-blue-400 animate-pulse" />
                         )}
                     </motion.div>
-                    {status === 'active' && (
+                    {status === "active" && (
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -94,24 +103,35 @@ export default function SuccessPage({ params }: { params: Promise<{ siteId: stri
                 {/* CELEBRATION TEXT */}
                 <div className="space-y-4">
                     <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase">
-                        {status === 'active' ? t('emp_live') : t('orchestrating')}
+                        {status === "active" ? t("emp_live") : t("orchestrating")}
                     </h1>
                     <p className="text-zinc-500 text-lg max-w-md mx-auto">
-                        {status === 'active'
-                            ? t('active_msg')
-                            : t('verifying_msg')}
+                        {status === "active" ? t("active_msg") : t("verifying_msg")}
                     </p>
                 </div>
 
                 {/* DEPLOYMENT SPECS */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <SpecCard label={t('id_code')} value={siteId?.slice(0, 8).toUpperCase()} icon={<Shield size={14} />} />
-                    <SpecCard label={t('status')} value={status.toUpperCase()} icon={<Globe size={14} />} color={status === 'active' ? 'text-emerald-400' : 'text-blue-400'} />
-                    <SpecCard label={t('region')} value="EU_CENTRAL_1" icon={<ExternalLink size={14} />} />
+                    <SpecCard
+                        label={t("id_code")}
+                        value={siteId?.slice(0, 8).toUpperCase()}
+                        icon={<Shield size={14} />}
+                    />
+                    <SpecCard
+                        label={t("status")}
+                        value={status.toUpperCase()}
+                        icon={<Globe size={14} />}
+                        color={status === "active" ? "text-emerald-400" : "text-blue-400"}
+                    />
+                    <SpecCard
+                        label={t("region")}
+                        value="EU_CENTRAL_1"
+                        icon={<ExternalLink size={14} />}
+                    />
                 </div>
 
                 {/* FINAL ACTIONS */}
-                {status === 'active' && (
+                {status === "active" && (
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -121,8 +141,12 @@ export default function SuccessPage({ params }: { params: Promise<{ siteId: stri
                             className="w-full h-16 bg-white text-black font-black uppercase tracking-widest text-sm hover:bg-zinc-200 shadow-2xl"
                             asChild
                         >
-                            <a href={liveUrl || `https://${siteId}.getyousite.com`} target="_blank" rel="noopener noreferrer">
-                                {t('visit_live')} <ExternalLink size={16} className="ml-2" />
+                            <a
+                                href={liveUrl || `https://${siteId}.getyousite.com`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                {t("visit_live")} <ExternalLink size={16} className="ml-2" />
                             </a>
                         </Button>
                         <Button
@@ -130,7 +154,7 @@ export default function SuccessPage({ params }: { params: Promise<{ siteId: stri
                             className="w-full text-zinc-500 hover:text-white uppercase text-[10px] font-bold tracking-widest mt-4"
                             asChild
                         >
-                            <Link href="/">{t('return_dashboard')}</Link>
+                            <Link href="/">{t("return_dashboard")}</Link>
                         </Button>
                     </motion.div>
                 )}
@@ -140,7 +164,7 @@ export default function SuccessPage({ params }: { params: Promise<{ siteId: stri
 }
 
 interface SpecCardProps {
-    label: string | any;
+    label: string;
     value: string | undefined | null;
     icon: React.ReactNode;
     color?: string;
@@ -153,9 +177,7 @@ function SpecCard({ label, value, icon, color = "text-white" }: SpecCardProps) {
                 {icon}
                 {label}
             </div>
-            <div className={`text-sm font-bold truncate ${color}`}>
-                {value}
-            </div>
+            <div className={`text-sm font-bold truncate ${color}`}>{value}</div>
         </div>
     );
 }

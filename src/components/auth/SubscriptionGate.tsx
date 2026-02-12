@@ -4,8 +4,7 @@ import { useAuth } from "@/components/providers/SupabaseProvider";
 import { Button } from "@/components/ui/button";
 import { Lock } from "lucide-react";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
-
+import { useTranslations, useLocale } from "next-intl";
 interface SubscriptionGateProps {
     children: React.ReactNode;
     requiredTier?: string;
@@ -19,6 +18,7 @@ export function SubscriptionGate({
 }: SubscriptionGateProps) {
     const { profile, loading } = useAuth();
     const t = useTranslations("Common");
+    const locale = useLocale();
 
     if (loading) return null;
 
