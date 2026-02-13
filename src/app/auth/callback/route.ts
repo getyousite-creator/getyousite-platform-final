@@ -36,15 +36,26 @@ export async function GET(request: NextRequest) {
         )
         const { error } = await supabase.auth.exchangeCodeForSession(code)
         if (!error) {
-            const forwardedHost = request.headers.get('x-forwarded-host') // Hello, Cloudflare
+            const forwardedHost = request.headers.get('x-forwarded-host')
             const isLocalEnv = process.env.NODE_ENV === 'development'
 
+            // Logic: Detect locale from the 'next' parameter or default to 'en'
+            let redirectPath = next;
+
+            // If next doesn't start with a locale, prepend default locale
+            const locales = ['en', 'ar', 'fr', 'es', 'de', 'it', 'pt', 'ru', 'zh'];
+            const hasLocale = locales.some(loc => next.startsWith(`/${loc}/`));
+
+            if (!hasLocale && !next.startsWith('/auth')) {
+                redirectPath = `/en${next}`;
+            }
+
             if (isLocalEnv) {
-                return NextResponse.redirect(`${origin}${next}`)
+                return NextResponse.redirect(`${origin}${redirectPath}`)
             } else if (forwardedHost) {
-                return NextResponse.redirect(`https://${forwardedHost}${next}`)
+                return NextResponse.redirect(`https://${forwardedHost}${redirectPath}`)
             } else {
-                return NextResponse.redirect(`${origin}${next}`)
+                return NextResponse.redirect(`${origin}${redirectPath}`)
             }
         } else {
             console.error('[AUTH-CALLBACK] Error exchanging code for session:', error.message)

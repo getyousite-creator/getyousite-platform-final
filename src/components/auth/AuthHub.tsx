@@ -73,7 +73,7 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
             const { error } = await supabase.auth.signInWithOAuth({
                 provider,
                 options: {
-                    redirectTo: `${siteUrl}/auth/callback?next=/dashboard`,
+                    redirectTo: `${siteUrl}/auth/callback?next=/${locale}/dashboard`,
                 }
             });
             if (error) throw error;
