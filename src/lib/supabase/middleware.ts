@@ -1,8 +1,8 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-export async function updateSession(request: NextRequest) {
-    let supabaseResponse = NextResponse.next({
+export async function updateSession(request: NextRequest, response?: NextResponse) {
+    let supabaseResponse = response || NextResponse.next({
         request,
     })
 
@@ -25,9 +25,12 @@ export async function updateSession(request: NextRequest) {
                 },
                 setAll(cookiesToSet) {
                     cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-                    supabaseResponse = NextResponse.next({
+
+                    // If we have a passed response, updates cookies on it
+                    supabaseResponse = response || NextResponse.next({
                         request,
                     })
+
                     cookiesToSet.forEach(({ name, value, options }) =>
                         supabaseResponse.cookies.set(name, value, options)
                     )
@@ -37,9 +40,7 @@ export async function updateSession(request: NextRequest) {
     )
 
     // IMPORTANT: Avoid writing any logic between createServerClient and
-    // supabase.auth.getUser(). A simple mistake can make it very hard to debug
-    // issues with users being randomly logged out.
-
+    // supabase.auth.getUser().
     const {
         data: { user },
     } = await supabase.auth.getUser()
@@ -47,39 +48,44 @@ export async function updateSession(request: NextRequest) {
     const AUTHORIZED_EMAIL = "u110877386@getyousite.com";
     const isAdminPath = request.nextUrl.pathname.includes('/admin');
 
+    // Helper to get locale from path
+    const getLocale = () => {
+        const match = request.nextUrl.pathname.match(/^\/([a-z]{2})\//);
+        return match ? match[1] : 'en'; // Default to 'en' or use logic to detect
+    };
+    const locale = getLocale();
+
     if (isAdminPath) {
         if (!user || user.email !== AUTHORIZED_EMAIL) {
             const url = request.nextUrl.clone();
-            url.pathname = '/404'; // Or simple redirect to home
+            url.pathname = `/${locale}/404`;
             return NextResponse.redirect(url);
         }
     }
 
-    if (
-        !user &&
-        !request.nextUrl.pathname.startsWith('/login') &&
-        !request.nextUrl.pathname.startsWith('/signup') &&
-        !request.nextUrl.pathname.startsWith('/forgot-password') &&
-        !request.nextUrl.pathname.startsWith('/auth') &&
-        (request.nextUrl.pathname.includes('/customizer') || request.nextUrl.pathname.includes('/success') || request.nextUrl.pathname.includes('/dashboard'))
-    ) {
-        // no user, potentially respond by redirecting the user to the login page
+    // Protected Routes Logic
+    const isProtectedRoute = (
+        request.nextUrl.pathname.includes('/customizer') ||
+        request.nextUrl.pathname.includes('/success') ||
+        request.nextUrl.pathname.includes('/dashboard')
+    );
+
+    const isAuthRoute = (
+        request.nextUrl.pathname.includes('/login') ||
+        request.nextUrl.pathname.includes('/signup') ||
+        request.nextUrl.pathname.includes('/forgot-password') ||
+        request.nextUrl.pathname.includes('/auth') ||
+        request.nextUrl.pathname.includes('/reset-password')
+    );
+
+    if (!user && isProtectedRoute && !isAuthRoute) {
+        // no user, redirect to login with locale
         const url = request.nextUrl.clone()
-        url.pathname = '/login'
+        url.pathname = `/${locale}/login`
+        // Preserve query params (like return address)
+        url.search = request.nextUrl.search;
         return NextResponse.redirect(url)
     }
-
-    // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
-    // creating a new response object with NextResponse.next() make sure to:
-    // 1. Pass the request in it, like so:
-    //    const myNewResponse = NextResponse.next({ request })
-    // 2. Copy over the cookies, like so:
-    //    myNewResponse.cookies.setAll(supabaseResponse.cookies.getAll())
-    // 3. Change the myNewResponse object to fit your needs, but avoid changing
-    //    the cookies!
-    // 4. Finally: return myNewResponse
-    // If this is not done, you may be causing the browser and server to go out
-    // of sync and terminate the user's session premurely!
 
     return supabaseResponse
 }
