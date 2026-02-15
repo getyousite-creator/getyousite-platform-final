@@ -5,6 +5,7 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build",
+        "build:vercel": "next build --webpack",
         "start": "next start",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
         "audit:routes": "node --experimental-strip-types scripts/audit-production-routes.ts",
