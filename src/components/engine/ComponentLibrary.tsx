@@ -24,6 +24,7 @@ interface ComponentLibraryProps {
     isEditable?: boolean;
     onEdit?: (type: string, content: any) => void;
     priority?: boolean;
+    storeId?: string;
 }
 
 
@@ -56,7 +57,7 @@ function EditableText({ text, onUpdate, className, element: Element = 'span' }: 
 }
 
 
-export function ComponentLibrary({ id, type, content, primaryColor, backgroundColor, textColor, isEditable, onEdit, priority }: ComponentLibraryProps) {
+export function ComponentLibrary({ id, type, content, primaryColor, backgroundColor, textColor, isEditable, onEdit, priority, storeId }: ComponentLibraryProps) {
 
     const updateSectionContent = useTemplateEditor(state => state.updateSectionContent);
 
@@ -94,10 +95,10 @@ export function ComponentLibrary({ id, type, content, primaryColor, backgroundCo
                 return <PreviewGallery content={content} primaryColor={primaryColor} />;
             case 'contact':
             case 'SMART_FORM':
-                return <ContactForm content={content} primaryColor={primaryColor} />;
+                return <ContactForm content={content} primaryColor={primaryColor} storeId={storeId} />;
             case 'booking':
             case 'APPOINTMENT_WIDGET':
-                return <Booking content={content} primaryColor={primaryColor} />;
+                return <Booking content={content} primaryColor={primaryColor} storeId={storeId} />;
             case 'stats':
                 return <Stats content={content} primaryColor={primaryColor} />;
             case 'team':
@@ -110,6 +111,8 @@ export function ComponentLibrary({ id, type, content, primaryColor, backgroundCo
                 return <PreviewPricing content={content} primaryColor={primaryColor} />;
             case 'LEGAL_NOTICE':
                 return <PreviewLegal content={content} />;
+            case 'CINEMATIC_VIDEO':
+                return <PreviewCinematicVideo id={id} content={content} primaryColor={primaryColor} />;
 
 
             default:
@@ -510,7 +513,66 @@ function PreviewCTA({ content, primaryColor, backgroundColor, textColor }: any) 
     );
 }
 
-function PreviewGallery({ content, primaryColor, backgroundColor, textColor }: any) {
+function PreviewCinematicVideo({ content, primaryColor }: any) {
+    const [isSynthesizing, setIsSynthesizing] = React.useState(true);
+    const videoUrl = content?.videoUrl || "https://assets.mixkit.co/videos/preview/mixkit-modern-architecture-in-a-sunny-day-36314-large.mp4";
+
+    React.useEffect(() => {
+        const timer = setTimeout(() => setIsSynthesizing(false), 5000);
+        return () => clearTimeout(timer);
+    }, []);
+
+    return (
+        <section className="py-24 px-8 bg-black relative overflow-hidden">
+            <div className="max-w-6xl mx-auto">
+                <div className="mb-12 text-center space-y-4">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-black uppercase tracking-[0.4em] text-primary">
+                        Neural_Video_Synthesis
+                    </div>
+                    <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase italic">Cinematic Asset <span className="text-primary not-italic">Generated</span></h2>
+                </div>
+
+                <div className="relative aspect-video rounded-[3rem] overflow-hidden border border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.5)] group">
+                    {isSynthesizing ? (
+                        <div className="absolute inset-0 bg-[#020617] flex flex-col items-center justify-center space-y-6 z-20">
+                            <div className="w-16 h-16 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                            <div className="space-y-2 text-center">
+                                <p className="text-[11px] font-black uppercase tracking-[0.5em] text-white animate-pulse">Rendering_4K_Asset...</p>
+                                <p className="text-[9px] font-mono text-white/30 uppercase tracking-widest">GYS-VIDEO-RENDER-NODE-22</p>
+                            </div>
+                        </div>
+                    ) : (
+                        <video
+                            src={videoUrl}
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-1000"
+                        />
+                    )}
+
+                    {/* Video HUD */}
+                    <div className="absolute top-8 left-8 p-6 bg-black/60 backdrop-blur-md rounded-2xl border border-white/5 z-10 flex flex-col gap-1">
+                        <span className="text-[10px] font-black text-white/80 uppercase tracking-widest flex items-center gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                            Neural_Input: {content?.prompt || "Standard_Atmosphere"}
+                        </span>
+                        <span className="text-[9px] font-mono text-white/40">RESOLUTION: 3840 x 2160 (4K)</span>
+                    </div>
+
+                    <div className="absolute bottom-8 right-8">
+                        <div className="px-6 py-2 rounded-full bg-primary text-white text-[9px] font-black uppercase tracking-[0.3em] shadow-2xl">
+                            Verified AI Output
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+export function PreviewGallery({ content, primaryColor, backgroundColor, textColor }: any) {
     const images = content?.images || [
         "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=800&q=80",
         "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",

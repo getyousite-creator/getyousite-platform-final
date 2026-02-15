@@ -8,25 +8,33 @@ import { cn } from "@/lib/utils";
 import { MarketIntelligenceBridge, CurrencyLocale, UnitSystem } from "@/lib/engine/market-intelligence";
 import CinematicVideo from "@/components/home/showcase/CinematicVideo";
 import { useState } from "react";
+import SovereignWrapper from "../SovereignWrapper";
+import Logo from "@/components/ui/Logo";
+import { ComponentLibrary } from "@/components/engine/ComponentLibrary";
 
-interface BorealEstatesProps {
-    settings: {
-        primaryColor: string;
-        secondaryColor: string;
-        headline: string;
-        subheadline: string;
-        accentColor: string;
-        fontFamily: string;
-        locale?: string;
-    };
+export default function BorealEstates({ settings, blueprint }: { settings: any, blueprint?: any }) {
+    return (
+        <SovereignWrapper>
+            {({ onOpen, primary, secondary, pulse }) => (
+                <BorealContent
+                    settings={settings}
+                    blueprint={blueprint}
+                    onOpen={onOpen}
+                    pulse={pulse}
+                    primaryColor={primary}
+                />
+            )}
+        </SovereignWrapper>
+    );
 }
 
-import Logo from "@/components/ui/Logo";
+function BorealContent({ settings, blueprint, onOpen, pulse, primaryColor }: any) {
+    const { fontFamily, locale = 'en' } = settings;
 
-export default function BorealEstates({ settings }: BorealEstatesProps) {
-    const { primaryColor, headline, subheadline, fontFamily, locale = 'en' } = settings;
-    const updatePulse = useTemplateEditor((state) => state.updatePulse);
-    const onOpen = useLaunchModal((state) => state.onOpen);
+    // Schema-Driven Data
+    const heroContent = blueprint?.layout?.find((s: any) => s.type === 'hero' || s.type === 'HERO_PRIME')?.content;
+    const headline = heroContent?.headline || settings.headline;
+    const subheadline = heroContent?.subheadline || settings.subheadline;
 
     // Global Market Toggles
     const [currency, setCurrency] = useState<CurrencyLocale>(MarketIntelligenceBridge.getDefaults(locale).currency);
@@ -34,9 +42,9 @@ export default function BorealEstates({ settings }: BorealEstatesProps) {
 
     return (
         <motion.div
-            key={updatePulse}
+            key={pulse}
             animate={{ opacity: [0.95, 1], scale: [0.99, 1] }}
-            className="w-full min-h-screen bg-slate-950 text-white selection:bg-blue-500/30"
+            className="w-full min-h-screen bg-slate-950 text-white selection:bg-blue-500/30 overflow-x-hidden"
             style={{ fontFamily }}
         >
             {/* Real Estate Header - High-Fi Glass */}
@@ -129,12 +137,29 @@ export default function BorealEstates({ settings }: BorealEstatesProps) {
             </section>
 
             {/* Property Intelligence Grid */}
-            <section className="py-32 px-10 grid grid-cols-1 md:grid-cols-4 gap-12 bg-white text-slate-950">
+            <section className="py-32 px-10 grid grid-cols-1 md:grid-cols-4 gap-12 bg-white text-slate-950 relative z-10">
                 <PropertySpec icon={Map} label="Location" value="St. Moritz, Swiss Alps" />
                 <PropertySpec icon={Ruler} label="Total Area" value={MarketIntelligenceBridge.formatArea(12400, units)} />
                 <PropertySpec icon={BedDouble} label="Sleeping" value="6 Grand Suites" />
                 <PropertySpec icon={Bath} label="Wellness" value="8 Spa En-Suites" />
             </section>
+
+            {/* Dynamic Section Injection (Sovereign Mandate) */}
+            <div className="relative z-10 bg-black">
+                {blueprint?.layout?.map((section: any, index: number) => {
+                    // Skip Hero as we handle it custom
+                    if (section.type === 'hero' || section.type === 'HERO_PRIME') return null;
+
+                    return (
+                        <ComponentLibrary
+                            key={section.id || index}
+                            type={section.type}
+                            content={section.content}
+                            primaryColor={primaryColor}
+                        />
+                    );
+                })}
+            </div>
         </motion.div>
     );
 }

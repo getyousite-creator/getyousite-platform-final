@@ -11,10 +11,29 @@ export interface LeadCaptureData {
 }
 
 /**
- * Capture a lead for a specific store
+ * SOVEREIGN LEAD CAPTURE ACTION
+ * Logic: Captures visitor data and persists it to the store's vault.
+ * Supports both FormData (for forms) and raw objects (for direct orchestration).
  */
-export async function captureStoreLeadAction(data: LeadCaptureData) {
+export async function captureStoreLeadAction(input: LeadCaptureData | FormData) {
     const supabase = await createClient();
+
+    let data: LeadCaptureData;
+
+    if (input instanceof FormData) {
+        data = {
+            storeId: input.get('store_id') as string,
+            email: input.get('email') as string,
+            fullName: input.get('full_name') as string,
+            message: input.get('message') as string,
+        };
+    } else {
+        data = input;
+    }
+
+    if (!data.storeId || !data.email) {
+        return { success: false, error: "PROTOCOL_ERROR: Required fields missing." };
+    }
 
     const { error } = await supabase
         .from('store_leads')
@@ -24,16 +43,17 @@ export async function captureStoreLeadAction(data: LeadCaptureData) {
             full_name: data.fullName,
             message: data.message,
             metadata: {
-                user_agent: "Sovereign-Browser",
-                ip_source: "Neural-Link"
+                user_agent: "Detected",
+                source: "SmartForm_v1"
             }
         });
 
     if (error) {
         console.error("LEAD_CAPTURE_ERROR:", error.message);
-        return { success: false, message: error.message };
+        return { success: false, error: error.message };
     }
 
+    revalidatePath('/dashboard');
     return { success: true };
 }
 

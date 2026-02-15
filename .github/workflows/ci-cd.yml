@@ -190,6 +190,8 @@ jobs:
         name: Deploy to Vercel (Preview)
         runs-on: ubuntu-latest
         needs: build
+        outputs:
+            preview-url: ${{ steps.vercel-deploy.outputs.preview-url }}
         steps:
             - name: Checkout Code
               uses: actions/checkout@v4
@@ -205,14 +207,17 @@ jobs:
 
             - name: Deploy to Vercel (Preview)
               id: vercel-deploy
-              run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+              run: |
+                  PREVIEW_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+                  echo "preview-url=${PREVIEW_URL}" >> $GITHUB_OUTPUT
+                  echo "Preview URL: ${PREVIEW_URL}"
 
             - name: Comment on PR
               if: github.event_name == 'pull_request'
               uses: actions/github-script@v6
               with:
                   script: |
-                      const body = `🚀 Deploy Preview Ready!\n\nPreview URL: ${process.env.PREVIEW_URL}`;
+                      const body = `🚀 Deploy Preview Ready!\n\nPreview URL: ${{ steps.vercel-deploy.outputs.preview-url }}`;
                       github.rest.issues.createComment({
                           issue_number: context.issue.number,
                           owner: context.repo.owner,
@@ -221,12 +226,54 @@ jobs:
                       });
 
     # -------------------------------------------------------
-    # JOB 7: Deploy to Vercel (Production)
+    # JOB 7: Route & SEO Gate (Preview)
+    # -------------------------------------------------------
+    route-gate-preview:
+        name: Route & SEO Gate (Preview)
+        runs-on: ubuntu-latest
+        needs: deploy-preview
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+                  cache: 'npm'
+
+            - name: Install Dependencies
+              run: npm ci
+
+            - name: Validate Preview URL Presence
+              run: |
+                  if [ -z "${{ needs.deploy-preview.outputs.preview-url }}" ]; then
+                    echo "Preview URL is empty. Failing gate."
+                    exit 1
+                  fi
+
+            - name: Audit Routes (Preview)
+              run: npm run audit:routes
+              env:
+                  AUDIT_BASE_URL: ${{ needs.deploy-preview.outputs.preview-url }}
+
+            - name: Audit SEO (Preview)
+              run: npm run audit:seo
+              env:
+                  AUDIT_BASE_URL: ${{ needs.deploy-preview.outputs.preview-url }}
+
+            - name: Audit Generate Guard (Preview)
+              run: npm run audit:generate
+              env:
+                  AUDIT_BASE_URL: ${{ needs.deploy-preview.outputs.preview-url }}
+
+    # -------------------------------------------------------
+    # JOB 8: Deploy to Vercel (Production)
     # -------------------------------------------------------
     deploy-production:
         name: Deploy to Vercel (Production)
         runs-on: ubuntu-latest
-        needs: [database, deploy-preview]
+        needs: [database, route-gate-preview]
         if: github.ref == 'refs/heads/main'
         environment: production
         steps:
@@ -265,7 +312,43 @@ jobs:
                   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
     # -------------------------------------------------------
-    # JOB 8: Performance Testing
+    # JOB 9: Production Audit
+    # -------------------------------------------------------
+    production-audit:
+        name: Production Audit
+        runs-on: ubuntu-latest
+        needs: deploy-production
+        if: github.ref == 'refs/heads/main'
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+                  cache: 'npm'
+
+            - name: Install Dependencies
+              run: npm ci
+
+            - name: Audit Routes (Production)
+              run: npm run audit:routes
+              env:
+                  AUDIT_BASE_URL: https://getyousite.com
+
+            - name: Audit SEO (Production)
+              run: npm run audit:seo
+              env:
+                  AUDIT_BASE_URL: https://getyousite.com
+
+            - name: Audit Generate Guard (Production)
+              run: npm run audit:generate
+              env:
+                  AUDIT_BASE_URL: https://getyousite.com
+
+    # -------------------------------------------------------
+    # JOB 10: Performance Testing
     # -------------------------------------------------------
     performance:
         name: Performance Testing
@@ -292,7 +375,7 @@ jobs:
                   PREVIEW_URL: ${{ needs.deploy-preview.outputs.preview-url }}
 
     # -------------------------------------------------------
-    # JOB 9: Backup Database
+    # JOB 11: Backup Database
     # -------------------------------------------------------
     backup:
         name: Backup Database
@@ -325,13 +408,13 @@ jobs:
                   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     # -------------------------------------------------------
-    # JOB 10: Notify on Failure
+    # JOB 12: Notify on Failure
     # -------------------------------------------------------
     notify-failure:
         name: Notify on Failure
         runs-on: ubuntu-latest
         if: failure()
-        needs: [lint, test, security, build]
+        needs: [lint, test, security, build, route-gate-preview, production-audit]
         steps:
             - name: Send Slack Notification
               uses: slackapi/slack-github-action@v1.23.0

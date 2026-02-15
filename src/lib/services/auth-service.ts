@@ -367,10 +367,23 @@ export const AuthService = {
 
     /**
      * Get user credits and tier
+     * Logic: Absolute initialization. No user is left behind.
      */
     async getUserProfile(userId: string) {
         const supabase = await createClient();
-        const { data } = await supabase.from('users').select('credits, tier').eq('id', userId).single();
+        let { data, error } = await supabase.from('users').select('credits, tier').eq('id', userId).single();
+
+        // AUTO-INIT: If user exists but has no credits set, grant them the Sovereign-Starter credit (1)
+        if (!error && data && (data.credits === null || data.credits === undefined)) {
+            const { data: updated } = await supabase
+                .from('users')
+                .update({ credits: 1, tier: 'starter' })
+                .eq('id', userId)
+                .select('credits, tier')
+                .single();
+            return updated;
+        }
+
         return data;
     },
 

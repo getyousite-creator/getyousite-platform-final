@@ -43,16 +43,28 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         description: t('description'),
         manifest: '/manifest.json',
         themeColor: '#ffffff',
+        alternates: {
+            canonical: `https://getyousite.com/${locale}`,
+            languages: {
+                'en': 'https://getyousite.com/en',
+                'ar': 'https://getyousite.com/ar',
+                'fr': 'https://getyousite.com/fr',
+                'es': 'https://getyousite.com/es',
+            },
+        },
         openGraph: {
             title: t('title'),
             description: t('description'),
             type: 'website',
             locale: locale,
+            url: `https://getyousite.com/${locale}`,
+            siteName: 'GetYouSite',
         },
         twitter: {
             card: 'summary_large_image',
             title: t('title'),
             description: t('description'),
+            site: '@getyousite',
         }
     };
 }
@@ -66,11 +78,12 @@ export default async function LocaleLayout({
 }) {
     const { locale } = await params;
 
-    if (!routing.locales.includes(locale as any)) {
+    if (!routing.locales.includes(locale as (typeof routing.locales)[number])) {
         notFound();
     }
 
     const messages = await getMessages();
+    const t = await getTranslations({ locale, namespace: 'Metadata' });
 
     return (
         <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className="scroll-smooth" suppressHydrationWarning>
@@ -90,7 +103,13 @@ export default async function LocaleLayout({
                         <SupabaseProvider>
                             <PwaProvider>
                                 <AnalyticsProvider>
-                                    <JsonLd />
+                                    <JsonLd
+                                        name={t('title')}
+                                        description={t('description')}
+                                        url="https://getyousite.com"
+                                        logo="https://getyousite.com/logo.png"
+                                        locale={locale}
+                                    />
                                     <LaunchModal />
                                     <AuthModalManager />
                                     {children}

@@ -330,8 +330,8 @@
         "copyright": "Â© 2026 GetYouSite. All rights reserved."
     },
     "Metadata": {
-        "title": "GetYouSite | Create Your Professional Website Easily",
-        "description": "Build your premium website in 48 hours with AI precision. The best platform for professional web design."
+        "title": "GetYouSite | Sovereign Logic for Digital Empires",
+        "description": "Engineered for absolute market dominance. Build your high-performance professional website in 48 hours with AI neural synthesis."
     },
     "Auth": {
         "signin_title": "Login",
@@ -617,7 +617,13 @@
             "node": "Node:",
             "contacted": "Contacted",
             "archive": "Archive",
-            "ago": "ago"
+            "ago": "ago",
+            "total_leads": "Total Leads",
+            "new_hot": "New & Hot",
+            "contact_rate": "Contact Rate",
+            "avg_ai_score": "Avg AI Score",
+            "intelligence_desc": "AI-Powered Lead Intelligence & Prioritization",
+            "loading_intelligence": "Analyzing Lead Intelligence..."
         },
         "intelligence": {
             "title": "Intelligence Hub",
@@ -797,7 +803,7 @@
             "ref_code": "REF: ARCH_PRO_01"
         },
         "resto": {
-            "menu": "MenÃ»",
+            "menu": "Menu",
             "private_table": "Private_Table",
             "philosophy": "Philosophy",
             "reserve_table": "Reserve_Table",
@@ -808,7 +814,7 @@
             "chefs_desc": "Mastery directed by tradition and innovation.",
             "waste_logic": "Zero-Waste Logic",
             "waste_logic_desc": "Sustainability integrated into every recipe.",
-            "archive_menu": "L'Archive MenÃ».",
+            "archive_menu": "L'Archive Menu.",
             "seasonal_selections": "Seasonal Chef Selections",
             "starters": "Starters",
             "main_assets": "Main_Assets",
@@ -883,7 +889,7 @@
             "yield": "Alpha_Yield",
             "operators": "Elite_Operators",
             "latency": "Logic_Latency",
-            "slavery_policy": "Slavery_Policy",
+            "slavery_policy": "Ethics_Policy",
             "privacy_trust": "Privacy_Trust",
             "regulatory_log": "Regulatory_Log",
             "investor_relations": "Investor_Relations",

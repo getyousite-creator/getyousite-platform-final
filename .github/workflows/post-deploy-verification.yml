@@ -1,0 +1,59 @@
+name: Post-Deploy Verification
+
+on:
+    workflow_run:
+        workflows: ["CI/CD Pipeline"]
+        types: [completed]
+    workflow_dispatch:
+        inputs:
+            base_url:
+                description: "Production base URL to audit"
+                required: false
+                default: "https://getyousite.com"
+
+jobs:
+    verify:
+        name: Verify Production Health
+        if: >
+            github.event_name == 'workflow_dispatch' ||
+            (github.event_name == 'workflow_run' &&
+             github.event.workflow_run.conclusion == 'success')
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+                  cache: "npm"
+
+            - name: Install Dependencies
+              run: npm ci
+
+            - name: Resolve Base URL
+              id: base
+              shell: bash
+              run: |
+                  if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ inputs.base_url }}" ]; then
+                    echo "url=${{ inputs.base_url }}" >> "$GITHUB_OUTPUT"
+                  else
+                    echo "url=https://getyousite.com" >> "$GITHUB_OUTPUT"
+                  fi
+                  echo "Using BASE URL: $(cat "$GITHUB_OUTPUT" | sed 's/url=//')"
+
+            - name: Audit Routes
+              run: npm run audit:routes
+              env:
+                  AUDIT_BASE_URL: ${{ steps.base.outputs.url }}
+
+            - name: Audit SEO
+              run: npm run audit:seo
+              env:
+                  AUDIT_BASE_URL: ${{ steps.base.outputs.url }}
+
+            - name: Audit Generate Guard
+              run: npm run audit:generate
+              env:
+                  AUDIT_BASE_URL: ${{ steps.base.outputs.url }}

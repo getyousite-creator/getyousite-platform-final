@@ -125,8 +125,8 @@ export function LeadMatrix() {
         const avgScore =
             leadsWithScores.length > 0
                 ? (
-                      leadsWithScores.reduce((sum, l) => sum + l.score, 0) / leadsWithScores.length
-                  ).toFixed(0)
+                    leadsWithScores.reduce((sum, l) => sum + l.score, 0) / leadsWithScores.length
+                ).toFixed(0)
                 : "0";
 
         return { total, newLeads, contacted, conversionRate, avgScore };
@@ -137,7 +137,7 @@ export function LeadMatrix() {
             <div className="p-12 text-center bg-white/5 rounded-3xl border border-white/5 animate-pulse">
                 <MessageSquare className="w-12 h-12 text-[#00D09C]/20 mx-auto mb-4" />
                 <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">
-                    Analyzing Lead Intelligence...
+                    {t('loading_intelligence')}
                 </span>
             </div>
         );
@@ -152,7 +152,7 @@ export function LeadMatrix() {
                         <span className="text-2xl font-black text-white">{analytics.total}</span>
                     </div>
                     <p className="text-[9px] font-black uppercase tracking-widest text-zinc-500">
-                        Total Leads
+                        {t('total_leads')}
                     </p>
                 </div>
 
@@ -162,7 +162,7 @@ export function LeadMatrix() {
                         <span className="text-2xl font-black text-white">{analytics.newLeads}</span>
                     </div>
                     <p className="text-[9px] font-black uppercase tracking-widest text-zinc-500">
-                        New & Hot
+                        {t('new_hot')}
                     </p>
                 </div>
 
@@ -174,7 +174,7 @@ export function LeadMatrix() {
                         </span>
                     </div>
                     <p className="text-[9px] font-black uppercase tracking-widest text-zinc-500">
-                        Contact Rate
+                        {t('contact_rate')}
                     </p>
                 </div>
 
@@ -184,7 +184,7 @@ export function LeadMatrix() {
                         <span className="text-2xl font-black text-white">{analytics.avgScore}</span>
                     </div>
                     <p className="text-[9px] font-black uppercase tracking-widest text-zinc-500">
-                        Avg AI Score
+                        {t('avg_ai_score')}
                     </p>
                 </div>
             </div>
@@ -196,7 +196,7 @@ export function LeadMatrix() {
                     </h2>
                     <p className="text-[10px] text-blue-400 uppercase tracking-widest mt-2 flex items-center gap-2 font-bold">
                         <Mail className="w-3 h-3" />
-                        AI-Powered Lead Intelligence & Prioritization
+                        {t('intelligence_desc')}
                     </p>
                 </div>
             </div>
@@ -219,23 +219,22 @@ export function LeadMatrix() {
                             lead.score >= 75
                                 ? "text-[#00D09C]"
                                 : lead.score >= 50
-                                  ? "text-amber-400"
-                                  : "text-zinc-500";
+                                    ? "text-amber-400"
+                                    : "text-zinc-500";
                         const scoreBg =
                             lead.score >= 75
                                 ? "bg-[#00D09C]/10 border-[#00D09C]/30"
                                 : lead.score >= 50
-                                  ? "bg-amber-500/10 border-amber-500/30"
-                                  : "bg-zinc-500/10 border-zinc-500/30";
+                                    ? "bg-amber-500/10 border-amber-500/30"
+                                    : "bg-zinc-500/10 border-zinc-500/30";
 
                         return (
                             <div
                                 key={lead.id}
-                                className={`p-6 rounded-[32px] border transition-all flex flex-col md:flex-row gap-6 items-start md:items-center ${
-                                    lead.status === "new"
+                                className={`p-6 rounded-[32px] border transition-all flex flex-col md:flex-row gap-6 items-start md:items-center ${lead.status === "new"
                                         ? "bg-[#00D09C]/5 border-[#00D09C]/20 shadow-[0_0_20px_rgba(0,208,156,0.05)]"
                                         : "bg-[#051423]/50 border-white/5"
-                                }`}
+                                    }`}
                             >
                                 <div className="flex-1 space-y-4">
                                     <div className="flex items-center gap-4">

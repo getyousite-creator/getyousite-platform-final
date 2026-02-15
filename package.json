@@ -6,7 +6,12 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint",
+        "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+        "audit:routes": "node --experimental-strip-types scripts/audit-production-routes.ts",
+        "audit:seo": "node --experimental-strip-types scripts/audit-production-seo.ts",
+        "audit:generate": "node --experimental-strip-types scripts/audit-production-generate.ts",
+        "preflight:prod": "node --experimental-strip-types scripts/preflight-production.ts",
+        "stage:prod": "powershell -ExecutionPolicy Bypass -File scripts/stage-production-fixes.ps1",
         "format": "prettier --write .",
         "prepare": "husky"
     },

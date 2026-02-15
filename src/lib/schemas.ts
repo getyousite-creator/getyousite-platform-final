@@ -48,6 +48,7 @@ export const SectionSchema = z.object({
         "LEGAL_NOTICE",
         "APPOINTMENT_WIDGET",
         "LIVE_PRICING",
+        "CINEMATIC_VIDEO",
         "custom"
     ]),
 

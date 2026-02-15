@@ -8,6 +8,7 @@ import { SiteBlueprint, Section } from "@/lib/schemas";
 import { useTranslations } from "next-intl";
 import styles from "@/styles/isolation.module.css";
 import { Shield, CloudCheck, HardDrive, TrendingUp, LucideIcon } from "lucide-react";
+import { ComponentLibrary } from "@/components/engine/ComponentLibrary";
 
 interface SovereignWrapperProps {
     children?: (props: {
@@ -54,11 +55,11 @@ export default function SovereignWrapper({ children, meta }: SovereignWrapperPro
             >
                 {/* PERSISTENCE HUB: ARCHITECTURAL STATUS BAR */}
                 <div className="fixed top-4 right-4 z-[200] flex flex-col gap-2 pointer-events-none">
-                    {/* ... (Status Bars) ... */}
                     <motion.div
                         initial={{ x: 20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
-                        className="flex items-center gap-3 px-4 py-2 bg-black/80 backdrop-blur-md border border-white/10 rounded-full text-[10px] font-black uppercase tracking-widest text-white shadow-2xl"
+                        className="flex items-center gap-3 px-4 py-2 bg-black/80 backdrop-blur-md border border-white/10 rounded-full text-[10px] font-black uppercase tracking-widest text-white shadow-2xl pointer-events-auto cursor-help"
+                        title="Quantum Shield Active"
                     >
                         <Shield className="w-3 h-3 text-blue-400" />
                         <span>{t("shield")}</span>
@@ -99,25 +100,55 @@ export default function SovereignWrapper({ children, meta }: SovereignWrapperPro
                     </motion.div>
                 </div>
 
-                {/* 1. If a blueprint exists, we can render its instructions */}
-                {blueprint && (
-                    <div className="blueprint-composition-root">
-                        {blueprint.layout.map((section: Section) => (
-                            <BlueprintSectionRenderer key={section.id} section={section} />
-                        ))}
-                    </div>
-                )}
+                {/* 
+                  SOVEREIGN RENDER PROTOCOL:
+                  If a template (children) is provided, it handles the core aesthetic.
+                  We then automatically inject "Strategic Sections" that the hardcoded template 
+                  cannot interpret (CINEMATIC_VIDEO, SMART_FORM, etc.)
+                */}
+                {children ? (
+                    <>
+                        {children({
+                            settings,
+                            blueprint,
+                            onOpen: handleOpen,
+                            pulse,
+                            primary: settings.primaryColor,
+                            secondary: settings.secondaryColor,
+                            meta
+                        })}
 
-                {/* 2. Legacy/Hybrid support for existing hardcoded components */}
-                {children && children({
-                    settings,
-                    blueprint,
-                    onOpen: handleOpen,
-                    pulse,
-                    primary: settings.primaryColor,
-                    secondary: settings.secondaryColor,
-                    meta
-                })}
+                        {/* STRATEGIC AUTO-INJECTION CIRCUIT */}
+                        {blueprint && (
+                            <div className="sovereign-injections">
+                                {blueprint.layout.map((section: Section) => {
+                                    // Logic: Only auto-inject specialized types to avoid cluttering core aesthetic
+                                    const specializedTypes = [
+                                        'CINEMATIC_VIDEO',
+                                        'SMART_FORM',
+                                        'APPOINTMENT_WIDGET',
+                                        'LIVE_PRICING',
+                                        'LEGAL_NOTICE',
+                                        'COUNTDOWN_LOGIC'
+                                    ];
+
+                                    if (specializedTypes.includes(section.type)) {
+                                        return <BlueprintSectionRenderer key={section.id} section={section} storeId={meta?.id} />;
+                                    }
+                                    return null;
+                                })}
+                            </div>
+                        )}
+                    </>
+                ) : (
+                    blueprint && (
+                        <div className="blueprint-composition-root">
+                            {blueprint.layout.map((section: Section) => (
+                                <BlueprintSectionRenderer key={section.id} section={section} storeId={meta?.id} />
+                            ))}
+                        </div>
+                    )
+                )}
             </motion.div>
         </AnimatePresence>
     );
@@ -126,30 +157,25 @@ export default function SovereignWrapper({ children, meta }: SovereignWrapperPro
 /**
  * BLUEPRINT SECTION RENDERER
  * The bridge between JSON logic and React UI.
+ * Now utilizing the unified ComponentLibrary for high-fidelity output.
  */
-function BlueprintSectionRenderer({ section }: { section: Section }) {
-    const t = useTranslations("wrapper");
-    // This will eventually map all sections to high-fidelity components
-    switch (section.type) {
-        case "hero":
-            return <DynamicHero content={section.content} />;
-        case "features":
-            return <DynamicFeatures content={section.content} />;
-        case "about":
-            return <DynamicAbout content={section.content} />;
-        case "pricing":
-            return <DynamicPricing content={section.content} />;
-        case "contact":
-            return <DynamicContact content={section.content} />;
-        default:
-            return (
-                <div className="p-20 text-center border-2 border-dashed border-border rounded-3xl m-10">
-                    <span className="text-muted-foreground font-mono text-xs uppercase tracking-widest">
-                        [{section.type}] {t("pending")}
-                    </span>
-                </div>
-            );
-    }
+function BlueprintSectionRenderer({ section, storeId }: { section: Section, storeId?: string }) {
+    const { settings } = useTemplateEditor();
+    const primaryColor = settings.primaryColor || '#3b82f6';
+
+    // Logic: Unify all rendering under the massive ComponentLibrary logic
+    return (
+        <div key={section.id} className="relative">
+            <ComponentLibrary
+                id={section.id}
+                type={section.type}
+                content={section.content}
+                primaryColor={primaryColor}
+                isEditable={false} // Wrapper is for end-user preview/live
+                storeId={storeId}
+            />
+        </div>
+    );
 }
 
 // STUB DYNAMIC COMPONENTS (To be expanded in later sub-phases)

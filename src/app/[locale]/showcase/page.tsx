@@ -49,7 +49,7 @@ export default function ShowcasePage() {
                         transition={{ delay: 0.2, duration: 0.8 }}
                         className="text-6xl md:text-9xl font-black text-white mb-10 tracking-tighter italic leading-[0.9]"
                     >
-                        Digital <span className="text-primary NOT-italic">Excellence</span> <br />
+                        Digital <span className="text-primary not-italic">Excellence</span> <br />
                         <span className="text-white/20">Synthesized.</span>
                     </motion.h1>
 

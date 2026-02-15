@@ -1,5 +1,9 @@
-import React from "react";
-import { Hammer, Mail, ShieldCheck } from "lucide-react";
+"use client";
+
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Hammer, ShieldCheck, Loader2, CheckCircle } from "lucide-react";
+import { captureMaintenanceLead } from "@/app/actions/maintenance-actions";
 
 export default function MaintenanceProtocol() {
     return (
@@ -28,17 +32,7 @@ export default function MaintenanceProtocol() {
                     </p>
 
                     {/* LEAN EMAIL CAPTURE */}
-                    <form className="flex flex-col md:flex-row gap-4">
-                        <input
-                            type="email"
-                            placeholder="Engineering_Contact@email.com"
-                            className="flex-1 h-16 bg-background border-input rounded-2xl px-6 font-mono text-sm focus:outline-none focus:ring-primary transition-colors text-foreground"
-                            required
-                        />
-                        <button className="h-16 px-10 bg-primary text-primary-foreground font-black uppercase tracking-widest text-xs rounded-2xl hover:bg-primary/90 transition-all">
-                            Notify_Me
-                        </button>
-                    </form>
+                    <MaintenanceForm />
                 </div>
 
                 {/* BACKGROUND LOGIC DECOR */}
@@ -64,5 +58,73 @@ export default function MaintenanceProtocol() {
                 </div>
             </div>
         </div>
+    );
+}
+
+function MaintenanceForm() {
+    const [email, setEmail] = useState("");
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+    const [message, setMessage] = useState("");
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setStatus('loading');
+
+        try {
+            const result = await captureMaintenanceLead(email);
+            if (result.success) {
+                setStatus('success');
+                setMessage(result.message);
+            } else {
+                setStatus('error');
+                setMessage(result.message || "Engine failure.");
+            }
+        } catch {
+            setStatus('error');
+            setMessage("Critical logic crash.");
+        }
+    };
+
+    if (status === 'success') {
+        return (
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="h-16 flex items-center gap-4 bg-primary/10 border border-primary/20 rounded-2xl px-6 text-primary font-bold text-sm"
+            >
+                <CheckCircle className="w-5 h-5" />
+                {message}
+            </motion.div>
+        );
+    }
+
+    return (
+        <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1 relative">
+                <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Engineering_Contact@email.com"
+                    className="w-full h-16 bg-background border border-input rounded-2xl px-6 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all text-foreground disabled:opacity-50"
+                    required
+                    disabled={status === 'loading'}
+                />
+                {status === 'error' && (
+                    <span className="absolute -bottom-6 left-2 text-[10px] text-red-500 font-bold uppercase tracking-widest">{message}</span>
+                )}
+            </div>
+            <button
+                type="submit"
+                disabled={status === 'loading'}
+                className="h-16 px-10 bg-primary text-primary-foreground font-black uppercase tracking-widest text-xs rounded-2xl hover:bg-primary/90 transition-all active:scale-95 flex items-center justify-center gap-3 disabled:opacity-50"
+            >
+                {status === 'loading' ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                    "Notify_Me"
+                )}
+            </button>
+        </form>
     );
 }

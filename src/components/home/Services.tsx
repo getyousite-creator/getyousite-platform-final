@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Zap, Globe, Cpu, Shield, Smartphone, Rocket } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 
 export default function Services() {
     const t = useTranslations('Services');
@@ -101,9 +102,14 @@ export default function Services() {
                                 {t(`${service.id}.desc`)}
                             </p>
 
-                            <div className="mt-10 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
-                                <span className="text-xs font-bold text-primary tracking-widest uppercase">{t('explore')}</span>
-                                <div className="w-8 h-[1px] bg-primary" />
+                            <div className="mt-10">
+                                <Link
+                                    href="/services"
+                                    className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0"
+                                >
+                                    <span className="text-xs font-bold text-primary tracking-widest uppercase">{t('explore')}</span>
+                                    <div className="w-8 h-[1px] bg-primary" />
+                                </Link>
                             </div>
                         </motion.div>
                     ))}

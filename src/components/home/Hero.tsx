@@ -82,7 +82,9 @@ export default function Hero() {
                     <div className="absolute -inset-4 bg-primary/20 rounded-[3rem] blur-3xl opacity-0 group-focus-within:opacity-100 transition-all duration-1000" />
 
                     <div className="relative flex flex-col md:flex-row items-center bg-white/[0.03] backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-3 shadow-[0_32px_120px_rgba(0,0,0,0.8)] transition-all duration-500 group-focus-within:border-primary/40 group-focus-within:bg-white/[0.05]">
+                        <label htmlFor="hero-prompt" className="sr-only">{t('placeholder')}</label>
                         <input
+                            id="hero-prompt"
                             type="text"
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
@@ -92,6 +94,7 @@ export default function Hero() {
                         />
                         <Button
                             className="w-full md:w-auto shrink-0 h-20 px-12 rounded-[1.8rem] bg-primary hover:bg-primary/90 text-white shadow-2xl shadow-primary/40 transition-all duration-300 text-xl font-black uppercase tracking-widest border-none group/btn"
+                            aria-label={t('generate')}
                             onClick={() => {
                                 if (inputValue.length > 2) {
                                     window.location.href = `/${locale}/customizer?vision=${encodeURIComponent(inputValue)}`;
@@ -99,7 +102,7 @@ export default function Hero() {
                             }}
                         >
                             {t('generate')}
-                            <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform" />
+                            <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform" aria-hidden="true" />
                         </Button>
                     </div>
 

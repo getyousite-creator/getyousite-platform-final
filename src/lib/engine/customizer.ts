@@ -10,74 +10,49 @@ export interface UserPromptData {
 
 // CLINICAL HEURISTIC SYNTHESIS
 const HeuristicSovereignGenerator = {
-    synthesize(userData: UserPromptData) {
+    synthesize(userData: UserPromptData, locale: string = 'en') {
         const niche = userData.niche.toLowerCase();
         const vision = userData.vision.toLowerCase();
         const biz = userData.businessName;
+        const isAr = locale === 'ar';
 
         // 1. Primary Niche Vectors
-        if (niche.includes('health') || niche.includes('doctor') || vision.includes('medical') || vision.includes('patient')) {
+        if (niche.includes('health') || niche.includes('doctor') || vision.includes('medical')) {
             return {
-                headline: `Clinical Excellence for ${biz}: Patient-First Care`,
-                subheadline: `High-fidelity healthcare infrastructure designed for optimal patient outcomes and trust.`,
+                headline: isAr ? `التميز الطبي لـ ${biz}: رعاية المرضى أولاً` : `Clinical Excellence for ${biz}: Patient-First Care`,
+                subheadline: isAr ? `بنية تحتية للرعاية الصحية مصممة لتحسين نتائج المرضى وبناء الثقة.` : `High-fidelity healthcare infrastructure designed for optimal patient outcomes and trust.`,
                 features: ["Sovereign-Health-v1", "HIPAA-Standard-Logic", "Global-Clinical-Reach"]
             };
         }
 
-        if (niche.includes('food') || niche.includes('resto') || niche.includes('cafe') || vision.includes('delicious') || vision.includes('taste')) {
+        if (niche.includes('tech') || niche.includes('ai') || vision.includes('future')) {
             return {
-                headline: `${biz}: The Art of Culinary Perfection`,
-                subheadline: `A digital dining experience that bridges tradition with avant-garde flavor science.`,
-                features: ["Menu-Logic-Synthesis", "Real-Time-Booking", "Gourmet-Visual-Grid"]
-            };
-        }
-
-        if (niche.includes('tech') || niche.includes('ai') || niche.includes('software') || vision.includes('future') || vision.includes('input')) {
-            return {
-                headline: `Orchestrating the Future with ${biz} Intelligence`,
-                subheadline: `Real-time neural architecture and high-frequency deployment for the global digital ecosystem.`,
+                headline: isAr ? `تنظيم المستقبل بذكاء ${biz}` : `Orchestrating the Future with ${biz} Intelligence`,
+                subheadline: isAr ? `بنية عصبية في الوقت الفعلي ونشر عالي التردد للنظام الرقمي العالمي.` : `Real-time neural architecture and high-frequency deployment for the global digital ecosystem.`,
                 features: ["Neural-Feed-v3", "Logic-Hardened-API", "Autonomous-Expansion-Nodes"]
             };
         }
 
         if (niche.includes('estate') || niche.includes('property') || niche.includes('house')) {
             return {
-                headline: `Luxury Architecture. Sovereign Ownership.`,
-                subheadline: `Curating high-value residential and commercial ecosystems for ${biz} clients.`,
-                features: ["Precision-Blueprints", "Asset-Security-Protocol", "Geometric-Layout-Optimization"]
-            };
-        }
-
-        if (niche.includes('beauty') || niche.includes('spa') || niche.includes('salon') || vision.includes('relax') || vision.includes('skincare')) {
-            return {
-                headline: `${biz}: The Science of Aesthetic Perfection`,
-                subheadline: `Curating high-status beauty and wellness rituals designed for the modern elite.`,
-                features: ["Precision-Aesthetic-Logic", "VIP-Booking-Protocol", "Skin-Intel-Integration"]
-            };
-        }
-
-        if (niche.includes('education') || niche.includes('course') || niche.includes('school') || vision.includes('learn') || vision.includes('knowledge')) {
-            return {
-                headline: `Empowering Minds via ${biz} Wisdom`,
-                subheadline: `Accelerated learning frameworks and knowledge synthesis for global intellectual expansion.`,
-                features: ["Cognitive-Mapping-v1", "Neural-Courseware-Engine", "Global-Literacy-Nodes"]
-            };
-        }
-
-        if (niche.includes('commerce') || niche.includes('store') || niche.includes('shop') || vision.includes('buy') || vision.includes('retail')) {
-            return {
-                headline: `Quantum Commerce: Scalability Refined by ${biz}`,
-                subheadline: `High-frequency transactional logic and inventory synchronization for the borderless market.`,
-                features: ["Infinite-Inventory-Sync", "Global-Payment-Gateway", "Conversion-Vector-v4"]
+                headline: isAr ? `عمارة فاخرة. ملكية سيادية.` : `Luxury Architecture. Sovereign Ownership.`,
+                subheadline: isAr ? `تقييم وتنسيق البيئات السكنية والتجارية عالية القيمة لعملاء ${biz}.` : `Curating high-value residential and commercial ecosystems for ${biz} clients.`,
+                features: ["Precision-Blueprints", "Asset-Security-Protocol", "Geometric-Layout-Optimization"],
+                injectionSection: {
+                    type: 'CINEMATIC_VIDEO',
+                    content: {
+                        prompt: `Modern luxury villa for ${biz}`,
+                        videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-modern-architecture-in-a-sunny-day-36314-large.mp4"
+                    }
+                }
             };
         }
 
         // 2. Intent-Based Synthesis (Catch-All)
-        const intent = vision.length > 5 ? vision : `Optimal ${niche} services`;
         return {
-            headline: `Constructing Excellence: The ${biz} Protocol`,
-            subheadline: `A sovereign digital asset engineered for maximum market dominance in the ${niche} sector.`,
-            features: ["Structural-Efficiency", "Growth-Velocity-v1", "Clean-Architecture-Standard"]
+            headline: isAr ? `بناء التميز: بروتوكول ${biz}` : `Constructing Excellence: The ${biz} Protocol`,
+            subheadline: isAr ? `أصل رقمي سيادي مصمم للهيمنة القصوى على السوق في قطاع ${userData.niche}.` : `A sovereign digital asset engineered for maximum market dominance in the ${userData.niche} sector.`,
+            features: [isAr ? "كفاءة هيكلية" : "Structural-Efficiency", isAr ? "سرعة النمو" : "Growth-Velocity-v1", isAr ? "معايير العمارة النظيفة" : "Clean-ArchitectureStandard"]
         };
     }
 };
@@ -94,9 +69,10 @@ export const CustomizerEngine = {
      * or calling the Generative AI engine.
      */
     async generateFinalBlueprint(userData: UserPromptData): Promise<SiteBlueprint> {
+        const locale = typeof window !== 'undefined' ? window.location.pathname.split('/')[1] || 'en' : 'en';
+
         // Logic: Try AI generation first for "Legendary" output
         try {
-            const locale = typeof window !== 'undefined' ? window.location.pathname.split('/')[1] || 'en' : 'en';
             const response = await fetch(`/${locale}/api/generate`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -120,27 +96,42 @@ export const CustomizerEngine = {
         }
 
         // 1. EXECUTE HEURISTIC SYNTHESIS
-        const specializedContent = HeuristicSovereignGenerator.synthesize(userData);
+        const specializedContent = HeuristicSovereignGenerator.synthesize(userData, locale) as any;
 
         // 2. Deep Architectural Merge (Logic-First)
+        let baseLayout = [...template.blueprint.layout];
+
+        // LOGIC: Inject specialized sections if requested by the heuristic
+        if (specializedContent.injectionSection) {
+            // Find insertion point (usually after hero)
+            const heroIndex = baseLayout.findIndex(s => s.type === 'hero' || s.type === 'HERO_PRIME');
+            const newSection = {
+                id: `inject_${Date.now()}`,
+                animation: 'fade-in' as const,
+                styles: {},
+                ...specializedContent.injectionSection
+            };
+            baseLayout.splice(heroIndex + 1, 0, newSection);
+        }
+
         const finalBlueprint: SiteBlueprint = {
             ...template.blueprint, // Base DNA
             id: `site_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`,
             name: userData.businessName,
             description: userData.vision,
-            ai_insight: `Focus on ${userData.niche.toLowerCase()} trends and local visibility for ${userData.businessName}. Synthetic heuristic applied.`,
+            ai_insight: `Focus on ${userData.niche.toLowerCase()} trends and local visibility for ${userData.businessName}. Synthetic heuristic applied. [LOCALE: ${locale}]`,
             theme: {
                 ...template.blueprint.theme,
                 primary: template.blueprint.theme.primary,
                 secondary: template.blueprint.theme.secondary || "#1e293b",
             },
-            layout: template.blueprint.layout.map(section => ({
+            layout: baseLayout.map(section => ({
                 ...section,
                 content: {
                     ...section.content,
-                    headline: section.type === 'hero' ? specializedContent.headline : section.content.headline,
-                    subheadline: section.type === 'hero' ? specializedContent.subheadline : section.content.subheadline,
-                    features: section.type === 'features' ? specializedContent.features : section.content.features
+                    headline: section.type === 'hero' || section.type === 'HERO_PRIME' ? specializedContent.headline : section.content.headline,
+                    subheadline: section.type === 'hero' || section.type === 'HERO_PRIME' ? specializedContent.subheadline : section.content.subheadline,
+                    features: section.type === 'features' || section.type === 'FEATURE_GRID' ? specializedContent.features : section.content.features
                 }
             })),
             metadata: {

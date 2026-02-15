@@ -2,7 +2,8 @@
 
 import { LivePreview } from "@/components/engine/LivePreview";
 import { Sparkles } from "lucide-react";
-import { SiteBlueprint } from "@/lib/schemas";
+import { NeuralLoadingHUD } from "./NeuralLoadingHUD";
+import type { SiteBlueprint } from "@/lib/schemas";
 
 interface PreviewCanvasProps {
     blueprint: SiteBlueprint | null;
@@ -25,25 +26,8 @@ export function PreviewCanvas({ blueprint, isGenerating, selectedPageSlug }: Pre
 
                 <LivePreview config={blueprint} isGenerating={isGenerating} selectedPageSlug={selectedPageSlug} />
 
-                {/* ZERO FRICTION HUD (Protocol 2.2) */}
-                {isGenerating && (
-                    <div className="absolute top-8 left-8 p-8 bg-black/90 backdrop-blur-3xl rounded-[2rem] border border-white/10 z-50 pointer-events-none space-y-4 shadow-3xl animate-in fade-in zoom-in duration-700">
-                        <div className="flex items-center gap-4">
-                            <div className="relative">
-                                <div className="w-3 h-3 rounded-full bg-primary animate-ping" />
-                                <div className="absolute inset-0 w-3 h-3 rounded-full bg-primary shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
-                            </div>
-                            <span className="text-[11px] font-black uppercase tracking-[0.25em] text-white">Neural_Link_Established</span>
-                        </div>
-                        <div className="w-64 h-1.5 bg-white/5 rounded-full overflow-hidden">
-                            <div className="h-full bg-primary animate-[load_2s_ease-in-out_infinite]" style={{ width: '40%' }} />
-                        </div>
-                        <div className="space-y-1">
-                            <p className="text-[9px] text-primary font-black uppercase tracking-widest">Injecting_Strategic_Logic...</p>
-                            <p className="text-[9px] text-white/20 font-mono uppercase">Ref: GYS-UX-0</p>
-                        </div>
-                    </div>
-                )}
+                {/* SOVEREIGN NEURAL HUD (Protocol 3.0) */}
+                {isGenerating && <NeuralLoadingHUD />}
 
             </div>
 
