@@ -9,6 +9,7 @@ git status --short
 ```
 
 You must not deploy if these are untracked:
+
 - `src/app/[locale]/pricing/page.tsx`
 - `src/app/[locale]/services/page.tsx`
 - `src/app/[locale]/templates/page.tsx`
