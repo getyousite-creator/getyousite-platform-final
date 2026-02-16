@@ -57,3 +57,28 @@ jobs:
               run: npm run audit:generate
               env:
                   AUDIT_BASE_URL: ${{ steps.base.outputs.url }}
+
+            - name: Audit Internal Links
+              run: npm run audit:links
+              env:
+                  AUDIT_BASE_URL: ${{ steps.base.outputs.url }}
+
+            - name: Install Playwright Browser
+              run: npx playwright install --with-deps chromium
+
+            - name: Run Production E2E Visual Flow
+              run: npm run e2e:prod
+              env:
+                  E2E_BASE_URL: ${{ steps.base.outputs.url }}
+                  E2E_LOGIN_EMAIL: ${{ secrets.E2E_LOGIN_EMAIL }}
+                  E2E_LOGIN_PASSWORD: ${{ secrets.E2E_LOGIN_PASSWORD }}
+
+            - name: Upload E2E Artifacts
+              if: always()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: prod-e2e-artifacts
+                  path: |
+                      playwright-report
+                      test-results
+                  if-no-files-found: ignore
