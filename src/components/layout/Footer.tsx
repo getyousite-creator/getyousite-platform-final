@@ -42,8 +42,8 @@ export default function Footer() {
                             <div className="h-px flex-1 bg-white/5" />
                         </h4>
                         <ul className="space-y-4 text-[11px] font-bold uppercase tracking-[0.15em] text-white/30">
-                            <li><Link href="/about-us" className="hover:text-primary transition-colors">{t('about')}</Link></li>
-                            <li><Link href="/help-center" className="hover:text-primary transition-colors">{t('help')}</Link></li>
+                            <li><Link href="/about" className="hover:text-primary transition-colors">{t('about')}</Link></li>
+                            <li><Link href="/help" className="hover:text-primary transition-colors">{t('help')}</Link></li>
                             <li><Link href="/privacy" className="hover:text-primary transition-colors">{t('privacy')}</Link></li>
                             <li><Link href="/terms" className="hover:text-primary transition-colors">{t('terms')}</Link></li>
                         </ul>

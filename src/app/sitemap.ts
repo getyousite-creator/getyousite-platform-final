@@ -2,14 +2,29 @@ import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://getyousite.com';
-
-    // Generate entries for each locale (Synced with routing.ts)
     const locales = ['en', 'fr', 'es', 'ar'];
+    const publicRoutes = [
+        '',
+        '/about',
+        '/blog',
+        '/contact',
+        '/help',
+        '/pricing',
+        '/privacy',
+        '/services',
+        '/showcase',
+        '/templates',
+        '/terms',
+        '/login',
+        '/signup',
+    ];
 
-    return locales.map((locale) => ({
-        url: `${baseUrl}/${locale}`,
-        lastModified: new Date(),
-        changeFrequency: 'weekly',
-        priority: 1,
-    }));
+    return locales.flatMap((locale) =>
+        publicRoutes.map((route) => ({
+            url: `${baseUrl}/${locale}${route}`,
+            lastModified: new Date(),
+            changeFrequency: route === '' ? 'daily' : 'weekly',
+            priority: route === '' ? 1 : 0.8,
+        }))
+    );
 }
