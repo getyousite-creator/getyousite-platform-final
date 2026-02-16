@@ -44,7 +44,7 @@ jobs:
               shell: bash
               run: |
                   export HUSKY=0
-                  npm ci --no-audit --no-fund || (sleep 5 && npm ci --no-audit --no-fund)
+                  npm ci --no-audit --no-fund || npm install --no-audit --no-fund
 
             - name: Run ESLint
               run: npm run lint
@@ -80,7 +80,7 @@ jobs:
               shell: bash
               run: |
                   export HUSKY=0
-                  npm ci --no-audit --no-fund || (sleep 5 && npm ci --no-audit --no-fund)
+                  npm ci --no-audit --no-fund || npm install --no-audit --no-fund
 
             - name: Install Playwright
               run: npx playwright install --with-deps chromium
@@ -114,7 +114,7 @@ jobs:
               shell: bash
               run: |
                   export HUSKY=0
-                  npm ci --no-audit --no-fund || (sleep 5 && npm ci --no-audit --no-fund)
+                  npm ci --no-audit --no-fund || npm install --no-audit --no-fund
 
             - name: Run npm Audit
               run: npm audit --production --audit-level=high
@@ -147,7 +147,7 @@ jobs:
               shell: bash
               run: |
                   export HUSKY=0
-                  npm ci --no-audit --no-fund || (sleep 5 && npm ci --no-audit --no-fund)
+                  npm ci --no-audit --no-fund || npm install --no-audit --no-fund
 
             - name: Generate Prisma Client
               run: npx prisma generate
@@ -188,7 +188,7 @@ jobs:
               shell: bash
               run: |
                   export HUSKY=0
-                  npm ci --no-audit --no-fund || (sleep 5 && npm ci --no-audit --no-fund)
+                  npm ci --no-audit --no-fund || npm install --no-audit --no-fund
 
             - name: Generate Prisma Client
               run: npx prisma generate
@@ -264,7 +264,7 @@ jobs:
               shell: bash
               run: |
                   export HUSKY=0
-                  npm ci --no-audit --no-fund || (sleep 5 && npm ci --no-audit --no-fund)
+                  npm ci --no-audit --no-fund || npm install --no-audit --no-fund
 
             - name: Validate Preview URL Presence
               run: |
@@ -389,7 +389,7 @@ jobs:
               shell: bash
               run: |
                   export HUSKY=0
-                  npm ci --no-audit --no-fund || (sleep 5 && npm ci --no-audit --no-fund)
+                  npm ci --no-audit --no-fund || npm install --no-audit --no-fund
 
             - name: Audit Routes (Production)
               run: npm run audit:routes
