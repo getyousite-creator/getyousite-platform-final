@@ -3,6 +3,21 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin();
 
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "frame-ancestors 'none'",
+  "object-src 'none'",
+  "form-action 'self'",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://accounts.google.com https://apis.google.com https://www.paypal.com https://www.paypalobjects.com https://js.stripe.com",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "img-src 'self' data: blob: https:",
+  "font-src 'self' data: https://fonts.gstatic.com",
+  "connect-src 'self' https://*.supabase.co https://api.openai.com https://www.google-analytics.com https://region1.google-analytics.com https://vitals.vercel-insights.com https://www.paypal.com https://api.stripe.com",
+  "frame-src 'self' https://accounts.google.com https://js.stripe.com https://www.paypal.com",
+  "upgrade-insecure-requests",
+].join('; ');
+
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   images: {
@@ -53,6 +68,10 @@ const nextConfig: NextConfig = {
           {
             key: 'Strict-Transport-Security',
             value: 'max-age=31536000; includeSubDomains; preload',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: contentSecurityPolicy,
           },
         ],
       },
