@@ -1,3 +1,5 @@
+export {};
+
 const BASE_URL = process.env.AUDIT_BASE_URL || 'https://getyousite.com';
 const LOCALES = ['en', 'ar', 'fr', 'es'] as const;
 
@@ -108,4 +110,3 @@ run().catch((err) => {
   console.error('Fatal link audit failure:', err);
   process.exit(1);
 });
-

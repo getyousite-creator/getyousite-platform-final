@@ -75,9 +75,9 @@ export default function Footer() {
                 <div className="border-t border-white/5 pt-12 flex flex-col md:flex-row items-center justify-between gap-8">
                     <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-white/10">{t('copyright')}</p>
                     <div className="flex items-center gap-8">
-                        <a href="#" className="text-white/20 hover:text-primary transition-all hover:scale-110"><Twitter size={18} /></a>
-                        <a href="#" className="text-white/20 hover:text-primary transition-all hover:scale-110"><Github size={18} /></a>
-                        <a href="#" className="text-white/20 hover:text-primary transition-all hover:scale-110"><Linkedin size={18} /></a>
+                        <a href="https://twitter.com/getyousite" target="_blank" rel="noopener noreferrer" aria-label="GetYouSite on X" className="text-white/20 hover:text-primary transition-all hover:scale-110"><Twitter size={18} /></a>
+                        <a href="https://github.com/getyousite-creator" target="_blank" rel="noopener noreferrer" aria-label="GetYouSite on GitHub" className="text-white/20 hover:text-primary transition-all hover:scale-110"><Github size={18} /></a>
+                        <a href="https://www.linkedin.com/company/getyousite" target="_blank" rel="noopener noreferrer" aria-label="GetYouSite on LinkedIn" className="text-white/20 hover:text-primary transition-all hover:scale-110"><Linkedin size={18} /></a>
                     </div>
                 </div>
             </div>

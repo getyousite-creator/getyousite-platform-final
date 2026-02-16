@@ -239,6 +239,7 @@ export default function FloatingChat() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsOpen(!isOpen)}
+                aria-label={isOpen ? (isRTL ? "إغلاق الدردشة" : "Close chat") : (isRTL ? "فتح الدردشة" : "Open chat")}
                 className="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-primary-foreground shadow-[0_10px_30px_hsl(var(--primary)/0.4)] relative group overflow-hidden"
             >
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-background/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />

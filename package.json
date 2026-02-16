@@ -11,6 +11,7 @@
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
         "audit:routes": "node --experimental-strip-types scripts/audit-production-routes.ts",
         "audit:links": "node --experimental-strip-types scripts/audit-production-links.ts",
+        "audit:ui": "node --experimental-strip-types scripts/audit-production-ui.ts",
         "audit:seo": "node --experimental-strip-types scripts/audit-production-seo.ts",
         "audit:generate": "node --experimental-strip-types scripts/audit-production-generate.ts",
         "preflight:prod": "node --experimental-strip-types scripts/preflight-production.ts",
