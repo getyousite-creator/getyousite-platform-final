@@ -1,4 +1,4 @@
-# GetYouSite CI/CD Pipeline
+﻿# GetYouSite CI/CD Pipeline
 # Version: 2.0.0
 
 name: CI/CD Pipeline
@@ -41,7 +41,10 @@ jobs:
                   cache: 'npm'
 
             - name: Install Dependencies
-              run: npm ci
+              shell: bash
+              run: |
+                  export HUSKY=0
+                  npm ci --no-audit --no-fund || (sleep 5 && npm ci --no-audit --no-fund)
 
             - name: Run ESLint
               run: npm run lint
@@ -74,7 +77,10 @@ jobs:
                   cache: 'npm'
 
             - name: Install Dependencies
-              run: npm ci
+              shell: bash
+              run: |
+                  export HUSKY=0
+                  npm ci --no-audit --no-fund || (sleep 5 && npm ci --no-audit --no-fund)
 
             - name: Install Playwright
               run: npx playwright install --with-deps chromium
@@ -105,7 +111,10 @@ jobs:
                   cache: 'npm'
 
             - name: Install Dependencies
-              run: npm ci
+              shell: bash
+              run: |
+                  export HUSKY=0
+                  npm ci --no-audit --no-fund || (sleep 5 && npm ci --no-audit --no-fund)
 
             - name: Run npm Audit
               run: npm audit --production --audit-level=high
@@ -135,7 +144,10 @@ jobs:
                   cache: 'npm'
 
             - name: Install Dependencies
-              run: npm ci
+              shell: bash
+              run: |
+                  export HUSKY=0
+                  npm ci --no-audit --no-fund || (sleep 5 && npm ci --no-audit --no-fund)
 
             - name: Generate Prisma Client
               run: npx prisma generate
@@ -173,7 +185,10 @@ jobs:
                   cache: 'npm'
 
             - name: Install Dependencies
-              run: npm ci
+              shell: bash
+              run: |
+                  export HUSKY=0
+                  npm ci --no-audit --no-fund || (sleep 5 && npm ci --no-audit --no-fund)
 
             - name: Generate Prisma Client
               run: npx prisma generate
@@ -220,7 +235,7 @@ jobs:
               uses: actions/github-script@v6
               with:
                   script: |
-                      const body = `🚀 Deploy Preview Ready!\n\nPreview URL: ${{ steps.vercel-deploy.outputs.preview-url }}`;
+                      const body = `ðŸš€ Deploy Preview Ready!\n\nPreview URL: ${{ steps.vercel-deploy.outputs.preview-url }}`;
                       github.rest.issues.createComment({
                           issue_number: context.issue.number,
                           owner: context.repo.owner,
@@ -246,7 +261,10 @@ jobs:
                   cache: 'npm'
 
             - name: Install Dependencies
-              run: npm ci
+              shell: bash
+              run: |
+                  export HUSKY=0
+                  npm ci --no-audit --no-fund || (sleep 5 && npm ci --no-audit --no-fund)
 
             - name: Validate Preview URL Presence
               run: |
@@ -336,7 +354,7 @@ jobs:
               with:
                   payload: |
                       {
-                          "text": "🚀 GetYouSite Deployed to Production",
+                          "text": "ðŸš€ GetYouSite Deployed to Production",
                           "attachments": [{
                               "color": "#36a64f",
                               "fields": [
@@ -368,7 +386,10 @@ jobs:
                   cache: 'npm'
 
             - name: Install Dependencies
-              run: npm ci
+              shell: bash
+              run: |
+                  export HUSKY=0
+                  npm ci --no-audit --no-fund || (sleep 5 && npm ci --no-audit --no-fund)
 
             - name: Audit Routes (Production)
               run: npm run audit:routes
@@ -494,7 +515,7 @@ jobs:
               with:
                   payload: |
                       {
-                          "text": "❌ GetYouSite CI/CD Pipeline Failed",
+                          "text": "âŒ GetYouSite CI/CD Pipeline Failed",
                           "attachments": [{
                               "color": "#ff0000",
                               "fields": [
@@ -507,3 +528,4 @@ jobs:
                       }
               env:
                   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
