@@ -7,7 +7,7 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { createPayPalOrder, capturePayPalOrder } from "@/app/actions/paypal-actions";
 import { useAuth } from "@/components/providers/SupabaseProvider";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 
 const plans = [
     {
@@ -162,7 +162,7 @@ function PlanCard({ plan, t, tCommon }: { plan: Plan; t: TFunc; tCommon: TFunc }
             <div className="mt-auto">
                 {priceValue === "0" ? (
                     <button
-                        onClick={() => router.push("/dashboard")}
+                        onClick={() => router.push(`/live-demo?source=pricing-engine&plan=${plan.id}`)}
                         className="w-full h-[58px] rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-white font-bold uppercase tracking-widest text-xs transition-all"
                     >
                         {t("start_free")}

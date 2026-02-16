@@ -49,6 +49,9 @@ jobs:
             - name: Run TypeScript Check
               run: npx tsc --noEmit
 
+            - name: Run I18N Quality Gate
+              run: npm run audit:i18n
+
             - name: Check Formatting
               run: npx prettier --check "src/**/*.{ts,tsx,js,jsx,json,css}"
 
@@ -267,6 +270,41 @@ jobs:
               env:
                   AUDIT_BASE_URL: ${{ needs.deploy-preview.outputs.preview-url }}
 
+            - name: Audit Internal Links (Preview)
+              run: npm run audit:links
+              env:
+                  AUDIT_BASE_URL: ${{ needs.deploy-preview.outputs.preview-url }}
+
+            - name: Audit UI Integrity (Preview)
+              run: npm run audit:ui
+              env:
+                  AUDIT_BASE_URL: ${{ needs.deploy-preview.outputs.preview-url }}
+
+            - name: Install Playwright Browser (Preview)
+              run: npx playwright install --with-deps chromium
+
+            - name: Run E2E Flow (Preview)
+              run: npm run e2e:prod
+              env:
+                  E2E_BASE_URL: ${{ needs.deploy-preview.outputs.preview-url }}
+                  E2E_LOGIN_EMAIL: ${{ secrets.E2E_LOGIN_EMAIL }}
+                  E2E_LOGIN_PASSWORD: ${{ secrets.E2E_LOGIN_PASSWORD }}
+
+            - name: Run Responsive Smoke (Preview)
+              run: npm run e2e:responsive
+              env:
+                  E2E_BASE_URL: ${{ needs.deploy-preview.outputs.preview-url }}
+
+            - name: Upload Preview E2E Artifacts
+              if: always()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: preview-e2e-artifacts
+                  path: |
+                      playwright-report
+                      test-results
+                  if-no-files-found: ignore
+
     # -------------------------------------------------------
     # JOB 8: Deploy to Vercel (Production)
     # -------------------------------------------------------
@@ -346,6 +384,41 @@ jobs:
               run: npm run audit:generate
               env:
                   AUDIT_BASE_URL: https://getyousite.com
+
+            - name: Audit Internal Links (Production)
+              run: npm run audit:links
+              env:
+                  AUDIT_BASE_URL: https://getyousite.com
+
+            - name: Audit UI Integrity (Production)
+              run: npm run audit:ui
+              env:
+                  AUDIT_BASE_URL: https://getyousite.com
+
+            - name: Install Playwright Browser (Production)
+              run: npx playwright install --with-deps chromium
+
+            - name: Run E2E Flow (Production)
+              run: npm run e2e:prod
+              env:
+                  E2E_BASE_URL: https://getyousite.com
+                  E2E_LOGIN_EMAIL: ${{ secrets.E2E_LOGIN_EMAIL }}
+                  E2E_LOGIN_PASSWORD: ${{ secrets.E2E_LOGIN_PASSWORD }}
+
+            - name: Run Responsive Smoke (Production)
+              run: npm run e2e:responsive
+              env:
+                  E2E_BASE_URL: https://getyousite.com
+
+            - name: Upload Production E2E Artifacts
+              if: always()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: production-e2e-artifacts
+                  path: |
+                      playwright-report
+                      test-results
+                  if-no-files-found: ignore
 
     # -------------------------------------------------------
     # JOB 10: Performance Testing

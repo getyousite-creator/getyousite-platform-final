@@ -21,6 +21,7 @@ import { Loader2, Activity, Rocket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLaunchModal } from '@/hooks/use-launch-modal';
 import { toast } from 'sonner';
+import { applyValidatedCommandPatch } from '@/lib/editor/command-patcher';
 
 
 export default function CustomizerPage() {
@@ -59,7 +60,8 @@ export default function CustomizerPage() {
     const visionParam = searchParams.get('vision');
 
     // 4. Save Logic
-    const handleSave = useCallback(async (generatedBlueprint: any) => {
+    const handleSave = useCallback(async (generatedBlueprint: any, options?: { promptOnUnauthorized?: boolean }) => {
+        const promptOnUnauthorized = options?.promptOnUnauthorized ?? true;
         try {
             const result = await saveStoreAction(
                 generatedBlueprint,
@@ -69,7 +71,9 @@ export default function CustomizerPage() {
             );
 
             if (!result.success && result.error?.includes("Unauthorized")) {
-                setShowAuthModal(true);
+                if (promptOnUnauthorized) {
+                    setShowAuthModal(true);
+                }
                 return false;
             } else if (!result.success) {
                 return false;
@@ -89,12 +93,13 @@ export default function CustomizerPage() {
 
     // 5. Generation Orchestration
     const triggerGeneration = useCallback(async () => {
-        if (!vision || !businessName) return;
+        if (!vision) return;
+        const effectiveBusinessName = businessName || vision.split(" ").slice(0, 4).join(" ") || "My Store";
 
         setIsGenerating(true);
         try {
             const finalBlueprint = await CustomizerEngine.generateFinalBlueprint({
-                businessName,
+                businessName: effectiveBusinessName,
                 niche,
                 vision,
                 selectedId
@@ -105,7 +110,7 @@ export default function CustomizerPage() {
 
             // SOVEREIGN PERSISTENCE: Save immediately to DB to prevent data loss
             // If we don't have an activeStoreId, we generate a temporary one and link it to the session
-            const saved = await handleSave(finalBlueprint);
+            const saved = await handleSave(finalBlueprint, { promptOnUnauthorized: false });
 
             if (saved) {
                 setShowPay(true);
@@ -159,10 +164,10 @@ export default function CustomizerPage() {
 
     // 2b. Auto-Start Generation Circuit
     useEffect(() => {
-        if (vision && businessName && !blueprint && !isGenerating && !isLoadingStore) {
+        if (vision && !blueprint && !isGenerating && !isLoadingStore) {
             triggerGeneration();
         }
-    }, [vision, businessName, blueprint, isGenerating, isLoadingStore, triggerGeneration]);
+    }, [vision, blueprint, isGenerating, isLoadingStore, triggerGeneration]);
 
     // 6. Asset Logic
     const handleAssetUpload = useCallback(async (url: string) => {
@@ -208,10 +213,10 @@ export default function CustomizerPage() {
         if (activeStoreId || isLoadingStore) return;
 
         const timer = setTimeout(() => {
-            if (vision && businessName) triggerGeneration();
+            if (vision) triggerGeneration();
         }, 1500);
         return () => clearTimeout(timer);
-    }, [vision, businessName, selectedId, triggerGeneration, activeStoreId, isLoadingStore]);
+    }, [vision, selectedId, triggerGeneration, activeStoreId, isLoadingStore]);
 
 
     // 7. Render
@@ -302,6 +307,14 @@ export default function CustomizerPage() {
                             isProcessing={isGenerating}
                             onCommand={async (cmd: string) => {
                                 if (!blueprint) return;
+                                const localPatch = applyValidatedCommandPatch(blueprint, cmd);
+                                if (localPatch.handled) {
+                                    updateBlueprint(localPatch.blueprint);
+                                    await handleSave(localPatch.blueprint, { promptOnUnauthorized: false });
+                                    toast.success(`Command patch applied (${localPatch.operations.length} ops)`);
+                                    return;
+                                }
+
                                 setIsGenerating(true);
                                 try {
                                     const modifiedBlueprint = await refineBlueprintAction({
@@ -312,7 +325,7 @@ export default function CustomizerPage() {
                                         locale: locale || 'ar'
                                     });
                                     updateBlueprint(modifiedBlueprint);
-                                    await handleSave(modifiedBlueprint);
+                                    await handleSave(modifiedBlueprint, { promptOnUnauthorized: false });
                                     toast.success("Blueprint refined by AI");
                                 } catch (e) {
                                     console.error(e);

@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/services',
         '/showcase',
         '/templates',
+        '/live-demo',
         '/terms',
         '/login',
         '/signup',

@@ -4,9 +4,11 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/routing";
 
 export default function CTA() {
     const t = useTranslations('CTA');
+    const router = useRouter();
 
     return (
         <section className="py-32 relative overflow-hidden flex items-center justify-center bg-[#020617]">
@@ -46,7 +48,7 @@ export default function CTA() {
                     transition={{ delay: 0.2 }}
                 >
                     <Button
-                        onClick={() => window.location.href = '/signup'}
+                        onClick={() => router.push('/live-demo?source=cta')}
                         className="text-xl px-14 py-8 rounded-[1.2rem] bg-primary hover:bg-[#2563eb] text-[#020617] font-bold shadow-[0_0_50px_rgba(59,130,246,0.5)] hover:shadow-[0_0_70px_rgba(59,130,246,0.7)] transition-all hover:scale-[1.03] active:scale-[0.97] border-none"
                     >
                         {t('button')} <ArrowRight className="ml-3 w-6 h-6" />

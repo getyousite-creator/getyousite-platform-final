@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Eye, CheckCircle, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Template } from "@/data/template-data";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
 interface TemplateCardProps {
@@ -57,7 +57,7 @@ export default function TemplateCard({ template, onClick }: TemplateCardProps) {
                             <ExternalLink className="w-3.5 h-3.5" /> {t('preview')}
                         </Button>
                         <Button
-                            onClick={() => router.push('/signup')}
+                            onClick={() => router.push(`/live-demo?source=template-card&template=${template.id}`)}
                             className="flex-1 h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 shadow-xl transition-all"
                         >
                             <CheckCircle className="w-3.5 h-3.5" /> {t('edit')}

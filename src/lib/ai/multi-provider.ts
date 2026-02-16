@@ -1,6 +1,7 @@
 import { AuthService } from "@/lib/services/auth-service";
 import { searchUnsplashImages } from "@/lib/images/unsplash";
 import { Section, SiteBlueprint } from "@/lib/schemas";
+import { buildStructuredGenerationProfile } from "@/lib/ai/generation-profile";
 
 
 /**
@@ -456,6 +457,7 @@ export async function generateCompleteWebsite(params: {
     // 2. SOVEREIGN_PROMPT_REFINER: Human-to-Machine Logic Bridge
     console.log("🧠 Sovereign Refiner: Synthesizing Intelligent Business Brief...");
     const refinedVision = await refineUserVision(params);
+    const generationProfile = buildStructuredGenerationProfile(params);
     console.log("✅ Sovereign Refiner: Brief Synthesized.");
 
     // SOVEREIGN LOGIC: Template Mapping
@@ -513,7 +515,7 @@ export async function generateCompleteWebsite(params: {
 `;
 
     const result = await generateWithFallback({
-        prompt: userPrompt,
+        prompt: `${userPrompt}\nSTRUCTURED_PROFILE: ${JSON.stringify(generationProfile)}\n`,
         systemPrompt,
         maxTokens: 8000,
         temperature: 0.7,
@@ -596,6 +598,10 @@ export async function generateCompleteWebsite(params: {
 
         const sovereignAsset = {
             ...blueprint,
+            metadata: {
+                ...(blueprint.metadata || {}),
+                structuredProfile: generationProfile,
+            },
             economic_impact: {
                 estimated_savings: "$2.4M",
                 valuation: 3200000,
@@ -659,6 +665,7 @@ export async function generateSinglePage(params: {
     // 1. Refine the vision for the specific page context
     console.log(`🧠 Sovereign Refiner: Synthesizing Intelligent Brief for [${params.targetPage.name}]...`);
     const refinedVision = await refineUserVision(params);
+    const generationProfile = buildStructuredGenerationProfile(params);
 
     const systemPrompt = `
 You are the SOVEREIGN AI ARCHITECT. 
@@ -670,6 +677,7 @@ RULES:
 3. **Coherence**: Ensure the content is consistent with a business called "${params.businessName}" based on this vision: ${refinedVision}.
 4. **Sections**: Include 4-6 high-quality sections relevant to a ${params.targetPage.name} page.
 5. **Visual Keywords**: Every section must include "imageKeywords" (5-7 cinematic keywords).
+6. **Structured Profile**: Respect this profile for tone, audience, CTA, SEO and design seed: ${JSON.stringify(generationProfile)}.
 
 OUTPUT FORMAT:
 {

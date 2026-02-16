@@ -523,7 +523,7 @@ export function CommandCenter(props: CommandCenterProps) {
             >
                 <Button
                     onClick={onGenerate}
-                    disabled={!businessName || !vision || isGenerating}
+                    disabled={!vision || isGenerating}
                     className={`
                         w-full h-14 rounded-xl font-bold text-sm uppercase tracking-[0.2em] transition-all
                         ${isGenerating
@@ -545,9 +545,9 @@ export function CommandCenter(props: CommandCenterProps) {
                     )}
                 </Button>
 
-                {!businessName || !vision ? (
+                {!vision ? (
                     <p className="text-center text-xs text-muted-foreground mt-3">
-                        Fill in your business details to continue
+                        Add your prompt to generate the first preview
                     </p>
                 ) : (
                     <p className="text-center text-xs text-muted-foreground mt-3">

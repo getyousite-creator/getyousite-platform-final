@@ -132,7 +132,7 @@ export default function Header() {
                                     variant="default"
                                     className="bg-primary hover:bg-[#2563eb] text-[#020617] h-10 px-8 rounded-xl text-[11px] font-bold uppercase tracking-[0.15em] shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:shadow-[0_0_40px_rgba(59,130,246,0.6)] transition-all transform hover:scale-[1.02]"
                                     aria-label="Start Your Project"
-                                    onClick={() => router.push('/signup')}
+                                    onClick={() => router.push('/live-demo?source=header')}
                                 >
                                     {t('launch')}
                                 </Button>
@@ -166,7 +166,7 @@ export default function Header() {
                             <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 hover:text-primary transition-all">{t('contact')}</Link>
                             <div className="flex flex-col gap-4 pt-8 border-t border-white/5">
                                 <Button variant="ghost" className="w-full text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 h-12 rounded-xl" onClick={() => router.push('/login')}>{t('login')}</Button>
-                                <Button className="w-full bg-primary text-[#020617] text-[11px] font-bold uppercase tracking-[0.2em] h-12 rounded-xl shadow-lg" onClick={() => router.push('/signup')}>{t('launch')}</Button>
+                                <Button className="w-full bg-primary text-[#020617] text-[11px] font-bold uppercase tracking-[0.2em] h-12 rounded-xl shadow-lg" onClick={() => router.push('/live-demo?source=header-mobile')}>{t('launch')}</Button>
                             </div>
 
                             <div className="flex gap-6 mt-4 pt-8 border-t border-white/5 justify-center">

@@ -8,7 +8,7 @@ type ProbeResult = {
 
 const BASE_URL = process.env.AUDIT_BASE_URL || "https://getyousite.com";
 const LOCALES = ["en", "ar", "fr", "es"] as const;
-const CRITICAL_PAGES = ["", "pricing", "services", "templates", "showcase", "signup", "login"] as const;
+const CRITICAL_PAGES = ["", "pricing", "services", "templates", "showcase", "live-demo", "signup", "login"] as const;
 const PROTECTED_PAGES = ["customizer", "dashboard"] as const;
 
 async function probe(path: string): Promise<ProbeResult> {
