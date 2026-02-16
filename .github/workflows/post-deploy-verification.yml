@@ -1,4 +1,4 @@
-﻿name: Post-Deploy Verification
+name: Post-Deploy Verification
 
 on:
     workflow_run:
