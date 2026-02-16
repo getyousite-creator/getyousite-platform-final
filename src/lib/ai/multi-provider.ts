@@ -27,6 +27,8 @@ interface AIGenerationResponse {
     };
 }
 
+type ImageProviderMode = "auto" | "openai" | "seedream";
+
 // Provider configurations
 const PROVIDERS = {
     openai: {
@@ -120,11 +122,35 @@ async function generateWithOpenAI(request: AIGenerationRequest): Promise<AIGener
  * Logic: Generates high-status, unique assets for primary visual positions.
  */
 export async function generateAIImage(prompt: string): Promise<string | null> {
+    const providerMode = (process.env.IMAGE_PROVIDER || "auto").toLowerCase() as ImageProviderMode;
+    const hasOpenAI = Boolean(process.env.OPENAI_API_KEY);
+    const hasSeedream = Boolean(process.env.ARK_API_KEY);
+
+    // Selection order:
+    // - seedream => Seedream only
+    // - openai => OpenAI only
+    // - auto => Seedream (if configured) then OpenAI
+    if (providerMode === "seedream" || (providerMode === "auto" && hasSeedream)) {
+        const seedream = await generateWithSeedream(prompt);
+        if (seedream) return seedream;
+        if (providerMode === "seedream") return null;
+    }
+
+    if (providerMode === "openai" || (providerMode === "auto" && hasOpenAI)) {
+        const openai = await generateWithOpenAIImage(prompt);
+        if (openai) return openai;
+        if (providerMode === "openai") return null;
+    }
+
+    return null;
+}
+
+async function generateWithOpenAIImage(prompt: string): Promise<string | null> {
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) return null;
 
     try {
-        console.log("🎨 DALL-E 3: Initializing neural masterpiece synthesis...");
+        console.log("DALL-E 3: Initializing neural masterpiece synthesis...");
         const response = await fetch(`${PROVIDERS.openai.baseUrl}/images/generations`, {
             method: "POST",
             headers: {
@@ -154,6 +180,44 @@ export async function generateAIImage(prompt: string): Promise<string | null> {
     }
 }
 
+async function generateWithSeedream(prompt: string): Promise<string | null> {
+    const apiKey = process.env.ARK_API_KEY;
+    if (!apiKey) return null;
+
+    const baseUrl = process.env.SEEDREAM_BASE_URL || "https://ark.ap-southeast.bytepluses.com/api/v3";
+    const model = process.env.SEEDREAM_MODEL_ID || "seedream-3-0-t2i-250415";
+
+    try {
+        console.log(`SEEDREAM: Visual synthesis started with model [${model}]`);
+        const response = await fetch(`${baseUrl}/images/generations`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${apiKey}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                model,
+                prompt: `Commercial-grade website hero visual: ${prompt}. Professional lighting, premium composition, crisp typography-safe framing.`,
+                n: 1,
+                size: process.env.SEEDREAM_IMAGE_SIZE || "1024x1024",
+                response_format: "url",
+                watermark: false,
+            }),
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("SEEDREAM_IMAGE_ERROR:", response.status, errorText);
+            return null;
+        }
+
+        const data = await response.json();
+        return data?.data?.[0]?.url || null;
+    } catch (error) {
+        console.error("SEEDREAM_IMAGE_GEN_FAILURE:", error);
+        return null;
+    }
+}
 /**
  * Mock generation for complete fallback
  */
