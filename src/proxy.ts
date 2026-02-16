@@ -9,6 +9,7 @@ const intlMiddleware = createMiddleware(routing);
 export async function proxy(request: NextRequest) {
     const url = request.nextUrl;
     const hostname = request.headers.get("host") || "";
+    const pathname = url.pathname;
 
     // 0. SOVEREIGN SENTRY (DEFENSE PROTOCOL SPD-1)
     // Logic: Identify and neutralize non-human or malicious resonance.
@@ -31,9 +32,14 @@ export async function proxy(request: NextRequest) {
     const isMainDomain = mainDomains.some(d => hostname === d || hostname.endsWith(`.${d}`));
     const isRoot = mainDomains.includes(hostname);
 
+    // Keep Supabase callback route non-localized. It must stay at /auth/callback.
+    if (pathname.startsWith('/auth/callback')) {
+        return NextResponse.next();
+    }
+
     // 2. TENANT NODE ROUTING (Mission 2.1)
     if (!isRoot && !isMainDomain) {
-        const path = url.pathname;
+        const path = pathname;
         const isSeoAsset = path.endsWith('/sitemap.xml') || path.endsWith('/robots.txt');
 
         if ((path.startsWith('/_next') || path.startsWith('/api') || (path.includes('.') && !isSeoAsset))) {
