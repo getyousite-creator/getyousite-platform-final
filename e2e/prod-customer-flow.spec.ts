@@ -7,6 +7,8 @@ test('production customer flow with live screenshots', async ({ page, request },
   const stamp = new Date().toISOString().replace(/[:.]/g, '-');
   const email = process.env.E2E_SIGNUP_EMAIL || `qa+${stamp}@example.com`;
   const password = process.env.E2E_SIGNUP_PASSWORD || 'Sovereign!Pass12345';
+  const authEmail = process.env.E2E_LOGIN_EMAIL;
+  const authPassword = process.env.E2E_LOGIN_PASSWORD;
 
   const shot = async (name: string) => {
     await page.screenshot({
@@ -75,6 +77,49 @@ test('production customer flow with live screenshots', async ({ page, request },
     await page.goto('/en/login', { waitUntil: 'domcontentloaded' });
     await shot('07-login-open');
     await expect(page.getByRole('button', { name: /Login/i })).toBeVisible();
+  });
+
+  await test.step('Customizer route protection should redirect anonymous users', async () => {
+    await page.goto('/en/customizer?vision=test%20vision', { waitUntil: 'domcontentloaded' });
+    await shot('08-customizer-anon');
+    await expect(page.url()).toContain('/en/login');
+  });
+
+  await test.step('Authenticated customizer generation probe (optional)', async () => {
+    if (!authEmail || !authPassword) {
+      testInfo.annotations.push({
+        type: 'info',
+        description: 'Skipped authenticated generate probe: E2E_LOGIN_EMAIL/E2E_LOGIN_PASSWORD not set.',
+      });
+      return;
+    }
+
+    await page.goto('/en/login', { waitUntil: 'domcontentloaded' });
+    await resilientFill('input[name="email"]', authEmail);
+    await resilientFill('input[name="password"]', authPassword);
+    await page.getByRole('button', { name: /Login/i }).click();
+    await page.waitForTimeout(2500);
+    await shot('09-auth-login-result');
+
+    await page.goto('/en/customizer?vision=AI%20coffee%20shop%20with%20delivery', { waitUntil: 'domcontentloaded' });
+    await shot('10-customizer-auth-open');
+
+    const businessNameInput = page.locator('#businessName');
+    const visionArea = page.locator('#vision');
+    if (await businessNameInput.isVisible().catch(() => false)) {
+      await resilientFill('#businessName', 'Sovereign Coffee Lab');
+    }
+    if (await visionArea.isVisible().catch(() => false)) {
+      await resilientFill('#vision', 'Build a premium coffee landing page with menu, testimonials and booking.');
+    }
+    await shot('11-customizer-filled');
+
+    const generateButton = page.getByRole('button', { name: /Generate Website|Generating Your Empire/i }).first();
+    if (await generateButton.isVisible().catch(() => false)) {
+      await generateButton.click();
+      await page.waitForTimeout(8000);
+      await shot('12-customizer-generate-result');
+    }
   });
 
   await test.step('Anonymous generate endpoint should stay protected', async () => {
