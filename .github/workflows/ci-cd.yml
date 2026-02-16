@@ -235,7 +235,7 @@ jobs:
               uses: actions/github-script@v6
               with:
                   script: |
-                      const body = `ðŸš€ Deploy Preview Ready!\n\nPreview URL: ${{ steps.vercel-deploy.outputs.preview-url }}`;
+                      const body = `Deploy Preview Ready\n\nPreview URL: ${{ steps.vercel-deploy.outputs.preview-url }}`;
                       github.rest.issues.createComment({
                           issue_number: context.issue.number,
                           owner: context.repo.owner,
@@ -354,7 +354,7 @@ jobs:
               with:
                   payload: |
                       {
-                          "text": "ðŸš€ GetYouSite Deployed to Production",
+                          "text": "GetYouSite Deployed to Production",
                           "attachments": [{
                               "color": "#36a64f",
                               "fields": [
@@ -515,7 +515,7 @@ jobs:
               with:
                   payload: |
                       {
-                          "text": "âŒ GetYouSite CI/CD Pipeline Failed",
+                          "text": "GetYouSite CI/CD Pipeline Failed",
                           "attachments": [{
                               "color": "#ff0000",
                               "fields": [
