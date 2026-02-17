@@ -14,6 +14,7 @@ import { useLaunchModal } from "@/hooks/use-launch-modal";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { categories, templates, Template } from "@/data/template-data";
+import { getTemplateFeatureLabel } from "@/lib/utils/template-feature-label";
 import CategoryFilter from "./CategoryFilter";
 import { getPublicStoresAction } from "@/app/actions/store-actions";
 
@@ -46,6 +47,8 @@ export default function ShowcaseGallery() {
     const filteredTemplates = activeCategory === "all"
         ? templates
         : templates.filter(t => t.category === activeCategory);
+
+    const translateFeature = (feature: string) => getTemplateFeatureLabel(t, feature);
 
     const handlePreview = (themeId: string) => {
         // Find the matching blueprint in SITE_TEMPLATES
@@ -116,12 +119,6 @@ export default function ShowcaseGallery() {
                                     </div>
                                 )}
 
-                                {template.estimatedSavings && (
-                                    <div className="absolute top-6 right-6 px-4 py-1.5 bg-[#00D09C]/20 backdrop-blur-md rounded-full text-[9px] font-black uppercase tracking-widest text-[#00D09C] shadow-xl z-20 border border-[#00D09C]/30">
-                                        {template.estimatedSavings}
-                                    </div>
-                                )}
-
                                 {/* Overlay Actions */}
                                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 backdrop-blur-[4px]">
                                     <div className="flex flex-col gap-4">
@@ -157,7 +154,7 @@ export default function ShowcaseGallery() {
                                 <div className="flex flex-wrap gap-2">
                                     {template.features.slice(0, 3).map(f => (
                                         <span key={f} className="text-[8px] font-black uppercase tracking-widest px-2.5 py-1 bg-[#0A2540]/5 border border-white/5 rounded-md text-gray-400">
-                                            {f}
+                                            {translateFeature(f)}
                                         </span>
                                     ))}
                                 </div>
@@ -218,4 +215,11 @@ export default function ShowcaseGallery() {
         </div>
     );
 }
+
+
+
+
+
+
+
 

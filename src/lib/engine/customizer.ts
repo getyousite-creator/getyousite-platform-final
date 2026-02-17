@@ -99,7 +99,7 @@ export const CustomizerEngine = {
         const specializedContent = HeuristicSovereignGenerator.synthesize(userData, locale) as any;
 
         // 2. Deep Architectural Merge (Logic-First)
-        let baseLayout = [...template.blueprint.layout];
+        const baseLayout = [...template.blueprint.layout];
 
         // LOGIC: Inject specialized sections if requested by the heuristic
         if (specializedContent.injectionSection) {

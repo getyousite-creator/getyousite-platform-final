@@ -13,7 +13,7 @@ export function PaymentModule({ siteId }: { siteId: string }) {
             <CheckoutModule
                 siteId={siteId}
                 planId="pro"
-                amount="49.00"
+                amount="19.00"
                 currency="USD"
                 siteType="business"
             />

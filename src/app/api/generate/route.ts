@@ -47,9 +47,34 @@ export async function POST(req: NextRequest) {
         } = await supabase.auth.getUser();
 
         if (user?.id) {
-            // Logic: Consume credit (Placeholder for now, or use direct DB call)
-            // await AuthService.consumeCredit(user.id);
-            console.log(`[SOVEREIGN_WALLET] Credit interaction for User: ${user.id}`);
+            const { data: userData, error: fetchError } = await supabase
+                .from("users")
+                .select("credits")
+                .eq("id", user.id)
+                .single();
+
+            if (fetchError || !userData || userData.credits < 1) {
+                return NextResponse.json(
+                    {
+                        error: "INSUFFICIENT_CREDITS",
+                        message: "Credit Logic Depleted. Top-up Required.",
+                    },
+                    { status: 402 },
+                );
+            }
+
+            const { error: updateError } = await supabase
+                .from("users")
+                .update({ credits: userData.credits - 1 })
+                .eq("id", user.id);
+
+            if (updateError) {
+                console.error("Credit deduction failed:", updateError);
+            } else {
+                console.log(
+                    `[SOVEREIGN_WALLET] Credit deducted for User: ${user.id}. Remaining: ${userData.credits - 1}`,
+                );
+            }
         }
 
         // 3. Response Synthesis

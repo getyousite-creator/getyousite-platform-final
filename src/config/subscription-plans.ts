@@ -1,6 +1,6 @@
 
 export interface SubscriptionPlan {
-    id: string; // 'starter' | 'pro' | 'business'
+    id: string;
     name: string;
     description: string;
     price: number;
@@ -11,28 +11,45 @@ export interface SubscriptionPlan {
 export const SUBSCRIPTION_PLANS: Record<string, SubscriptionPlan> = {
     starter: {
         id: 'starter',
-        name: 'Node Starter',
-        description: 'Entry-level access to the Sovereign Network.',
-        price: 19,
+        name: 'Starter',
+        description: 'Proof of Concept Protocol - Ideal for early visionaries.',
+        price: 0,
         currency: 'USD',
-        features: ['1 AI Website', 'Basic Analytics', 'Standard Support']
+        features: [
+            'Logic Community Support',
+            'Standard GYS Branding',
+            'GYS Subdomain Access',
+            'Basic AI Unit Generation',
+        ],
     },
     pro: {
         id: 'pro',
-        name: 'Nexus Pro',
-        description: 'Advanced capabilities for serious operators.',
-        price: 49,
+        name: 'Professional',
+        description: 'Professional Growth Engine - High-status digital presence.',
+        price: 19,
         currency: 'USD',
-        features: ['5 AI Websites', 'Advanced Analytics', 'Priority Support', 'Custom Domains']
+        features: [
+            'Neural Traffic Analytics',
+            'Priority Engineering Support',
+            'Total Brand Sovereignty',
+            'Naked Domain Linking',
+            '3 Sovereign Web Assets',
+        ],
     },
     business: {
         id: 'business',
-        name: 'Empire Business',
-        description: 'Complete dominance with dedicated infrastructure.',
-        price: 99,
+        name: 'Business',
+        description: 'Digital Empire Infrastructure - Full architectural control.',
+        price: 49,
         currency: 'USD',
-        features: ['Unlimited Websites', 'White-label Options', 'Dedicated Account Manager', 'API Access']
-    }
+        features: [
+            'API Access Protocol',
+            'Redundant Security Backups',
+            'Live Logic Support Chat',
+            'Autonomous SEO Architect',
+            '10 Sovereign Web Assets',
+        ],
+    },
 };
 
 export const getPlanById = (id: string): SubscriptionPlan => {

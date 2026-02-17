@@ -1,4 +1,5 @@
 import { generateCompleteWebsite } from '@/lib/ai/multi-provider';
+import { createClient } from '@/lib/supabase/server';
 
 export const runtime = 'edge';
 
@@ -29,6 +30,41 @@ export async function POST(req: Request) {
             locale: locale || 'en',
             features: features || ['responsive', 'seo', 'multilingual'],
         });
+
+        const supabase = await createClient();
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+
+        if (user?.id) {
+            const { data: userData, error: fetchError } = await supabase
+                .from('users')
+                .select('credits')
+                .eq('id', user.id)
+                .single();
+
+            if (fetchError || !userData || userData.credits < 1) {
+                return new Response(
+                    JSON.stringify({
+                        error: 'INSUFFICIENT_CREDITS',
+                        message: 'Credit Logic Depleted. Top-up Required.',
+                    }),
+                    {
+                        status: 402,
+                        headers: { 'Content-Type': 'application/json' },
+                    },
+                );
+            }
+
+            const { error: updateError } = await supabase
+                .from('users')
+                .update({ credits: userData.credits - 1 })
+                .eq('id', user.id);
+
+            if (updateError) {
+                console.error('Credit deduction failed:', updateError);
+            }
+        }
 
         return new Response(JSON.stringify(blueprint), {
             status: 200,

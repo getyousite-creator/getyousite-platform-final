@@ -371,7 +371,7 @@ export const AuthService = {
      */
     async getUserProfile(userId: string) {
         const supabase = await createClient();
-        let { data, error } = await supabase.from('users').select('credits, tier').eq('id', userId).single();
+        const { data, error } = await supabase.from('users').select('credits, tier').eq('id', userId).single();
 
         // AUTO-INIT: If user exists but has no credits set, grant them the Sovereign-Starter credit (1)
         if (!error && data && (data.credits === null || data.credits === undefined)) {

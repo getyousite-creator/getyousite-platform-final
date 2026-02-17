@@ -56,7 +56,7 @@ export default function Testimonials() {
             {/* Marquee Container with GYS-V2 Styling */}
             <div className="relative flex overflow-x-hidden group">
                 <div className="animate-marquee whitespace-nowrap flex gap-10 py-10">
-                    {[...testimonials, ...testimonials, ...testimonials].map((testimonial, i) => (
+                    {testimonials.map((testimonial, i) => (
                         <div
                             key={i}
                             className="inline-block w-[400px] bg-[#1e293b]/40 border border-white/5 rounded-[2rem] p-10 hover:border-primary/30 transition-all whitespace-normal backdrop-blur-2xl shadow-2xl relative overflow-hidden"
