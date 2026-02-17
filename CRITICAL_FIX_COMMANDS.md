@@ -20,46 +20,46 @@ export interface SubscriptionPlan {
 
 export const SUBSCRIPTION_PLANS: Record<string, SubscriptionPlan> = {
     starter: {
-        id: 'starter',
-        name: 'Starter',  // Changed from "Node Starter" to match homepage
-        description: 'Proof of Concept Protocol - Ideal for early visionaries.',
-        price: 0,  // FIXED: $0 (was $19)
-        currency: 'USD',
+        id: "starter",
+        name: "Starter", // Changed from "Node Starter" to match homepage
+        description: "Proof of Concept Protocol - Ideal for early visionaries.",
+        price: 0, // FIXED: $0 (was $19)
+        currency: "USD",
         features: [
-            'Logic Community Support',
-            'Standard GYS Branding',
-            'GYS Subdomain Access',
-            'Basic AI Unit Generation'
-        ]
+            "Logic Community Support",
+            "Standard GYS Branding",
+            "GYS Subdomain Access",
+            "Basic AI Unit Generation",
+        ],
     },
     pro: {
-        id: 'pro',
-        name: 'Professional',  // Changed from "Nexus Pro" to match homepage
-        description: 'Professional Growth Engine - High-status digital presence.',
-        price: 19,  // FIXED: $19 (was $49)
-        currency: 'USD',
+        id: "pro",
+        name: "Professional", // Changed from "Nexus Pro" to match homepage
+        description: "Professional Growth Engine - High-status digital presence.",
+        price: 19, // FIXED: $19 (was $49)
+        currency: "USD",
         features: [
-            'Neural Traffic Analytics',
-            'Priority Engineering Support',
-            'Total Brand Sovereignty',
-            'Naked Domain Linking',
-            '3 Sovereign Web Assets'
-        ]
+            "Neural Traffic Analytics",
+            "Priority Engineering Support",
+            "Total Brand Sovereignty",
+            "Naked Domain Linking",
+            "3 Sovereign Web Assets",
+        ],
     },
     business: {
-        id: 'business',
-        name: 'Business',  // Changed from "Empire Business" to match homepage
-        description: 'Digital Empire Infrastructure - Full architectural control.',
-        price: 49,  // FIXED: $49 (was $99)
-        currency: 'USD',
+        id: "business",
+        name: "Business", // Changed from "Empire Business" to match homepage
+        description: "Digital Empire Infrastructure - Full architectural control.",
+        price: 49, // FIXED: $49 (was $99)
+        currency: "USD",
         features: [
-            'API Access Protocol',
-            'Redundant Security Backups',
-            'Live Logic Support Chat',
-            'Autonomous SEO Architect',
-            '10 Sovereign Web Assets'
-        ]
-    }
+            "API Access Protocol",
+            "Redundant Security Backups",
+            "Live Logic Support Chat",
+            "Autonomous SEO Architect",
+            "10 Sovereign Web Assets",
+        ],
+    },
 };
 
 export const getPlanById = (id: string): SubscriptionPlan => {
@@ -84,82 +84,82 @@ In `messages/ar.json`, add these keys (and any missing ones):
 
 ```json
 {
-  "templates": {
-    "features": {
-      "smartBooking": "حجز ذكي",
-      "serviceBlueprints": "مخططات الخدمات",
-      "clinicalGallery": "معرض العيادات",
-      "highConvFunnels": "مسارات تحويل عالية",
-      "glassCart": "عربة زجاجية",
-      "oneClickCheckout": "الدفع بضغطة واحدة",
-      "trustGrids": "شبكات الثقة",
-      "globalOperations": "العمليات العالمية",
-      "investorPortals": "بوابات المستثمرين",
-      "programMatrices": "مصفوفات البرامج",
-      "trainerProfiles": "ملفات المدربين",
-      "progressTracking": "تتبع التقدم",
-      "automatedLedger": "دفتر أتمتة",
-      "taxCompliance": "الامتثال الضريبي",
-      "invoicingEngine": "محرك الفواتير",
-      "crmLogic": "منطق إدارة العملاء",
-      "inventoryMatrices": "مصفوفات المخزون",
-      "systemLogs": "سجلات النظام",
-      "caseManagement": "إدارة الحالات",
-      "partnerProfiles": "ملفات الشركاء",
-      "secureIntake": "استقبال آمن",
-      "dynamicMenus": "قوائم ديناميكية",
-      "reservationEngine": "محرك الحجوزات",
-      "criticsSection": "قسم النقاد",
-      "masonryGrid": "شبكة Masonry",
-      "cinematicReels": "شرائط سينمائية",
-      "visionMatrices": "مصفوفات الرؤية",
-      "dataVisuals": "مرئيات البيانات",
-      "featureGrids": "شبكات الميزات",
-      "leadDiscovery": "اكتشاف العملاء",
-      "propertySearch": "بحث العقارات",
-      "marketIntel": "استخبارات السوق",
-      "virtual Tours": "جولات افتراضية",
-      "courseMatrix": "مصفوفة الدورات",
-      "learningPaths": "مسارات التعلم",
-      "curriculumGrid": "منهج الشبكة",
-      "newsGrid": "شبكة الأخبار",
-      "readerFocus": "تركيز القارئ",
-      "articleMatrix": "مصفوفة المقالات",
-      "therapyMenu": "قائمة العلاج",
-      "softVisuals": "مرئيات ناعمة",
-      "calmBooking": "حجز هادئ",
-      "quickLook": "نظرة سريعة",
-      "sizeGuide": "دليل المقاسات",
-      "streetVibes": "أجواء الشوارع",
-      "attorneyProfiles": "ملفات المحامين",
-      "practiceAreas": "مجالات الممارسة",
-      "consultation": "استشارة",
-      "seasonalMenu": "قائمة موسمية",
-      "chefsTable": "طاولة الشيف",
-      "eventBooking": "حجز الفعاليات",
-      "portfolioGrid": "محفظة الشبكة",
-      "investmentThesis": "أطروحة الاستثمار",
-      "teamFocus": "تركيز الفريق",
-      "smileGallery": "معرض الابتسامة",
-      "patientForms": "نماذج المرضى",
-      "emergencyInfo": "معلومات الطوارئ",
-      "classSchedule": "جدول الفصول",
-      "instructorBio": "سيرة المدرب",
-      "newStudentOffer": "عرض الطالب الجديد",
-      "techStack": "المجموعة التقنية",
-      "caseStudies": "دراسات الحالة",
-      "integrationApi": "واجهة برمجة التكامل",
-      "neighborhoodGuide": "دليل الحي",
-      "buyingGuide": "دليل الشراء",
-      "mortgageCalc": "حساب الرهن",
-      "breakingNews": "أخبار عاجلة",
-      "trendingTopics": "المواضيع الرائجة",
-      "newsletter": "النشرة الإخبارية",
-      "skillTrack": "مسار المهارات",
-      "certification": "شهادة",
-      "teamAccess": "وصول الفريق"
+    "templates": {
+        "features": {
+            "smartBooking": "حجز ذكي",
+            "serviceBlueprints": "مخططات الخدمات",
+            "clinicalGallery": "معرض العيادات",
+            "highConvFunnels": "مسارات تحويل عالية",
+            "glassCart": "عربة زجاجية",
+            "oneClickCheckout": "الدفع بضغطة واحدة",
+            "trustGrids": "شبكات الثقة",
+            "globalOperations": "العمليات العالمية",
+            "investorPortals": "بوابات المستثمرين",
+            "programMatrices": "مصفوفات البرامج",
+            "trainerProfiles": "ملفات المدربين",
+            "progressTracking": "تتبع التقدم",
+            "automatedLedger": "دفتر أتمتة",
+            "taxCompliance": "الامتثال الضريبي",
+            "invoicingEngine": "محرك الفواتير",
+            "crmLogic": "منطق إدارة العملاء",
+            "inventoryMatrices": "مصفوفات المخزون",
+            "systemLogs": "سجلات النظام",
+            "caseManagement": "إدارة الحالات",
+            "partnerProfiles": "ملفات الشركاء",
+            "secureIntake": "استقبال آمن",
+            "dynamicMenus": "قوائم ديناميكية",
+            "reservationEngine": "محرك الحجوزات",
+            "criticsSection": "قسم النقاد",
+            "masonryGrid": "شبكة Masonry",
+            "cinematicReels": "شرائط سينمائية",
+            "visionMatrices": "مصفوفات الرؤية",
+            "dataVisuals": "مرئيات البيانات",
+            "featureGrids": "شبكات الميزات",
+            "leadDiscovery": "اكتشاف العملاء",
+            "propertySearch": "بحث العقارات",
+            "marketIntel": "استخبارات السوق",
+            "virtual Tours": "جولات افتراضية",
+            "courseMatrix": "مصفوفة الدورات",
+            "learningPaths": "مسارات التعلم",
+            "curriculumGrid": "منهج الشبكة",
+            "newsGrid": "شبكة الأخبار",
+            "readerFocus": "تركيز القارئ",
+            "articleMatrix": "مصفوفة المقالات",
+            "therapyMenu": "قائمة العلاج",
+            "softVisuals": "مرئيات ناعمة",
+            "calmBooking": "حجز هادئ",
+            "quickLook": "نظرة سريعة",
+            "sizeGuide": "دليل المقاسات",
+            "streetVibes": "أجواء الشوارع",
+            "attorneyProfiles": "ملفات المحامين",
+            "practiceAreas": "مجالات الممارسة",
+            "consultation": "استشارة",
+            "seasonalMenu": "قائمة موسمية",
+            "chefsTable": "طاولة الشيف",
+            "eventBooking": "حجز الفعاليات",
+            "portfolioGrid": "محفظة الشبكة",
+            "investmentThesis": "أطروحة الاستثمار",
+            "teamFocus": "تركيز الفريق",
+            "smileGallery": "معرض الابتسامة",
+            "patientForms": "نماذج المرضى",
+            "emergencyInfo": "معلومات الطوارئ",
+            "classSchedule": "جدول الفصول",
+            "instructorBio": "سيرة المدرب",
+            "newStudentOffer": "عرض الطالب الجديد",
+            "techStack": "المجموعة التقنية",
+            "caseStudies": "دراسات الحالة",
+            "integrationApi": "واجهة برمجة التكامل",
+            "neighborhoodGuide": "دليل الحي",
+            "buyingGuide": "دليل الشراء",
+            "mortgageCalc": "حساب الرهن",
+            "breakingNews": "أخبار عاجلة",
+            "trendingTopics": "المواضيع الرائجة",
+            "newsletter": "النشرة الإخبارية",
+            "skillTrack": "مسار المهارات",
+            "certification": "شهادة",
+            "teamAccess": "وصول الفريق"
+        }
     }
-  }
 }
 ```
 
@@ -205,28 +205,30 @@ const {
 if (user?.id) {
     // ACTUAL CREDIT DEDUCTION
     const { data: userData, error: fetchError } = await supabase
-        .from('users')
-        .select('credits')
-        .eq('id', user.id)
+        .from("users")
+        .select("credits")
+        .eq("id", user.id)
         .single();
-    
+
     if (fetchError || !userData || userData.credits < 1) {
         return NextResponse.json(
             { error: "INSUFFICIENT_CREDITS", message: "Credit Logic Depleted. Top-up Required." },
-            { status: 402 }
+            { status: 402 },
         );
     }
-    
+
     // Deduct credit
     const { error: updateError } = await supabase
-        .from('users')
+        .from("users")
         .update({ credits: userData.credits - 1 })
-        .eq('id', user.id);
-    
+        .eq("id", user.id);
+
     if (updateError) {
         console.error("Credit deduction failed:", updateError);
     } else {
-        console.log(`[SOVEREIGN_WALLET] Credit deducted for User: ${user.id}. Remaining: ${userData.credits - 1}`);
+        console.log(
+            `[SOVEREIGN_WALLET] Credit deducted for User: ${user.id}. Remaining: ${userData.credits - 1}`,
+        );
     }
 }
 ```
@@ -241,9 +243,9 @@ In `src/components/home/Testimonials.tsx`:
 // Remove duplicate testimonials - keep only unique ones
 const uniqueTestimonials = [
     testimonials[0],
-    testimonials[1], 
+    testimonials[1],
     testimonials[2],
-    testimonials[3]
+    testimonials[3],
     // Remove: testimonials[4-11] which are duplicates
 ];
 ```
