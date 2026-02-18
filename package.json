@@ -17,6 +17,7 @@
         "audit:generate": "node --experimental-strip-types scripts/audit-production-generate.ts",
         "audit:i18n": "node --experimental-strip-types scripts/audit-i18n-quality.ts",
         "audit:preview": "node --experimental-strip-types scripts/audit-preview-realism.ts",
+        "audit:experiments": "node --experimental-strip-types scripts/audit-experiments-track.ts",
         "decide:playground": "node --experimental-strip-types scripts/decide-playground-experiment.ts",
         "gate:release": "npm run audit:routes && npm run audit:seo && npm run audit:links && npm run audit:ui && npm run audit:i18n && npm run e2e:prod && npm run e2e:responsive",
         "preflight:prod": "node --experimental-strip-types scripts/preflight-production.ts",
