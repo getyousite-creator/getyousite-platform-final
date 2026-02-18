@@ -1,5 +1,5 @@
 import { SITE_TEMPLATES, TemplateTheme } from "../templates";
-import { SiteBlueprint } from "../schemas";
+import { SiteBlueprint, Section } from "../schemas";
 import { applyPersonaMicrocopy } from "@/lib/ai/persona-microcopy";
 
 export interface UserPromptData {
@@ -14,7 +14,7 @@ interface SpecializedContent {
     subheadline: string;
     features: string[];
     injectionSection?: {
-        type: string;
+        type: Section["type"];
         content: Record<string, unknown>;
     };
 }
@@ -151,7 +151,7 @@ export const CustomizerEngine = {
             const heroIndex = baseLayout.findIndex(
                 (s) => s.type === "hero" || s.type === "HERO_PRIME",
             );
-            const newSection = {
+            const newSection: Section = {
                 id: `inject_${Date.now()}`,
                 animation: "fade-in" as const,
                 styles: {},

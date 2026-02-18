@@ -4,7 +4,7 @@ import {
     decideExperiment,
     toSerializableMetrics,
     type ExperimentEventRow,
-} from "../src/lib/analytics/experiment-decision.ts";
+} from "../src/lib/analytics/experiment-decision";
 
 async function main() {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
