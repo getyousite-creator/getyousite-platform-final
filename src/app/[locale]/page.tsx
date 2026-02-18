@@ -1,5 +1,5 @@
 import MaintenanceProtocol from "@/components/home/MaintenanceProtocol";
-import InstantPromptHome from "@/components/home/InstantPromptHome";
+import StrategicHome from "@/components/home/StrategicHome";
 
 export default function Home() {
     const isMaintenanceMode = process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true";
@@ -8,5 +8,5 @@ export default function Home() {
         return <MaintenanceProtocol />;
     }
 
-    return <InstantPromptHome />;
+    return <StrategicHome />;
 }
