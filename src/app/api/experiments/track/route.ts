@@ -40,7 +40,15 @@ export async function POST(req: NextRequest) {
         });
 
         if (error) {
-            return NextResponse.json({ error: "EXPERIMENT_EVENT_WRITE_FAILED" }, { status: 500 });
+            console.error("Experiment event write failed:", error);
+            return NextResponse.json(
+                {
+                    error: "EXPERIMENT_EVENT_WRITE_FAILED",
+                    code: error.code || null,
+                    hint: error.hint || null,
+                },
+                { status: 500 },
+            );
         }
 
         return NextResponse.json({ success: true });
