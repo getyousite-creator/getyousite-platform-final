@@ -19,6 +19,237 @@ interface SpecializedContent {
     };
 }
 
+function detectBusinessType(input: string) {
+    const value = input.toLowerCase();
+    if (
+        value.includes("gym") ||
+        value.includes("fitness") ||
+        value.includes("رياض") ||
+        value.includes("رياضة")
+    ) {
+        return "fitness";
+    }
+    if (value.includes("restaurant") || value.includes("cafe") || value.includes("مطعم")) {
+        return "restaurant";
+    }
+    if (value.includes("clinic") || value.includes("medical") || value.includes("عيادة")) {
+        return "medical";
+    }
+    return "general";
+}
+
+function buildRichFallbackLayout(userData: UserPromptData, locale: string): Section[] {
+    const isAr = locale === "ar";
+    const type = detectBusinessType(`${userData.niche} ${userData.vision}`);
+
+    const heroImageByType: Record<string, string> = {
+        fitness:
+            "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1600&q=80",
+        restaurant:
+            "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=80",
+        medical:
+            "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1600&q=80",
+        general:
+            "https://images.unsplash.com/photo-1522204538344-922f76eba0a4?auto=format&fit=crop&w=1600&q=80",
+    };
+
+    const serviceItems =
+        type === "fitness"
+            ? [
+                  {
+                      title: isAr ? "اشتراك شهري مرن" : "Flexible Monthly Membership",
+                      description: isAr
+                          ? "وصول كامل لصالة الحديد والكارديو مع خطط مناسبة."
+                          : "Full access to gym and cardio with clear membership plans.",
+                  },
+                  {
+                      title: isAr ? "تدريب شخصي" : "Personal Coaching",
+                      description: isAr
+                          ? "برنامج تدريبي فردي حسب الهدف البدني."
+                          : "1:1 coaching tailored to your transformation goal.",
+                  },
+                  {
+                      title: isAr ? "متابعة التغذية" : "Nutrition Guidance",
+                      description: isAr
+                          ? "خطة غذائية عملية تدعم الأداء والاستمرارية."
+                          : "Actionable meal guidance for steady progress.",
+                  },
+              ]
+            : [
+                  {
+                      title: isAr ? "خدمة احترافية" : "Professional Service",
+                      description: isAr
+                          ? "حلول مصممة بدقة لرفع نتائج العمل."
+                          : "Tailored solutions focused on business outcomes.",
+                  },
+                  {
+                      title: isAr ? "تنفيذ سريع" : "Fast Execution",
+                      description: isAr
+                          ? "إطلاق سريع مع جودة إنتاج عالية."
+                          : "Rapid implementation with production quality.",
+                  },
+                  {
+                      title: isAr ? "دعم متواصل" : "Continuous Support",
+                      description: isAr
+                          ? "مرافقة تشغيلية وتحسين مستمر."
+                          : "Operational support and continuous optimization.",
+                  },
+              ];
+
+    return [
+        {
+            id: `hero_${Date.now()}`,
+            type: "hero",
+            animation: "fade-in",
+            styles: {},
+            content: {
+                headline: isAr
+                    ? `${userData.businessName} - وجهتك الأولى للنتائج الحقيقية`
+                    : `${userData.businessName} - Built For Real Results`,
+                subheadline: isAr
+                    ? userData.vision ||
+                      `حلول احترافية في ${userData.niche} مع تجربة عميل واضحة وموثوقة.`
+                    : userData.vision ||
+                      `Professional ${userData.niche} solutions with a clear, trustworthy customer journey.`,
+                cta: isAr ? "ابدأ الآن" : "Get Started",
+                image: heroImageByType[type],
+            },
+        },
+        {
+            id: `features_${Date.now()}`,
+            type: "FEATURE_GRID",
+            animation: "fade-in",
+            styles: {},
+            content: {
+                title: isAr ? "ماذا ستحصل عليه" : "What You Get",
+                items: serviceItems,
+            },
+        },
+        {
+            id: `services_${Date.now()}`,
+            type: "services",
+            animation: "fade-in",
+            styles: {},
+            content: {
+                items: serviceItems.map((item, index) => ({
+                    name: item.title,
+                    price:
+                        type === "fitness"
+                            ? isAr
+                                ? `${149 + index * 100} درهم`
+                                : `$${29 + index * 20}`
+                            : isAr
+                              ? `ابتداءً من ${199 + index * 150} درهم`
+                              : `From $${49 + index * 30}`,
+                    description: item.description,
+                })),
+            },
+        },
+        {
+            id: `gallery_${Date.now()}`,
+            type: "gallery",
+            animation: "fade-in",
+            styles: {},
+            content: {
+                images:
+                    type === "fitness"
+                        ? [
+                              "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=900&q=80",
+                              "https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=900&q=80",
+                              "https://images.unsplash.com/photo-1549476464-37392f717541?auto=format&fit=crop&w=900&q=80",
+                              "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=80",
+                          ]
+                        : [
+                              "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=80",
+                              "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=900&q=80",
+                              "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=900&q=80",
+                              "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80",
+                          ],
+            },
+        },
+        {
+            id: `testimonials_${Date.now()}`,
+            type: "testimonials",
+            animation: "fade-in",
+            styles: {},
+            content: {
+                reviews: [
+                    {
+                        name: isAr ? "أحمد ب." : "Alex B.",
+                        role: isAr ? "عميل فعلي" : "Real Client",
+                        text: isAr
+                            ? "تجربة احترافية والنتائج ظهرت بسرعة."
+                            : "Professional experience with fast, measurable results.",
+                    },
+                    {
+                        name: isAr ? "سارة م." : "Sarah M.",
+                        role: isAr ? "صاحبة مشروع" : "Business Owner",
+                        text: isAr
+                            ? "الموقع واضح ويحوّل الزوار إلى عملاء."
+                            : "The site is clear and converts visitors into customers.",
+                    },
+                    {
+                        name: isAr ? "يوسف ع." : "Youssef A.",
+                        role: isAr ? "مدير عمليات" : "Operations Lead",
+                        text: isAr
+                            ? "تصميم منظم ورسائل تسويقية مباشرة."
+                            : "Structured design with direct conversion-focused messaging.",
+                    },
+                ],
+            },
+        },
+        {
+            id: `faq_${Date.now()}`,
+            type: "faq",
+            animation: "fade-in",
+            styles: {},
+            content: {
+                items: [
+                    {
+                        q: isAr ? "كم يستغرق البدء؟" : "How fast can we start?",
+                        a: isAr
+                            ? "يمكن بدء التنفيذ فوراً خلال نفس اليوم."
+                            : "You can start immediately with same-day onboarding.",
+                    },
+                    {
+                        q: isAr ? "هل توجد باقات واضحة؟" : "Do you offer clear plans?",
+                        a: isAr
+                            ? "نعم، توجد باقات مرنة حسب حجم الاحتياج."
+                            : "Yes, plans are structured by your growth stage.",
+                    },
+                ],
+            },
+        },
+        {
+            id: `contact_${Date.now()}`,
+            type: "contact",
+            animation: "fade-in",
+            styles: {},
+            content: {
+                title: isAr ? "تواصل معنا" : "Contact Us",
+                description: isAr
+                    ? "اترك بياناتك وسنعاود التواصل خلال 24 ساعة."
+                    : "Send your details and we will reach out within 24 hours.",
+                phone: "+212 600 000 000",
+                email: "hello@getyousite.com",
+                address: isAr ? "الدار البيضاء، المغرب" : "Casablanca, Morocco",
+            },
+        },
+        {
+            id: `cta_${Date.now()}`,
+            type: "cta",
+            animation: "fade-in",
+            styles: {},
+            content: {
+                headline: isAr ? "جاهز للانطلاق؟" : "Ready To Launch?",
+                subheadline: isAr
+                    ? "ابنِ حضوراً رقمياً مقنعاً وابدأ جلب العملاء."
+                    : "Build a credible digital presence and start converting today.",
+            },
+        },
+    ];
+}
+
 // CLINICAL HEURISTIC SYNTHESIS
 const HeuristicSovereignGenerator = {
     synthesize(userData: UserPromptData, locale: string = "en") {
@@ -171,24 +402,45 @@ export const CustomizerEngine = {
                 primary: template.blueprint.theme.primary,
                 secondary: template.blueprint.theme.secondary || "#1e293b",
             },
-            layout: baseLayout.map((section) => ({
-                ...section,
-                content: {
-                    ...section.content,
-                    headline:
-                        section.type === "hero" || section.type === "HERO_PRIME"
-                            ? specializedContent.headline
-                            : section.content.headline,
-                    subheadline:
-                        section.type === "hero" || section.type === "HERO_PRIME"
-                            ? specializedContent.subheadline
-                            : section.content.subheadline,
-                    features:
-                        section.type === "features" || section.type === "FEATURE_GRID"
-                            ? specializedContent.features
-                            : section.content.features,
-                },
-            })),
+            layout:
+                baseLayout.length < 5
+                    ? buildRichFallbackLayout(userData, locale)
+                    : baseLayout.map((section) => ({
+                          ...section,
+                          content: {
+                              ...section.content,
+                              headline:
+                                  section.type === "hero" || section.type === "HERO_PRIME"
+                                      ? specializedContent.headline
+                                      : section.content.headline,
+                              subheadline:
+                                  section.type === "hero" || section.type === "HERO_PRIME"
+                                      ? specializedContent.subheadline
+                                      : section.content.subheadline,
+                              features:
+                                  section.type === "features" || section.type === "FEATURE_GRID"
+                                      ? specializedContent.features
+                                      : section.content.features,
+                          },
+                      })),
+            navigation: {
+                ...template.blueprint.navigation,
+                logo: userData.businessName,
+                links: [
+                    { label: locale === "ar" ? "الرئيسية" : "Home", href: "#home" },
+                    { label: locale === "ar" ? "الخدمات" : "Services", href: "#services" },
+                    { label: locale === "ar" ? "الأسعار" : "Pricing", href: "#pricing" },
+                    { label: locale === "ar" ? "تواصل" : "Contact", href: "#contact" },
+                ],
+            },
+            footer: {
+                ...template.blueprint.footer,
+                copyright: `© ${new Date().getFullYear()} ${userData.businessName}. All rights reserved.`,
+                links: [
+                    { label: locale === "ar" ? "الخصوصية" : "Privacy", href: "/privacy" },
+                    { label: locale === "ar" ? "الشروط" : "Terms", href: "/terms" },
+                ],
+            },
             metadata: {
                 ...template.blueprint.metadata,
                 generated_at: new Date().toISOString(),
