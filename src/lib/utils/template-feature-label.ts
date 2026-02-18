@@ -90,7 +90,14 @@ export function getTemplateFeatureLabel(t: Translator, feature: string): string 
 
     try {
         const translated = t(translationKey);
-        return translated === translationKey ? feature : translated;
+        if (
+            translated === translationKey ||
+            translated === `Showcase.${translationKey}` ||
+            translated.endsWith(`.${translationKey}`)
+        ) {
+            return feature;
+        }
+        return translated;
     } catch {
         return feature;
     }

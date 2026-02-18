@@ -1,12 +1,27 @@
 "use client";
 
-import AuthHub from '@/components/auth/AuthHub';
-import { Link } from '@/i18n/routing';
-import { useLocale, useTranslations } from 'next-intl';
+import AuthHub from "@/components/auth/AuthHub";
+import { Link } from "@/i18n/routing";
+import { useLocale, useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { trackExperimentEvent } from "@/lib/analytics/experiment-tracker";
 
 export default function SignUpPage() {
-    const t = useTranslations('Auth');
+    const t = useTranslations("Auth");
     const locale = useLocale();
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        trackExperimentEvent({
+            experimentKey: "exp_playground_cta_v1",
+            eventName: "funnel_signup_page_open",
+            variant: searchParams.get("variant") || "unknown",
+            locale,
+            templateId: searchParams.get("template") || "",
+            intent: searchParams.get("intent") || "",
+        });
+    }, [locale, searchParams]);
 
     return (
         <div className="min-h-screen bg-[#080808] flex items-center justify-center p-6 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-black to-black">
@@ -16,10 +31,11 @@ export default function SignUpPage() {
                 <AuthHub initialMode="signup" />
 
                 <Link
-                    href="/" locale={locale}
+                    href="/"
+                    locale={locale}
                     className="mt-8 text-[10px] font-black uppercase tracking-[0.5em] text-zinc-600 hover:text-white transition-all flex items-center gap-2"
                 >
-                    <span className="opacity-50">&lt;-</span> {t('backHome')}
+                    <span className="opacity-50">&lt;-</span> {t("backHome")}
                 </Link>
             </div>
         </div>

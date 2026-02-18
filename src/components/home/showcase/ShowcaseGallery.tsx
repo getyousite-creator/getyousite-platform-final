@@ -4,33 +4,35 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SITE_TEMPLATES } from "@/lib/templates";
 import { Button } from "@/components/ui/button";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
-import { SiteBlueprint } from "@/lib/schemas";
-import { ArrowRight, Box, Layers, Sparkles, Globe } from "lucide-react";
+import { ArrowRight, Layers, Globe } from "lucide-react";
 import Image from "next/image";
 
-import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
-import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
-import { categories, templates, Template } from "@/data/template-data";
+import { useLocale, useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/routing";
+import { categories, templates } from "@/data/template-data";
 import { getTemplateFeatureLabel } from "@/lib/utils/template-feature-label";
 import CategoryFilter from "./CategoryFilter";
 import { getPublicStoresAction } from "@/app/actions/store-actions";
 
-
 export default function ShowcaseGallery() {
-    const t = useTranslations('Showcase');
+    const t = useTranslations("Showcase");
+    const tRoot = useTranslations();
+    const locale = useLocale();
     const { updateBlueprint } = useTemplateEditor();
     const onOpen = useLaunchModal((state) => state.onOpen);
     const router = useRouter();
-    const [featuredSites, setFeaturedSites] = useState<any[]>([]);
+    const [featuredSites, setFeaturedSites] = useState<
+        Array<{ id: string; name: string; slug: string; site_type?: string }>
+    >([]);
     const [activeCategory, setActiveCategory] = useState("all");
+    const [brokenImages, setBrokenImages] = useState<Record<string, boolean>>({});
 
     // Localize categories
-    const localizedCategories = categories.map(cat => ({
+    const localizedCategories = categories.map((cat) => ({
         ...cat,
-        label: t(`tabs.${cat.id}`)
+        label: t(`tabs.${cat.id}`),
     }));
 
     useEffect(() => {
@@ -43,38 +45,31 @@ export default function ShowcaseGallery() {
         fetchFeatured();
     }, []);
 
+    const filteredTemplates =
+        activeCategory === "all"
+            ? templates
+            : templates.filter((t) => t.category === activeCategory);
 
-    const filteredTemplates = activeCategory === "all"
-        ? templates
-        : templates.filter(t => t.category === activeCategory);
+    const translateFeature = (feature: string) => getTemplateFeatureLabel(tRoot, feature);
 
-    const translateFeature = (feature: string) => getTemplateFeatureLabel(t, feature);
+    const getTemplateImage = (templateId: string, src: string) => {
+        if (brokenImages[templateId] || !src) {
+            return "/images/tech-startup.png";
+        }
+        return src;
+    };
 
     const handlePreview = (themeId: string) => {
-        // Find the matching blueprint in SITE_TEMPLATES
-        const allThemes = SITE_TEMPLATES.categories.flatMap(c => c.themes);
-        const theme = allThemes.find(t => t.id === themeId);
-
-        if (theme) {
-            updateBlueprint(theme.blueprint);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            // Optionally redirect to customizer if not already there
-        } else {
-            // Fallback for demo URL
-            const template = templates.find(t => t.id === themeId);
-            if (template?.demoUrl) {
-                window.open(template.demoUrl, '_blank');
-            }
-        }
+        router.push(`/demo/${themeId}`);
     };
 
     const handleEdit = (themeId: string) => {
-        const allThemes = SITE_TEMPLATES.categories.flatMap(c => c.themes);
-        const theme = allThemes.find(t => t.id === themeId);
+        const allThemes = SITE_TEMPLATES.categories.flatMap((c) => c.themes);
+        const theme = allThemes.find((t) => t.id === themeId);
 
         if (theme) {
             updateBlueprint(theme.blueprint);
-            router.push('/customizer');
+            router.push(`/playground/${themeId}`);
         } else {
             onOpen(themeId);
         }
@@ -106,9 +101,15 @@ export default function ShowcaseGallery() {
                             {/* Preview Image */}
                             <div className="aspect-[4/3] relative overflow-hidden">
                                 <Image
-                                    src={template.image}
+                                    src={getTemplateImage(template.id, template.image)}
                                     alt={t(`projects.${template.id}.title`)}
                                     fill
+                                    onError={() =>
+                                        setBrokenImages((prev) => ({
+                                            ...prev,
+                                            [template.id]: true,
+                                        }))
+                                    }
                                     className="object-cover grayscale-[0.8] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-[1.5s] ease-out"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A2540]/80 via-transparent to-transparent" />
@@ -126,14 +127,14 @@ export default function ShowcaseGallery() {
                                             onClick={() => handlePreview(template.id)}
                                             className="bg-white text-[#0A2540] hover:bg-[#00D09C] hover:text-white font-black uppercase tracking-widest text-[10px] px-10 py-7 rounded-2xl shadow-2xl transition-all active:scale-95 border-none"
                                         >
-                                            {t('preview')}
+                                            {t("preview")}
                                         </Button>
                                         <Button
                                             onClick={() => handleEdit(template.id)}
                                             variant="outline"
                                             className="bg-transparent border-white/20 text-white hover:border-[#00D09C] hover:text-[#00D09C] font-black uppercase tracking-widest text-[10px] px-10 py-7 rounded-2xl backdrop-blur-md transition-all active:scale-95"
                                         >
-                                            {t('edit')}
+                                            {t("edit")}
                                         </Button>
                                     </div>
                                 </div>
@@ -143,7 +144,9 @@ export default function ShowcaseGallery() {
                             <div className="p-8">
                                 <div className="flex items-center gap-2 mb-3">
                                     <Globe className="w-3.5 h-3.5 text-[#00D09C]" />
-                                    <span className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">{template.category}</span>
+                                    <span className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">
+                                        {template.category}
+                                    </span>
                                 </div>
                                 <h4 className="text-2xl font-black text-foreground mb-4 uppercase tracking-tighter italic">
                                     {t(`projects.${template.id}.title`)}
@@ -152,8 +155,11 @@ export default function ShowcaseGallery() {
                                     {t(`projects.${template.id}.desc`)}
                                 </p>
                                 <div className="flex flex-wrap gap-2">
-                                    {template.features.slice(0, 3).map(f => (
-                                        <span key={f} className="text-[8px] font-black uppercase tracking-widest px-2.5 py-1 bg-[#0A2540]/5 border border-white/5 rounded-md text-gray-400">
+                                    {template.features.slice(0, 3).map((f) => (
+                                        <span
+                                            key={f}
+                                            className="text-[8px] font-black uppercase tracking-widest px-2.5 py-1 bg-[#0A2540]/5 border border-white/5 rounded-md text-gray-400"
+                                        >
                                             {translateFeature(f)}
                                         </span>
                                     ))}
@@ -171,8 +177,12 @@ export default function ShowcaseGallery() {
                         <div className="w-20 h-20 bg-[#00D09C]/10 rounded-[32px] flex items-center justify-center border border-[#00D09C]/20 mb-4 animate-pulse">
                             <Layers className="w-10 h-10 text-[#00D09C]" />
                         </div>
-                        <h3 className="text-4xl md:text-6xl font-black text-foreground uppercase tracking-tighter italic">{t('live_title')}</h3>
-                        <p className="text-[#00D09C] text-sm font-bold uppercase tracking-[0.3em]">{t('live_subtitle')}</p>
+                        <h3 className="text-4xl md:text-6xl font-black text-foreground uppercase tracking-tighter italic">
+                            {t("live_title")}
+                        </h3>
+                        <p className="text-[#00D09C] text-sm font-bold uppercase tracking-[0.3em]">
+                            {t("live_subtitle")}
+                        </p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -195,14 +205,26 @@ export default function ShowcaseGallery() {
                                     <div className="absolute bottom-6 left-6 right-6">
                                         <div className="flex items-center justify-between">
                                             <div>
-                                                <h4 className="text-xl font-bold text-white uppercase tracking-tight italic">{site.name}</h4>
-                                                <p className="text-[#00D09C] text-[10px] font-black uppercase tracking-widest">{site.site_type || "Sovereign Node v1.0"}</p>
+                                                <h4 className="text-xl font-bold text-white uppercase tracking-tight italic">
+                                                    {site.name}
+                                                </h4>
+                                                <p className="text-[#00D09C] text-[10px] font-black uppercase tracking-widest">
+                                                    {site.site_type || "Sovereign Node v1.0"}
+                                                </p>
                                             </div>
                                             <Button
-                                                onClick={() => window.open(`https://${site.slug}.getyousite.com`, '_blank')}
+                                                onClick={() =>
+                                                    window.open(
+                                                        `https://${site.slug}.getyousite.com/${locale}`,
+                                                        "_blank",
+                                                    )
+                                                }
                                                 className="w-12 h-12 rounded-2xl bg-white/10 hover:bg-[#00D09C] hover:text-white backdrop-blur-xl border border-white/10 p-0 transition-all group/btn"
                                             >
-                                                <ArrowRight size={20} className="text-white group-hover/btn:scale-110 transition-transform" />
+                                                <ArrowRight
+                                                    size={20}
+                                                    className="text-white group-hover/btn:scale-110 transition-transform"
+                                                />
                                             </Button>
                                         </div>
                                     </div>
@@ -215,11 +237,3 @@ export default function ShowcaseGallery() {
         </div>
     );
 }
-
-
-
-
-
-
-
-

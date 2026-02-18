@@ -8,6 +8,7 @@ import { createPayPalOrder, capturePayPalOrder } from "@/app/actions/paypal-acti
 import { useAuth } from "@/components/providers/SupabaseProvider";
 import { toast } from "sonner";
 import { useRouter } from "@/i18n/routing";
+import { trackExperimentEvent } from "@/lib/analytics/experiment-tracker";
 
 const plans = [
     {
@@ -103,10 +104,11 @@ function PlanCard({ plan, t, tCommon }: { plan: Plan; t: TFunc; tCommon: TFunc }
 
     return (
         <div
-            className={`p-10 rounded-[2rem] border transition-all duration-500 flex flex-col relative group ${plan.popular
-                ? "bg-[#1e293b]/50 border-primary/50 shadow-[0_0_60px_rgba(59,130,246,0.15)] scale-105 z-10 backdrop-blur-2xl"
-                : "bg-white/[0.02] border-white/5 hover:border-primary/20 hover:bg-white/[0.04]"
-                }`}
+            className={`p-10 rounded-[2rem] border transition-all duration-500 flex flex-col relative group ${
+                plan.popular
+                    ? "bg-[#1e293b]/50 border-primary/50 shadow-[0_0_60px_rgba(59,130,246,0.15)] scale-105 z-10 backdrop-blur-2xl"
+                    : "bg-white/[0.02] border-white/5 hover:border-primary/20 hover:bg-white/[0.04]"
+            }`}
         >
             {plan.popular && (
                 <div className="absolute -top-5 left-1/2 -translate-x-1/2">
@@ -162,7 +164,16 @@ function PlanCard({ plan, t, tCommon }: { plan: Plan; t: TFunc; tCommon: TFunc }
             <div className="mt-auto">
                 {priceValue === "0" ? (
                     <button
-                        onClick={() => router.push(`/live-demo?source=pricing-engine&plan=${plan.id}`)}
+                        onClick={() => {
+                            trackExperimentEvent({
+                                experimentKey: "exp_pricing_value_v1",
+                                eventName: "funnel_pricing_plan_selected",
+                                variant: plan.id,
+                                intent: "free_start",
+                                metadata: { amount: priceValue, currency },
+                            });
+                            router.push(`/live-demo?source=pricing-engine&plan=${plan.id}`);
+                        }}
                         className="w-full h-[58px] rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-white font-bold uppercase tracking-widest text-xs transition-all"
                     >
                         {t("start_free")}
@@ -176,7 +187,16 @@ function PlanCard({ plan, t, tCommon }: { plan: Plan; t: TFunc; tCommon: TFunc }
                             label: "pay",
                             height: 55,
                         }}
-                        createOrder={() => createPayPalOrder(plan.id).then((res) => res.orderID)}
+                        createOrder={() => {
+                            trackExperimentEvent({
+                                experimentKey: "exp_pricing_value_v1",
+                                eventName: "funnel_payment_started",
+                                variant: plan.id,
+                                intent: "paypal_start",
+                                metadata: { amount: priceValue, currency },
+                            });
+                            return createPayPalOrder(plan.id).then((res) => res.orderID);
+                        }}
                         onApprove={async (data) => {
                             if (!profile?.id) {
                                 toast.error(tCommon("auth_required") || "Authentication required.");
@@ -184,9 +204,23 @@ function PlanCard({ plan, t, tCommon }: { plan: Plan; t: TFunc; tCommon: TFunc }
                             }
                             const res = await capturePayPalOrder(data.orderID, profile.id, plan.id);
                             if (res?.success) {
+                                trackExperimentEvent({
+                                    experimentKey: "exp_pricing_value_v1",
+                                    eventName: "funnel_payment_success",
+                                    variant: plan.id,
+                                    intent: "paypal_success",
+                                    metadata: { amount: priceValue, currency },
+                                });
                                 toast.success("Identity Verified. Dashboard Access Granted.");
                                 router.push("/dashboard?checkout=success");
                             } else {
+                                trackExperimentEvent({
+                                    experimentKey: "exp_pricing_value_v1",
+                                    eventName: "funnel_payment_error",
+                                    variant: plan.id,
+                                    intent: "paypal_error",
+                                    metadata: { amount: priceValue, currency },
+                                });
                                 toast.error("Security Authentication Failed.");
                             }
                         }}

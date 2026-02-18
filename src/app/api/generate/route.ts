@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateCompleteWebsite } from "@/lib/ai/multi-provider";
+import { applyPersonaMicrocopy } from "@/lib/ai/persona-microcopy";
 import { z } from "zod";
 
 // Strict Input Validation
@@ -38,6 +39,11 @@ export async function POST(req: NextRequest) {
             locale,
             features,
         });
+        const enrichedBlueprint = applyPersonaMicrocopy(
+            blueprint,
+            { businessName, niche, vision },
+            locale,
+        );
 
         // 3. CREDIT_ACCOUNTABILITY_PROTOCOL
         const { createClient } = await import("@/lib/supabase/server");
@@ -80,7 +86,7 @@ export async function POST(req: NextRequest) {
         // 3. Response Synthesis
         return NextResponse.json({
             success: true,
-            data: blueprint,
+            data: enrichedBlueprint,
             meta: {
                 engine: "Sovereign-v3",
                 latency: "Optimized",

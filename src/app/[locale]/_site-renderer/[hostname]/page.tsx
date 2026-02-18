@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import TemplateRenderer from "@/templates/TemplateRenderer";
 import { notFound } from "next/navigation";
+import { buildSiteSchemaGraph, serializeSchemaGraph } from "@/lib/seo/schema-markup";
 
 export const revalidate = 0; // Sovereign Logic: Real-time rendering enabled.
 
@@ -59,14 +60,36 @@ export default async function SiteRendererPage({ params }: SiteRendererProps) {
         );
     }
 
+    const schemaGraph = buildSiteSchemaGraph({
+        hostname,
+        store: {
+            id: storeData.id,
+            name: storeData.name,
+            slug: storeData.slug,
+            template_id: storeData.template_id,
+            custom_domain: storeData.custom_domain,
+            blueprint: storeData.blueprint as unknown,
+            seo_title: storeData.seo_title,
+            seo_description: storeData.seo_description,
+        },
+    });
+
     return (
-        <TemplateRenderer
-            templateId={storeData.template_id || "corp-global"}
-            blueprint={storeData.blueprint as any} // eslint-disable-line @typescript-eslint/no-explicit-any
-            meta={{
-                id: storeData.id,
-                name: storeData.name,
-            }}
-        />
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: serializeSchemaGraph(schemaGraph),
+                }}
+            />
+            <TemplateRenderer
+                templateId={storeData.template_id || "corp-global"}
+                blueprint={storeData.blueprint as any} // eslint-disable-line @typescript-eslint/no-explicit-any
+                meta={{
+                    id: storeData.id,
+                    name: storeData.name,
+                }}
+            />
+        </>
     );
 }

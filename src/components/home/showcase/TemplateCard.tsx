@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Eye, CheckCircle, ExternalLink } from "lucide-react";
+import { CheckCircle, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Template } from "@/data/template-data";
 import { useRouter } from "@/i18n/routing";
@@ -15,7 +15,7 @@ interface TemplateCardProps {
 
 export default function TemplateCard({ template, onClick }: TemplateCardProps) {
     const router = useRouter();
-    const t = useTranslations('Showcase');
+    const t = useTranslations("Showcase");
 
     return (
         <motion.div
@@ -24,6 +24,7 @@ export default function TemplateCard({ template, onClick }: TemplateCardProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95 }}
             className="group relative"
+            onClick={() => onClick(template)}
         >
             <div className="relative aspect-[4/3] rounded-[2.5rem] overflow-hidden border border-border bg-card transition-all duration-700 group-hover:border-blue-500/40 group-hover:shadow-[0_8px_16px_rgba(59,130,246,0.2)]">
                 <div className="absolute top-0 left-0 right-0 h-10 bg-card/80 backdrop-blur-xl flex items-center px-6 justify-between z-20 border-b border-border">
@@ -33,7 +34,9 @@ export default function TemplateCard({ template, onClick }: TemplateCardProps) {
                         <div className="w-2.5 h-2.5 rounded-full bg-secondary transition-colors group-hover:bg-green-500/30" />
                     </div>
                     <div className="px-3 py-1 bg-secondary/10 rounded-full border border-border">
-                        <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground">{template.id}.blueprint_manifest</span>
+                        <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground">
+                            {template.id}.blueprint_manifest
+                        </span>
                     </div>
                 </div>
 
@@ -51,16 +54,16 @@ export default function TemplateCard({ template, onClick }: TemplateCardProps) {
                 <div className="absolute inset-x-0 bottom-0 p-8 flex flex-col gap-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 backdrop-blur-xl bg-card/95 z-30 border-t border-border">
                     <div className="flex gap-4">
                         <Button
-                            onClick={() => window.open(template.demoUrl, '_blank')}
+                            onClick={() => router.push(`/demo/${template.id}`)}
                             className="flex-1 h-12 rounded-xl bg-secondary/20 border border-border hover:bg-secondary/30 text-foreground font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 transition-all"
                         >
-                            <ExternalLink className="w-3.5 h-3.5" /> {t('preview')}
+                            <ExternalLink className="w-3.5 h-3.5" /> {t("preview")}
                         </Button>
                         <Button
-                            onClick={() => router.push(`/live-demo?source=template-card&template=${template.id}`)}
+                            onClick={() => router.push(`/playground/${template.id}`)}
                             className="flex-1 h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 shadow-xl transition-all"
                         >
-                            <CheckCircle className="w-3.5 h-3.5" /> {t('edit')}
+                            <CheckCircle className="w-3.5 h-3.5" /> {t("edit")}
                         </Button>
                     </div>
                 </div>
