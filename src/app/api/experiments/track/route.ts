@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 const ExperimentEventSchema = z.object({
     experimentKey: z.string().min(3),
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const supabase = await createClient();
+        const supabase = await createAdminClient();
         const payload = parsed.data;
 
         const { error } = await supabase.from("experiment_events").insert({
@@ -44,7 +44,8 @@ export async function POST(req: NextRequest) {
         }
 
         return NextResponse.json({ success: true });
-    } catch {
+    } catch (error) {
+        console.error("Experiment event track failed:", error);
         return NextResponse.json({ error: "EXPERIMENT_EVENT_INTERNAL_ERROR" }, { status: 500 });
     }
 }

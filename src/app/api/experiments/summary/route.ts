@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import {
     aggregateByVariant,
     decideExperiment,
@@ -26,7 +27,9 @@ export async function GET(req: NextRequest) {
 
         const sinceIso = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
 
-        const { data, error } = await supabase
+        const adminSupabase = await createAdminClient();
+
+        const { data, error } = await adminSupabase
             .from("experiment_events")
             .select("variant, event_name, session_id")
             .eq("experiment_key", experimentKey)
