@@ -32,6 +32,13 @@ type ImageProviderMode = "auto" | "openai" | "seedream";
 
 // Provider configurations
 const PROVIDERS = {
+    gemini: {
+        name: "Google Gemini",
+        baseUrl: "https://generativelanguage.googleapis.com/v1beta",
+        models: {
+            flash: "gemini-2.5-flash",
+        },
+    },
     openai: {
         name: "OpenAI",
         baseUrl: "https://api.openai.com/v1",
@@ -59,17 +66,89 @@ const PROVIDERS = {
 export async function generateWithFallback(
     request: AIGenerationRequest,
 ): Promise<AIGenerationResponse> {
-    // SOVEREIGN ORDER: GPT-4o-mini is the ONLY authorized engine for logic synthesis
+    // SOVEREIGN ORDER (v2): Gemini Flash first, OpenAI as resilient fallback.
+    if (process.env.GEMINI_API_KEY) {
+        try {
+            const geminiResult = await generateWithGemini(request);
+            console.log("Gemini 2.5 Flash Synthesis Successful");
+            return geminiResult;
+        } catch (error) {
+            console.warn("Gemini Flash failed, falling back to OpenAI:", error);
+        }
+    }
+
+    // OpenAI fallback
     try {
         const result = await generateWithOpenAI(request);
-        console.log("✅ Sovereign Engine: GPT-4o-mini Synthesis Successful");
+        console.log("Sovereign Engine: GPT-4o-mini Synthesis Successful");
         return result;
     } catch (error) {
-        console.error("❌ SOVEREIGN_ENGINE_CRITICAL_FAILURE:", error);
+        console.error("SOVEREIGN_ENGINE_CRITICAL_FAILURE:", error);
         throw new Error(`CRITICAL_LOGIC_FAILURE: ${(error as Error).message}`);
     }
 }
 
+/**
+ * Gemini 2.5 Flash generation (REST API).
+ * Supports JSON structured output and optional cached context reference.
+ */
+async function generateWithGemini(request: AIGenerationRequest): Promise<AIGenerationResponse> {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+        throw new Error("GEMINI_API_KEY not configured");
+    }
+
+    const model = PROVIDERS.gemini.models.flash;
+    const systemPrompt = request.systemPrompt || "You are a precise senior software and product assistant.";
+    const cachedContent = process.env.GEMINI_CACHED_CONTENT || undefined;
+    const endpoint = `${PROVIDERS.gemini.baseUrl}/models/${model}:generateContent?key=${apiKey}`;
+
+    const body: Record<string, unknown> = {
+        contents: [
+            {
+                role: "user",
+                parts: [{ text: `${systemPrompt}\n\n${request.prompt}` }],
+            },
+        ],
+        generationConfig: {
+            temperature: request.temperature ?? 0.7,
+            maxOutputTokens: request.maxTokens ?? 4000,
+            responseMimeType: request.jsonMode ? "application/json" : "text/plain",
+        },
+    };
+
+    if (cachedContent) {
+        body.cachedContent = cachedContent;
+    }
+
+    const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`Gemini HTTP ${response.status}: ${text}`);
+    }
+
+    const data = await response.json();
+    const content =
+        data?.candidates?.[0]?.content?.parts
+            ?.map((part: { text?: string }) => part.text || "")
+            .join("") || "";
+
+    return {
+        content,
+        provider: "Gemini-Flash",
+        model,
+        usage: {
+            prompt_tokens: data?.usageMetadata?.promptTokenCount || 0,
+            completion_tokens: data?.usageMetadata?.candidatesTokenCount || 0,
+            total_tokens: data?.usageMetadata?.totalTokenCount || 0,
+        },
+    };
+}
 /**
  * OpenAI Generation (Strictly GPT-4o-mini)
  */
@@ -821,4 +900,5 @@ export default {
     generateSinglePage,
     refineBlueprint,
 };
+
 
