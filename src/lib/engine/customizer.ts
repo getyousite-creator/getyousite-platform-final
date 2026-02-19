@@ -24,20 +24,27 @@ function detectBusinessType(input: string) {
     if (
         value.includes("gym") ||
         value.includes("fitness") ||
-        value.includes("رياض") ||
-        value.includes("رياضة")
+        value.includes("\u0631\u064a\u0627\u0636") ||
+        value.includes("\u0631\u064a\u0627\u0636\u0629")
     ) {
         return "fitness";
     }
-    if (value.includes("restaurant") || value.includes("cafe") || value.includes("مطعم")) {
+    if (
+        value.includes("restaurant") ||
+        value.includes("cafe") ||
+        value.includes("\u0645\u0637\u0639\u0645")
+    ) {
         return "restaurant";
     }
-    if (value.includes("clinic") || value.includes("medical") || value.includes("عيادة")) {
+    if (
+        value.includes("clinic") ||
+        value.includes("medical") ||
+        value.includes("\u0639\u064a\u0627\u062f\u0629")
+    ) {
         return "medical";
     }
     return "general";
 }
-
 function buildRichFallbackLayout(userData: UserPromptData, locale: string): Section[] {
     const isAr = locale === "ar";
     const type = detectBusinessType(`${userData.niche} ${userData.vision}`);
@@ -53,48 +60,102 @@ function buildRichFallbackLayout(userData: UserPromptData, locale: string): Sect
             "https://images.unsplash.com/photo-1522204538344-922f76eba0a4?auto=format&fit=crop&w=1600&q=80",
     };
 
-    const serviceItems =
-        type === "fitness"
-            ? [
-                  {
-                      title: isAr ? "اشتراك شهري مرن" : "Flexible Monthly Membership",
-                      description: isAr
-                          ? "وصول كامل لصالة الحديد والكارديو مع خطط مناسبة."
-                          : "Full access to gym and cardio with clear membership plans.",
-                  },
-                  {
-                      title: isAr ? "تدريب شخصي" : "Personal Coaching",
-                      description: isAr
-                          ? "برنامج تدريبي فردي حسب الهدف البدني."
-                          : "1:1 coaching tailored to your transformation goal.",
-                  },
-                  {
-                      title: isAr ? "متابعة التغذية" : "Nutrition Guidance",
-                      description: isAr
-                          ? "خطة غذائية عملية تدعم الأداء والاستمرارية."
-                          : "Actionable meal guidance for steady progress.",
-                  },
-              ]
-            : [
-                  {
-                      title: isAr ? "خدمة احترافية" : "Professional Service",
-                      description: isAr
-                          ? "حلول مصممة بدقة لرفع نتائج العمل."
-                          : "Tailored solutions focused on business outcomes.",
-                  },
-                  {
-                      title: isAr ? "تنفيذ سريع" : "Fast Execution",
-                      description: isAr
-                          ? "إطلاق سريع مع جودة إنتاج عالية."
-                          : "Rapid implementation with production quality.",
-                  },
-                  {
-                      title: isAr ? "دعم متواصل" : "Continuous Support",
-                      description: isAr
-                          ? "مرافقة تشغيلية وتحسين مستمر."
-                          : "Operational support and continuous optimization.",
-                  },
-              ];
+    const profiles = {
+        fitness: {
+            hero: `${userData.businessName} - High-Performance Fitness Hub`,
+            services: [
+                {
+                    title: "Flexible Monthly Membership",
+                    description: "Full access to gym and cardio with clear membership plans.",
+                },
+                {
+                    title: "Personal Coaching",
+                    description: "1:1 coaching tailored to your transformation goal.",
+                },
+                {
+                    title: "Nutrition Guidance",
+                    description: "Actionable meal guidance for steady progress.",
+                },
+            ],
+            gallery: [
+                "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1549476464-37392f717541?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=80",
+            ],
+        },
+        restaurant: {
+            hero: `${userData.businessName} - A Dining Experience Worth Repeating`,
+            services: [
+                {
+                    title: "Seasonal Menu",
+                    description: "Fresh seasonal dishes with consistent premium quality.",
+                },
+                {
+                    title: "Smart Reservations",
+                    description: "Fast booking flow designed to reduce wait time.",
+                },
+                {
+                    title: "Private Events",
+                    description: "Host private events with complete hospitality support.",
+                },
+            ],
+            gallery: [
+                "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?auto=format&fit=crop&w=900&q=80",
+            ],
+        },
+        medical: {
+            hero: `${userData.businessName} - Precision Care, Trusted Results`,
+            services: [
+                {
+                    title: "Specialized Consultations",
+                    description: "Expert consultations with a clear treatment plan.",
+                },
+                {
+                    title: "Fast Appointment Booking",
+                    description: "Direct booking with instant appointment confirmation.",
+                },
+                {
+                    title: "Post-Visit Follow-Up",
+                    description: "Structured follow-up to ensure stable outcomes.",
+                },
+            ],
+            gallery: [
+                "https://images.unsplash.com/photo-1666214280391-8ff5bd3c0bf0?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1631217868264-e6b90bb7e133?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1629909615184-74f495363b67?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=900&q=80",
+            ],
+        },
+        general: {
+            hero: `${userData.businessName} - Practical Solutions For Faster Growth`,
+            services: [
+                {
+                    title: "Professional Service",
+                    description: "Tailored solutions focused on business outcomes.",
+                },
+                {
+                    title: "Fast Execution",
+                    description: "Rapid implementation with production quality.",
+                },
+                {
+                    title: "Continuous Support",
+                    description: "Operational support and continuous optimization.",
+                },
+            ],
+            gallery: [
+                "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80",
+            ],
+        },
+    } as const;
+
+    const profile = profiles[type] || profiles.general;
 
     return [
         {
@@ -103,16 +164,13 @@ function buildRichFallbackLayout(userData: UserPromptData, locale: string): Sect
             animation: "fade-in",
             styles: {},
             content: {
-                headline: isAr
-                    ? `${userData.businessName} - وجهتك الأولى للنتائج الحقيقية`
-                    : `${userData.businessName} - Built For Real Results`,
-                subheadline: isAr
-                    ? userData.vision ||
-                      `حلول احترافية في ${userData.niche} مع تجربة عميل واضحة وموثوقة.`
-                    : userData.vision ||
-                      `Professional ${userData.niche} solutions with a clear, trustworthy customer journey.`,
-                cta: isAr ? "ابدأ الآن" : "Get Started",
+                headline: profile.hero,
+                subheadline:
+                    userData.vision ||
+                    `Professional ${userData.niche} solutions with a clear conversion-focused journey.`,
+                cta: isAr ? "Start Now" : "Get Started",
                 image: heroImageByType[type],
+                anchor: "home",
             },
         },
         {
@@ -121,8 +179,9 @@ function buildRichFallbackLayout(userData: UserPromptData, locale: string): Sect
             animation: "fade-in",
             styles: {},
             content: {
-                title: isAr ? "ماذا ستحصل عليه" : "What You Get",
-                items: serviceItems,
+                title: "What You Get",
+                items: profile.services,
+                anchor: "services",
             },
         },
         {
@@ -131,18 +190,12 @@ function buildRichFallbackLayout(userData: UserPromptData, locale: string): Sect
             animation: "fade-in",
             styles: {},
             content: {
-                items: serviceItems.map((item, index) => ({
+                items: profile.services.map((item, index) => ({
                     name: item.title,
-                    price:
-                        type === "fitness"
-                            ? isAr
-                                ? `${149 + index * 100} درهم`
-                                : `$${29 + index * 20}`
-                            : isAr
-                              ? `ابتداءً من ${199 + index * 150} درهم`
-                              : `From $${49 + index * 30}`,
+                    price: type === "fitness" ? `$${29 + index * 20}` : `From $${49 + index * 30}`,
                     description: item.description,
                 })),
+                anchor: "services",
             },
         },
         {
@@ -151,20 +204,8 @@ function buildRichFallbackLayout(userData: UserPromptData, locale: string): Sect
             animation: "fade-in",
             styles: {},
             content: {
-                images:
-                    type === "fitness"
-                        ? [
-                              "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=900&q=80",
-                              "https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=900&q=80",
-                              "https://images.unsplash.com/photo-1549476464-37392f717541?auto=format&fit=crop&w=900&q=80",
-                              "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=80",
-                          ]
-                        : [
-                              "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=80",
-                              "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=900&q=80",
-                              "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=900&q=80",
-                              "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80",
-                          ],
+                images: profile.gallery,
+                anchor: "gallery",
             },
         },
         {
@@ -173,29 +214,25 @@ function buildRichFallbackLayout(userData: UserPromptData, locale: string): Sect
             animation: "fade-in",
             styles: {},
             content: {
+                title: "Client Reviews",
                 reviews: [
                     {
-                        name: isAr ? "أحمد ب." : "Alex B.",
-                        role: isAr ? "عميل فعلي" : "Real Client",
-                        text: isAr
-                            ? "تجربة احترافية والنتائج ظهرت بسرعة."
-                            : "Professional experience with fast, measurable results.",
+                        name: "Alex B.",
+                        role: "Real Client",
+                        text: "Professional experience with fast, measurable results.",
                     },
                     {
-                        name: isAr ? "سارة م." : "Sarah M.",
-                        role: isAr ? "صاحبة مشروع" : "Business Owner",
-                        text: isAr
-                            ? "الموقع واضح ويحوّل الزوار إلى عملاء."
-                            : "The site is clear and converts visitors into customers.",
+                        name: "Sarah M.",
+                        role: "Business Owner",
+                        text: "The site is clear and converts visitors into customers.",
                     },
                     {
-                        name: isAr ? "يوسف ع." : "Youssef A.",
-                        role: isAr ? "مدير عمليات" : "Operations Lead",
-                        text: isAr
-                            ? "تصميم منظم ورسائل تسويقية مباشرة."
-                            : "Structured design with direct conversion-focused messaging.",
+                        name: "Youssef A.",
+                        role: "Operations Lead",
+                        text: "Structured design with direct conversion-focused messaging.",
                     },
                 ],
+                anchor: "testimonials",
             },
         },
         {
@@ -204,20 +241,18 @@ function buildRichFallbackLayout(userData: UserPromptData, locale: string): Sect
             animation: "fade-in",
             styles: {},
             content: {
+                title: "Frequently Asked Questions",
                 items: [
                     {
-                        q: isAr ? "كم يستغرق البدء؟" : "How fast can we start?",
-                        a: isAr
-                            ? "يمكن بدء التنفيذ فوراً خلال نفس اليوم."
-                            : "You can start immediately with same-day onboarding.",
+                        q: "How fast can we start?",
+                        a: "You can start immediately with same-day onboarding.",
                     },
                     {
-                        q: isAr ? "هل توجد باقات واضحة؟" : "Do you offer clear plans?",
-                        a: isAr
-                            ? "نعم، توجد باقات مرنة حسب حجم الاحتياج."
-                            : "Yes, plans are structured by your growth stage.",
+                        q: "Do you offer clear plans?",
+                        a: "Yes, plans are structured by your growth stage.",
                     },
                 ],
+                anchor: "faq",
             },
         },
         {
@@ -226,13 +261,12 @@ function buildRichFallbackLayout(userData: UserPromptData, locale: string): Sect
             animation: "fade-in",
             styles: {},
             content: {
-                title: isAr ? "تواصل معنا" : "Contact Us",
-                description: isAr
-                    ? "اترك بياناتك وسنعاود التواصل خلال 24 ساعة."
-                    : "Send your details and we will reach out within 24 hours.",
+                title: "Contact Us",
+                description: "Send your details and we will reach out within 24 hours.",
                 phone: "+212 600 000 000",
                 email: "hello@getyousite.com",
-                address: isAr ? "الدار البيضاء، المغرب" : "Casablanca, Morocco",
+                address: "Casablanca, Morocco",
+                anchor: "contact",
             },
         },
         {
@@ -241,16 +275,13 @@ function buildRichFallbackLayout(userData: UserPromptData, locale: string): Sect
             animation: "fade-in",
             styles: {},
             content: {
-                headline: isAr ? "جاهز للانطلاق؟" : "Ready To Launch?",
-                subheadline: isAr
-                    ? "ابنِ حضوراً رقمياً مقنعاً وابدأ جلب العملاء."
-                    : "Build a credible digital presence and start converting today.",
+                headline: "Ready To Launch?",
+                subheadline: "Build a credible digital presence and start converting today.",
+                anchor: "pricing",
             },
         },
     ];
-}
-
-// CLINICAL HEURISTIC SYNTHESIS
+} // CLINICAL HEURISTIC SYNTHESIS
 const HeuristicSovereignGenerator = {
     synthesize(userData: UserPromptData, locale: string = "en") {
         const niche = userData.niche.toLowerCase();
