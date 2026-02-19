@@ -15,6 +15,9 @@ interface AIGenerationRequest {
     maxTokens?: number;
     temperature?: number;
     jsonMode?: boolean;
+    geminiModel?: string;
+    geminiCachedContent?: string;
+    contextBlocks?: string[];
 }
 
 interface AIGenerationResponse {
@@ -36,7 +39,8 @@ const PROVIDERS = {
         name: "Google Gemini",
         baseUrl: "https://generativelanguage.googleapis.com/v1beta",
         models: {
-            flash: "gemini-2.5-flash",
+            flash25: "gemini-2.5-flash",
+            flash3: "gemini-3-flash",
         },
     },
     openai: {
@@ -70,7 +74,7 @@ export async function generateWithFallback(
     if (process.env.GEMINI_API_KEY) {
         try {
             const geminiResult = await generateWithGemini(request);
-            console.log("Gemini 2.5 Flash Synthesis Successful");
+            console.log(`Gemini synthesis successful via model: ${geminiResult.model}`);
             return geminiResult;
         } catch (error) {
             console.warn("Gemini Flash failed, falling back to OpenAI:", error);
@@ -89,8 +93,8 @@ export async function generateWithFallback(
 }
 
 /**
- * Gemini 2.5 Flash generation (REST API).
- * Supports JSON structured output and optional cached context reference.
+ * Gemini generation (REST API).
+ * Supports structured JSON output, system instruction, and optional cached context reference.
  */
 async function generateWithGemini(request: AIGenerationRequest): Promise<AIGenerationResponse> {
     const apiKey = process.env.GEMINI_API_KEY;
@@ -98,16 +102,23 @@ async function generateWithGemini(request: AIGenerationRequest): Promise<AIGener
         throw new Error("GEMINI_API_KEY not configured");
     }
 
-    const model = PROVIDERS.gemini.models.flash;
+    const model = request.geminiModel || process.env.GEMINI_MODEL || PROVIDERS.gemini.models.flash25;
     const systemPrompt = request.systemPrompt || "You are a precise senior software and product assistant.";
-    const cachedContent = process.env.GEMINI_CACHED_CONTENT || undefined;
+    const cachedContent = request.geminiCachedContent || process.env.GEMINI_CACHED_CONTENT || undefined;
     const endpoint = `${PROVIDERS.gemini.baseUrl}/models/${model}:generateContent?key=${apiKey}`;
 
+    const userText = request.contextBlocks && request.contextBlocks.length > 0
+        ? `${request.prompt}\n\nCONTEXT_BLOCKS:\n${request.contextBlocks.join("\n\n")}`
+        : request.prompt;
+
     const body: Record<string, unknown> = {
+        systemInstruction: {
+            parts: [{ text: systemPrompt }],
+        },
         contents: [
             {
                 role: "user",
-                parts: [{ text: `${systemPrompt}\n\n${request.prompt}` }],
+                parts: [{ text: userText }],
             },
         ],
         generationConfig: {
@@ -900,5 +911,6 @@ export default {
     generateSinglePage,
     refineBlueprint,
 };
+
 
 

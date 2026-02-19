@@ -1,4 +1,5 @@
 import { generateWithFallback } from "@/lib/ai/multi-provider";
+import { COMPONENT_REGISTRY } from "@/data/component-registry";
 
 export interface EmpirePlanInput {
     businessDescription: string;
@@ -11,76 +12,73 @@ export interface EmpirePlan {
     visuals: Record<string, unknown>;
 }
 
-async function structuralPlannerAgent(input: EmpirePlanInput) {
-    const prompt = `
-Analyze this business idea and output JSON only:
-"${input.businessDescription}"
+const MASTER_SYSTEM_PROMPT = `
+# ROLE: SOVEREIGN WEB ARCHITECT (GETYOUSITE CORE)
+You are the world's most advanced AI Web Architect.
+Generate high-conversion, visually strong, and production-ready website plans.
 
-Return:
-1) sitemap: array of pages (slug, title, purpose)
-2) layout: section order for homepage
-3) theme: primary/secondary/accent hex
-4) navigation: menu links
+# EXECUTION RULES
+- Always output valid JSON only.
+- No generic sections; map output to available component IDs when possible.
+- Prioritize semantic SEO, accessibility, and clear conversion paths.
+- Detect language from user input; keep tone professional.
 `;
 
-    const result = await generateWithFallback({
-        prompt,
-        jsonMode: true,
-        temperature: 0.3,
-        maxTokens: 2500,
-    });
+function buildComponentContext(): string {
+    const components = Object.values(COMPONENT_REGISTRY).map((component) => ({
+        id: component.id,
+        name: component.name,
+        description: component.description,
+        category: component.category,
+    }));
 
-    return JSON.parse(result.content || "{}");
+    return JSON.stringify({
+        componentLibrary: components,
+        guidance: {
+            useOnlyKnownComponentsWhenPossible: true,
+            includeAnchors: true,
+            includeSeoObject: true,
+        },
+    });
 }
 
-async function copySeoAgent(input: EmpirePlanInput) {
-    const prompt = `
-Business: "${input.businessDescription}"
-Locale: "${input.locale || "en"}"
+function buildOrchestratorPrompt(input: EmpirePlanInput): string {
+    const componentContext = buildComponentContext();
 
-Generate JSON only:
-1) homepage copy (hero, services, testimonials, CTA)
-2) seo metadata (title, description, keywords)
-3) 3 blog post briefs (title, angle, primary keyword)
+    return `
+Business Description:\n${input.businessDescription}
+Locale: ${input.locale || "en"}
+
+Available Component Context (authoritative):
+${componentContext}
+
+Create a unified JSON object with:
+1) structure: sitemap, navigation, homepage section order, component mapping
+2) contentSeo: hero copy, services copy, CTA, metadata, keywords, 3 blog briefs
+3) visuals: hero image prompts, slider captions, motion classes, svg motif ideas
+
+Return strict JSON with top-level keys: structure, contentSeo, visuals.
 `;
-
-    const result = await generateWithFallback({
-        prompt,
-        jsonMode: true,
-        temperature: 0.5,
-        maxTokens: 2800,
-    });
-
-    return JSON.parse(result.content || "{}");
-}
-
-async function visualMotionAgent(input: EmpirePlanInput) {
-    const prompt = `
-Business: "${input.businessDescription}"
-
-Generate JSON only:
-1) hero image prompts (3 variants)
-2) slider captions (3 slides)
-3) tailwind motion classes for subtle entrance animations
-4) svg motif ideas for lightweight visuals
-`;
-
-    const result = await generateWithFallback({
-        prompt,
-        jsonMode: true,
-        temperature: 0.6,
-        maxTokens: 2200,
-    });
-
-    return JSON.parse(result.content || "{}");
 }
 
 export async function generateEmpirePlan(input: EmpirePlanInput): Promise<EmpirePlan> {
-    const [structure, contentSeo, visuals] = await Promise.all([
-        structuralPlannerAgent(input),
-        copySeoAgent(input),
-        visualMotionAgent(input),
-    ]);
+    const prompt = buildOrchestratorPrompt(input);
 
-    return { structure, contentSeo, visuals };
+    const result = await generateWithFallback({
+        prompt,
+        systemPrompt: MASTER_SYSTEM_PROMPT,
+        jsonMode: true,
+        temperature: 0.45,
+        maxTokens: 5000,
+        geminiModel: process.env.GEMINI_MODEL || "gemini-3-flash",
+        geminiCachedContent: process.env.GEMINI_CACHED_CONTENT,
+    });
+
+    const parsed = JSON.parse(result.content || "{}");
+
+    return {
+        structure: (parsed.structure as Record<string, unknown>) || {},
+        contentSeo: (parsed.contentSeo as Record<string, unknown>) || {},
+        visuals: (parsed.visuals as Record<string, unknown>) || {},
+    };
 }
