@@ -7,7 +7,6 @@ import { track } from "@vercel/analytics";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Sparkles, Globe2, PenLine, Search, Palette, Layers3 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const COPY = {
     ar: {
@@ -37,48 +36,19 @@ const COPY = {
 
 const TRUST_LOGOS = ["Atlas Studio", "Nexa Clinic", "Beldi Coffee", "Flux Legal", "Nova Beauty"];
 
-const QUESTIONS = [
-    { key: "category", label: "Business Type", placeholder: "Restaurant, clinic, store, SaaS..." },
-    { key: "tone", label: "Brand Tone", placeholder: "Luxury, friendly, bold, minimalist" },
-    {
-        key: "goal",
-        label: "Primary Goal",
-        placeholder: "Bookings, lead capture, online sales, signups",
-    },
-    { key: "languages", label: "Languages", placeholder: "Arabic, English (comma separated)" },
-    { key: "visuals", label: "Visual Direction", placeholder: "Colors or references (optional)" },
-    {
-        key: "mustHave",
-        label: "Must-have Section",
-        placeholder: "e.g., booking widget, pricing table",
-    },
-];
-
 export default function StrategicHome() {
     const locale = useLocale();
     const router = useRouter();
     const [prompt, setPrompt] = useState("");
-    const [step, setStep] = useState<"hero" | "questions">("hero");
-    const [answers, setAnswers] = useState<Record<string, string>>({});
     const isArabic = locale === "ar";
     const t = isArabic ? COPY.ar : COPY.default;
 
     const submitPrompt = () => {
         const vision = prompt.trim();
         if (!vision) return;
-        setStep("questions");
         track("funnel_home_prompt_start", { locale, prompt_length: vision.length });
+        router.push(`/customizer?vision=${encodeURIComponent(vision)}&trial=1`);
     };
-
-    const submitQuestions = () => {
-        const base = prompt.trim();
-        const enriched = QUESTIONS.map((q) => `${q.label}: ${answers[q.key] || "n/a"}`).join(" | ");
-        const finalVision = `${base}\n${enriched}`;
-        track("funnel_home_prompt_complete", { locale, prompt_length: finalVision.length });
-        router.push(`/customizer?vision=${encodeURIComponent(finalVision)}&trial=1`);
-    };
-
-    const allAnswered = QUESTIONS.every((q) => (answers[q.key] || "").trim().length > 0);
 
     return (
         <div dir={isArabic ? "rtl" : "ltr"} className="min-h-screen bg-[#020617] text-white">
@@ -118,55 +88,6 @@ export default function StrategicHome() {
                                 </Link>
                             </div>
                         </div>
-
-                        {step === "questions" && (
-                            <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-5 md:p-6 backdrop-blur-xl text-left">
-                                <p className="text-sm text-white/60 mb-4">
-                                    Quick deep-dive: ??? ??????? ???? ??????? ????????.
-                                </p>
-                                <div className="grid md:grid-cols-2 gap-3">
-                                    {QUESTIONS.map((q) => (
-                                        <div key={q.key} className="flex flex-col gap-2">
-                                            <label className="text-xs uppercase tracking-[0.2em] text-white/50">
-                                                {q.label}
-                                            </label>
-                                            <input
-                                                type="text"
-                                                placeholder={q.placeholder}
-                                                value={answers[q.key] || ""}
-                                                onChange={(e) =>
-                                                    setAnswers((prev) => ({
-                                                        ...prev,
-                                                        [q.key]: e.target.value,
-                                                    }))
-                                                }
-                                                className="rounded-xl bg-[#0b1227] border border-white/10 px-4 py-3 text-sm placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-cyan-400/70"
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className="mt-4 flex flex-wrap gap-3">
-                                    <button
-                                        onClick={submitQuestions}
-                                        disabled={!allAnswered}
-                                        className={cn(
-                                            "rounded-xl px-5 py-3 font-bold transition-colors",
-                                            allAnswered
-                                                ? "bg-primary text-[#020617] hover:bg-[#5ea9ff]"
-                                                : "bg-white/10 text-white/40 cursor-not-allowed",
-                                        )}
-                                    >
-                                        ????? ?????? ????
-                                    </button>
-                                    <button
-                                        onClick={() => setStep("hero")}
-                                        className="rounded-xl px-5 py-3 font-bold border border-white/15 hover:bg-white/5"
-                                    >
-                                        ????
-                                    </button>
-                                </div>
-                            </div>
-                        )}
                     </div>
                 </section>
 
@@ -211,8 +132,8 @@ export default function StrategicHome() {
                     <div className="grid md:grid-cols-3 gap-4">
                         {[
                             "1. Describe Your Business",
-                            "2. Answer 5 Smart Prompts",
-                            "3. AI Generates & You Publish",
+                            "2. AI Generates Instantly",
+                            "3. Publish & Share",
                         ].map((step) => (
                             <div
                                 key={step}
