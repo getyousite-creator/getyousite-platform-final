@@ -532,16 +532,21 @@ export async function generateCompleteWebsite(params: {
     locale: string;
     features?: string[];
 }) {
-    // 1. Credit Gate: Prevent cost draining
-    const user = await AuthService.getCurrentUser();
-    if (!user.data) throw new Error("AUTH_REQUIRED_FOR_AI");
+    // 1. Credit Gate: Prevent cost draining (skipped when TRIAL_MODE=true)
+    const trialMode = process.env.TRIAL_MODE === "true";
+    let userData: { id: string; credits?: number } = { id: "trial-user", credits: Infinity };
 
-    const userData = user.data as { id: string; credits?: number };
-    const credits = userData.credits ?? 0;
-    if (credits <= 0) {
-        throw new Error(
-            "INSUFFICIENT_CREDITS: You have 0 generation credits remaining. Please upgrade your plan.",
-        );
+    if (!trialMode) {
+        const user = await AuthService.getCurrentUser();
+        if (!user.data) throw new Error("AUTH_REQUIRED_FOR_AI");
+
+        userData = user.data as { id: string; credits?: number };
+        const credits = userData.credits ?? 0;
+        if (credits <= 0) {
+            throw new Error(
+                "INSUFFICIENT_CREDITS: You have 0 generation credits remaining. Please upgrade your plan.",
+            );
+        }
     }
 
     // 2. SOVEREIGN_PROMPT_REFINER: Human-to-Machine Logic Bridge
