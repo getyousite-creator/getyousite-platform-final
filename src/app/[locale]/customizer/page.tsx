@@ -307,7 +307,7 @@ export default function CustomizerPage() {
                         userId={userId}
                         onAssetUpload={handleAssetUpload}
                         aiInsight={blueprint?.ai_insight}
-                        blueprint={blueprint}
+                        blueprint={blueprint || null}
                         selectedPageSlug={selectedPageSlug}
                         onSelectPage={setSelectedPageSlug}
                         undo={undo}

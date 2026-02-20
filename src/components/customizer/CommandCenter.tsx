@@ -53,7 +53,7 @@ interface CommandCenterProps {
     userId: string;
     onAssetUpload: (url: string) => void;
     aiInsight?: string;
-    blueprint?: SiteBlueprint;
+    blueprint?: SiteBlueprint | null;
     selectedPageSlug?: string;
     onSelectPage?: (slug: string) => void;
     undo: () => void;
