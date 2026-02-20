@@ -325,19 +325,17 @@ export default function CustomizerPage() {
                             isProcessing={isGenerating}
                             onCommand={async (cmd: string) => {
                                 if (!blueprint) return;
-                                const localPatch = applyValidatedCommandPatch(blueprint, cmd) as {
-                                    handled: boolean;
-                                    blueprint: SiteBlueprint;
-                                    operations: string[];
-                                };
+                                const localPatch = applyValidatedCommandPatch(blueprint, cmd);
                                 if (localPatch.handled) {
-                                    updateBlueprint(localPatch.blueprint);
-                                    await handleSave(localPatch.blueprint, {
+                                    const patchedBlueprint = localPatch.blueprint as SiteBlueprint;
+                                    updateBlueprint(patchedBlueprint);
+                                    await handleSave(patchedBlueprint, {
                                         promptOnUnauthorized: false,
                                     });
-                                    toast.success(
-                                        `Command patch applied (${localPatch.operations.length} ops)`,
-                                    );
+                                    const opCount = Array.isArray(localPatch.operations)
+                                        ? localPatch.operations.length
+                                        : 0;
+                                    toast.success(`Command patch applied (${opCount} ops)`);
                                     return;
                                 }
 
