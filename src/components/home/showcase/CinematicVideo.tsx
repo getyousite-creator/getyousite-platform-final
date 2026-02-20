@@ -20,7 +20,7 @@ export default function CinematicVideo({
     className,
     autoPlay = true,
     muted = true,
-    overlayContent
+    overlayContent,
 }: CinematicVideoProps) {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isMuted, setIsMuted] = useState(muted);
@@ -56,7 +56,7 @@ export default function CinematicVideo({
                 playsInline
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
-                className="w-full h-full object-cover transition-transform duration-[10000ms] ease-linear group-hover:scale-105"
+                className="w-full h-full object-cover transition-transform duration-1000 ease-linear group-hover:scale-105"
             />
 
             {/* Subtle Overlay for Readability */}
@@ -69,22 +69,26 @@ export default function CinematicVideo({
                         onClick={togglePlay}
                         className="p-3 rounded-full bg-secondary/10 backdrop-blur-md border border-border hover:bg-secondary/20 transition-all"
                     >
-                        {isPlaying ? <span className="w-4 h-4 block border-l-2 border-r-2 border-muted-foreground mx-0.5" /> : <Play className="w-4 h-4 fill-current text-foreground" />}
+                        {isPlaying ? (
+                            <span className="w-4 h-4 block border-l-2 border-r-2 border-muted-foreground mx-0.5" />
+                        ) : (
+                            <Play className="w-4 h-4 fill-current text-foreground" />
+                        )}
                     </button>
                     <button
                         onClick={() => setIsMuted(!isMuted)}
                         className="p-3 rounded-full bg-secondary/10 backdrop-blur-md border border-border hover:bg-secondary/20 transition-all"
                     >
-                        {isMuted ? <VolumeX className="w-4 h-4 text-foreground" /> : <Volume2 className="w-4 h-4 text-foreground" />}
+                        {isMuted ? (
+                            <VolumeX className="w-4 h-4 text-foreground" />
+                        ) : (
+                            <Volume2 className="w-4 h-4 text-foreground" />
+                        )}
                     </button>
                 </div>
             </div>
 
-            {overlayContent && (
-                <div className="absolute inset-0 z-10">
-                    {overlayContent}
-                </div>
-            )}
+            {overlayContent && <div className="absolute inset-0 z-10">{overlayContent}</div>}
         </div>
     );
 }

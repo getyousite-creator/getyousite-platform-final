@@ -488,11 +488,17 @@ export function CommandCenter(props: CommandCenterProps) {
                                 {/* Thumbnail Placeholder */}
                                 <div className="aspect-video bg-gradient-to-br from-secondary to-background flex items-center justify-center">
                                     {template.thumbnail_url ? (
-                                        <img
-                                            src={template.thumbnail_url}
-                                            alt={template.name}
-                                            className="w-full h-full object-cover"
-                                        />
+                                        <div className="relative w-full h-full">
+                                            <div className="absolute inset-0 rounded-none overflow-hidden">
+                                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                <img
+                                                    src={template.thumbnail_url}
+                                                    alt={template.name}
+                                                    className="w-full h-full object-cover"
+                                                    loading="lazy"
+                                                />
+                                            </div>
+                                        </div>
                                     ) : (
                                         <Layout className="w-8 h-8 text-muted-foreground" />
                                     )}

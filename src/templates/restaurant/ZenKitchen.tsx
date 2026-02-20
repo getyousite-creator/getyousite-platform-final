@@ -48,12 +48,15 @@ export default function ZenKitchen() {
 
                     {/* Sensory Hero */}
                     <section className="px-10 py-40 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-24 items-center">
-                        <div className="lg:col-span-6 relative aspect-square rounded-[80px] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.1)] group cursor-pointer" onClick={() => onOpen("Zen Visuals")}>
+                        <div
+                            className="lg:col-span-6 relative aspect-square rounded-[80px] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.1)] group cursor-pointer"
+                            onClick={() => onOpen("Zen Visuals")}
+                        >
                             <Image
                                 src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=2430"
                                 alt="Chef Preparing Food"
                                 fill
-                                className="object-cover transition-transform duration-[2000ms] group-hover:scale-105"
+                                className="object-cover transition-transform duration-700 group-hover:scale-105"
                             />
                             <div className="absolute inset-x-12 bottom-12 p-10 rounded-[40px] bg-white/10 backdrop-blur-3xl border border-white/20 shadow-2xl">
                                 <div className="flex items-center gap-6 text-white">
@@ -61,8 +64,12 @@ export default function ZenKitchen() {
                                         <ChefHat className="w-7 h-7" />
                                     </div>
                                     <div>
-                                        <div className="font-serif text-2xl italic mb-1">Artisanal Purity.</div>
-                                        <div className="text-[9px] uppercase tracking-[0.4em] font-black opacity-60 italic">Sovereign Standards Center</div>
+                                        <div className="font-serif text-2xl italic mb-1">
+                                            Artisanal Purity.
+                                        </div>
+                                        <div className="text-[9px] uppercase tracking-[0.4em] font-black opacity-60 italic">
+                                            Sovereign Standards Center
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -94,13 +101,17 @@ export default function ZenKitchen() {
                                     <div className="w-12 h-12 rounded-full bg-stone-100 flex items-center justify-center">
                                         <Clock className="w-5 h-5 text-zinc-900" />
                                     </div>
-                                    <span className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-500">Service: 17:00 — 23:00 / GMT+4</span>
+                                    <span className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-500">
+                                        Service: 17:00 — 23:00 / GMT+4
+                                    </span>
                                 </div>
                                 <div className="flex items-center gap-6">
                                     <div className="w-12 h-12 rounded-full bg-stone-100 flex items-center justify-center">
                                         <MapPin className="w-5 h-5 text-zinc-900" />
                                     </div>
-                                    <span className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-500">Astra Plaza, Sovereign Sovereign_101</span>
+                                    <span className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-500">
+                                        Astra Plaza, Sovereign Sovereign_101
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -112,8 +123,12 @@ export default function ZenKitchen() {
                             <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-orange-500/20 blur-[150px]" />
                         </div>
                         <div className="max-w-7xl mx-auto text-center mb-32 relative z-10">
-                            <h2 className="text-6xl md:text-8xl font-serif italic mb-6">Signature Assets</h2>
-                            <p className="text-zinc-500 text-sm uppercase tracking-[0.6em] font-black">Strategic Culinary Orchestration</p>
+                            <h2 className="text-6xl md:text-8xl font-serif italic mb-6">
+                                Signature Assets
+                            </h2>
+                            <p className="text-zinc-500 text-sm uppercase tracking-[0.6em] font-black">
+                                Strategic Culinary Orchestration
+                            </p>
                         </div>
                         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-32 gap-y-16 relative z-10">
                             <Dish name="Quantum Truffle" price="$74" />
@@ -137,9 +152,13 @@ function Dish({ name, price }: DishProps) {
     return (
         <div className="flex items-center justify-between pb-8 border-b border-zinc-800 hover:border-orange-500/50 transition-colors group cursor-pointer group">
             <div>
-                <h3 className="text-xl font-bold mb-1 group-hover:text-orange-400 transition-colors">{name}</h3>
+                <h3 className="text-xl font-bold mb-1 group-hover:text-orange-400 transition-colors">
+                    {name}
+                </h3>
                 <div className="flex text-orange-400/60 gap-1">
-                    {[...Array(5)].map((_, i) => <Star key={i} className="w-3 h-3 fill-current" />)}
+                    {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3 h-3 fill-current" />
+                    ))}
                 </div>
             </div>
             <div className="text-2xl font-black">{price}</div>

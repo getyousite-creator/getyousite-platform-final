@@ -88,11 +88,15 @@ export default function MasterRetail(props: SovereignTemplateProps) {
                                 {blueprint?.name || t("retail_name")}
                             </span>
                             <div className="hidden lg:flex items-center gap-8 text-[10px] font-black uppercase tracking-widest text-zinc-400">
-                                <span className="hover:text-zinc-900 cursor-pointer">{tc('shop')}</span>
                                 <span className="hover:text-zinc-900 cursor-pointer">
-                                    {tc('new_arrivals')}
+                                    {tc("shop")}
                                 </span>
-                                <span className="hover:text-zinc-900 cursor-pointer">{tc('archive')}</span>
+                                <span className="hover:text-zinc-900 cursor-pointer">
+                                    {tc("new_arrivals")}
+                                </span>
+                                <span className="hover:text-zinc-900 cursor-pointer">
+                                    {tc("archive")}
+                                </span>
                             </div>
                         </div>
 
@@ -114,7 +118,7 @@ export default function MasterRetail(props: SovereignTemplateProps) {
                                 src={heroImage}
                                 alt={t("collection_alt")}
                                 fill
-                                className="object-cover transition-transform duration-[3s] group-hover:scale-105"
+                                className="object-cover transition-transform duration-700 group-hover:scale-105"
                                 priority
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/60 to-transparent" />
@@ -126,17 +130,17 @@ export default function MasterRetail(props: SovereignTemplateProps) {
                                     className="px-10 h-16 text-white font-black uppercase tracking-widest text-[10px] hover:scale-105 transition-transform shadow-2xl"
                                     style={{ backgroundColor: primaryColor }}
                                 >
-                                    {t('explore')}
+                                    {t("explore")}
                                 </button>
                             </div>
                         </div>
                         <div className="lg:col-span-4 bg-zinc-50 rounded-[48px] p-12 flex flex-col justify-between border border-zinc-100 relative overflow-hidden">
                             <div className="relative z-10">
                                 <div className="flex items-center gap-2 text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-10">
-                                    <Tag className="w-4 h-4" /> {t('limited')}
+                                    <Tag className="w-4 h-4" /> {t("limited")}
                                 </div>
                                 <h2 className="text-5xl font-black tracking-tightest leading-none mb-6 uppercase">
-                                    {t('strategic')}
+                                    {t("strategic")}
                                 </h2>
                                 <p className="text-zinc-500 font-medium leading-relaxed">
                                     {heroSubheadline}
@@ -146,7 +150,7 @@ export default function MasterRetail(props: SovereignTemplateProps) {
                             <div className="p-6 bg-white rounded-3xl border border-zinc-200 shadow-sm relative z-10">
                                 <div className="flex items-center justify-between mb-4">
                                     <span className="text-[10px] font-black uppercase text-zinc-400">
-                                        {t('next_drop')}
+                                        {t("next_drop")}
                                     </span>
                                     <span className="text-xs font-black">48:12:00</span>
                                 </div>
@@ -211,14 +215,14 @@ export default function MasterRetail(props: SovereignTemplateProps) {
                             <div className="flex items-end justify-between mb-20">
                                 <div>
                                     <h2 className="text-6xl font-black uppercase tracking-tighter italic">
-                                        {t('archive')}.
+                                        {t("archive")}.
                                     </h2>
                                     <p className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400 mt-2">
-                                        {t('manifest')}
+                                        {t("manifest")}
                                     </p>
                                 </div>
                                 <button className="h-14 px-8 border border-zinc-200 text-[10px] font-black uppercase tracking-widest hover:border-zinc-900 transition-colors flex items-center gap-3 bg-white">
-                                    <Filter className="w-4 h-4" /> {t('filter')}
+                                    <Filter className="w-4 h-4" /> {t("filter")}
                                 </button>
                             </div>
 
@@ -234,7 +238,7 @@ export default function MasterRetail(props: SovereignTemplateProps) {
                                             />
                                             <div className="absolute inset-x-6 bottom-6 flex gap-2 translate-y-20 group-hover:translate-y-0 transition-transform duration-500">
                                                 <button className="flex-1 h-16 text-[10px] font-black uppercase tracking-widest bg-white shadow-xl hover:bg-zinc-950 hover:text-white transition-all">
-                                                    {t('buy')}
+                                                    {t("buy")}
                                                 </button>
                                                 <button className="w-16 h-16 bg-white shadow-xl flex items-center justify-center hover:bg-zinc-950 hover:text-white transition-all">
                                                     <Plus className="w-5 h-5" />
@@ -271,13 +275,13 @@ export default function MasterRetail(props: SovereignTemplateProps) {
                             {blueprint?.name}
                         </span>
                         <div className="flex gap-10 text-[9px] font-black uppercase tracking-[0.3em] text-zinc-400">
-                            <span>{tc('privacy')}</span>
-                            <span>{tc('orders')}</span>
-                            <span>{tc('sustainability')}</span>
-                            <span>{tc('legal')}</span>
+                            <span>{tc("privacy")}</span>
+                            <span>{tc("orders")}</span>
+                            <span>{tc("sustainability")}</span>
+                            <span>{tc("legal")}</span>
                         </div>
                         <p className="text-[10px] text-zinc-300 font-bold uppercase tracking-widest mt-10">
-                            {t('copyright')}
+                            {t("copyright")}
                         </p>
                     </footer>
                 </div>

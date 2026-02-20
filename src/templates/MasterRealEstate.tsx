@@ -130,7 +130,7 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
                                 src={heroImg}
                                 alt="Property"
                                 fill
-                                className="object-cover group-hover:scale-105 transition-transform duration-[3s]"
+                                className="object-cover group-hover:scale-105 transition-transform duration-700"
                                 priority
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
@@ -157,7 +157,8 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
                                     <Map className="w-5 h-5" /> {t("area_search")}
                                 </div>
                                 <h2 className="text-4xl font-black tracking-tight leading-none uppercase italic">
-                                    {t("market_intelligence").split(' ').slice(0, 1).join(' ')} <br /> {t("market_intelligence").split(' ').slice(1).join(' ')}
+                                    {t("market_intelligence").split(" ").slice(0, 1).join(" ")}{" "}
+                                    <br /> {t("market_intelligence").split(" ").slice(1).join(" ")}
                                 </h2>
                                 <p className="text-slate-500 text-sm font-medium leading-relaxed">
                                     {heroSub}
@@ -262,7 +263,8 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
                                                 </div>
                                             </div>
                                             <button className="w-full h-16 rounded-2xl border border-slate-100 bg-slate-50 text-[10px] font-black uppercase tracking-[0.2em] group-hover:bg-slate-950 group-hover:text-white transition-all flex items-center justify-center gap-4">
-                                                {t("view_spec")} <ArrowUpRight className="w-4 h-4" />
+                                                {t("view_spec")}{" "}
+                                                <ArrowUpRight className="w-4 h-4" />
                                             </button>
                                         </div>
                                     </motion.div>
@@ -314,7 +316,8 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
                                     <Phone className="w-5 h-5 text-emerald-400" /> +212 5XX XX XX
                                 </div>
                                 <div className="flex items-center gap-4 text-xs font-black italic">
-                                    <Calendar className="w-5 h-5 text-emerald-400" /> {t("working_days")}
+                                    <Calendar className="w-5 h-5 text-emerald-400" />{" "}
+                                    {t("working_days")}
                                 </div>
                             </div>
                         </div>

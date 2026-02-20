@@ -110,7 +110,7 @@ export default function ShowcaseGallery() {
                                             [template.id]: true,
                                         }))
                                     }
-                                    className="object-cover grayscale-[0.8] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-[1.5s] ease-out"
+                                    className="object-cover grayscale-[0.8] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000 ease-out"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A2540]/80 via-transparent to-transparent" />
 

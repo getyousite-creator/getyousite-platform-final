@@ -14,7 +14,7 @@ import {
     Figma,
     Layers,
     MousePointer2,
-    Plus
+    Plus,
 } from "lucide-react";
 import { SovereignTemplateProps } from "@/lib/types/template";
 import Image from "next/image";
@@ -34,25 +34,52 @@ export default function MasterCreative(props: SovereignTemplateProps) {
     const { headline, subheadline, primaryColor = "#1d1d1f" } = settings;
 
     // AI Blueprint Extraction
-    const heroSection = blueprint?.layout?.find((s) => s.type === 'hero');
-    const portfolioSection = blueprint?.layout?.find((s) => s.type === 'features');
+    const heroSection = blueprint?.layout?.find((s) => s.type === "hero");
+    const portfolioSection = blueprint?.layout?.find((s) => s.type === "features");
 
     const heroHeadline = (heroSection?.content?.headline as string) || headline;
-    const heroImg = (heroSection?.content?.image as string) || "https://images.unsplash.com/photo-1493424440862-621b185fbb44?q=80&w=2400&auto=format&fit=crop";
+    const heroImg =
+        (heroSection?.content?.image as string) ||
+        "https://images.unsplash.com/photo-1493424440862-621b185fbb44?q=80&w=2400&auto=format&fit=crop";
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const projectsRaw = (portfolioSection?.content?.items as any[]) || [];
-    const projects: CaseStudy[] = projectsRaw.length > 0 ? projectsRaw.map(item => ({
-        title: item.title || t("untitled"),
-        category: item.description?.substring(0, 15) || t("creative_work"),
-        img: item.image || "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2400&auto=format&fit=crop",
-        year: "2024"
-    })) : [
-        { title: t("proj_kinetic"), category: t("cat_motion"), img: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2400&auto=format&fit=crop", year: "2026" },
-        { title: t("proj_ui"), category: t("cat_eco"), img: "https://images.unsplash.com/photo-1581291518151-0ca98316f31f?q=80&w=2400&auto=format&fit=crop", year: "2025" },
-        { title: t("proj_branding"), category: t("cat_identity"), img: "https://images.unsplash.com/photo-1618556450991-2f1af64e8191?q=80&w=2400&auto=format&fit=crop", year: "2026" },
-        { title: t("proj_minimal"), category: t("cat_zero"), img: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?q=80&w=2400&auto=format&fit=crop", year: "2024" }
-    ];
+    const projects: CaseStudy[] =
+        projectsRaw.length > 0
+            ? projectsRaw.map((item) => ({
+                  title: item.title || t("untitled"),
+                  category: item.description?.substring(0, 15) || t("creative_work"),
+                  img:
+                      item.image ||
+                      "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2400&auto=format&fit=crop",
+                  year: "2024",
+              }))
+            : [
+                  {
+                      title: t("proj_kinetic"),
+                      category: t("cat_motion"),
+                      img: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2400&auto=format&fit=crop",
+                      year: "2026",
+                  },
+                  {
+                      title: t("proj_ui"),
+                      category: t("cat_eco"),
+                      img: "https://images.unsplash.com/photo-1581291518151-0ca98316f31f?q=80&w=2400&auto=format&fit=crop",
+                      year: "2025",
+                  },
+                  {
+                      title: t("proj_branding"),
+                      category: t("cat_identity"),
+                      img: "https://images.unsplash.com/photo-1618556450991-2f1af64e8191?q=80&w=2400&auto=format&fit=crop",
+                      year: "2026",
+                  },
+                  {
+                      title: t("proj_minimal"),
+                      category: t("cat_zero"),
+                      img: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?q=80&w=2400&auto=format&fit=crop",
+                      year: "2024",
+                  },
+              ];
 
     const onOpen = useLaunchModal((state) => state.onOpen);
 
@@ -62,12 +89,20 @@ export default function MasterCreative(props: SovereignTemplateProps) {
                 <div className="bg-[#0a0a0a] text-white min-h-screen selection:bg-white selection:text-black font-sans">
                     {/* CREATIVE NAVIGATION */}
                     <nav className="fixed top-0 w-full px-8 lg:px-16 h-20 flex items-center justify-between z-[500] mix-blend-difference">
-                        <span className="text-lg font-black tracking-widest uppercase">{blueprint?.name || t("studio_zero")}</span>
+                        <span className="text-lg font-black tracking-widest uppercase">
+                            {blueprint?.name || t("studio_zero")}
+                        </span>
                         <div className="flex items-center gap-12 text-[9px] font-black uppercase tracking-[0.4em] opacity-40 hover:opacity-100 transition-opacity">
-                            <span className="cursor-pointer hover:text-white transition-colors">{t("works")}</span>
-                            <span className="cursor-pointer hover:text-white transition-colors">{t("about")}</span>
+                            <span className="cursor-pointer hover:text-white transition-colors">
+                                {t("works")}
+                            </span>
+                            <span className="cursor-pointer hover:text-white transition-colors">
+                                {t("about")}
+                            </span>
                             <div className="w-10 h-[1px] bg-white/20" />
-                            <span className="cursor-pointer hover:text-white transition-colors">{t("archive")}</span>
+                            <span className="cursor-pointer hover:text-white transition-colors">
+                                {t("archive")}
+                            </span>
                         </div>
                     </nav>
 
@@ -97,11 +132,15 @@ export default function MasterCreative(props: SovereignTemplateProps) {
                                     <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center">
                                         <Sparkles className="w-5 h-5 opacity-40" />
                                     </div>
-                                    <span className="text-[10px] font-black uppercase tracking-[0.6em] opacity-40">{t("aesthetic_intelligence")}</span>
+                                    <span className="text-[10px] font-black uppercase tracking-[0.6em] opacity-40">
+                                        {t("aesthetic_intelligence")}
+                                    </span>
                                 </div>
                                 <h1 className="text-[12vw] font-black uppercase tracking-tighter leading-[0.75] mb-12 italic">
-                                    {heroHeadline.split(' ')[0]} <br />
-                                    <span className="opacity-20">{heroHeadline.split(' ').slice(1).join(' ')}</span>
+                                    {heroHeadline.split(" ")[0]} <br />
+                                    <span className="opacity-20">
+                                        {heroHeadline.split(" ").slice(1).join(" ")}
+                                    </span>
                                 </h1>
                             </motion.div>
 
@@ -139,21 +178,44 @@ export default function MasterCreative(props: SovereignTemplateProps) {
                         <div className="px-8 lg:px-16 grid grid-cols-1 lg:grid-cols-2 gap-32">
                             <div>
                                 <h2 className="text-7xl font-black uppercase tracking-tightest mb-16 leading-none flex flex-col">
-                                    {t("pillars").split('\n').map((line, i) => (
-                                        <span key={i}>{line}</span>
-                                    ))}
+                                    {t("pillars")
+                                        .split("\n")
+                                        .map((line, i) => (
+                                            <span key={i}>{line}</span>
+                                        ))}
                                 </h2>
                                 <div className="space-y-12">
                                     {[
-                                        { title: t("neural_design"), icon: Layers, desc: t("neural_design_desc") },
-                                        { title: t("kinetic_ux"), icon: MousePointer2, desc: t("kinetic_ux_desc") },
-                                        { title: t("visual_strategy"), icon: Eye, desc: t("visual_strategy_desc") }
+                                        {
+                                            title: t("neural_design"),
+                                            icon: Layers,
+                                            desc: t("neural_design_desc"),
+                                        },
+                                        {
+                                            title: t("kinetic_ux"),
+                                            icon: MousePointer2,
+                                            desc: t("kinetic_ux_desc"),
+                                        },
+                                        {
+                                            title: t("visual_strategy"),
+                                            icon: Eye,
+                                            desc: t("visual_strategy_desc"),
+                                        },
                                     ].map((item, i) => (
-                                        <div key={i} className="group cursor-pointer flex gap-10 items-center">
-                                            <span className="text-4xl font-black opacity-10 group-hover:opacity-100 transition-opacity italic">0{i + 1}</span>
+                                        <div
+                                            key={i}
+                                            className="group cursor-pointer flex gap-10 items-center"
+                                        >
+                                            <span className="text-4xl font-black opacity-10 group-hover:opacity-100 transition-opacity italic">
+                                                0{i + 1}
+                                            </span>
                                             <div className="flex-1 border-b border-black/5 pb-8 group-hover:border-black transition-colors">
-                                                <h4 className="text-xl font-black uppercase tracking-tightest mb-1">{item.title}</h4>
-                                                <p className="text-sm font-medium opacity-40 uppercase tracking-widest">{item.desc}</p>
+                                                <h4 className="text-xl font-black uppercase tracking-tightest mb-1">
+                                                    {item.title}
+                                                </h4>
+                                                <p className="text-sm font-medium opacity-40 uppercase tracking-widest">
+                                                    {item.desc}
+                                                </p>
                                             </div>
                                             <ArrowUpRight className="w-6 h-6 opacity-0 group-hover:opacity-100 transition-all -translate-x-4 group-hover:translate-x-0" />
                                         </div>
@@ -168,7 +230,9 @@ export default function MasterCreative(props: SovereignTemplateProps) {
                                     className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
                                 />
                                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black/40 backdrop-blur-sm">
-                                    <button className="h-16 px-10 bg-white text-black font-black uppercase tracking-widest text-[10px] rounded-full">{t("explore_process")}</button>
+                                    <button className="h-16 px-10 bg-white text-black font-black uppercase tracking-widest text-[10px] rounded-full">
+                                        {t("explore_process")}
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -189,7 +253,7 @@ export default function MasterCreative(props: SovereignTemplateProps) {
                                         src={project.img}
                                         alt={project.title}
                                         fill
-                                        className="object-cover group-hover:scale-105 transition-transform duration-[2s]"
+                                        className="object-cover group-hover:scale-105 transition-transform duration-700"
                                     />
                                     <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
                                     <div className="absolute top-10 right-10 flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -200,10 +264,16 @@ export default function MasterCreative(props: SovereignTemplateProps) {
                                 </div>
                                 <div className="flex justify-between items-end px-4">
                                     <div>
-                                        <p className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40 mb-2">{project.category}</p>
-                                        <h3 className="text-4xl font-black uppercase tracking-tighter italic">{project.title}</h3>
+                                        <p className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40 mb-2">
+                                            {project.category}
+                                        </p>
+                                        <h3 className="text-4xl font-black uppercase tracking-tighter italic">
+                                            {project.title}
+                                        </h3>
                                     </div>
-                                    <span className="text-[10px] font-black opacity-20">{project.year}</span>
+                                    <span className="text-[10px] font-black opacity-20">
+                                        {project.year}
+                                    </span>
                                 </div>
                             </motion.div>
                         ))}
@@ -213,12 +283,19 @@ export default function MasterCreative(props: SovereignTemplateProps) {
                     <footer className="py-40 border-t border-white/5 flex flex-col items-center gap-16">
                         <div className="flex gap-12">
                             {[Instagram, Dribbble, Twitter, Figma].map((Icon, i) => (
-                                <Icon key={i} className="w-6 h-6 opacity-20 hover:opacity-100 cursor-pointer transition-opacity" />
+                                <Icon
+                                    key={i}
+                                    className="w-6 h-6 opacity-20 hover:opacity-100 cursor-pointer transition-opacity"
+                                />
                             ))}
                         </div>
                         <div className="text-center space-y-4">
-                            <span className="text-3xl font-black tracking-widest uppercase italic">{blueprint?.name}</span>
-                            <p className="text-[8px] font-black uppercase tracking-[1em] opacity-20">{t("visual_engine")}</p>
+                            <span className="text-3xl font-black tracking-widest uppercase italic">
+                                {blueprint?.name}
+                            </span>
+                            <p className="text-[8px] font-black uppercase tracking-[1em] opacity-20">
+                                {t("visual_engine")}
+                            </p>
                         </div>
                     </footer>
                 </div>

@@ -46,7 +46,7 @@ export default function TemplateCard({ template, onClick }: TemplateCardProps) {
                         src={template.image}
                         alt={t(`projects.${template.id}.title`)}
                         fill
-                        className="object-cover object-top transition-transform duration-[6000ms] ease-out group-hover:scale-105 group-hover:translate-y-[20%]"
+                        className="object-cover object-top transition-transform duration-1000 ease-out group-hover:scale-105 group-hover:translate-y-[20%]"
                     />
                 </div>
 

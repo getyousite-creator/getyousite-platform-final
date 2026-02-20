@@ -235,7 +235,7 @@ export default function AdminPaymentsPage() {
                                                 src={req.receipt_url}
                                                 alt="Receipt"
                                                 fill
-                                                className="object-cover group-hover:scale-110 transition-transform duration-[2000ms]"
+                                                className="object-cover group-hover:scale-110 transition-transform duration-700"
                                                 unoptimized // Since these are dynamic user uploads from Supabase
                                             />
                                         ) : (

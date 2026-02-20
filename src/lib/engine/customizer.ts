@@ -45,6 +45,41 @@ function detectBusinessType(input: string) {
     }
     return "general";
 }
+
+function mapThemeByNiche(niche: string) {
+    const value = niche.toLowerCase();
+    if (value.includes("finance") || value.includes("legal") || value.includes("law")) {
+        return {
+            primary: "#1E3A8A",
+            secondary: "#1F2937",
+            backgroundColor: "#0B1220",
+            textColor: "#F8FAFC",
+        };
+    }
+    if (value.includes("restaurant") || value.includes("food") || value.includes("cafe")) {
+        return {
+            primary: "#EA580C",
+            secondary: "#F59E0B",
+            backgroundColor: "#0F0A05",
+            textColor: "#FFF7ED",
+        };
+    }
+    if (value.includes("tech") || value.includes("ai") || value.includes("software")) {
+        return {
+            primary: "#7C3AED",
+            secondary: "#09090B",
+            backgroundColor: "#050509",
+            textColor: "#E4E4E7",
+        };
+    }
+    return {
+        primary: "#3b82f6",
+        secondary: "#1e293b",
+        backgroundColor: "#0b1227",
+        textColor: "#e5e7eb",
+    };
+}
+
 function buildRichFallbackLayout(userData: UserPromptData, locale: string): Section[] {
     const isAr = locale === "ar";
     const type = detectBusinessType(`${userData.niche} ${userData.vision}`);
@@ -403,6 +438,7 @@ export const CustomizerEngine = {
             userData,
             locale,
         ) as SpecializedContent;
+        const mappedTheme = mapThemeByNiche(userData.niche);
 
         // 2. Deep Architectural Merge (Logic-First)
         const baseLayout = [...template.blueprint.layout];
@@ -430,8 +466,10 @@ export const CustomizerEngine = {
             ai_insight: `Focus on ${userData.niche.toLowerCase()} trends and local visibility for ${userData.businessName}. Synthetic heuristic applied. [LOCALE: ${locale}]`,
             theme: {
                 ...template.blueprint.theme,
-                primary: template.blueprint.theme.primary,
-                secondary: template.blueprint.theme.secondary || "#1e293b",
+                primary: mappedTheme.primary,
+                secondary: mappedTheme.secondary,
+                backgroundColor: mappedTheme.backgroundColor,
+                textColor: mappedTheme.textColor,
             },
             layout:
                 baseLayout.length < 5
