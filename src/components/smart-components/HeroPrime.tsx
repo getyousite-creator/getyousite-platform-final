@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
 interface HeroPrimeProps {
@@ -57,7 +58,7 @@ export default function HeroPrime({
             {/* Background Layer */}
             {backgroundImage ? (
                 <div className="absolute inset-0 z-0">
-                    <img src={backgroundImage} alt="Hero Background" className="w-full h-full object-cover" />
+                    <Image src={backgroundImage} alt="Hero Background" fill priority className="object-cover" sizes="100vw" />
                     <div className="absolute inset-0 bg-black" style={{ opacity: overlayOpacity }} />
                 </div>
             ) : (

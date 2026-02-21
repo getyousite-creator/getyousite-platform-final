@@ -78,7 +78,6 @@ export const StoreService = {
 
             const supabase = await createClient();
 
-            // @ts-ignore - Supabase types will be generated in Phase 2
             const { data: store, error } = await supabase
                 .from('stores')
                 .insert({
@@ -89,7 +88,6 @@ export const StoreService = {
                     status: 'draft',
                 })
                 .select()
-                // @ts-ignore
                 .single();
 
             if (error) {
@@ -170,7 +168,6 @@ export const StoreService = {
                 .from('stores')
                 .select('*')
                 .eq('id', id)
-                // @ts-ignore
                 .single();
 
             if (error) {
@@ -209,7 +206,6 @@ export const StoreService = {
                 .select('*')
                 .eq('slug', slug)
                 .eq('status', 'deployed')
-                // @ts-ignore
                 .single();
 
             if (error) {
@@ -246,7 +242,6 @@ export const StoreService = {
 
             const supabase = await createClient();
 
-            // @ts-ignore
             const { data: store, error } = await supabase
                 .from('stores')
                 .update({
@@ -255,7 +250,6 @@ export const StoreService = {
                 })
                 .eq('id', id)
                 .select()
-                // @ts-ignore
                 .single();
 
             if (error) {

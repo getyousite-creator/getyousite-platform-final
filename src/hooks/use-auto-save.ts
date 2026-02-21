@@ -56,27 +56,26 @@ export function useAutoSave(activeStoreId: string | null) {
     // Debounced save function
     // We use useMemo to create the debounced function only once (or when dependencies change)
     // 1000ms delay for "robust" feel - not too jumpy.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const debouncedSave = useCallback(
-        debounce(() => {
+
+    const debouncedRef = useRef<ReturnType<typeof debounce> | null>(null);
+
+    useEffect(() => {
+        debouncedRef.current = debounce(() => {
             save();
-        }, 1500),
-        [save]
-    );
+        }, 1500);
+        return () => {
+            debouncedRef.current?.cancel();
+        };
+    }, [save]);
 
     // Trigger auto-save on blueprint updates
     useEffect(() => {
         if (activeStoreId && blueprint) {
             if (saveStatus !== 'saving') {
-                debouncedSave();
+                debouncedRef.current?.();
             }
         }
-
-        // Cleanup debounce on unmount
-        return () => {
-            debouncedSave.cancel();
-        };
-    }, [blueprint, activeStoreId, debouncedSave]);
+    }, [blueprint, activeStoreId, debouncedRef, saveStatus]);
     // We don't include saveStatus in dependencies to avoid loops, 
     // but we check it inside to prevent double-firing if strict.
     // Actually, standard pattern is just fire debounced function.

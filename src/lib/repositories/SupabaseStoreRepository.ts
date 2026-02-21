@@ -7,7 +7,6 @@ export class SupabaseStoreRepository extends StoreRepository {
             .from('stores')
             .select('*')
             .eq('slug', slug)
-            // @ts-ignore - Supabase types will be generated in Phase 2
             .single();
 
         if (error) {
@@ -21,10 +20,9 @@ export class SupabaseStoreRepository extends StoreRepository {
     async saveStore(store: Partial<Store>): Promise<Store> {
         const { data, error } = await supabase
             .from('stores')
-            // @ts-ignore - Supabase types will be generated in Phase 2
-            .upsert(store)
+            // Casting to any until Supabase types are generated
+            .upsert(store as any)
             .select()
-            // @ts-ignore - Supabase types will be generated in Phase 2
             .single();
 
         if (error) {

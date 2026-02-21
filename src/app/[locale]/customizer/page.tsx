@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
 import { useAutoSave } from "@/hooks/use-auto-save";
 import { CustomizerEngine } from "@/lib/engine/customizer";
 import { refineBlueprintAction } from "@/app/actions/ai-actions";
+import { ChatRefinementEngine, DualMemory, sendPreviewUpdate } from "@/lib/engine/refinement";
 
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { CommandCenter } from "@/components/customizer/CommandCenter";
@@ -52,8 +53,14 @@ export default function CustomizerPage() {
     const [isLoadingStore, setIsLoadingStore] = useState(false);
     const [userId, setUserId] = useState<string>("");
     const [showAuthModal, setShowAuthModal] = useState(false);
+    const [flashSuccess, setFlashSuccess] = useState(false);
+    const [flashError, setFlashError] = useState(false);
 
     const visionParam = searchParams.get("vision");
+
+    // STRP: dual memory + refinement engine
+    const memoryRef = useRef(new DualMemory());
+    const engineRef = useRef<ChatRefinementEngine | null>(null);
 
     // 4. Save Logic
     const handleSave = useCallback(
@@ -113,6 +120,8 @@ export default function CustomizerPage() {
             const saved = await handleSave(finalBlueprint, { promptOnUnauthorized: false });
 
             if (saved) {
+                setFlashSuccess(true);
+                setTimeout(() => setFlashSuccess(false), 900);
                 // trial: skip payment prompts
             }
         } catch {
@@ -159,6 +168,14 @@ export default function CustomizerPage() {
             setBusinessName(bizName);
         }
     }, [visionParam, vision]);
+
+    // STRP: sync refinement engine with latest blueprint snapshots
+    useEffect(() => {
+        if (blueprint) {
+            memoryRef.current.pushSnapshot(blueprint);
+            engineRef.current = new ChatRefinementEngine(memoryRef.current, blueprint);
+        }
+    }, [blueprint]);
 
     // 2b. Auto-Start Generation Circuit
     useEffect(() => {
@@ -323,15 +340,26 @@ export default function CustomizerPage() {
                     <div className="w-full flex justify-center mb-8 relative z-[60]">
                         <AICommandBar
                             isProcessing={isGenerating}
+                            flashSuccess={flashSuccess}
+                            flashError={flashError}
                             onCommand={async (cmd: string) => {
                                 if (!blueprint) return;
+                                // Broadcast intent to preview immediately
+                                sendPreviewUpdate({ type: "command", command: cmd });
+
                                 const localPatch = applyValidatedCommandPatch(blueprint, cmd);
                                 if (localPatch.handled) {
                                     const patchedBlueprint = localPatch.blueprint as SiteBlueprint;
                                     updateBlueprint(patchedBlueprint);
-                                    await handleSave(patchedBlueprint, {
+                                    memoryRef.current.pushSnapshot(patchedBlueprint);
+                                    sendPreviewUpdate({ type: "blueprint-update", blueprint: patchedBlueprint });
+                                    const ok = await handleSave(patchedBlueprint, {
                                         promptOnUnauthorized: false,
                                     });
+                                    if (ok) {
+                                        setFlashSuccess(true);
+                                        setTimeout(() => setFlashSuccess(false), 900);
+                                    }
                                     const opCount = Array.isArray(localPatch.operations)
                                         ? localPatch.operations.length
                                         : 0;
@@ -339,6 +367,25 @@ export default function CustomizerPage() {
                                     return;
                                 }
 
+                                // STRP: conversational refinement engine (optimistic / local)
+                                if (engineRef.current) {
+                                    const result = await engineRef.current.processCommand({ text: cmd });
+                                    if (result.updatedSite) {
+                                        const refined = result.updatedSite as SiteBlueprint;
+                                        updateBlueprint(refined);
+                                        memoryRef.current.pushSnapshot(refined);
+                                        sendPreviewUpdate({ type: "blueprint-update", blueprint: refined });
+                                        const ok = await handleSave(refined, { promptOnUnauthorized: false });
+                                        if (ok) {
+                                            setFlashSuccess(true);
+                                            setTimeout(() => setFlashSuccess(false), 900);
+                                        }
+                                        toast.success(result.message || "Applied via STRP");
+                                        return;
+                                    }
+                                }
+
+                                // Remote AI refinement fallback
                                 setIsGenerating(true);
                                 try {
                                     const modifiedBlueprint = await refineBlueprintAction({
@@ -349,12 +396,20 @@ export default function CustomizerPage() {
                                         locale: locale || "ar",
                                     });
                                     updateBlueprint(modifiedBlueprint);
-                                    await handleSave(modifiedBlueprint, {
+                                    memoryRef.current.pushSnapshot(modifiedBlueprint);
+                                    sendPreviewUpdate({ type: "blueprint-update", blueprint: modifiedBlueprint });
+                                    const ok = await handleSave(modifiedBlueprint, {
                                         promptOnUnauthorized: false,
                                     });
+                                    if (ok) {
+                                        setFlashSuccess(true);
+                                        setTimeout(() => setFlashSuccess(false), 900);
+                                    }
                                     toast.success("Blueprint refined by AI");
                                 } catch (e) {
                                     console.error(e);
+                                    setFlashError(true);
+                                    setTimeout(() => setFlashError(false), 900);
                                     toast.error("Refinement failed");
                                 } finally {
                                     setIsGenerating(false);
@@ -369,6 +424,59 @@ export default function CustomizerPage() {
                             blueprint={blueprint}
                             isGenerating={isGenerating}
                             selectedPageSlug={selectedPageSlug}
+                            onTextChange={async (id, text) => {
+                                if (!blueprint) return;
+                                const next = structuredClone(blueprint);
+                                const pageLayout = next.pages?.[selectedPageSlug]?.layout || next.layout;
+                                const target = pageLayout.find((s: any) => s.id === id);
+                                if (target) {
+                                    // Update first string field or common headline/title keys
+                                    if (typeof target.content?.title === "string") target.content.title = text;
+                                    else if (typeof target.content?.headline === "string") target.content.headline = text;
+                                    else if (typeof target.content?.heading === "string") target.content.heading = text;
+                                    else {
+                                        const key = Object.keys(target.content || {}).find((k) => typeof target.content[k] === "string");
+                                        if (key) target.content[key] = text;
+                                    }
+                                    updateBlueprint(next);
+                                    memoryRef.current.pushSnapshot(next);
+                                    sendPreviewUpdate({ type: "blueprint-update", blueprint: next });
+                                    const ok = await handleSave(next, { promptOnUnauthorized: false });
+                                    if (ok) {
+                                        setFlashSuccess(true);
+                                        setTimeout(() => setFlashSuccess(false), 900);
+                                    } else {
+                                        setFlashError(true);
+                                        setTimeout(() => setFlashError(false), 900);
+                                    }
+                                }
+                            }}
+                            onReorder={async (sourceId, targetId) => {
+                                if (!blueprint) return;
+                                const next = structuredClone(blueprint);
+                                const pageLayout = next.pages?.[selectedPageSlug]?.layout || next.layout;
+                                const from = pageLayout.findIndex((s: any) => s.id === sourceId);
+                                const to = pageLayout.findIndex((s: any) => s.id === targetId);
+                                if (from === -1 || to === -1) return;
+                                const [moved] = pageLayout.splice(from, 1);
+                                pageLayout.splice(to, 0, moved);
+                                if (next.pages?.[selectedPageSlug]) {
+                                    next.pages[selectedPageSlug].layout = pageLayout;
+                                } else {
+                                    next.layout = pageLayout;
+                                }
+                                updateBlueprint(next);
+                                memoryRef.current.pushSnapshot(next);
+                                sendPreviewUpdate({ type: "blueprint-update", blueprint: next });
+                                const ok = await handleSave(next, { promptOnUnauthorized: false });
+                                if (ok) {
+                                    setFlashSuccess(true);
+                                    setTimeout(() => setFlashSuccess(false), 900);
+                                } else {
+                                    setFlashError(true);
+                                    setTimeout(() => setFlashError(false), 900);
+                                }
+                            }}
                         />
                     </div>
                 </main>

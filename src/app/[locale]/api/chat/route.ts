@@ -12,8 +12,6 @@ if (!process.env.OPENAI_API_KEY) {
     console.warn("NEURAL_BRIDGE_WARNING: OPENAI_API_KEY is missing. Responses will fail.");
 }
 
-export const runtime = 'edge';
-
 export async function POST(req: Request) {
     try {
         const { messages, locale } = await req.json();
@@ -121,3 +119,4 @@ PRODUCTION_ARCHITECTURE_SYNC:
         return new Response('Neural Bridge Failure', { status: 500 });
     }
 }
+

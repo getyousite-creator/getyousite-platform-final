@@ -1,0 +1,399 @@
+# ============================================================================
+# CI/CD Pipeline with Automatic Rollback
+# ============================================================================
+# Quad-Stage Pipeline: Lint → Test → Staging → Production
+# Automatic rollback on health check failure within 60 seconds
+# ============================================================================
+
+name: CI/CD with Auto-Rollback
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  HEALTH_CHECK_TIMEOUT: 60
+  HEALTH_CHECK_INTERVAL: 5
+
+jobs:
+  # ============================================================================
+  # STAGE 1: LINT
+  # ============================================================================
+  
+  lint:
+    name: Stage 1 - Lint
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run ESLint
+        run: npm run lint
+      
+      - name: Run Prettier
+        run: npm run format:check
+      
+      - name: TypeScript check
+        run: npx tsc --noEmit
+
+  # ============================================================================
+  # STAGE 2: TEST
+  # ============================================================================
+  
+  test:
+    name: Stage 2 - Test
+    runs-on: ubuntu-latest
+    needs: lint
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run unit tests
+        run: npm run test:coverage
+      
+      - name: Check coverage (90% required)
+        run: |
+          coverage=$(node -e "console.log(require('./coverage/coverage-summary.json').total.lines.pct)")
+          if (( $(echo "$coverage < 90" | bc -l) )); then
+            echo "❌ Coverage $coverage% < 90%"
+            exit 1
+          fi
+          echo "✅ Coverage $coverage% >= 90%"
+      
+      - name: Run integration tests
+        run: npm run test:integration
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/test
+          REDIS_URL: redis://localhost:6379
+
+  # ============================================================================
+  # STAGE 3: BUILD & DEPLOY TO STAGING
+  # ============================================================================
+  
+  deploy-staging:
+    name: Stage 3 - Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: test
+    environment: staging
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      
+      - name: Update kubeconfig
+        run: aws eks update-kubeconfig --name getyousite-cluster
+      
+      - name: Login to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:staging-${{ github.sha }}
+      
+      - name: Deploy to staging
+        run: |
+          kubectl set image deployment/getyousite-platform \
+            platform=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:staging-${{ github.sha }} \
+            -n staging
+      
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/getyousite-platform -n staging --timeout=300s
+      
+      - name: Health check (staging)
+        run: |
+          for i in $(seq 1 ${{ env.HEALTH_CHECK_TIMEOUT }}); do
+            status=$(curl -s -o /dev/null -w "%{http_code}" https://staging.getyousite.com/health)
+            if [ "$status" = "200" ]; then
+              echo "✅ Staging health check passed"
+              exit 0
+            fi
+            echo "⏳ Waiting for staging... ($i/${{ env.HEALTH_CHECK_TIMEOUT }})"
+            sleep ${{ env.HEALTH_CHECK_INTERVAL }}
+          done
+          echo "❌ Staging health check failed"
+          exit 1
+      
+      - name: Run smoke tests (staging)
+        run: npm run test:smoke
+        env:
+          BASE_URL: https://staging.getyousite.com
+
+  # ============================================================================
+  # STAGE 4: DEPLOY TO PRODUCTION WITH AUTO-ROLLBACK
+  # ============================================================================
+  
+  deploy-production:
+    name: Stage 4 - Deploy to Production
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    environment: production
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      
+      - name: Update kubeconfig
+        run: aws eks update-kubeconfig --name getyousite-cluster
+      
+      # Store current version for rollback
+      - name: Get current version
+        id: current-version
+        run: |
+          current=$(kubectl get deployment/getyousite-platform -n production -o jsonpath='{.spec.template.spec.containers[0].image}')
+          echo "version=$current" >> $GITHUB_OUTPUT
+          echo "Current production version: $current"
+      
+      # Deploy new version
+      - name: Deploy to production
+        run: |
+          kubectl set image deployment/getyousite-platform \
+            platform=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:production-${{ github.sha }} \
+            -n production
+      
+      - name: Wait for rollout
+        id: rollout
+        run: |
+          kubectl rollout status deployment/getyousite-platform -n production --timeout=300s
+      
+      # Health check with automatic rollback
+      - name: Health check with auto-rollback
+        id: health-check
+        run: |
+          echo "Starting health check (timeout: ${{ env.HEALTH_CHECK_TIMEOUT }}s)..."
+          
+          for i in $(seq 1 ${{ env.HEALTH_CHECK_TIMEOUT }}); do
+            status=$(curl -s -o /dev/null -w "%{http_code}" https://getyousite.com/health || echo "000")
+            
+            if [ "$status" = "200" ]; then
+              echo "✅ Production health check passed after ${i}s"
+              exit 0
+            fi
+            
+            echo "⏳ Health check attempt $i/${{ env.HEALTH_CHECK_TIMEOUT }} (status: $status)"
+            sleep ${{ env.HEALTH_CHECK_INTERVAL }}
+          done
+          
+          # Health check failed - trigger rollback
+          echo "❌ Production health check FAILED - Initiating automatic rollback..."
+          
+          # Rollback to previous version
+          kubectl rollout undo deployment/getyousite-platform -n production
+          
+          echo "⏳ Waiting for rollback to complete..."
+          kubectl rollout status deployment/getyousite-platform -n production --timeout=300s
+          
+          # Verify rollback
+          rollback_status=$(curl -s -o /dev/null -w "%{http_code}" https://getyousite.com/health || echo "000")
+          if [ "$rollback_status" = "200" ]; then
+            echo "✅ Rollback successful - Production stable"
+          else
+            echo "❌ Rollback verification failed"
+            exit 1
+          fi
+          
+          exit 1
+      
+      # Notify success
+      - name: Notify success (Slack)
+        if: success()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data "{
+              \"text\": \"✅ Production deployment successful\",
+              \"attachments\": [{
+                \"color\": \"good\",
+                \"fields\": [
+                  {\"title\": \"Version\", \"value\": \"${{ github.sha }}\", \"short\": true},
+                  {\"title\": \"Environment\", \"value\": \"Production\", \"short\": true}
+                ]
+              }]
+            }" \
+            ${{ secrets.SLACK_WEBHOOK }}
+      
+      # Notify failure
+      - name: Notify failure (Slack)
+        if: failure()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data "{
+              \"text\": \"❌ Production deployment failed\",
+              \"attachments\": [{
+                \"color\": \"danger\",
+                \"fields\": [
+                  {\"title\": \"Version\", \"value\": \"${{ github.sha }}\", \"short\": true},
+                  {\"title\": \"Environment\", \"value\": \"Production\", \"short\": true},
+                  {\"title\": \"Action\", \"value\": \"Auto-rollback triggered\", \"short\": false}
+                ]
+              }]
+            }" \
+            ${{ secrets.SLACK_WEBHOOK }}
+
+  # ============================================================================
+  # CHAOS ENGINEERING TESTS
+  # ============================================================================
+  
+  chaos-test:
+    name: Chaos Engineering Tests
+    runs-on: ubuntu-latest
+    needs: deploy-production
+    if: always()
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      
+      - name: Update kubeconfig
+        run: aws eks update-kubeconfig --name getyousite-cluster
+      
+      # Pod Kill Test
+      - name: Pod Kill Test
+        run: |
+          echo "🔪 Starting Pod Kill Test..."
+          
+          # Get a random pod
+          pod=$(kubectl get pods -n production -l app=getyousite -o jsonpath='{.items[0].metadata.name}')
+          echo "Target pod: $pod"
+          
+          # Record start time
+          start_time=$(date +%s)
+          
+          # Kill the pod
+          kubectl delete pod $pod -n production --grace-period=0 --force
+          
+          # Wait for new pod to be ready
+          while true; do
+            ready=$(kubectl get pods -n production -l app=getyousite -o jsonpath='{.items[*].status.conditions[?(@.type=="Ready")].status}' | grep -c "True" || true)
+            if [ "$ready" -ge 3 ]; then
+              echo "✅ New pods ready"
+              break
+            fi
+            sleep 1
+          done
+          
+          end_time=$(date +%s)
+          recovery_time=$((end_time - start_time))
+          
+          echo "⏱️ Recovery time: ${recovery_time}s"
+          
+          if [ "$recovery_time" -lt 5 ]; then
+            echo "✅ Pod Kill Test PASSED (recovery < 5s)"
+          else
+            echo "❌ Pod Kill Test FAILED (recovery >= 5s)"
+            exit 1
+          fi
+      
+      # Load Test (100,000 users)
+      - name: Load Test
+        run: |
+          echo "🏋️ Starting Load Test (100,000 concurrent users)..."
+          
+          # Install k6
+          sudo apt-get install -y k6 || brew install k6
+          
+          # Run load test
+          k6 run infra/load-test/scenario.js \
+            -e BASE_URL=https://getyousite.com \
+            --out json=load-test-results.json
+          
+          # Parse results
+          p95=$(cat load-test-results.json | jq -r 'select(.type=="Metric") | select(.metric=="http_req_duration") | .data.values("p(95)")')
+          error_rate=$(cat load-test-results.json | jq -r 'select(.type=="Metric") | select(.metric=="http_req_failed") | .data.values.rate')
+          
+          echo "📊 Results:"
+          echo "  P95 Latency: ${p95}ms"
+          echo "  Error Rate: ${error_rate}%"
+          
+          # Validate thresholds
+          if (( $(echo "$p95 < 500" | bc -l) )) && (( $(echo "$error_rate < 0.001" | bc -l) )); then
+            echo "✅ Load Test PASSED"
+          else
+            echo "❌ Load Test FAILED"
+            exit 1
+          fi

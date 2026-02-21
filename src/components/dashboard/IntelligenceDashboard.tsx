@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { getGlobalPerformanceAction } from '@/app/actions/intelligence-actions';
+import { getGlobalPerformanceAction, getSecurityPulseAction } from '@/app/actions/intelligence-actions';
 import { useAuth } from '@/components/providers/SupabaseProvider';
 import { Zap, Shield, TrendingUp, Activity, Search, AlertTriangle, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
@@ -30,8 +30,6 @@ export function IntelligenceDashboard() {
 
     const refreshData = () => {
         setLoading(true);
-        const { getSecurityPulseAction } = require('@/app/actions/intelligence-actions');
-
         Promise.all([
             getGlobalPerformanceAction(user!.id),
             getSecurityPulseAction()

@@ -1,405 +1,294 @@
-// SOVEREIGN DATABASE SCHEMA
-// Engine: PostgreSQL (Supabase)
-// Logic: Strict Consistency
-// Version: 2.0.0 - Enhanced with Templates, SEO, Analytics, Subscriptions
+/**
+ * Prisma Schema - PostgreSQL with JSONB
+ * 
+ * Optimized for:
+ * - Flexible site blueprints (JSONB)
+ * - Soft deletes (deletedAt)
+ * - Indexing for performance
+ * - Partitioning-ready for analytics
+ */
+
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-// --------------------------------------------------------
-// [CORE] IDENTITY MODULE
-// --------------------------------------------------------
-model Profile {
-  id                  String    @id
-  full_name           String?
-  avatar_url          String?
-  phone               String?
-  
-  // Stripe Integration (Mission 3.2)
-  stripe_customer_id  String?   @unique
-  subscription_status String?   // active, trialing, past_due, canceled
-  plan_id             String?
-  subscription_id     String?
-  
-  // Relations
-  user          User      @relation(fields: [id], references: [id])
-  sites         Site[]
-
-  @@map("profiles")
-}
+// ============================================================================
+// USER & AUTH
+// ============================================================================
 
 model User {
-  id            String    @id @default(uuid())
+  id            String    @id @default(cuid())
   email         String    @unique
-  
-  // Subscription Logic
-  tier          String    @default("starter") // starter, pro, business, unlimited
-  credits       Int       @default(0)
-  
-  // Preferences
-  locale        String    @default("ar")
-  timezone      String    @default("Africa/Casablanca")
-  
-  // Verification
-  email_verified Boolean  @default(false)
-  
-  created_at    DateTime  @default(now())
-  updated_at    DateTime  @updatedAt
+  passwordHash  String
+  name          String
+  role          Role      @default(USER)
+  emailVerified DateTime?
   
   // Relations
-  profile       Profile?
-  stores        Store[]
   sites         Site[]
+  refreshTokens RefreshToken[]
   subscriptions Subscription[]
-  payments      Payment[]
   
-  @@map("users")
+  // Timestamps
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime? // Soft delete
+  
+  // Indexes
+  @@index([email])
+  @@index([deletedAt])
 }
 
-// --------------------------------------------------------
-// [CORE] SUBSCRIPTION MODULE
-// --------------------------------------------------------
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([token])
+}
+
+enum Role {
+  USER
+  ADMIN
+  PREMIUM
+}
+
+// ============================================================================
+// SITE & BLUEPRINT
+// ============================================================================
+
+model Site {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  vision      String?
+  
+  // JSONB for flexible blueprint storage
+  blueprint   Json     @db.JsonB
+  
+  // Domain configuration
+  customDomain String? @unique
+  subdomain    String  @unique
+  
+  // Status
+  status      SiteStatus @default(DRAFT)
+  isPublished Boolean    @default(false)
+  
+  // Relations
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  deployments Deployment[]
+  analytics   Analytics[]
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime? // Soft delete
+  publishedAt DateTime?
+  
+  // Indexes
+  @@index([userId])
+  @@index([subdomain])
+  @@index([customDomain])
+  @@index([status])
+  @@index([deletedAt])
+}
+
+enum SiteStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+// ============================================================================
+// DEPLOYMENT
+// ============================================================================
+
+model Deployment {
+  id           String   @id @default(cuid())
+  siteId       String
+  site         Site     @relation(fields: [siteId], references: [id])
+  
+  // Deployment info
+  version      Int
+  buildTime    Int? // in milliseconds
+  buildStatus  BuildStatus @default(PENDING)
+  
+  // Vercel/Cloudflare IDs
+  deploymentId String?
+  vercelUrl    String?
+  
+  // Assets
+  assets       Json? @db.JsonB // CDN URLs
+  
+  // Timestamps
+  createdAt    DateTime @default(now())
+  
+  // Indexes
+  @@index([siteId])
+  @@index([buildStatus])
+  @@index([createdAt])
+}
+
+enum BuildStatus {
+  PENDING
+  BUILDING
+  SUCCESS
+  FAILED
+}
+
+// ============================================================================
+// ANALYTICS (Partitioning-ready)
+// ============================================================================
+
+model Analytics {
+  id        String   @id @default(cuid())
+  siteId    String
+  site      Site     @relation(fields: [siteId], references: [id])
+  
+  // Event data
+  eventType String // pageview, click, conversion, etc.
+  eventData Json?   @db.JsonB // Flexible event data
+  
+  // Visitor info
+  visitorId String?
+  sessionId String?
+  country   String?
+  city      String?
+  
+  // Page info
+  path      String?
+  referrer  String?
+  userAgent String?
+  
+  // Timestamps (for partitioning)
+  createdAt DateTime @default(now())
+  
+  // Indexes
+  @@index([siteId])
+  @@index([eventType])
+  @@index([createdAt])
+  @@index([visitorId])
+  
+  // Note: For production with millions of rows, use table partitioning
+  // CREATE TABLE "Analytics" PARTITION BY RANGE (createdAt)
+}
+
+// ============================================================================
+// SUBSCRIPTION & BILLING
+// ============================================================================
+
 model Subscription {
-  id              String    @id @default(uuid())
-  user_id         String
-  plan            String    // starter, pro, business, enterprise
-  status          String    @default("active") // active, cancelled, expired, past_due
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  
+  // Plan info
+  plan           PlanType @default(FREE)
+  status         SubscriptionStatus @default(ACTIVE)
   
   // Billing
-  current_period_start DateTime
-  current_period_end   DateTime
-  cancel_at_period_end Boolean @default(false)
+  stripeCustomerId String? @unique
+  stripeSubscriptionId String? @unique
   
-  // PayPal Integration
-  paypal_subscription_id String?
+  // Limits
+  sitesLimit     Int      @default(1)
+  storageLimit   Int      @default(100) // MB
   
-  created_at      DateTime  @default(now())
-  updated_at      DateTime  @updatedAt
+  // Timestamps
+  currentPeriodStart DateTime @default(now())
+  currentPeriodEnd   DateTime
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  cancelledAt        DateTime?
   
-  // Relations
-  user            User      @relation(fields: [user_id], references: [id])
-  
-  @@map("subscriptions")
+  // Indexes
+  @@index([userId])
+  @@index([status])
 }
 
-// --------------------------------------------------------
-// [CORE] PAYMENT MODULE
-// --------------------------------------------------------
-model Payment {
-  id              String    @id @default(uuid())
-  user_id         String
-  amount          Decimal   @db.Decimal(10, 2)
-  currency        String    @default("MAD")
-  method          String    // paypal, bank_transfer, card
-  status          String    @default("pending") // pending, completed, failed, refunded
-  
-  // References
-  payment_id      String?   // External payment ID
-  receipt_url     String?
-  description     String?
-  
-  created_at      DateTime  @default(now())
-  updated_at      DateTime  @updatedAt
-  
-  // Relations
-  user            User      @relation(fields: [user_id], references: [id])
-  
-  @@map("payments")
+enum PlanType {
+  FREE
+  PRO
+  BUSINESS
+  ENTERPRISE
 }
 
-// --------------------------------------------------------
-// [CORE] EMPIRE MODULE (Stores/Sites)
-// --------------------------------------------------------
-// --------------------------------------------------------
-// [CORE] SITE GENERATION MODULE (Mission 2.1)
-// --------------------------------------------------------
-model Site {
-  id            String    @id @default(uuid())
-  user_id       String
-  profile_id    String?   
-  name          String
-  subdomain     String    @unique // Must be unique
-  custom_domain String?   @unique // Optional, must be unique
-  
-  template_id   String
-  data          Json      @default("{}") // The JSONB field for flexibility
-  published     Boolean   @default(false)
-  
-  created_at    DateTime  @default(now())
-  updated_at    DateTime  @updatedAt
-
-  // Relations
-  user          User      @relation(fields: [user_id], references: [id])
-  profile       Profile?  @relation(fields: [profile_id], references: [id])
-  template      Template  @relation(fields: [template_id], references: [id])
-
-  @@map("sites")
+enum SubscriptionStatus {
+  ACTIVE
+  INACTIVE
+  CANCELLED
+  PAST_DUE
 }
 
-model Store {
-  id            String    @id @default(uuid())
-  user_id       String
-  name          String
-  slug          String?   @unique
-  description   String?
-  niche         String?
-  
-  // Sovereign Status Flow
-  status        String    @default("draft") // draft, pending_payment, paid, deploying, deployed, failed
-  
-  // The Blueprint (AI Logic)
-  blueprint     Json      // Stores the JSON SiteBlueprint
-  
-  // Deployment Metadata
-  deployment_url String?
-  vercel_id      String?
-  vercel_deploy_url String?
-  custom_domain  String?
-  
-  // SEO Metadata
-  seo_title      String?
-  seo_description String?
-  seo_keywords   String[]
-  og_image       String?
-  
-  // Commerce Logic
-  payment_id    String?
-  amount        Decimal?  @db.Decimal(10, 2)
-  paid_at       DateTime?
-  deployed_at   DateTime?
-  
-  // Template Info
-  template_id   String?
-  template_version String?
-  
-  created_at    DateTime  @default(now())
-  updated_at    DateTime  @updatedAt
+// ============================================================================
+// AUDIT LOGS (For security & compliance)
+// ============================================================================
 
-  // Relations
-  user          User      @relation(fields: [user_id], references: [id])
-  pages         Page[]
-  analytics     Analytics[]
-  media         Media[]
-  seo_records   SEOAudit[]
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String // CREATE, UPDATE, DELETE, LOGIN, etc.
+  resource  String // USER, SITE, DEPLOYMENT, etc.
+  resourceId String?
   
-  @@map("stores")
+  // Change details
+  oldValue  Json? @db.JsonB
+  newValue  Json? @db.JsonB
+  
+  // Context
+  ipAddress String?
+  userAgent String?
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  
+  // Indexes
+  @@index([userId])
+  @@index([action])
+  @@index([resource])
+  @@index([createdAt])
+  
+  // Note: Partition by createdAt for large-scale deployments
 }
 
-// --------------------------------------------------------
-// [CONTENT] PAGES MODULE
-// --------------------------------------------------------
-model Page {
-  id            String    @id @default(uuid())
-  store_id      String
-  name          String
-  slug          String    @default("/")
-  title         String?
-  description   String?
-  
-  // Page Content
-  content       Json
-  blocks        Json?     // Structured content blocks
-  
-  // SEO
-  seo_title     String?
-  seo_description String?
-  seo_keywords  String[]
-  no_index      Boolean   @default(false)
-  canonical_url String?
-  
-  // Status
-  is_homepage   Boolean   @default(false)
-  is_published  Boolean   @default(false)
-  
-  created_at    DateTime  @default(now())
-  updated_at    DateTime  @updatedAt
-  
-  // Relations
-  store         Store     @relation(fields: [store_id], references: [id])
-  
-  @@unique([store_id, slug])
-  @@map("pages")
-}
+// ============================================================================
+// API KEYS (For developer access)
+// ============================================================================
 
-// --------------------------------------------------------
-// [MEDIA] ASSET MODULE
-// --------------------------------------------------------
-model Media {
-  id            String    @id @default(uuid())
-  store_id      String
+model ApiKey {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
   
-  // File Info
-  filename      String
-  original_name  String
-  mime_type     String
-  size          Int       // Bytes
+  name        String
+  key         String   @unique // Hashed
+  prefix      String   // First 8 chars for identification
   
-  // Storage
-  url           String
-  thumbnail_url String?
-  storage_path  String
+  // Permissions
+  permissions String[] // ['sites:read', 'sites:write', etc.]
   
-  // Metadata
-  alt           String?
-  caption       String?
-  width         Int?
-  height        Int?
+  // Usage
+  lastUsedAt  DateTime?
   
-  // AI Analysis
-  ai_tags       String[]
-  ai_description String?
+  // Timestamps
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime?
   
-  created_at    DateTime  @default(now())
-  updated_at    DateTime  @updatedAt
-  
-  // Relations
-  store         Store     @relation(fields: [store_id], references: [id])
-  
-  @@map("media")
-}
-
-// --------------------------------------------------------
-// [INTELLIGENCE] ANALYTICS MODULE
-// --------------------------------------------------------
-model Analytics {
-  id            String    @id @default(uuid())
-  store_id      String
-  
-  // Traffic Logic
-  path          String    @default("/")
-  views         Int       @default(0)
-  visitors      Int       @default(0)
-  unique_visitors Int     @default(0)
-  
-  // Device & Geography
-  device        String?   // mobile, desktop, tablet
-  browser       String?
-  os            String?
-  country       String?   // ISO code
-  city          String?
-  
-  // Session Data
-  session_duration Int?   // Seconds
-  bounce_rate   Float?
-  exit_rate     Float?
-  
-  // Source
-  source        String?
-  medium        String?
-  campaign      String?
-  referrer      String?
-  
-  // Events
-  events        Json?     // Custom events tracking
-  
-  timestamp     DateTime  @default(now())
-  date          DateTime  @default(now()) @db.Date
-
-  // Relations
-  store         Store     @relation(fields: [store_id], references: [id])
-  
-  @@index([store_id, date])
-  @@map("analytics")
-}
-
-// --------------------------------------------------------
-// [INTELLIGENCE] SEO AUDIT MODULE
-// --------------------------------------------------------
-model SEOAudit {
-  id            String    @id @default(uuid())
-  store_id      String
-  
-  // Scores (0-100)
-  overall_score Int       @default(0)
-  seo_score     Int       @default(0)
-  performance_score Int    @default(0)
-  accessibility_score Int  @default(0)
-  best_practices_score Int @default(0)
-  
-  // Detailed Report
-  issues        Json?     // Array of issues found
-  recommendations Json?   // Array of recommendations
-  
-  // Core Web Vitals
-  lcp           Float?    // Largest Contentful Paint (ms)
-  fid           Float?    // First Input Delay (ms)
-  cls           Float?    // Cumulative Layout Shift
-  
-  // Keywords
-  target_keywords String[]  // Changed from Json to String[]
-  ranking_positions Json?  // keyword -> position
-  
-  analyzed_at   DateTime  @default(now())
-  
-  // Relations
-  store         Store     @relation(fields: [store_id], references: [id])
-  
-  @@index([store_id, analyzed_at])
-  @@map("seo_audits")
-}
-
-// --------------------------------------------------------
-// [TEMPLATES] TEMPLATE MODULE
-// --------------------------------------------------------
-model Template {
-  id            String    @id @default(uuid())
-  name          String
-  slug          String    @unique
-  description   String?
-  preview_image_url String? // Renamed thumbnail_url to preview_image_url as per mission
-  
-  // Categorization
-  category      String    // business, restaurant, portfolio, ecommerce, saas, etc.
-  subcategory   String?
-  tags          String[]
-  
-  // Template Data
-  blueprint     Json      // The template blueprint
-  preview_url   String?
-  
-  // Features
-  features      String[]  // List of features
-  
-  // Pricing
-  is_premium    Boolean   @default(false)
-  price         Decimal?  @db.Decimal(10, 2)
-  
-  // Status
-  is_active     Boolean   @default(true)
-  is_featured   Boolean   @default(false)
-  
-  // Stats
-  usage_count   Int       @default(0)
-  rating        Float?
-  
-  created_at    DateTime  @default(now())
-  updated_at    DateTime  @updatedAt
-
-  // Relations
-  sites         Site[]
-  
-  @@map("templates")
-}
-
-// --------------------------------------------------------
-// [LOGS] SYSTEM LOGS
-// --------------------------------------------------------
-model SystemLog {
-  id            String    @id @default(uuid())
-  level         String    // info, warn, error
-  source        String    // Where the log came from
-  message       String
-  metadata      Json?
-  
-  created_at    DateTime  @default(now())
-  
-  @@index([created_at])
-  @@map("system_logs")
+  // Indexes
+  @@index([userId])
+  @@index([key])
 }

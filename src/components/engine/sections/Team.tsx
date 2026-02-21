@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 
 export default function Team({ content, primaryColor, backgroundColor, textColor }: any) {
     const members = content?.members || [
@@ -25,9 +26,11 @@ export default function Team({ content, primaryColor, backgroundColor, textColor
                     {members.map((member: any, i: number) => (
                         <div key={i} className="group relative">
                             <div className="aspect-[3/4] rounded-3xl overflow-hidden bg-secondary shadow-2xl transition-all duration-700 group-hover:-translate-y-4">
-                                <img
+                                <Image
                                     src={member.image}
                                     alt={member.name}
+                                    width={800}
+                                    height={1066}
                                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-110 group-hover:scale-100"
                                 />
                                 <div className="absolute inset-x-0 bottom-0 p-8 bg-gradient-to-t from-black to-transparent">

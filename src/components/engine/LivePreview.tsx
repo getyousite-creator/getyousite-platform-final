@@ -1,17 +1,28 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Layout } from 'lucide-react';
 import { ComponentLibrary } from './ComponentLibrary';
+import { registerPreviewListener } from '@/lib/engine/refinement';
 
 interface PreviewProps {
     config: any; // Data from CustomizerEngine
     isGenerating: boolean;
     selectedPageSlug?: string;
+    onTextChange?: (sectionId: string, text: string) => void;
+    onReorder?: (sourceId: string, targetId: string) => void;
 }
 
-export const LivePreview: React.FC<PreviewProps> = ({ config, isGenerating, selectedPageSlug = 'index' }) => {
+export const LivePreview: React.FC<PreviewProps> = ({ 
+    config, 
+    isGenerating, 
+    selectedPageSlug = 'index',
+    onTextChange,
+    onReorder 
+}) => {
+    const [liveBlueprint, setLiveBlueprint] = useState(config?.final_config || config);
+
     // 1. Logic Hardening: Analytics Ingestion
     useEffect(() => {
         if (config?.id || config?.site_id) {
@@ -36,10 +47,33 @@ export const LivePreview: React.FC<PreviewProps> = ({ config, isGenerating, sele
             };
             trackView();
         }
-    }, [config?.id, config?.site_id]);
+    }, [config?.id, config?.site_id, selectedPageSlug]);
 
-    // 2. Generation Logic: If generating and no config, show skeleton
-    if (isGenerating && !config) {
+    // 2. STRP: listen to live preview updates
+    useEffect(() => {
+        const dispose = registerPreviewListener((payload) => {
+            if (payload?.type === "blueprint-update" && payload.blueprint) {
+                setLiveBlueprint(payload.blueprint);
+            }
+            if (payload?.type === "command") {
+                // future: show inline HUD/notification
+            }
+        });
+        return dispose;
+    }, []);
+
+    // keep local blueprint in sync when config changes externally
+    useEffect(() => {
+        if (!config) return;
+        const next = config?.final_config || config;
+        if (next !== liveBlueprint) {
+            const id = requestAnimationFrame(() => setLiveBlueprint(next));
+            return () => cancelAnimationFrame(id);
+        }
+    }, [config, liveBlueprint]);
+
+    // 3. Generation Logic: If generating and no config, show skeleton
+    if (isGenerating && !liveBlueprint) {
         return <GenerationSkeleton />;
     }
 
@@ -47,7 +81,7 @@ export const LivePreview: React.FC<PreviewProps> = ({ config, isGenerating, sele
         <div className="relative w-full h-full bg-card overflow-hidden shadow-2xl rounded-2xl border-4 border-border aspect-[9/16] md:aspect-[16/10]">
             <AnimatePresence mode="wait">
                 <motion.div
-                    key={config?.site_id || 'initial'}
+                    key={liveBlueprint?.site_id || 'initial'}
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0 }}
@@ -56,8 +90,10 @@ export const LivePreview: React.FC<PreviewProps> = ({ config, isGenerating, sele
                 >
                     {/* DYNAMIC INJECTION ENGINE */}
                     <DynamicRenderer
-                        blueprint={config?.final_config || config}
+                        blueprint={liveBlueprint}
                         selectedPageSlug={selectedPageSlug}
+                        onTextChange={onTextChange}
+                        onReorder={onReorder}
                     />
                 </motion.div>
             </AnimatePresence>
@@ -68,7 +104,7 @@ export const LivePreview: React.FC<PreviewProps> = ({ config, isGenerating, sele
     );
 };
 
-const DynamicRenderer = ({ blueprint, selectedPageSlug = 'index', isGenerating }: any) => {
+const DynamicRenderer = ({ blueprint, selectedPageSlug = 'index', isGenerating, onTextChange, onReorder }: any) => {
     if (!blueprint && !isGenerating) return (
         <div className="flex flex-col items-center justify-center p-20 text-center space-y-4">
             <div className="w-12 h-12 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
@@ -99,6 +135,39 @@ const DynamicRenderer = ({ blueprint, selectedPageSlug = 'index', isGenerating }
         );
     }
 
+    // Native drag-and-drop handlers
+    const handleDragStart = (e: React.DragEvent, sectionId: string) => {
+        e.dataTransfer.setData("section-id", sectionId);
+        e.dataTransfer.effectAllowed = "move";
+    };
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+    };
+
+    const handleDrop = (e: React.DragEvent, targetId: string) => {
+        e.preventDefault();
+        const sourceId = e.dataTransfer.getData("section-id");
+        if (sourceId && sourceId !== targetId && onReorder) {
+            onReorder(sourceId, targetId);
+        }
+    };
+
+    const handleDoubleClick = (section: any) => {
+        const current =
+            section.content?.title || 
+            section.content?.heading || 
+            section.content?.headline || 
+            section.content?.text || 
+            section.content?.description ||
+            "";
+        const next = prompt("Edit text", String(current ?? ""));
+        if (next !== null && next !== current && onTextChange) {
+            onTextChange(section.id, next);
+        }
+    };
+
     return (
         <div style={{ '--primary-color': primaryColor } as any} className="min-h-full">
             {/* 1. Header Rendering */}
@@ -123,7 +192,7 @@ const DynamicRenderer = ({ blueprint, selectedPageSlug = 'index', isGenerating }
                 </div>
             </section>
 
-            {/* 2. Content Injection (Silos) */}
+            {/* 2. Content Injection (Silos) - with drag-and-drop and inline edit */}
             {activeLayout.length > 0 ? (
                 activeLayout.map((section: any, index: number) => (
                     <motion.div
@@ -135,6 +204,12 @@ const DynamicRenderer = ({ blueprint, selectedPageSlug = 'index', isGenerating }
                             type: "spring",
                             stiffness: 70
                         }}
+                        draggable
+                        onDragStart={(e) => handleDragStart(e, section.id)}
+                        onDragOver={handleDragOver}
+                        onDrop={(e) => handleDrop(e, section.id)}
+                        onDoubleClick={() => handleDoubleClick(section)}
+                        className="group relative cursor-move"
                     >
                         <ComponentLibrary
                             type={section.type}
@@ -143,8 +218,11 @@ const DynamicRenderer = ({ blueprint, selectedPageSlug = 'index', isGenerating }
                             backgroundColor={blueprint?.theme?.backgroundColor}
                             textColor={blueprint?.theme?.textColor}
                         />
+                        {/* Hover hint for editability */}
+                        <div className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity text-[9px] uppercase font-black tracking-wider px-2 py-1 rounded bg-black/60 backdrop-blur-sm text-white/80 pointer-events-none z-20">
+                            Drag · Double-click to edit
+                        </div>
                     </motion.div>
-
                 ))
             ) : (
                 <div className="flex flex-col items-center justify-center p-32 text-center space-y-8 min-h-[600px]">
@@ -214,3 +292,4 @@ const GenerationSkeleton = () => (
         </div>
     </div>
 );
+

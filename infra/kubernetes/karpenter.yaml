@@ -1,0 +1,218 @@
+# ============================================================================
+# Karpenter Auto-Scaling Configuration
+# ============================================================================
+# Intelligent node provisioning based on actual workload
+# Not just CPU - considers memory, network, and custom metrics
+# ============================================================================
+
+apiVersion: karpenter.sh/v1alpha5
+kind: Provisioner
+metadata:
+  name: default
+spec:
+  # Consolidation settings
+  consolidation:
+    enabled: true
+  
+  # TTL before removing empty nodes
+  ttlSecondsAfterEmpty: 30
+  
+  # TTL before expiring nodes
+  ttlSecondsUntilExpired: 604800 # 7 days
+  
+  # Weight for provisioning priority
+  weight: 100
+  
+  # Limits
+  limits:
+    resources:
+      cpu: 1000
+      memory: 2000Gi
+  
+  # Provider configuration
+  provider:
+    apiVersion: karpenter.k8s.aws/v1alpha1
+    kind: AWSNodeTemplate
+    spec:
+      # Instance types
+      instanceTypes:
+        - m6i.large
+        - m6i.xlarge
+        - m6i.2xlarge
+        - c6i.large
+        - c6i.xlarge
+        - r6i.large
+        - r6i.xlarge
+      
+      # Capacity type
+      capacityReservation:
+        capacityReservationPreference: open
+      
+      # Block device mappings
+      blockDeviceMappings:
+        - deviceName: /dev/xvda
+          ebs:
+            volumeSize: 100Gi
+            volumeType: gp3
+            encrypted: true
+            kmsKeyID: "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+      
+      # Security groups
+      securityGroupSelector:
+        karpenter.sh/discovery: getyousite
+      
+      # Subnet selector
+      subnetSelector:
+        karpenter.sh/discovery: getyousite
+      
+      # Tags
+      tags:
+        karpenter.sh/discovery: getyousite
+        Project: getyousite
+        Environment: production
+  
+  # Requirements
+  requirements:
+    # Use spot instances for cost optimization (with on-demand fallback)
+    - key: karpenter.sh/capacity-type
+      operator: In
+      values:
+        - spot
+        - on-demand
+    
+    # Architecture
+    - key: kubernetes.io/arch
+      operator: In
+      values:
+        - amd64
+    
+    # OS
+    - key: kubernetes.io/os
+      operator: In
+      values:
+        - linux
+    
+    # Zone spreading for high availability
+    - key: topology.kubernetes.io/zone
+      operator: In
+      values:
+        - us-east-1a
+        - us-east-1b
+        - us-east-1c
+  
+  # Kubelet configuration
+  kubeletConfiguration:
+    clusterDNS:
+      - "169.254.20.10"
+    maxPods: 110
+    podsPerCore: 10
+    systemReserved:
+      cpu: 100m
+      memory: 256Mi
+    kubeReserved:
+      cpu: 100m
+      memory: 256Mi
+    evictionHard:
+      memory.available: "100Mi"
+      nodefs.available: "10%"
+      nodefs.inodesFree: "5%"
+    evictionSoft:
+      memory.available: "300Mi"
+      nodefs.available: "15%"
+    evictionSoftGracePeriod:
+      memory.available: 1m
+      nodefs.available: 1m
+
+---
+# ============================================================================
+# Karpenter AWS Node Template
+# ============================================================================
+
+apiVersion: karpenter.k8s.aws/v1alpha1
+kind: AWSNodeTemplate
+metadata:
+  name: default
+spec:
+  # AMI family
+  amiFamily: AL2
+  
+  # User data (bootstrap script)
+  userData: |
+    #!/bin/bash
+    echo "Karpenter node bootstrap starting..."
+    
+    # Install monitoring agents
+    yum install -y amazon-cloudwatch-agent
+    
+    # Configure CloudWatch agent
+    /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+      -a fetch-config \
+      -m ec2 \
+      -c file:/etc/amazon-cloudwatch-agent/config.json \
+      -s
+    
+    # Install Datadog agent (optional)
+    DD_API_KEY=${datadog_api_key} DD_SITE="datadoghq.com" \
+      bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script.sh)"
+    
+    echo "Karpenter node bootstrap complete"
+  
+  # Metadata options
+  metadataOptions:
+    httpEndpoint: enabled
+    httpProtocolIPv6: disabled
+    httpPutResponseHopLimit: 2
+    httpTokens: required
+  
+  # Detailed monitoring
+  detailedMonitoring: true
+  
+  # Enable IMDSv2
+  imdsSupport: v2.0
+
+---
+# ============================================================================
+# Karpenter Controller Helm Chart Values
+# ============================================================================
+
+# values-karpenter.yaml
+serviceAccount:
+  create: true
+  name: karpenter
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/KarpenterControllerRole
+
+podAnnotations:
+  cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+settings:
+  clusterName: getyousite-cluster
+  clusterEndpoint: https://ABCDEF0123456789.gr7.us-east-1.eks.amazonaws.com
+  
+  interruptionQueue: getyousite-karpenter
+  
+  featureGates:
+    drift: true
+    spotToSpotConsolidation: true
+
+# Webhook configuration
+webhook:
+  enabled: true
+  
+# Metrics
+metrics:
+  service:
+    enabled: true
+    port: 8080
+  
+  serviceMonitor:
+    enabled: true
+    interval: 30s

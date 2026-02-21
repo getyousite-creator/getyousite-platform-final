@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindAnimate from "tailwindcss-animate";
 
 const config = {
     darkMode: ["class"],
@@ -18,6 +19,18 @@ const config = {
             },
         },
         extend: {
+            fontFamily: {
+                sans: ["var(--font-body)", "Inter", "sans-serif"],
+                heading: ["var(--font-heading)", "Inter", "sans-serif"],
+                arabic: ["var(--font-arabic-body)", "Tajawal", "Cairo", "sans-serif"],
+                "arabic-heading": ["var(--font-arabic-heading)", "IBM Plex Sans Arabic", "Tajawal", "sans-serif"],
+            },
+            // SOVEREIGN RTL SUPPORT
+            // Direction utilities for Arabic/RTL layouts
+            direction: {
+                ltr: 'ltr',
+                rtl: 'rtl',
+            },
             colors: {
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
@@ -74,7 +87,7 @@ const config = {
             },
         },
     },
-    plugins: [require("tailwindcss-animate")],
+    plugins: [tailwindAnimate],
 } satisfies Config;
 
 export default config;

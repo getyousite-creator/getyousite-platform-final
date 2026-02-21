@@ -2,8 +2,6 @@ import { generateCompleteWebsite } from "@/lib/ai/multi-provider";
 import { createClient } from "@/lib/supabase/server";
 import { applyPersonaMicrocopy } from "@/lib/ai/persona-microcopy";
 
-export const runtime = "edge";
-
 /**
  * Locale-scoped generate endpoint.
  * Keeps behavior aligned with /api/generate for auth and credit failures.
@@ -118,3 +116,4 @@ export async function POST(req: Request) {
         );
     }
 }
+

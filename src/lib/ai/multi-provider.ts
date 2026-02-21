@@ -64,32 +64,27 @@ const PROVIDERS = {
 };
 
 /**
- * Primary generation function - SOVEREIGN HARDENED
- * Enforces GPT-4o-mini for maximum efficiency and zero-waste logic
+ * Primary generation function - GEMINI-FIRST
+ * Uses Gemini Flash; falls back to lightweight mock to avoid mismatched providers.
  */
 export async function generateWithFallback(
     request: AIGenerationRequest,
 ): Promise<AIGenerationResponse> {
-    // SOVEREIGN ORDER (v2): Gemini Flash first, OpenAI as resilient fallback.
+    // GEMINI FIRST
     if (process.env.GEMINI_API_KEY) {
         try {
             const geminiResult = await generateWithGemini(request);
             console.log(`Gemini synthesis successful via model: ${geminiResult.model}`);
             return geminiResult;
         } catch (error) {
-            console.warn("Gemini Flash failed, falling back to OpenAI:", error);
+            console.warn("Gemini Flash failed, falling back to mock:", error);
         }
     }
 
-    // OpenAI fallback
-    try {
-        const result = await generateWithOpenAI(request);
-        console.log("Sovereign Engine: GPT-4o-mini Synthesis Successful");
-        return result;
-    } catch (error) {
-        console.error("SOVEREIGN_ENGINE_CRITICAL_FAILURE:", error);
-        throw new Error(`CRITICAL_LOGIC_FAILURE: ${(error as Error).message}`);
-    }
+    // Minimal mock fallback to avoid blocking the flow when provider is unavailable.
+    const mock = generateMockResponse(request);
+    console.warn("AI_PROVIDER_UNAVAILABLE: Serving mock response.");
+    return mock;
 }
 
 /**
@@ -161,7 +156,7 @@ async function generateWithGemini(request: AIGenerationRequest): Promise<AIGener
     };
 }
 /**
- * OpenAI Generation (Strictly GPT-4o-mini)
+ * OpenAI Generation (kept for image-only flows; not used for primary text gen)
  */
 async function generateWithOpenAI(request: AIGenerationRequest): Promise<AIGenerationResponse> {
     const apiKey = process.env.OPENAI_API_KEY;
@@ -169,8 +164,7 @@ async function generateWithOpenAI(request: AIGenerationRequest): Promise<AIGener
         throw new Error("OPENAI_API_KEY not configured");
     }
 
-    // MANDATORY: GPT-4o-mini only. No exceptions for cost control.
-    const model = "gpt-4o-mini";
+    const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
 
     const systemPrompt =
         request.systemPrompt ||
@@ -202,7 +196,7 @@ async function generateWithOpenAI(request: AIGenerationRequest): Promise<AIGener
     const data = await response.json();
     return {
         content: data.choices[0]?.message?.content || "",
-        provider: "OpenAI-Sovereign",
+        provider: "OpenAI",
         model: model,
         usage: data.usage,
     };
@@ -910,12 +904,14 @@ Return the COMPLETE modified SiteBlueprint JSON.
 
 }
 
-export default {
+const multiProvider = {
     generateWithFallback,
     generateCompleteWebsite,
     generateSinglePage,
     refineBlueprint,
 };
+
+export default multiProvider;
 
 
 

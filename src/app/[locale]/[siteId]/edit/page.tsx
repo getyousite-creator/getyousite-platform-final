@@ -24,9 +24,9 @@ interface StoreData {
     name: string;
     settings: {
         blueprint: SiteFormData;
-        [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+        [key: string]: unknown;
     };
-    [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    [key: string]: unknown;
 }
 
 export default function SiteEditorPage() {
@@ -46,7 +46,7 @@ export default function SiteEditorPage() {
         watch,
         formState: { isDirty },
     } = useForm<SiteFormData>({
-        resolver: zodResolver(SiteBlueprintSchema) as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+        resolver: zodResolver(SiteBlueprintSchema) as any, // 
     });
 
     // Fetch store data
@@ -181,7 +181,7 @@ export default function SiteEditorPage() {
                         </TabsList>
 
                         <form
-                            onSubmit={handleSubmit((d: SiteFormData) => saveToSupabase(d)) as any} // eslint-disable-line @typescript-eslint/no-explicit-any
+                            onSubmit={handleSubmit((d: SiteFormData) => saveToSupabase(d)) as any} // 
                         >
                             <TabsContent
                                 value="basics"

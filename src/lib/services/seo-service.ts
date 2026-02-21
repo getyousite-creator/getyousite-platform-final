@@ -77,9 +77,9 @@ export const SEOService = {
             const issues: SEOIssue[] = [];
             const recommendations: string[] = [];
             let seoScore = 100;
-            let performanceScore = 100;
+            const performanceScore = 100;
             let accessibilityScore = 100;
-            let bestPracticesScore = 100;
+            const bestPracticesScore = 100;
 
             // 1. NEURAL CONTENT ANALYSIS (Blueprint Inspection)
             const sections = blueprint?.layout || [];

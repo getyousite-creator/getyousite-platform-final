@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ExternalLink, Sparkles, Layout, Zap } from 'lucide-react';
 
@@ -60,7 +61,7 @@ export default function EmpireShowcase() {
                             className="group relative"
                         >
                             <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden border border-white/5 bg-white/5 mb-6">
-                                <img
+                                <Image
                                     src={item.image}
                                     alt={item.name}
                                     className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 scale-100 group-hover:scale-110"

@@ -7,9 +7,11 @@ import { Sparkles, Command, ArrowRight, Zap, RefreshCcw } from 'lucide-react';
 interface AICommandBarProps {
     onCommand: (cmd: string) => Promise<void> | void;
     isProcessing: boolean;
+    flashSuccess?: boolean;
+    flashError?: boolean;
 }
 
-export default function AICommandBar({ onCommand, isProcessing }: AICommandBarProps) {
+export default function AICommandBar({ onCommand, isProcessing, flashSuccess, flashError }: AICommandBarProps) {
     const [input, setInput] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -27,7 +29,7 @@ export default function AICommandBar({ onCommand, isProcessing }: AICommandBarPr
 
             <form
                 onSubmit={handleSubmit}
-                className="relative flex items-center bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-2 transition-all focus-within:ring-2 focus-within:ring-[#00D09C]/30 focus-within:border-[#00D09C]/40 group shadow-2xl"
+                className={`relative flex items-center bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-2 transition-all focus-within:ring-2 focus-within:ring-[#00D09C]/30 focus-within:border-[#00D09C]/40 group shadow-2xl ${flashError ? "shake" : ""}`}
             >
                 <div className="flex items-center gap-2 pl-4 text-white/40 group-focus-within:text-[#00D09C] transition-colors">
                     <Command size={16} />
@@ -48,12 +50,22 @@ export default function AICommandBar({ onCommand, isProcessing }: AICommandBarPr
                     disabled={!input.trim() || isProcessing}
                     className={`
             flex items-center gap-2 px-5 py-2.5 rounded-xl font-black uppercase text-[10px] tracking-widest transition-all
-            ${input.trim() && !isProcessing
-                            ? 'bg-[#00D09C] text-white shadow-lg hover:scale-105 active:scale-95'
-                            : 'bg-white/5 text-white/20 cursor-not-allowed'}
+            ${flashError ? 'bg-red-500 text-white shadow-[0_0_25px_rgba(248,113,113,0.5)]' :
+                flashSuccess ? 'bg-emerald-500 text-black shadow-[0_0_25px_rgba(16,185,129,0.5)]' :
+                    input.trim() && !isProcessing
+                        ? 'bg-[#00D09C] text-white shadow-lg hover:scale-105 active:scale-95'
+                        : 'bg-white/5 text-white/20 cursor-not-allowed'}
           `}
                 >
-                    {isProcessing ? (
+                    {flashSuccess ? (
+                        <>
+                        Saved <ArrowRight size={14} />
+                        </>
+                    ) : flashError ? (
+                        <>
+                        Retry <ArrowRight size={14} />
+                        </>
+                    ) : isProcessing ? (
                         <RefreshCcw className="w-4 h-4 animate-spin" />
                     ) : (
                         <>
