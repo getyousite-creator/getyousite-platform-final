@@ -42,7 +42,7 @@ export interface LiquidEditorProps {
 export interface EditableElementProps {
     id: string;
     children: React.ReactNode;
-    tagName?: keyof JSX.IntrinsicElements;
+    tagName?: keyof React.JSX.IntrinsicElements;
     className?: string;
     onUpdate?: (id: string, content: string) => void;
     readOnly?: boolean;

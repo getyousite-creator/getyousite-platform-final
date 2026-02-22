@@ -238,7 +238,5 @@ function DensityIndicator({ density }: DensityIndicatorProps) {
 // EXPORTS
 // ============================================================================
 
-export default {
-    DashboardLayout,
-    useDashboard,
-};
+// Default export for Next.js layout
+export default DashboardLayout;

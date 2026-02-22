@@ -1,6 +1,6 @@
 /**
  * AI-Driven Insights - Smart Statistics Cards
- * 
+ *
  * Not just numbers - intelligent interpretations powered by Gemini
  * Example: "Traffic up 10% → Suggest improving CTA on product page"
  */
@@ -8,7 +8,6 @@
 "use client";
 
 import React from "react";
-import { LineChart, Line, AreaChart, Area, ResponsiveContainer } from "recharts";
 import { motion } from "framer-motion";
 
 // ============================================================================
@@ -78,37 +77,6 @@ export const AIInsightCard: React.FC<InsightCardProps> = ({
 
             {/* Value */}
             <div className="text-3xl font-bold text-white mb-4">{value}</div>
-
-            {/* Mini Chart */}
-            {chartData && chartData.length > 0 && (
-                <div className="h-16 mb-4">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart data={chartData}>
-                            <defs>
-                                <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
-                                    <stop
-                                        offset="0%"
-                                        stopColor="#059669"
-                                        stopOpacity={0.3}
-                                    />
-                                    <stop
-                                        offset="100%"
-                                        stopColor="#059669"
-                                        stopOpacity={0}
-                                    />
-                                </linearGradient>
-                            </defs>
-                            <Area
-                                type="monotone"
-                                dataKey="value"
-                                stroke="#059669"
-                                fill="url(#gradient)"
-                                strokeWidth={2}
-                            />
-                        </AreaChart>
-                    </ResponsiveContainer>
-                </div>
-            )}
 
             {/* AI Insight */}
             {aiInsight && (

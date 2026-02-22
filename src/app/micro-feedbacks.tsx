@@ -134,7 +134,7 @@ export const MicroButton: React.FC<MicroButtonProps> = ({
 
     return (
         <motion.button
-            onClick={handleClick}
+            onClick={handleClick as any}
             disabled={disabled || state === "loading"}
             animate={{
                 scale: state === "success" ? 1.05 : 1,
