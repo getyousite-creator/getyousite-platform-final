@@ -41,6 +41,12 @@
     "**/*.mts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "server",
+    "scripts",
+    "infra",
+    "infrastructure",
+    ".next",
+    "deployment"
   ]
 }
