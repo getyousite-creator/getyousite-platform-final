@@ -21,7 +21,7 @@ export interface ASTNode {
     id: string;
     type: string;
     properties: Record<string, unknown>;
-    children?: ASTNode[];
+    children?: string[];
     parent?: string | null;
 }
 
@@ -560,7 +560,7 @@ export class IntentClassifier {
     classify(input: string, currentBlueprint: SiteBlueprint): IntentClassification {
         const lowerInput = input.toLowerCase();
 
-        // Score each category
+        // 1. Identify "Global" Intent type
         const scores = {
             STYLE: this.scoreKeywords(lowerInput, this.styleKeywords),
             CONTENT: this.scoreKeywords(lowerInput, this.contentKeywords),
@@ -568,27 +568,39 @@ export class IntentClassifier {
             SEO: this.scoreKeywords(lowerInput, this.seoKeywords),
         };
 
-        // Find highest score
+        // 2. Identify "Structural" Intent overrides
+        const IsDelete = lowerInput.includes("delete") || lowerInput.includes("remove") || lowerInput.includes("احذف");
+        const IsAdd = lowerInput.includes("add") || lowerInput.includes("insert") || lowerInput.includes("أضف");
+        const IsMove = lowerInput.includes("move") || lowerInput.includes("reorder") || lowerInput.includes("انقل");
+
+        // 3. Find highest score
         let maxScore = 0;
         let maxType: IntentClassification["type"] = "UNKNOWN";
 
-        Object.entries(scores).forEach(([type, score]) => {
+        for (const [type, score] of Object.entries(scores)) {
             if (score > maxScore) {
                 maxScore = score;
                 maxType = type as IntentClassification["type"];
             }
-        });
+        }
 
-        // Calculate confidence
+        // 4. Calculate confidence
         const totalScore = Object.values(scores).reduce((a, b) => a + b, 0);
         const confidence = totalScore > 0 ? maxScore / totalScore : 0;
 
-        // Try to identify target section
+        // 5. Identify target section
         const targetSection = this.identifyTargetSection(lowerInput, currentBlueprint);
 
-        // Generate suggested mutation
+        // 6. Generate suggested mutation
+        let mutationType: MutationCommand["type"] = "UPDATE_CONTENT";
+        if (IsDelete) mutationType = "DELETE_SECTION";
+        else if (IsAdd) mutationType = "ADD_SECTION";
+        else if (IsMove) mutationType = "MOVE_SECTION";
+        else if (maxType === "STYLE") mutationType = "UPDATE_STYLE";
+        else if (maxType === "LAYOUT") mutationType = "UPDATE_LAYOUT";
+
         const suggestedMutation = this.generateSuggestedMutation(
-            maxType,
+            mutationType,
             input,
             targetSection,
             currentBlueprint
@@ -596,7 +608,7 @@ export class IntentClassifier {
 
         return {
             type: maxType,
-            confidence,
+            confidence: (IsDelete || IsAdd || IsMove) ? 1.0 : confidence,
             targetSection,
             suggestedMutation,
         };
@@ -618,20 +630,19 @@ export class IntentClassifier {
      * Identify target section from input
      */
     private identifyTargetSection(input: string, blueprint: SiteBlueprint): string | undefined {
-        // Look for section type mentions
-        const sectionTypes = blueprint.layout?.map((s) => s.type.toLowerCase()) || [];
+        const lowerInput = input.toLowerCase();
 
-        for (const type of sectionTypes) {
-            if (input.includes(type)) {
-                const section = blueprint.layout?.find((s) => s.type.toLowerCase() === type);
-                return section?.id;
-            }
+        // Match by type first
+        const sectionByTypes = blueprint.layout?.map((s) => ({ id: s.id, type: s.type.toLowerCase() })) || [];
+        for (const s of sectionByTypes) {
+            if (lowerInput.includes(s.type)) return s.id;
         }
 
-        // Look for section ID mentions
+        // Match by content headlines if available
         if (blueprint.layout) {
             for (const section of blueprint.layout) {
-                if (input.includes(section.id)) {
+                const headline = (section.content?.headline as string)?.toLowerCase();
+                if (headline && lowerInput.includes(headline)) {
                     return section.id;
                 }
             }
@@ -644,35 +655,29 @@ export class IntentClassifier {
      * Generate suggested mutation from intent
      */
     private generateSuggestedMutation(
-        type: IntentClassification["type"],
+        commandType: MutationCommand["type"],
         input: string,
         targetSection: string | undefined,
         blueprint: SiteBlueprint
     ): MutationCommand | undefined {
-        if (!targetSection) return undefined;
+        if (!targetSection && commandType !== "ADD_SECTION") return undefined;
 
-        // Extract changes from input (simplified - would use AI in production)
         const changes: Record<string, unknown> = {};
 
-        // Color extraction (simplified)
-        const colorMatch = input.match(/#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/);
-        if (colorMatch) {
-            changes.color = colorMatch[0];
+        // Simple extraction for demonstration
+        if (commandType === "UPDATE_STYLE") {
+            const colorMatch = input.match(/#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/);
+            if (colorMatch) changes.primaryColor = colorMatch[0];
         }
 
-        // Tailwind class extraction (simplified)
-        const twMatch = input.match(/(?:bg|text|border)-[a-z0-9-]+/g);
-        if (twMatch) {
-            changes.className = twMatch.join(" ");
-        }
-
-        if (Object.keys(changes).length === 0) {
-            return undefined;
+        if (commandType === "ADD_SECTION") {
+            const typeMatch = input.match(/(hero|features|pricing|contact|faq|services)/i);
+            changes.type = typeMatch ? typeMatch[0].toUpperCase() : "hero";
         }
 
         return {
-            type: type === "STYLE" ? "UPDATE_STYLE" : "UPDATE_CONTENT",
-            targetId: targetSection,
+            type: commandType,
+            targetId: targetSection || "new-node",
             changes,
             metadata: {
                 undoable: true,

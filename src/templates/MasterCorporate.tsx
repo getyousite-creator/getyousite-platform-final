@@ -25,7 +25,7 @@ export default function MasterCorporate(props: SovereignTemplateProps) {
     const { settings, blueprint } = props;
     const { headline, subheadline } = settings;
 
-    // AI Blueprint Extraction
+    // Sovereign Blueprint Synthesis
     const heroSection = blueprint?.layout?.find((s) => s.type === "hero");
     const heroHeadline = (heroSection?.content?.headline as string) || headline;
     const heroSubheadline = (heroSection?.content?.subheadline as string) || subheadline;

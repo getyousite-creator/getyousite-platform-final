@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
 import { AlertCircle, CheckCircle, Loader2, Mail } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -179,7 +179,7 @@ export default function SignUpForm() {
             {/* Header */}
             <div className="mb-8">
                 <h1 className="text-2xl font-bold text-foreground mb-2">Create Account</h1>
-                <p className="text-sm text-muted-foreground">Get started with GetYouSite today</p>
+                <p className="text-sm text-muted-foreground">Get started with GYS Global today</p>
             </div>
 
             {/* Error Alert */}

@@ -28,34 +28,8 @@ interface ComponentLibraryProps {
 }
 
 
-function EditableText({ text, onUpdate, className, element: Element = 'span' }: { text: string, onUpdate: (val: string) => void, className?: string, element?: any }) {
-    const [isEditing, setIsEditing] = React.useState(false);
-    const [localText, setLocalText] = React.useState(text);
-
-    React.useEffect(() => {
-        setLocalText(text);
-    }, [text]);
-
-    const handleBlur = () => {
-        setIsEditing(false);
-        if (localText !== text) {
-            onUpdate(localText);
-        }
-    };
-
-    return (
-        <Element
-            contentEditable={true}
-            suppressContentEditableWarning={true}
-            onBlur={handleBlur}
-            onInput={(e: any) => setLocalText(e.currentTarget.textContent)}
-            className={`${className} focus:outline-none focus:ring-1 focus:ring-primary/50 rounded px-1 transition-all`}
-        >
-            {localText}
-        </Element>
-    );
-}
-
+import { InlineEditLayer } from './InlineEditLayer';
+import { SovereignTracker } from './SovereignTracker';
 
 export function ComponentLibrary({ id, type, content, primaryColor, backgroundColor, textColor, isEditable, onEdit, priority, storeId }: ComponentLibraryProps) {
 
@@ -127,23 +101,22 @@ export function ComponentLibrary({ id, type, content, primaryColor, backgroundCo
     };
 
     return (
-        <div className="relative group/section">
-            {renderComponent()}
+        <SovereignTracker id={id || 'unnamed'} type={type} metadata={{ storeId }}>
+            <div className="relative group/section">
+                {renderComponent()}
 
-            {isEditable && (
-                <div className="absolute top-4 right-4 opacity-0 group-hover/section:opacity-100 transition-opacity z-30 flex gap-2">
-                    <button
-                        onClick={() => onEdit?.(type, content)}
-                        className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full text-[10px] font-black uppercase tracking-widest shadow-2xl hover:scale-105 active:scale-95 transition-all"
-                    >
-                        تعديل بالذكاء الاصطناعي <Search className="w-3 h-3" />
-                    </button>
-                    <button className="p-2 bg-background border border-border text-foreground rounded-full hover:bg-secondary transition-colors">
-                        <Search className="w-4 h-4" />
-                    </button>
-                </div>
-            )}
-        </div>
+                {isEditable && (
+                    <div className="absolute top-4 right-4 opacity-0 group-hover/section:opacity-100 transition-opacity z-30 flex gap-2">
+                        <button
+                            onClick={() => onEdit?.(type, content)}
+                            className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full text-[10px] font-black uppercase tracking-widest shadow-premium hover:scale-105 active:scale-95 transition-all min-h-[48px]"
+                        >
+                            تكرير التوليف الاستراتيجي <Cpu className="w-3 h-3" />
+                        </button>
+                    </div>
+                )}
+            </div>
+        </SovereignTracker>
     );
 }
 
@@ -162,16 +135,16 @@ function PreviewTestimonials({ content, primaryColor, backgroundColor, textColor
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
 
                 {reviews.map((review: any, i: number) => (
-                    <div key={i} className="p-8 bg-secondary/10 border border-border rounded-2xl relative group hover:bg-secondary/20 transition-colors">
-                        <div className="text-4xl text-muted-foreground font-serif absolute top-4 left-6">"</div>
-                        <p className="text-lg text-muted-foreground mb-6 relative z-10 leading-relaxed">
+                    <div key={i} className="p-8 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl relative group hover:bg-white/10 transition-colors shadow-premium">
+                        <div className="text-4xl text-white/10 font-serif absolute top-4 left-6">"</div>
+                        <p className="text-lg text-white/60 mb-6 relative z-10 leading-relaxed italic">
                             {review.text}
                         </p>
                         <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-secondary/20 to-transparent" />
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/40 to-transparent" />
                             <div>
-                                <h4 className="font-bold text-sm tracking-wide">{review.name}</h4>
-                                <span className="text-[10px] uppercase tracking-widest text-muted-foreground">{review.role}</span>
+                                <h4 className="font-bold text-sm tracking-wide text-white">{review.name}</h4>
+                                <span className="text-[10px] uppercase tracking-widest text-white/40">{review.role}</span>
                             </div>
                         </div>
                     </div>
@@ -181,21 +154,23 @@ function PreviewTestimonials({ content, primaryColor, backgroundColor, textColor
     );
 }
 
-function PreviewBenefits({ content, primaryColor, backgroundColor, textColor }: any) {
-    const items = content?.items || ["Instant Setup", "High Security", "Growth Ready"];
-    return (
-        <section
-            className="py-20 px-8 text-center"
-            style={{ backgroundColor: backgroundColor || 'transparent', color: textColor }}
-        >
-            <h2 className="text-3xl font-black mb-12 tracking-tight">Core Advantages</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto">
-                {items.map((benefit: string, i: number) => (
-                    <div key={i} className="space-y-4">
-                        <div className="text-4xl font-black text-foreground mb-2">0{i + 1}</div>
-                        <h3 className="text-xl font-bold">{benefit}</h3>
-                        <div className="h-1 w-12 mx-auto rounded-full" style={{ backgroundColor: primaryColor }} />
+function PreviewBenefits({ content, primaryColor, backgroundColor, textColor }: any) {
+    const isEmeraldTheme = (primaryColor === "#064E3B" || primaryColor === "emerald-deep");
+    const benefits = content?.benefits || [
+        { title: "20x Faster Conversion", desc: "Optimized for the speed of thought." },
+        { title: "Global Sovereignty", desc: "Direct alignment with international markets." },
+        { title: "Strategic Precision", desc: "No generic code. Only architectural excellence." }
+    ];
+
+    return (
+        <section className="py-24 px-8 bg-surface-slate/30 border-y border-white/5 backdrop-blur-3xl">
+            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+                {benefits.map((b: any, i: number) => (
+                    <div key={i} className="space-y-4 group">
+                        <div className={`w-12 h-1 w-0 group-hover:w-16 transition-all duration-700 ${isEmeraldTheme ? 'bg-neon-lime' : 'bg-primary'}`} />
+                        <h3 className="text-2xl font-black text-white font-heading">{b.title}</h3>
+                        <p className="text-white/40 text-xs uppercase tracking-widest font-sans">{b.desc}</p>
                     </div>
                 ))}
             </div>
@@ -203,17 +178,13 @@ function PreviewBenefits({ content, primaryColor, backgroundColor, textColor }: 
     );
 }
 
-function PreviewTrustBar({ content, primaryColor, backgroundColor, textColor }: any) {
-    const logos = content?.logos || ["Partner Alpha", "Tech Beta", "Global Gamma"];
+function PreviewTrustBar({ content, primaryColor }: any) {
+    const isEmeraldTheme = (primaryColor === "#064E3B" || primaryColor === "emerald-deep");
     return (
-        <section
-            className="py-12 overflow-hidden"
-            style={{ backgroundColor: backgroundColor || 'transparent', color: textColor }}
-        >
-            <div className="flex gap-16 justify-center opacity-30 grayscale">
-
-                {logos.map((logo: string, i: number) => (
-                    <span key={i} className="text-xl font-black tracking-tighter text-muted-foreground whitespace-nowrap">{logo}</span>
+        <section className="py-12 border-y border-white/5 bg-obsidian">
+            <div className="max-w-7xl mx-auto px-8 flex flex-wrap items-center justify-between gap-12 opacity-30 grayscale hover:grayscale-0 transition-all duration-1000">
+                {['QUANTUM', 'ASTRA', 'Strategic', 'SOVEREIGN', 'EMPIRE'].map((brand) => (
+                    <span key={brand} className="text-xl font-black tracking-[0.5em] text-white/50">{brand}</span>
                 ))}
             </div>
         </section>
@@ -221,19 +192,20 @@ function PreviewTrustBar({ content, primaryColor, backgroundColor, textColor }: 
 }
 
 function PreviewFAQ({ content, primaryColor, backgroundColor, textColor }: any) {
-    const items = content?.items || [{ q: "How long does it take?", a: "Seconds with our AI." }];
-    return (
-        <section
-            className="py-20 px-8 border-t border-white/5"
-            style={{ backgroundColor: backgroundColor || 'transparent', color: textColor }}
-        >
-            <div className="max-w-3xl mx-auto space-y-8">
-                <h2 className="text-3xl font-black text-center mb-12">Common Inquiries</h2>
+    const isEmeraldTheme = (primaryColor === "#064E3B" || primaryColor === "emerald-deep");
+    const faqs = content?.items || [
+        { q: "How fast is the deployment?", a: "Sub-second orchestration under optimal network conditions." },
+        { q: "Is the design unique?", a: "Every blueprint is a Strategic derivative of your brand's unique identity." }
+    ];
 
-                {items.map((item: any, i: number) => (
-                    <div key={i} className="p-6 bg-card rounded-xl border border-border shadow-sm">
-                        <h4 className="font-bold mb-2 text-foreground">{item.q}</h4>
-                        <p className="text-sm text-muted-foreground">{item.a}</p>
+    return (
+        <section className="py-32 px-8 max-w-4xl mx-auto space-y-12">
+            <h2 className="text-4xl font-black text-center text-white font-heading underline decoration-neon-lime decoration-4 underline-offset-8">Common_Inquiries</h2>
+            <div className="space-y-6">
+                {faqs.map((f: any, i: number) => (
+                    <div key={i} className="vip-card p-10 space-y-4">
+                        <h4 className={`text-sm font-black uppercase tracking-widest ${isEmeraldTheme ? 'text-neon-lime' : 'text-primary'}`}>{f.q}</h4>
+                        <p className="text-white/60 leading-relaxed font-sans">{f.a}</p>
                     </div>
                 ))}
             </div>
@@ -242,9 +214,11 @@ function PreviewFAQ({ content, primaryColor, backgroundColor, textColor }: any) 
 }
 
 function PreviewHero({ id, content, primaryColor, variant, backgroundColor, textColor, onUpdate, isEditable, priority }: any) {
+    const isEmeraldTheme = (primaryColor === "#064E3B" || primaryColor === "emerald-deep");
+
     return (
         <section
-            className={`py-40 px-8 relative overflow-hidden flex flex-col items-center text-center ${variant === 'prime' ? 'min-h-[90vh] justify-center bg-[#020617]' : ''}`}
+            className={`py-40 px-8 relative overflow-hidden flex flex-col items-center text-center ${variant === 'prime' ? 'min-h-[90vh] justify-center bg-obsidian' : ''}`}
             style={{ backgroundColor: variant === 'prime' ? undefined : (backgroundColor || 'transparent'), color: textColor }}
         >
 
@@ -258,76 +232,66 @@ function PreviewHero({ id, content, primaryColor, variant, backgroundColor, text
                         priority={priority}
                         className="object-cover opacity-40 mix-blend-overlay"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/50 via-[#020617]/80 to-[#020617]" />
+                    <div className={`absolute inset-0 ${isEmeraldTheme ? 'bg-gradient-to-b from-emerald-deep/50 via-obsidian/80 to-obsidian' : 'bg-gradient-to-b from-[#020617]/50 via-[#020617]/80 to-[#020617]'}`} />
                 </div>
             )}
 
             {variant === 'prime' && !content?.image && (
                 <div className="absolute inset-0 z-0">
-                    <div className="absolute top-1/4 left-1/4 w-[50%] h-[50%] bg-primary/10 blur-[120px] rounded-full animate-pulse" />
-                    <div className="absolute bottom-1/4 right-1/4 w-[40%] h-[40%] bg-blue-600/5 blur-[100px] rounded-full delay-700" />
+                    <div className={`absolute top-1/4 left-1/4 w-[50%] h-[50%] ${isEmeraldTheme ? 'bg-emerald-deep/10' : 'bg-primary/10'} blur-[120px] rounded-full animate-pulse`} />
+                    <div className={`absolute bottom-1/4 right-1/4 w-[40%] h-[40%] ${isEmeraldTheme ? 'bg-neon-lime/5' : 'bg-blue-600/5'} blur-[100px] rounded-full delay-700`} />
                 </div>
             )}
 
 
             <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
                 className="relative z-10 max-w-5xl space-y-10"
             >
-                <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl mb-6">
-                    <div className="w-2 h-2 rounded-full bg-primary animate-ping" />
-                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/60">Sovereign_Logic_v2</span>
+                <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl mb-6 shadow-premium">
+                    <div className={`w-2 h-2 rounded-full ${isEmeraldTheme ? 'bg-neon-lime' : 'bg-primary'} animate-ping`} />
+                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/60">Sovereign_Protocol_v2.1</span>
                 </div>
 
-                <h1 className={`font-black tracking-tighter leading-[0.9] text-white ${variant === 'prime' ? 'text-6xl md:text-8xl lg:text-[7rem]' : 'text-5xl md:text-7xl'}`}>
+                <h1 className={`font-black tracking-tighter leading-[0.9] text-white ${variant === 'prime' ? 'text-6xl md:text-8xl lg:text-[7rem]' : 'text-5xl md:text-7xl'} font-heading`}>
                     {isEditable ? (
-                        <EditableText
-                            text={content?.headline || "Untitled Ambition"}
-                            onUpdate={(val) => onUpdate('headline', val)}
-                        />
+                        <InlineEditLayer
+                            onTextChange={(val) => onUpdate('headline', val)}
+                        >
+                            {content?.headline || "Untitled Ambition"}
+                        </InlineEditLayer>
                     ) : (
-                        (content?.headline || "Untitled Ambition").split("").map((char: string, i: number) => (
-                            <motion.span
-                                key={i}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: i * 0.02, duration: 0.1 }}
-                            >
-                                {char}
-                            </motion.span>
-                        ))
+                        content?.headline || "Untitled Ambition"
                     )}
                 </h1>
 
                 {isEditable ? (
-                    <div className="text-white/40 text-xl font-medium max-w-2xl mx-auto uppercase tracking-[0.2em] leading-relaxed">
-                        <EditableText
-                            text={content?.subheadline || "A blueprint awaiting its architectural destiny."}
-                            onUpdate={(val) => onUpdate('subheadline', val)}
-                        />
+                    <div className="text-white/40 text-xl font-medium max-w-2xl mx-auto uppercase tracking-[0.2em] leading-relaxed font-sans">
+                        <InlineEditLayer
+                            onTextChange={(val) => onUpdate('subheadline', val)}
+                        >
+                            {content?.subheadline || "A blueprint awaiting its architectural destiny."}
+                        </InlineEditLayer>
                     </div>
                 ) : (
-                    <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.5, duration: 1 }}
-                        className="text-white/40 text-xl font-medium max-w-2xl mx-auto uppercase tracking-[0.2em] leading-relaxed"
-                    >
+                    <p className="text-white/40 text-xl font-medium max-w-2xl mx-auto uppercase tracking-[0.2em] leading-relaxed font-sans">
                         {content?.subheadline || "A blueprint awaiting its architectural destiny."}
-                    </motion.p>
+                    </p>
                 )}
 
 
                 <div className="pt-10 flex flex-col md:flex-row items-center justify-center gap-6">
                     <button
-                        className="w-full md:w-auto px-12 py-6 rounded-[2rem] font-black uppercase text-xs tracking-[0.4em] text-white shadow-2xl transition-all hover:scale-105 active:scale-95 flex items-center gap-4 bg-gradient-to-br from-primary to-blue-700 border-none"
+                        className={`w-full md:w-auto px-12 py-6 rounded-full font-black uppercase text-xs tracking-[0.4em] text-white shadow-premium transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-4 ${isEmeraldTheme ? 'bg-emerald-deep border border-white/10' : 'bg-primary border-none'} min-h-[48px]`}
+                        style={{ backgroundColor: isEmeraldTheme ? undefined : primaryColor }}
                     >
                         {content?.cta || "Initiate Protocol"}
-                        <ArrowRight className="w-5 h-5" />
+                        <ArrowRight className={`w-5 h-5 ${isEmeraldTheme ? 'text-neon-lime' : ''}`} />
                     </button>
                     {variant === 'prime' && (
-                        <button className="w-full md:w-auto px-10 py-6 rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-md text-white/60 text-[10px] uppercase font-black tracking-[0.3em] hover:bg-white/10 transition-colors">
+                        <button className="w-full md:w-auto px-10 py-6 rounded-[8px] border border-white/10 bg-white/5 backdrop-blur-md text-white/60 text-[10px] uppercase font-black tracking-[0.3em] hover:bg-white/10 transition-colors min-h-[48px]">
                             Explore_Engine
                         </button>
                     )}
@@ -339,7 +303,7 @@ function PreviewHero({ id, content, primaryColor, variant, backgroundColor, text
 
 function PreviewFeatures({ id, content, primaryColor, variant, backgroundColor, textColor, onUpdate, isEditable }: any) {
     const items = content?.items || [
-        { title: "Neural Logic", description: "Algorithmic alignment with business goals." },
+        { title: "Strategic Logic", description: "Algorithmic alignment with business goals." },
         { title: "Astra Scale", description: "Built for global digital empires." },
         { title: "Self Healing", description: "Autonomous performance optimization." }
     ];
@@ -360,10 +324,11 @@ function PreviewFeatures({ id, content, primaryColor, variant, backgroundColor, 
                 <div className="text-center space-y-4">
                     <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-white uppercase">
                         {isEditable ? (
-                            <EditableText
-                                text={content?.title || "Capabilities"}
-                                onUpdate={(val) => onUpdate('title', val)}
-                            />
+                            <InlineEditLayer
+                                onTextChange={(val) => onUpdate('title', val)}
+                            >
+                                {content?.title || "Capabilities"}
+                            </InlineEditLayer>
                         ) : (
                             content?.title || "Capabilities"
                         )}
@@ -378,7 +343,7 @@ function PreviewFeatures({ id, content, primaryColor, variant, backgroundColor, 
                             initial={{ opacity: 0, scale: 0.9 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             transition={{ delay: i * 0.1 }}
-                            className="p-12 bg-white/[0.02] rounded-[3rem] border border-white/5 backdrop-blur-3xl hover:border-primary/30 transition-all group relative overflow-hidden"
+                            className="p-12 bg-white/5 backdrop-blur-3xl rounded-[3rem] border border-white/5 hover:border-primary/30 transition-all group relative overflow-hidden shadow-premium"
                         >
                             <div className="absolute top-0 right-0 p-8 text-white/5 font-black text-6xl tracking-tighter">0{i + 1}</div>
                             <div className="w-16 h-16 rounded-[1.5rem] mb-10 flex items-center justify-center bg-primary/20 text-primary border border-primary/20 group-hover:bg-primary group-hover:text-white transition-all duration-500">
@@ -386,39 +351,27 @@ function PreviewFeatures({ id, content, primaryColor, variant, backgroundColor, 
                             </div>
                             <h3 className="text-2xl font-black mb-6 text-white tracking-tight">
                                 {isEditable ? (
-                                    <EditableText
-                                        text={item.title}
-                                        onUpdate={(val) => handleItemUpdate(i, 'title', val)}
-                                    />
+                                    <InlineEditLayer
+                                        onTextChange={(val) => handleItemUpdate(i, 'title', val)}
+                                    >
+                                        {item.title}
+                                    </InlineEditLayer>
                                 ) : (
-                                    item.title.split("").map((char: string, j: number) => (
-                                        <motion.span
-                                            key={j}
-                                            initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                            transition={{ delay: (i * 0.2) + (j * 0.03) }}
-                                        >
-                                            {char}
-                                        </motion.span>
-                                    ))
+                                    item.title
                                 )}
                             </h3>
                             {isEditable ? (
                                 <div className="text-white/40 text-[11px] uppercase font-black tracking-[0.2em] leading-relaxed">
-                                    <EditableText
-                                        text={item.description}
-                                        onUpdate={(val) => handleItemUpdate(i, 'description', val)}
-                                    />
+                                    <InlineEditLayer
+                                        onTextChange={(val) => handleItemUpdate(i, 'description', val)}
+                                    >
+                                        {item.description}
+                                    </InlineEditLayer>
                                 </div>
                             ) : (
-                                <motion.p
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ delay: (i * 0.2) + 0.5 }}
-                                    className="text-white/40 text-[11px] uppercase font-black tracking-[0.2em] leading-relaxed"
-                                >
+                                <p className="text-white/40 text-[11px] uppercase font-black tracking-[0.2em] leading-relaxed">
                                     {item.description}
-                                </motion.p>
+                                </p>
                             )}
                         </motion.div>
                     ))}
@@ -432,8 +385,8 @@ function PreviewFeatures({ id, content, primaryColor, variant, backgroundColor, 
 function PreviewPricing({ content, primaryColor, backgroundColor, textColor }: any) {
     const plans = content?.plans || [
         { name: "Starter", price: "29", features: ["Core Engine", "1.2GB Logic Buffer", "Secure Link"] },
-        { name: "Sovereign Pro", price: "99", features: ["Neural Link", "Infinite Scale", "Priority Execution", "24/7 Intel"], featured: true },
-        { name: "Empire", price: "299", features: ["Autonomous Growth", "Direct Neural Access", "Master Credentials"] }
+        { name: "Sovereign Pro", price: "99", features: ["Strategic Link", "Infinite Scale", "Priority Execution", "24/7 Intel"], featured: true },
+        { name: "Empire", price: "299", features: ["Autonomous Growth", "Direct Strategic Access", "Master Credentials"] }
     ];
 
     return (
@@ -447,7 +400,7 @@ function PreviewPricing({ content, primaryColor, backgroundColor, textColor }: a
                     <motion.div
                         key={i}
                         whileHover={{ y: -10 }}
-                        className={`p-10 rounded-[3rem] border ${plan.featured ? 'bg-primary/10 border-primary shadow-[0_30px_100px_rgba(59,130,246,0.2)]' : 'bg-white/[0.02] border-white/10'} space-y-10 relative overflow-hidden`}
+                        className={`p-10 rounded-[3rem] border ${plan.featured ? 'bg-primary/10 border-primary shadow-premium-blue' : 'bg-white/5 border-white/10 shadow-premium'} space-y-10 relative overflow-hidden backdrop-blur-md`}
                     >
                         {plan.featured && <div className="absolute top-8 right-8 px-4 py-1 bg-primary text-white text-[8px] font-black uppercase tracking-[0.3em] rounded-full">Recommended</div>}
                         <div className="space-y-4">
@@ -465,7 +418,7 @@ function PreviewPricing({ content, primaryColor, backgroundColor, textColor }: a
                                 </li>
                             ))}
                         </ul>
-                        <button className={`w-full py-5 rounded-[1.5rem] font-black uppercase text-[10px] tracking-[0.3em] transition-all ${plan.featured ? 'bg-primary text-white shadow-xl hover:bg-primary/80' : 'bg-white/5 text-white/60 border border-white/10 hover:bg-white/10'}`}>
+                        <button className={`w-full py-5 rounded-[1.5rem] font-black uppercase text-[10px] tracking-[0.3em] transition-all min-h-[48px] ${plan.featured ? 'bg-primary text-white shadow-xl hover:bg-primary/80' : 'bg-white/5 text-white/60 border border-white/10 hover:bg-white/10'}`}>
                             Deploy_Plan
                         </button>
                     </motion.div>
@@ -489,7 +442,7 @@ function PreviewLegal({ content, backgroundColor, textColor }: any) {
                     <span>License_Sovereignty</span>
                 </div>
                 <p className="text-[10px] text-white/10 uppercase font-black tracking-[0.2em] leading-loose">
-                    {content?.text || "All digital assets generated via GYS-Sovereign-Engine are under protected logical domain and verified neural identification protocol 2.0. Version 2026."}
+                    {content?.text || "All digital assets generated via GYS-Sovereign-Engine are under protected logical domain and verified Strategic identification protocol 2.0. Version 2026."}
                 </p>
             </div>
         </section>
@@ -499,12 +452,12 @@ function PreviewLegal({ content, backgroundColor, textColor }: any) {
 
 function PreviewCTA({ content, primaryColor, backgroundColor, textColor }: any) {
     return (
-        <section className="py-24 px-8 relative overflow-hidden" style={{ backgroundColor: primaryColor, color: '#white' }}>
+        <section className="py-24 px-8 relative overflow-hidden" style={{ backgroundColor: primaryColor, color: 'white' }}>
 
             <div className="relative z-10 text-center space-y-8">
                 <h2 className="text-4xl font-black tracking-tight">{content?.headline || "Ready for Deployment?"}</h2>
                 <p className="text-primary-foreground/80 max-w-xl mx-auto">{content?.subheadline || "Join the sovereign network and scale your vision."}</p>
-                <button className="px-10 py-5 bg-card text-foreground rounded-full font-black uppercase text-xs tracking-widest shadow-2xl">
+                <button className="px-10 py-5 bg-card text-foreground rounded-full font-black uppercase text-xs tracking-widest shadow-premium min-h-[48px]">
                     Get Started Now
                 </button>
             </div>
@@ -526,13 +479,13 @@ function PreviewCinematicVideo({ content, primaryColor }: any) {
         <section className="py-24 px-8 bg-black relative overflow-hidden">
             <div className="max-w-6xl mx-auto">
                 <div className="mb-12 text-center space-y-4">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-black uppercase tracking-[0.4em] text-primary">
-                        Neural_Video_Synthesis
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-black uppercase tracking-[0.4em] text-primary shadow-premium">
+                        Strategic_Video_Synthesis
                     </div>
                     <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase italic">Cinematic Asset <span className="text-primary not-italic">Generated</span></h2>
                 </div>
 
-                <div className="relative aspect-video rounded-[3rem] overflow-hidden border border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.5)] group">
+                <div className="relative aspect-video rounded-[3rem] overflow-hidden border border-white/10 shadow-premium group">
                     {isSynthesizing ? (
                         <div className="absolute inset-0 bg-[#020617] flex flex-col items-center justify-center space-y-6 z-20">
                             <div className="w-16 h-16 border-2 border-primary border-t-transparent rounded-full animate-spin" />
@@ -553,16 +506,16 @@ function PreviewCinematicVideo({ content, primaryColor }: any) {
                     )}
 
                     {/* Video HUD */}
-                    <div className="absolute top-8 left-8 p-6 bg-black/60 backdrop-blur-md rounded-2xl border border-white/5 z-10 flex flex-col gap-1">
+                    <div className="absolute top-8 left-8 p-6 bg-black/60 backdrop-blur-md rounded-2xl border border-white/5 z-10 flex flex-col gap-1 shadow-premium">
                         <span className="text-[10px] font-black text-white/80 uppercase tracking-widest flex items-center gap-2">
                             <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                            Neural_Input: {content?.prompt || "Standard_Atmosphere"}
+                            Strategic_Input: {content?.prompt || "Standard_Atmosphere"}
                         </span>
                         <span className="text-[9px] font-mono text-white/40">RESOLUTION: 3840 x 2160 (4K)</span>
                     </div>
 
                     <div className="absolute bottom-8 right-8">
-                        <div className="px-6 py-2 rounded-full bg-primary text-white text-[9px] font-black uppercase tracking-[0.3em] shadow-2xl">
+                        <div className="px-6 py-2 rounded-full bg-primary text-white text-[9px] font-black uppercase tracking-[0.3em] shadow-premium">
                             Verified AI Output
                         </div>
                     </div>
@@ -589,7 +542,7 @@ export function PreviewGallery({ content, primaryColor, backgroundColor, textCol
             <h2 className="text-3xl font-black text-center mb-12">Visual Perspective</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto">
                 {images.map((img: string, i: number) => (
-                    <div key={i} className="aspect-square relative group overflow-hidden rounded-2xl shadow-lg border border-border bg-secondary/10">
+                    <div key={i} className="aspect-square relative group overflow-hidden rounded-2xl shadow-premium border border-border bg-secondary/10">
                         <Image
                             src={img}
                             alt={`Gallery ${i}`}
@@ -597,11 +550,6 @@ export function PreviewGallery({ content, primaryColor, backgroundColor, textCol
                             sizes="(max-width: 768px) 50vw, 25vw"
                             className="object-cover transition-transform duration-700 group-hover:scale-110"
                         />
-                        <div className="absolute inset-0 bg-card/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <div className="w-10 h-10 rounded-full border border-border flex items-center justify-center">
-                                <Search className="w-4 h-4 text-foreground" />
-                            </div>
-                        </div>
                     </div>
                 ))}
             </div>

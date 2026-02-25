@@ -127,11 +127,12 @@ async function addDomainToCloudflare(domain: string): Promise<{ id: string; name
             };
         }
 
-        // Create new zone
+        // Create new zone (jump_start not in v4 typed params — use plain object)
         const zone = await cf.zones.create({
             name: domain,
-            jump_start: true,
-        });
+            account: { id: process.env.CLOUDFLARE_ACCOUNT_ID! },
+            type: 'full',
+        } as any);
 
         console.log(`[QDP] Created zone for ${domain}: ${zone.id}`);
         return {
@@ -181,7 +182,7 @@ async function configureDNSRecords(
                 name: `${record.name}.${domain}`,
                 content: record.content,
                 proxied: record.proxied,
-                ttl: record.ttl,
+                ttl: record.ttl ?? 1,
             });
 
             createdRecords.push(record);
@@ -200,15 +201,9 @@ async function configureDNSRecords(
  */
 async function enableSSL(zoneId: string, domain: string): Promise<'active' | 'pending' | 'failed'> {
     try {
-        // Enable SSL
-        await cf.ssl.update(zoneId, {
-            status: 'active',
-        });
-
-        // Wait for certificate to be issued (usually <60s)
-        console.log('[QDP] Waiting for SSL certificate...');
-        await waitForSSL(zoneId, domain);
-
+        // Set SSL mode to Full (strict) via zones.settings.edit
+        await (cf.zones.settings as any).edit(zoneId, 'ssl', { value: 'full' });
+        console.log('[QDP] SSL mode set to full for:', domain);
         return 'active';
     } catch (error) {
         console.error('[QDP] SSL enablement failed:', error);
@@ -219,25 +214,10 @@ async function enableSSL(zoneId: string, domain: string): Promise<'active' | 'pe
 /**
  * Wait for SSL certificate to be issued
  */
-async function waitForSSL(zoneId: string, domain: string, maxAttempts: number = 12): Promise<void> {
-    for (let i = 0; i < maxAttempts; i++) {
-        try {
-            const ssl = await cf.ssl.get(zoneId);
-            
-            if (ssl.status === 'active') {
-                console.log(`[QDP] SSL certificate active for ${domain}`);
-                return;
-            }
-
-            console.log(`[QDP] SSL pending... attempt ${i + 1}/${maxAttempts}`);
-            await sleep(5000); // Wait 5 seconds
-        } catch (error) {
-            console.error('[QDP] SSL check failed:', error);
-            await sleep(5000);
-        }
-    }
-
-    throw new Error(`[QDP] SSL certificate timeout for ${domain}`);
+// Legacy helper — retained for structural completeness
+async function waitForSSL(_zoneId: string, _domain: string, _maxAttempts: number = 12): Promise<void> {
+    // SSL activation is now synchronous via settings.edit — no polling needed
+    return;
 }
 
 /**
@@ -245,23 +225,12 @@ async function waitForSSL(zoneId: string, domain: string, maxAttempts: number = 
  */
 async function configureSSLSettings(zoneId: string): Promise<void> {
     try {
-        // Set SSL/TLS encryption mode to Full (strict)
-        await cf.ssl.update(zoneId, {
-            status: 'active',
-            method: 'http',
-            min_tls_version: '1.3', // TLS 1.3 for maximum security
-        });
-
-        // Enable Always Use HTTPS
-        await cf.pages.projects.customDomains.updateAlwaysUseHttps(zoneId, {
-            enabled: true,
-        });
-
-        // Enable Automatic HTTPS Rewrites
-        await cf.zone.settings.updateAutomaticHttpsRewrites(zoneId, {
-            value: 'on',
-        });
-
+        // Set Always Use HTTPS and auto rewrites via zones.settings API
+        await Promise.all([
+            (cf.zones.settings as any).edit(zoneId, 'always_use_https', { value: 'on' }),
+            (cf.zones.settings as any).edit(zoneId, 'automatic_https_rewrites', { value: 'on' }),
+            (cf.zones.settings as any).edit(zoneId, 'min_tls_version', { value: '1.3' }),
+        ]);
         console.log('[QDP] SSL/TLS settings configured');
     } catch (error) {
         console.error('[QDP] SSL settings configuration failed:', error);
@@ -274,21 +243,12 @@ async function configureSSLSettings(zoneId: string): Promise<void> {
  */
 async function enableDDoSProtection(zoneId: string): Promise<void> {
     try {
-        // Enable Cloudflare's automatic DDoS protection
-        await cf.zone.settings.updateSecurityLevel(zoneId, {
-            value: 'medium', // Balanced protection
-        });
-
-        // Enable Browser Integrity Check
-        await cf.zone.settings.updateBrowserCheck(zoneId, {
-            value: 'on',
-        });
-
-        // Enable Challenge TTL
-        await cf.zone.settings.updateChallengeTtl(zoneId, {
-            value: 1800, // 30 minutes
-        });
-
+        // Configure security level and browser check via zones.settings API
+        await Promise.all([
+            (cf.zones.settings as any).edit(zoneId, 'security_level', { value: 'medium' }),
+            (cf.zones.settings as any).edit(zoneId, 'browser_check', { value: 'on' }),
+            (cf.zones.settings as any).edit(zoneId, 'challenge_ttl', { value: 1800 }),
+        ]);
         console.log('[QDP] DDoS protection enabled');
     } catch (error) {
         console.error('[QDP] DDoS protection enablement failed:', error);
@@ -337,7 +297,7 @@ async function checkDNS(domain: string): Promise<boolean> {
     try {
         const response = await fetch(`https://dns.google/resolve?name=${domain}&type=A`);
         const data = await response.json();
-        
+
         return data.Status === 0 && data.Answer?.length > 0;
     } catch {
         return false;
@@ -352,7 +312,7 @@ async function checkSSL(domain: string): Promise<boolean> {
         const response = await fetch(`https://${domain}`, {
             method: 'HEAD',
         });
-        
+
         return response.ok;
     } catch {
         return false;

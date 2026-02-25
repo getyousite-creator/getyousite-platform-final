@@ -1,14 +1,14 @@
 /**
- * Personalization Engine + Multi-Armed Bandits + Ethical AI
+ * Personalization Engine + Multi-Armed Bandits + Sovereign Ethics
  * 
  * Features:
- * - Neural Collaborative Filtering (NCF)
+ * - Strategic Collaborative Filtering (NCF)
  * - Thompson Sampling for A/B Testing
  * - Differential Privacy
  * - Bias Audit with Fairlearn
  */
 
-import * as tf from '@tensorflow/tfjs-node';
+import * as tf from '@tensorflow/tfjs';
 import { UserFeature } from './ml-pipeline';
 
 // ============================================================================
@@ -50,10 +50,10 @@ export interface DifferentialPrivacyConfig {
 }
 
 // ============================================================================
-// NEURAL COLLABORATIVE FILTERING
+// Strategic COLLABORATIVE FILTERING
 // ============================================================================
 
-export class NeuralCollaborativeFilter {
+export class StrategicCollaborativeFilter {
     private model: tf.LayersModel | null = null;
     private userEmbeddings: Map<string, number[]> = new Map();
     private itemEmbeddings: Map<string, number[]> = new Map();
@@ -155,7 +155,7 @@ export class NeuralCollaborativeFilter {
         const itemTensor = tf.tensor1d(itemIds, 'int32');
 
         const predictions = this.model.predict([userTensor, itemTensor]) as tf.Tensor;
-        const scores = Array.from(await predictions.data());
+        const scores: number[] = Array.from(await predictions.data() as Float32Array);
 
         userTensor.dispose();
         itemTensor.dispose();
@@ -163,7 +163,7 @@ export class NeuralCollaborativeFilter {
 
         // Sort by score
         const ranked = itemIds
-            .map((itemId, index) => ({ itemId, score: scores[index] }))
+            .map((itemId, index) => ({ itemId, score: scores[index] as number }))
             .sort((a, b) => b.score - a.score);
 
         return ranked.slice(0, topK).map(r => r.itemId);
@@ -517,7 +517,7 @@ export class BiasAuditEngine {
 // ============================================================================
 
 export default {
-    NeuralCollaborativeFilter,
+    StrategicCollaborativeFilter,
     ThompsonSamplingBandit,
     DifferentialPrivacyEngine,
     BiasAuditEngine,

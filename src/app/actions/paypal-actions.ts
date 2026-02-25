@@ -30,7 +30,7 @@ export async function createPayPalOrder(planId: string) {
                     currency_code: "USD",
                     value: verifiedAmount,
                 },
-                description: `GetYouSite - ${planId.charAt(0).toUpperCase() + planId.slice(1)} Subscription`,
+                description: `GYS Global - ${planId.charAt(0).toUpperCase() + planId.slice(1)} Subscription`,
             },
         ],
     });

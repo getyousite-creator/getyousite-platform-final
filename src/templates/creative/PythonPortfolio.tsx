@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Terminal, Code, Database, Cpu, Command, GitBranch, ArrowRight } from "lucide-react";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
-import { SovereignImage } from "@/components/ui/sovereign-image";
+import { SovereignImage } from "@/shared/components/ui/sovereign-image";
 import { SovereignTemplateProps } from "@/lib/types/template";
 import { cn } from "@/lib/utils";
 

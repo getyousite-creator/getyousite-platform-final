@@ -16,7 +16,7 @@ const plans = [
         price: { USD: "0", SAR: "0", AED: "0" },
         icon: Globe,
         color: "zinc",
-        features: ["ai_generation_basic", "subdomain_access", "gys_branding", "community_support"],
+        features: ["synthesisFoundational", "subdomain_access", "gys_branding", "community_support"],
     },
     {
         id: "pro",
@@ -39,7 +39,7 @@ const plans = [
         color: "emerald",
         features: [
             "10_sovereign_sites",
-            "ai_seo_sovereign",
+            "autonomousSEO",
             "live_logic_chat",
             "nightly_backups",
             "api_access_token",
@@ -104,11 +104,10 @@ function PlanCard({ plan, t, tCommon }: { plan: Plan; t: TFunc; tCommon: TFunc }
 
     return (
         <div
-            className={`p-10 rounded-[2rem] border transition-all duration-500 flex flex-col relative group ${
-                plan.popular
+            className={`p-10 rounded-[2rem] border transition-all duration-500 flex flex-col relative group ${plan.popular
                     ? "bg-[#1e293b]/50 border-primary/50 shadow-[0_0_60px_rgba(59,130,246,0.15)] scale-105 z-10 backdrop-blur-2xl"
                     : "bg-white/[0.02] border-white/5 hover:border-primary/20 hover:bg-white/[0.04]"
-            }`}
+                }`}
         >
             {plan.popular && (
                 <div className="absolute -top-5 left-1/2 -translate-x-1/2">

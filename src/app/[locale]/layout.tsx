@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -9,11 +10,12 @@ import JsonLd from "@/components/seo/JsonLd";
 import LaunchModal from "@/components/forms/LaunchModal";
 import AuthModalManager from "@/components/auth/AuthModalManager";
 import FloatingChat from "@/components/chat/FloatingChat";
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "@/shared/components/ui/sonner";
 import { AnalyticsProvider } from "@/components/providers/AnalyticsProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import SupabaseProvider from "@/components/providers/SupabaseProvider";
 import { PwaProvider } from "@/components/providers/PwaProvider";
+import { LocaleProvider } from "@/features/i18n/context/LocaleContext";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -28,6 +30,14 @@ const ibmPlexArabic = Tajawal({
     display: "swap",
 });
 
+
+export const dynamicParams = true;
+
+export const viewport = {
+    themeColor: '#ffffff',
+};
+
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Metadata' });
@@ -36,14 +46,16 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         title: t('title'),
         description: t('description'),
         manifest: '/manifest.json',
-        themeColor: '#ffffff',
         alternates: {
-            canonical: `https://getyousite.com/${locale}`,
+            canonical: `https://gysglobal.com/${locale}`,
             languages: {
-                'en': 'https://getyousite.com/en',
-                'ar': 'https://getyousite.com/ar',
-                'fr': 'https://getyousite.com/fr',
-                'es': 'https://getyousite.com/es',
+                'en': 'https://gysglobal.com/en',
+                'ar': 'https://gysglobal.com/ar',
+                'fr': 'https://gysglobal.com/fr',
+                'es': 'https://gysglobal.com/es',
+                'de': 'https://gysglobal.com/de',
+                'it': 'https://gysglobal.com/it',
+                'ru': 'https://gysglobal.com/ru',
             },
         },
         openGraph: {
@@ -51,14 +63,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             description: t('description'),
             type: 'website',
             locale: locale,
-            url: `https://getyousite.com/${locale}`,
-            siteName: 'GetYouSite',
+            url: `https://gysglobal.com/${locale}`,
+            siteName: 'GYS Global',
         },
         twitter: {
             card: 'summary_large_image',
             title: t('title'),
             description: t('description'),
-            site: '@getyousite',
+            site: '@gysglobal',
         }
     };
 }
@@ -94,24 +106,28 @@ export default async function LocaleLayout({
                         disableTransitionOnChange
                         themes={["light", "dark", "medical", "luxury", "sovereign"]}
                     >
-                        <SupabaseProvider>
-                            <PwaProvider>
-                                <AnalyticsProvider>
-                                    <JsonLd
-                                        name={t('title')}
-                                        description={t('description')}
-                                        url="https://getyousite.com"
-                                        logo="https://getyousite.com/logo.png"
-                                        locale={locale}
-                                    />
-                                    <LaunchModal />
-                                    <AuthModalManager />
-                                    {children}
-                                    <FloatingChat />
-                                    <Toaster />
-                                </AnalyticsProvider>
-                            </PwaProvider>
-                        </SupabaseProvider>
+                        <LocaleProvider>
+                            <SupabaseProvider>
+                                <PwaProvider>
+                                    <AnalyticsProvider>
+                                        <JsonLd
+                                            name={t('title')}
+                                            description={t('description')}
+                                            url="https://gysglobal.com"
+                                            logo="https://gysglobal.com/logo.png"
+                                            locale={locale}
+                                        />
+                                        <Suspense fallback={null}>
+                                            <LaunchModal />
+                                            <AuthModalManager />
+                                            {children}
+                                            <FloatingChat />
+                                        </Suspense>
+                                        <Toaster />
+                                    </AnalyticsProvider>
+                                </PwaProvider>
+                            </SupabaseProvider>
+                        </LocaleProvider>
                     </ThemeProvider>
                 </NextIntlClientProvider>
             </body>

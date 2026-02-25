@@ -5,11 +5,11 @@ import { buildStructuredGenerationProfile } from "@/lib/ai/generation-profile";
 
 
 /**
- * Multi-Provider AI System
+ * Multi-Provider Synthesis System
  * Supports OpenAI, Kimi/K2.5 via OpenRouter, and fallback mechanisms
  */
 
-interface AIGenerationRequest {
+interface SynthesisRequest {
     prompt: string;
     systemPrompt?: string;
     maxTokens?: number;
@@ -20,7 +20,7 @@ interface AIGenerationRequest {
     contextBlocks?: string[];
 }
 
-interface AIGenerationResponse {
+interface SynthesisResponse {
     content: string;
     provider: string;
     model: string;
@@ -68,8 +68,8 @@ const PROVIDERS = {
  * Uses Gemini Flash; falls back to lightweight mock to avoid mismatched providers.
  */
 export async function generateWithFallback(
-    request: AIGenerationRequest,
-): Promise<AIGenerationResponse> {
+    request: SynthesisRequest,
+): Promise<SynthesisResponse> {
     // GEMINI FIRST
     if (process.env.GEMINI_API_KEY) {
         try {
@@ -83,7 +83,7 @@ export async function generateWithFallback(
 
     // Minimal mock fallback to avoid blocking the flow when provider is unavailable.
     const mock = generateMockResponse(request);
-    console.warn("AI_PROVIDER_UNAVAILABLE: Serving mock response.");
+    console.warn("SYNTHESIS_ENGINE_UNAVAILABLE: Serving mock response.");
     return mock;
 }
 
@@ -91,7 +91,7 @@ export async function generateWithFallback(
  * Gemini generation (REST API).
  * Supports structured JSON output, system instruction, and optional cached context reference.
  */
-async function generateWithGemini(request: AIGenerationRequest): Promise<AIGenerationResponse> {
+async function generateWithGemini(request: SynthesisRequest): Promise<SynthesisResponse> {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
         throw new Error("GEMINI_API_KEY not configured");
@@ -156,9 +156,9 @@ async function generateWithGemini(request: AIGenerationRequest): Promise<AIGener
     };
 }
 /**
- * OpenAI Generation (kept for image-only flows; not used for primary text gen)
+ * High-Fidelity Generative Synthesis (kept for image-only flows)
  */
-async function generateWithOpenAI(request: AIGenerationRequest): Promise<AIGenerationResponse> {
+async function generateWithOpenAI(request: SynthesisRequest): Promise<SynthesisResponse> {
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
         throw new Error("OPENAI_API_KEY not configured");
@@ -206,7 +206,7 @@ async function generateWithOpenAI(request: AIGenerationRequest): Promise<AIGener
  * SOVEREIGN VISUAL SYNTHESIS: DALL-E 3 Integration
  * Logic: Generates high-status, unique assets for primary visual positions.
  */
-export async function generateAIImage(prompt: string): Promise<string | null> {
+export async function generateSyntheticImage(prompt: string): Promise<string | null> {
     const providerMode = (process.env.IMAGE_PROVIDER || "auto").toLowerCase() as ImageProviderMode;
     const hasOpenAI = Boolean(process.env.OPENAI_API_KEY);
     const hasSeedream = Boolean(process.env.ARK_API_KEY);
@@ -235,7 +235,7 @@ async function generateWithOpenAIImage(prompt: string): Promise<string | null> {
     if (!apiKey) return null;
 
     try {
-        console.log("DALL-E 3: Initializing neural masterpiece synthesis...");
+        console.log("Sovereign Visual Engine: Orchestrating Strategic visual masterpiece...");
         const response = await fetch(`${PROVIDERS.openai.baseUrl}/images/generations`, {
             method: "POST",
             headers: {
@@ -260,7 +260,7 @@ async function generateWithOpenAIImage(prompt: string): Promise<string | null> {
         const data = await response.json();
         return data.data[0]?.url || null;
     } catch (error) {
-        console.error("AI_IMAGE_GEN_FAILURE:", error);
+        console.error("VISUAL_SYNTHESIS_FAILURE:", error);
         return null;
     }
 }
@@ -306,10 +306,10 @@ async function generateWithSeedream(prompt: string): Promise<string | null> {
 /**
  * Mock generation for complete fallback
  */
-function generateMockResponse(request: AIGenerationRequest): AIGenerationResponse {
+function generateMockResponse(request: SynthesisRequest): Promise<SynthesisResponse> {
     const mockContent = generateIntelligentMock(request.prompt);
 
-    return {
+    return Promise.resolve({
         content: mockContent,
         provider: "Mock Engine",
         model: "fallback-v1",
@@ -318,7 +318,7 @@ function generateMockResponse(request: AIGenerationRequest): AIGenerationRespons
             completion_tokens: mockContent.length / 4,
             total_tokens: (request.prompt.length + mockContent.length) / 4,
         },
-    };
+    });
 }
 
 /**
@@ -331,7 +331,7 @@ function generateIntelligentMock(prompt: string): string {
     const baseStructure = {
         id: `site-${Date.now()}`,
         name: "Generated Website",
-        description: "AI-generated professional website",
+        description: "Strategically synthesized professional website",
         navigation: {
             logo: "Brand Logo",
             links: [
@@ -526,13 +526,13 @@ export async function generateCompleteWebsite(params: {
     locale: string;
     features?: string[];
 }) {
-    // 1. Credit Gate: Prevent cost draining (skipped when TRIAL_MODE=true)
+    // 1. Sovereignty Gate: Credit validation
     const trialMode = process.env.TRIAL_MODE === "true";
     let userData: { id: string; credits?: number } = { id: "trial-user", credits: Infinity };
 
     if (!trialMode) {
         const user = await AuthService.getCurrentUser();
-        if (!user.data) throw new Error("AUTH_REQUIRED_FOR_AI");
+        if (!user.data) throw new Error("AUTH_REQUIRED_FOR_SYNTHESIS");
 
         userData = user.data as { id: string; credits?: number };
         const credits = userData.credits ?? 0;
@@ -565,7 +565,7 @@ export async function generateCompleteWebsite(params: {
     else if (normalizedNiche.match(/fitness|gym|trainer/)) recommendedTemplate = "fitness-neon";
 
     const systemPrompt = `
-أنت "المهندس السيادي" (Sovereign Architect) لمنصة GetYouSite.
+أنت "المهندس السيادي" (Sovereign Architect) لمنصة GYS Global.
 يجب أن تتبع بدقة متناهية "بروتوكول العبقرية" (Abqari Logic v2):
 
 1. السيادة اللغوية والإقناع (Protocol 7 - Sales Copy / AIDA):
@@ -611,7 +611,7 @@ export async function generateCompleteWebsite(params: {
         jsonMode: true,
     });
 
-    console.log(`AI_USAGE: User ${userData.id} consumed 1 credit via ${result.provider}`);
+    console.log(`SYNTHESIS_METRIC: User ${userData.id} consumed 1 credit via ${result.provider}`);
 
     try {
         const blueprint = JSON.parse(result.content);
@@ -622,7 +622,7 @@ export async function generateCompleteWebsite(params: {
         );
 
         for (const section of sectionsSupportingImages) {
-            // Priority: Use section-specific keywords generated by AI
+            // Priority: Use section-specific keywords synthesized by the engine
             const rawKeywords = section.content.imageKeywords || blueprint.imageKeywords || params.niche;
             let query = Array.isArray(rawKeywords) ? rawKeywords.join(", ") : rawKeywords;
 
@@ -632,17 +632,17 @@ export async function generateCompleteWebsite(params: {
 
             const orientation = ["hero", "HERO_PRIME"].includes(section.type) ? "landscape" : "portrait";
 
-            // LOGIC: High-Status Hero sections get UNIQUE AI-generated visuals
+            // LOGIC: High-Status Hero sections get UNIQUE synthetically architected visuals
             if (["hero", "HERO_PRIME"].includes(section.type)) {
-                console.log(`🎨 Sovereign Artist: Orchestrating unique AI Hero for [${query}]...`);
-                // Attempt Neural Synthesis
-                const aiImageUrl = await generateAIImage(query);
-                if (aiImageUrl) {
-                    section.content.image = aiImageUrl;
-                    section.content.alt = `Sovereign AI Synthesis: ${query}`;
+                console.log(`🎨 Sovereign Artist: Orchestrating unique Synthetic Hero for [${query}]...`);
+                // Attempt Strategic Synthesis
+                const syntheticImageUrl = await generateSyntheticImage(query);
+                if (syntheticImageUrl) {
+                    section.content.image = syntheticImageUrl;
+                    section.content.alt = `Sovereign Logical Synthesis: ${query}`;
                     continue; // Success: Skip Unsplash fallback
                 }
-                console.log("⚠️ Neural Synthesis failed. Falling back to Unsplash stock protocol.");
+                console.log("⚠️ Strategic Synthesis failed. Falling back to Unsplash stock protocol.");
             }
 
             // Fallback/Standard: Search Unsplash for stock visuals
@@ -700,7 +700,7 @@ export async function generateCompleteWebsite(params: {
                 generated_by: result.provider,
                 model: result.model,
                 timestamp: new Date().toISOString(),
-                engine: "Sovereign-GenAI-Radical-v1",
+                engine: "Sovereign-Synthesis-Protocol-v1",
                 export_ready: true,
             },
         };
@@ -708,8 +708,8 @@ export async function generateCompleteWebsite(params: {
         return sovereignAsset;
 
     } catch (error) {
-        console.error("Failed to parse AI response:", error);
-        throw new Error("Invalid AI response format: protocol mismatch.");
+        console.error("Failed to parse synthesis response:", error);
+        throw new Error("Invalid synthesis response format: protocol mismatch.");
     }
 }
 
@@ -730,7 +730,7 @@ export async function exportSovereignAsset(storeId: string) {
         v: "1.0-sovereign",
         timestamp: new Date().toISOString(),
         infrastructure: {
-            provider: "GetYouSite Sovereign Engine",
+            provider: "GYS Global Sovereign Engine",
             license: "MIT-Derived Sovereign Ownership",
         },
         asset: {
@@ -757,7 +757,7 @@ export async function generateSinglePage(params: {
     const generationProfile = buildStructuredGenerationProfile(params);
 
     const systemPrompt = `
-You are the SOVEREIGN AI ARCHITECT. 
+You are the SOVEREIGN ARCHITECTURE PROTOCOL. 
 TASK: Generate the COMPLETE LAYOUT JSON for the "${params.targetPage.name}" page (slug: ${params.targetPage.slug}).
 
 RULES:
@@ -854,7 +854,7 @@ async function refineSiteBlueprint(params: {
 
 /**
  * REFINEMENT ENGINE (Protocol 9)
- * Surgically refines an existing blueprint based on an AI command.
+ * Surgically refines an existing blueprint based on a strategic command.
  */
 export async function refineBlueprint(params: {
     currentBlueprint: SiteBlueprint;
@@ -866,22 +866,24 @@ export async function refineBlueprint(params: {
     const { currentBlueprint, command, businessName, niche, locale } = params;
 
     const systemPrompt = `
-You are the SOVEREIGN REFINEMENT ARCHITECT.
-TASK: Modify the existing SITE BLUEPRINT (JSON) based on the user's COMMAND.
+You are the SOVEREIGN ADAPTATION ENGINE.
+TASK: Surgically modify the SITE BLUEPRINT (JSON) to achieve RADICAL SUCCESS based on the user's COMMAND.
+
+LAWS OF PERSUASION (Mandatory):
+1. **AIDA Implementation**: Every section must lead the user from Attention to Action.
+2. **Authority Triggers**: Use high-status, commanding vocabulary (e.g., 'Synergize', 'Orchestrate', 'Sovereign').
+3. **Scarcity & Social Proof**: Infuse testimonials and pricing with urgency where appropriate.
+4. **Friction Removal**: Simplify CTAs and forms for maximum lead velocity.
 
 CONSTRAINTS:
-1. **Surgical Precision**: Only modify the parts of the JSON related to the command.
-2. **Preservation**: Keep all existing section IDs and general structure unless asked to delete or move them.
-3. **Persuasion**: If the command is text-based, use AIDA modeling for the new copy.
-4. **Visuals**: If asked for visual changes, update only relevant theme colors or imageKeywords.
-5. **JSON ONLY**: Return ONLY the modified SiteBlueprint JSON object.
+1. **Surgical Precision**: Only modify elements related to the command, but apply the Laws of Persuasion to the updated parts.
+2. **Persistence**: Maintain existing section IDs to preserve deployment integrity.
+3. **JSON ONLY**: Return strictly valid JSON.
 
 CURRENT BLUEPRINT: ${JSON.stringify(currentBlueprint)}
 USER COMMAND: ${command}
 BUSINESS: ${businessName} (${niche})
 LOCALE: ${locale}
-
-Return the COMPLETE modified SiteBlueprint JSON.
 `;
 
     try {

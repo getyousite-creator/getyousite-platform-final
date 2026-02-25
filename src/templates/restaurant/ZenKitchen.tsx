@@ -133,7 +133,7 @@ export default function ZenKitchen() {
                         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-32 gap-y-16 relative z-10">
                             <Dish name="Quantum Truffle" price="$74" />
                             <Dish name="Sovereign Wagyu" price="$142" />
-                            <Dish name="Neural Spices" price="$48" />
+                            <Dish name="Strategic Spices" price="$48" />
                             <Dish name="Astra Infused Sea Bass" price="$89" />
                         </div>
                     </section>

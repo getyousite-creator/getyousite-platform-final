@@ -1,12 +1,12 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { isInternalAdmin } from '../config/identity';
 
 export async function updateSession(request: NextRequest, response?: NextResponse) {
     let supabaseResponse = response || NextResponse.next({
         request,
     })
 
-    // EDGE GUARD: Ensure environment variables exist to prevent runtime crash
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
@@ -25,12 +25,9 @@ export async function updateSession(request: NextRequest, response?: NextRespons
                 },
                 setAll(cookiesToSet) {
                     cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-
-                    // If we have a passed response, updates cookies on it
                     supabaseResponse = response || NextResponse.next({
                         request,
                     })
-
                     cookiesToSet.forEach(({ name, value, options }) =>
                         supabaseResponse.cookies.set(name, value, options)
                     )
@@ -39,50 +36,35 @@ export async function updateSession(request: NextRequest, response?: NextRespons
         }
     )
 
-    // IMPORTANT: Avoid writing any logic between createServerClient and
-    // supabase.auth.getUser().
     const {
         data: { user },
     } = await supabase.auth.getUser()
 
-    const AUTHORIZED_EMAIL = "u110877386@getyousite.com";
-    const isAdminPath = request.nextUrl.pathname.includes('/admin');
+    const pathname = request.nextUrl.pathname;
+    const isAdminPath = pathname.startsWith('/admin') || pathname.includes('/admin/');
 
-    // Helper to get locale from path
-    const getLocale = () => {
-        const match = request.nextUrl.pathname.match(/^\/([a-z]{2})\//);
-        return match ? match[1] : 'en'; // Default to 'en' or use logic to detect
-    };
-    const locale = getLocale();
+    // Clinical Locale Extraction
+    const localeMatch = pathname.match(/^\/([a-z]{2})(\/|$)/);
+    const locale = localeMatch ? localeMatch[1] : 'en';
 
     if (isAdminPath) {
-        if (!user || user.email !== AUTHORIZED_EMAIL) {
+        if (!user || !isInternalAdmin(user.email)) {
             const url = request.nextUrl.clone();
             url.pathname = `/${locale}/404`;
             return NextResponse.redirect(url);
         }
     }
 
-    // Protected Routes Logic
-    const isProtectedRoute = (
-        request.nextUrl.pathname.includes('/customizer') ||
-        request.nextUrl.pathname.includes('/success') ||
-        request.nextUrl.pathname.includes('/dashboard')
-    );
+    // Protocol Boundaries: Protected Routes
+    const protectedSegments = ['/customizer', '/success', '/dashboard', '/settings'];
+    const isProtectedRoute = protectedSegments.some(segment => pathname.includes(segment));
 
-    const isAuthRoute = (
-        request.nextUrl.pathname.includes('/login') ||
-        request.nextUrl.pathname.includes('/signup') ||
-        request.nextUrl.pathname.includes('/forgot-password') ||
-        request.nextUrl.pathname.includes('/auth') ||
-        request.nextUrl.pathname.includes('/reset-password')
-    );
+    const authSegments = ['/login', '/signup', '/forgot-password', '/auth', '/reset-password'];
+    const isAuthRoute = authSegments.some(segment => pathname.includes(segment));
 
     if (!user && isProtectedRoute && !isAuthRoute) {
-        // no user, redirect to login with locale
         const url = request.nextUrl.clone()
         url.pathname = `/${locale}/login`
-        // Preserve query params (like return address)
         url.search = request.nextUrl.search;
         return NextResponse.redirect(url)
     }

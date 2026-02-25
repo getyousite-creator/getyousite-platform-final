@@ -38,7 +38,7 @@ export default function MasterRealEstate(props: SovereignTemplateProps) {
     const { settings, blueprint } = props;
     const { headline, subheadline, primaryColor = "#0f172a" } = settings;
 
-    // AI Blueprint Extraction
+    // Sovereign Blueprint Synthesis
     const heroSection = blueprint?.layout?.find((s) => s.type === "hero");
     const propertySection = blueprint?.layout?.find((s) => s.type === "features");
 

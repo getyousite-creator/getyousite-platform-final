@@ -2,7 +2,7 @@
  * Template Service
  * 
  * Comprehensive template management system with categorization,
- * search, filtering, and AI-powered recommendations.
+ * search, filtering, and Strategic recommendations.
  */
 
 import { createClient } from '@/lib/supabase/server';

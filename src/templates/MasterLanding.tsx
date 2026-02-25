@@ -26,7 +26,7 @@ export default function MasterLanding(props: SovereignTemplateProps) {
     const { settings, blueprint } = props;
     const { headline, subheadline, primaryColor = "#2563eb" } = settings;
 
-    // AI Blueprint Extraction
+    // Sovereign Blueprint Synthesis
     const heroSection = blueprint?.layout?.find((s) => s.type === 'hero');
     const featuresSection = blueprint?.layout?.find((s) => s.type === 'features');
 
@@ -40,7 +40,7 @@ export default function MasterLanding(props: SovereignTemplateProps) {
         title: item.title,
         desc: item.description
     })) : [
-        { icon: Zap, title: t("neural_latency"), desc: t("neural_latency_desc") },
+        { icon: Zap, title: t("Strategic_latency"), desc: t("Strategic_latency_desc") },
         { icon: Cpu, title: t("logic_synthesis"), desc: t("logic_synthesis_desc") },
         { icon: Globe, title: t("sovereign_scale"), desc: t("sovereign_scale_desc") }
     ];

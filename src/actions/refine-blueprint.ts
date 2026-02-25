@@ -30,7 +30,7 @@ export async function refineBlueprintAction(
 
         const currentBlueprint = (store.blueprint || {}) as SiteBlueprint;
 
-        // 2. Execute Neural Refinement
+        // 2. Execute Strategic Refinement
         console.log(`🧠 SOVEREIGN_REFINE: Synthesizing refinement for [${store.name}]...`);
         console.log(`> Command: ${command}`);
 

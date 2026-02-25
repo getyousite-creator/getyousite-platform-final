@@ -39,7 +39,7 @@ export function HeroSection({ title, subtitle, ctaPrimary, ctaSecondary }: HeroS
                 >
                     <Sparkles className="w-4 h-4 text-accent-neon" />
                     <span className="text-sm text-neutral-slate">
-                        AI-Powered Next Generation
+                        Sovereign Synthesis Engine · v2.2
                     </span>
                 </motion.div>
 
@@ -52,7 +52,7 @@ export function HeroSection({ title, subtitle, ctaPrimary, ctaSecondary }: HeroS
                 >
                     {title}{" "}
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent-neon">
-                        GetYouSite
+                        GYS Global
                     </span>
                 </motion.h1>
 

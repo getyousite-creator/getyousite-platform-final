@@ -1,7 +1,7 @@
 /**
  * Super-Visual Protocol V2 (SVP-V2) - Main Orchestrator
  * 
- * The complete visual intelligence system that transforms GetYouSite
+ * The complete visual intelligence system that transforms GYS Global
  * from a "website generator" into a "digital art studio".
  * 
  * Integrates:

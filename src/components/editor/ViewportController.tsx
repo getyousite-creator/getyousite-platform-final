@@ -14,7 +14,7 @@ import { useViewport } from '@/lib/editor/editor-store';
 
 interface ViewportControllerProps {
     children: React.ReactNode;
-    iframeRef?: React.RefObject<HTMLIFrameElement>;
+    iframeRef?: React.RefObject<HTMLIFrameElement | null>;
 }
 
 export function ViewportController({ children, iframeRef }: ViewportControllerProps) {
@@ -50,13 +50,13 @@ export function ViewportController({ children, iframeRef }: ViewportControllerPr
             {/* Preview Area */}
             <div className="flex-1 overflow-auto bg-neutral-900 p-8">
                 <motion.div
-                    animate={{ 
+                    animate={{
                         width: getWidth(),
                         maxWidth: '100%'
                     }}
-                    transition={{ 
-                        duration: 0.4, 
-                        ease: [0.25, 0.46, 0.45, 0.94] 
+                    transition={{
+                        duration: 0.4,
+                        ease: [0.25, 0.46, 0.45, 0.94]
                     }}
                     className="mx-auto"
                 >
@@ -108,8 +108,8 @@ function ViewportButton({ icon, label, width, active, onClick }: ViewportButtonP
             onClick={onClick}
             className={`
                 flex items-center gap-2 px-4 py-2 rounded-lg transition-all
-                ${active 
-                    ? 'bg-primary text-white shadow-lg shadow-primary/25' 
+                ${active
+                    ? 'bg-primary text-white shadow-lg shadow-primary/25'
                     : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10'
                 }
             `}

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { CheckCircle, ExternalLink } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { Template } from "@/data/template-data";
 import { useRouter } from "@/i18n/routing";
 import { useTranslations } from "next-intl";

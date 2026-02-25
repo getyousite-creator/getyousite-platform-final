@@ -10,17 +10,17 @@ interface JSONLDProps {
 
 export function JSONLD({ locale }: JSONLDProps) {
     const isRTL = locale === "ar";
-    const baseUrl = locale === "en" ? "https://getyousite.com" : `https://getyousite.com/${locale}`;
+    const baseUrl = locale === "en" ? "https://gysglobal.com" : `https://gysglobal.com/${locale}`;
 
     const structuredData = {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        name: isRTL ? "GetYouSite" : "GetYouSite",
-        alternateName: isRTL ? "جيت يو سايت" : "Get You Site",
+        name: "GYS Global",
+        alternateName: isRTL ? "جي واي إس جلوبال" : "GYS Global",
         url: baseUrl,
         description: isRTL
-            ? "أول منصة في العالم تبني موقعك بالذكاء الاصطناعي في ثوانٍ"
-            : "World's first AI-powered website builder that creates your site in seconds",
+            ? "المنصة العالمية الرائدة لهندسة وتوليف الأصول الرقمية السيادية."
+            : "The leading global platform for engineering and synthesizing sovereign digital assets.",
         applicationCategory: "WebApplication",
         operatingSystem: "Web",
         browserRequirements: "Requires JavaScript",
@@ -39,37 +39,37 @@ export function JSONLD({ locale }: JSONLDProps) {
         },
         featureList: isRTL
             ? [
-                  "بناء مواقع بالذكاء الاصطناعي",
-                  "تصاميم فريدة",
-                  "نشر فوري",
-                  "تعديلات غير محدودة",
-              ]
+                "هندسة معمارية سيادية",
+                "تصاميم فريدة",
+                "نشر فوري",
+                "تعديلات غير محدودة",
+            ]
             : [
-                  "AI-powered website building",
-                  "Unique designs",
-                  "Instant deployment",
-                  "Unlimited revisions",
-              ],
+                "Sovereign Synthesis Protocol",
+                "Unique designs",
+                "Instant deployment",
+                "Unlimited revisions",
+            ],
         screenshot: `${baseUrl}/og-image.png`,
         downloadUrl: `${baseUrl}/signup`,
         author: {
             "@type": "Organization",
-            name: "GetYouSite",
+            name: "GYS Global",
             url: baseUrl,
         },
         keywords: isRTL
             ? [
-                  "بناء مواقع",
-                  "ذكاء اصطناعي",
-                  "بدون برمجة",
-                  "مواقع جاهزة",
-              ]
+                "بناء مواقع",
+                "التوليف السيادي",
+                "بدون برمجة",
+                "مواقع جاهزة",
+            ]
             : [
-                  "website builder",
-                  "AI website",
-                  "no-code",
-                  "website creation",
-              ],
+                "website construction",
+                "Sovereign Synthesis",
+                "no-code",
+                "website creation",
+            ],
     };
 
     return (

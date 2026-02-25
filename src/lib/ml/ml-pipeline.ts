@@ -9,8 +9,11 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import { DataFrame, Series } from 'danfojs-node';
-import * as tf from '@tensorflow/tfjs-node';
+import * as tf from '@tensorflow/tfjs';
+
+// DataFrame stub (replacing danfojs-node which is unavailable)
+type DataFrame = Record<string, number[]>;
+type Series = number[];
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -100,7 +103,7 @@ export class DataIngestionEngine {
                     subscriptions: true,
                 },
             }),
-            this.prisma.analyticsEvent.findMany({
+            this.prisma.analytics.findMany({
                 where: {
                     createdAt: { gte: startDate, lte: endDate },
                 },
@@ -257,9 +260,9 @@ export class FeatureEngineeringEngine {
         const editorDwellTime =
             editorEnter && editorExit
                 ? (editorExit.createdAt.getTime() -
-                      editorEnter.createdAt.getTime()) /
-                  1000 /
-                  60 // minutes
+                    editorEnter.createdAt.getTime()) /
+                1000 /
+                60 // minutes
                 : 0;
 
         // Count errors
@@ -271,9 +274,9 @@ export class FeatureEngineeringEngine {
         const lastEvent = events[events.length - 1];
         const daysSinceActive = lastEvent
             ? Math.floor(
-                  (Date.now() - lastEvent.createdAt.getTime()) /
-                      (1000 * 60 * 60 * 24)
-              )
+                (Date.now() - lastEvent.createdAt.getTime()) /
+                (1000 * 60 * 60 * 24)
+            )
             : 999;
 
         // Sites published
@@ -319,9 +322,9 @@ export class FeatureEngineeringEngine {
         const lastEvent = events[events.length - 1];
         const daysSinceActive = lastEvent
             ? Math.floor(
-                  (Date.now() - lastEvent.createdAt.getTime()) /
-                      (1000 * 60 * 60 * 24)
-              )
+                (Date.now() - lastEvent.createdAt.getTime()) /
+                (1000 * 60 * 60 * 24)
+            )
             : 999;
 
         const churned = daysSinceActive >= churnThresholdDays;
@@ -339,28 +342,20 @@ export class FeatureEngineeringEngine {
     /**
      * Normalize features for ML
      */
-    normalizeFeatures(features: UserFeature[]): DataFrame {
-        // Convert to DataFrame
-        const df = new DataFrame(features);
-
-        // Normalize numerical features (min-max scaling)
+    normalizeFeatures(features: UserFeature[]): Record<string, number[]> {
+        // Convert to column-based format
+        const df: Record<string, number[]> = {};
         const numericalCols = [
-            'sessionCount',
-            'avgSessionDuration',
-            'clickToEditRatio',
-            'editorDwellTime',
-            'errorCount',
-            'daysSinceActive',
-            'sitesPublished',
-            'totalDeployments',
+            'sessionCount', 'avgSessionDuration', 'clickToEditRatio',
+            'editorDwellTime', 'errorCount', 'daysSinceActive',
+            'sitesPublished', 'totalDeployments',
         ];
 
         numericalCols.forEach((col) => {
-            const series = df[col] as Series;
-            const min = series.min();
-            const max = series.max();
-            const normalized = series.sub(min).div(max - min + 1e-8);
-            df.replace(col, normalized);
+            const values = features.map((f) => (f as any)[col] as number);
+            const min = Math.min(...values);
+            const max = Math.max(...values);
+            df[col] = values.map((v) => (v - min) / (max - min + 1e-8));
         });
 
         return df;
@@ -503,9 +498,9 @@ export class FeastFeatureStore implements FeatureStore {
                 where: { id: userId },
                 include: { subscriptions: true },
             }),
-            this.prisma.analyticsEvent.findMany({
+            this.prisma.analytics.findMany({
                 where: {
-                    userId,
+                    site: { userId },
                     createdAt: { gte: startDate, lte: endDate },
                 },
                 orderBy: { createdAt: 'asc' },

@@ -2,7 +2,7 @@
  * 3-Click Architecture - Zero-Friction Flow
  * 
  * From description to deployment in exactly 3 clicks:
- * 1. Enter site description (AI Input)
+ * 1. Enter site description (Strategic Input)
  * 2. Review & Edit (Live Preview)
  * 3. One-Click Deploy
  * 
@@ -40,15 +40,15 @@ export const ThreeClickFlow: React.FC<ThreeClickFlowProps> = ({
 
     // Step 1: Input → Generate
     const handleGenerate = async (description: string) => {
-        // Call AI generation API
+        // Initiate Sovereign Synthesis Protocol
         setSiteDescription(description);
-        
+
         // Simulate generation (in production, call API)
         await new Promise(resolve => setTimeout(resolve, 2000));
-        
+
         setGeneratedSiteId("site-123");
         setCurrentStep("preview");
-        
+
         onSiteGenerated?.("site-123");
     };
 
@@ -56,11 +56,11 @@ export const ThreeClickFlow: React.FC<ThreeClickFlowProps> = ({
     const handleDeploy = async () => {
         // Call deploy API
         await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        setDeployedUrl("https://yoursite.getyousite.com");
+
+        setDeployedUrl("https://yoursite.GYS Global.com");
         setCurrentStep("complete");
-        
-        onDeployComplete?.("https://yoursite.getyousite.com");
+
+        onDeployComplete?.("https://yoursite.GYS Global.com");
     };
 
     // Step 3: Complete → Done
@@ -220,7 +220,7 @@ const InputStep: React.FC<InputStepProps> = ({ onGenerate }) => {
                     صِف موقعك المثالي
                 </h2>
                 <p className="text-xl text-neutral-slate text-center mb-12">
-                    اكتب وصفاً بسيطاً، وسنبني الموقع كاملاً بالذكاء الاصطناعي
+                    اكتب وصفاً بسيطاً، وسنقوم بتوليف الموقع وفق أرقى المعايير الهندسية
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -408,7 +408,7 @@ const CompleteStep: React.FC<CompleteStepProps> = ({ url, onComplete }) => {
                         rel="noopener noreferrer"
                         className="text-xl text-primary font-mono hover:underline"
                     >
-                        {url}
+                        {url.replace('https://yoursite.GYS Global.com', 'https://yournode.gysglobal.com')}
                     </a>
                 </div>
 

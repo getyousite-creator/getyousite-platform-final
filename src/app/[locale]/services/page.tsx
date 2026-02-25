@@ -42,7 +42,7 @@ export default function ServicesPage() {
                             <ul className="space-y-4">
                                 {[
                                     "Edge Propagation < 150ms",
-                                    "Neural Cache Optimization",
+                                    "Strategic Cache Optimization",
                                     "Military-Grade SSL Synthesis",
                                     "Real-Time Logic Monitoring"
                                 ].map((item, i) => (
@@ -63,7 +63,7 @@ export default function ServicesPage() {
                                     <Cpu className="text-primary w-6 h-6" />
                                 </div>
                                 <div>
-                                    <p className="text-white text-xs font-bold uppercase tracking-widest">Neural Engine 4.0</p>
+                                    <p className="text-white text-xs font-bold uppercase tracking-widest">Sovereign Engine 2.0</p>
                                     <p className="text-white/20 text-[10px] uppercase font-bold tracking-widest">Active & Operational</p>
                                 </div>
                             </div>

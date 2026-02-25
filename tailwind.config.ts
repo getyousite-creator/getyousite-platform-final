@@ -20,10 +20,10 @@ const config = {
         },
         extend: {
             fontFamily: {
-                sans: ["var(--font-body)", "Inter", "sans-serif"],
-                heading: ["var(--font-heading)", "Inter", "sans-serif"],
+                sans: ["Satoshi", "var(--font-body)", "Inter", "sans-serif"],
+                heading: ["ClashDisplay", "var(--font-heading)", "Inter", "sans-serif"],
                 arabic: ["var(--font-arabic-body)", "Tajawal", "Cairo", "sans-serif"],
-                "arabic-heading": ["var(--font-arabic-heading)", "IBM Plex Sans Arabic", "Tajawal", "sans-serif"],
+                "arabic-heading": ["IBM Plex Sans Arabic", "var(--font-arabic-heading)", "Tajawal", "sans-serif"],
             },
             // SOVEREIGN RTL SUPPORT
             // Direction utilities for Arabic/RTL layouts
@@ -31,7 +31,15 @@ const config = {
                 ltr: 'ltr',
                 rtl: 'rtl',
             },
+            boxShadow: {
+                premium: "0 20px 50px rgba(0, 0, 0, 0.3)",
+                "premium-blue": "0 20px 50px rgba(8, 112, 184, 0.7)",
+                "vip-glow": "0 10px 30px rgba(6, 78, 59, 0.35)",
+            },
             colors: {
+                "emerald-deep": "#064E3B",
+                "neon-lime": "#BEF264",
+                "obsidian": "#0A0A0A",
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
                 ring: "hsl(var(--ring))",

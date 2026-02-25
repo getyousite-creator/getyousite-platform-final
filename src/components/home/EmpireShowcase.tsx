@@ -69,7 +69,7 @@ export default function EmpireShowcase() {
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
                                 <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between pointer-events-none">
-                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#00D09C] bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10">Neural_Build</span>
+                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#00D09C] bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10">Strategic_Build</span>
                                     <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-0 -translate-x-4">
                                         <ExternalLink className="w-4 h-4 text-white" />
                                     </div>

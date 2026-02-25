@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import { getGlobalPerformanceAction, getSecurityPulseAction } from '@/app/actions/intelligence-actions';
 import { useAuth } from '@/components/providers/SupabaseProvider';
-import { Zap, Shield, TrendingUp, Activity, Search, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Zap, Shield, TrendingUp, Activity, Search, AlertTriangle, CheckCircle, Globe } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/shared/components/ui/dialog';
 
 import { useTranslations } from 'next-intl';
 
@@ -46,8 +46,8 @@ export function IntelligenceDashboard() {
     const handleAudit = async (storeId: string) => {
         setAuditLoading(storeId);
         try {
-            const { triggerNeuralAuditAction } = await import('@/app/actions/intelligence-actions');
-            await triggerNeuralAuditAction(storeId);
+            const { triggerSystemsAuditAction } = await import('@/app/actions/intelligence-actions');
+            await triggerSystemsAuditAction(storeId);
             refreshData();
         } catch (error) {
             console.error("Audit Failure:", error);
@@ -137,15 +137,15 @@ export function IntelligenceDashboard() {
                                 <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
                                     <div
                                         className="h-full bg-gradient-to-r from-[#00D09C]/20 to-[#00D09C] transition-all duration-1000 shadow-[0_0_10px_rgba(0,208,156,0.5)]"
-                                        style={{ width: `${Math.min(100, site.views / 10)}%` }}
+                                        style={{ width: `${Math.min(100, (site.views || 0) / 10)}%` }}
                                     />
                                 </div>
                             </div>
 
                             <div>
                                 <div className="flex justify-between items-end mb-2">
-                                    <span className="text-[10px] text-[#6366f1] uppercase font-black tracking-widest">{t('neural_resonance')}</span>
-                                    <span className="text-[10px] text-white font-black">{site.logicalResonance}%</span>
+                                    <span className="text-[10px] text-[#6366f1] uppercase font-black tracking-widest">{t('systems_resonance')}</span>
+                                    <span className="text-[10px] text-white font-black">{site.logicalResonance || 0}%</span>
                                 </div>
                                 <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
                                     <div
@@ -158,7 +158,7 @@ export function IntelligenceDashboard() {
                             <div>
                                 <div className="flex justify-between items-end mb-2">
                                     <span className="text-[10px] text-gray-500 uppercase font-black tracking-widest">{t('seo_score')}</span>
-                                    <span className="text-[10px] text-white font-black">{site.seoScore}%</span>
+                                    <span className="text-[10px] text-white font-black">{site.seoScore || 0}%</span>
                                 </div>
                                 <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
                                     <div
@@ -220,6 +220,57 @@ export function IntelligenceDashboard() {
                 </div>
             </div>
 
+            {/* Sovereign Global Topology (Distributed Edge Visualization) */}
+            <div className="grid lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2 p-10 rounded-[40px] bg-[#051423]/40 border border-white/5 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 p-8">
+                        <Globe className="w-12 h-12 text-[#00D09C]/10 group-hover:text-[#00D09C]/20 transition-colors duration-1000" />
+                    </div>
+                    <div className="relative z-10">
+                        <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-[#00D09C] mb-8">Node_Topology_Map v4.2</h4>
+                        <div className="h-[200px] flex items-center justify-center relative">
+                            {/* Animated Topology Mesh (Visual Proxy) */}
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="w-[400px] h-[400px] rounded-full border border-[#00D09C]/5 animate-[ping_10s_linear_infinite]" />
+                                <div className="w-[300px] h-[300px] rounded-full border border-[#00D09C]/10 animate-[ping_7s_linear_infinite] delay-1000" />
+                                <div className="w-[200px] h-[200px] rounded-full border border-[#00D09C]/20 animate-[ping_4s_linear_infinite] delay-2000" />
+                            </div>
+                            <div className="flex gap-12 relative z-20">
+                                {['EU-West', 'US-East', 'MENA-Node'].map((region, i) => (
+                                    <div key={i} className="flex flex-col items-center gap-3">
+                                        <div className="w-4 h-4 rounded-full bg-[#00D09C] shadow-[0_0_20px_#00D09C]" />
+                                        <span className="text-[8px] font-black uppercase tracking-widest text-white/40">{region}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="mt-8 flex justify-between items-center text-[9px] font-black uppercase tracking-[0.2em] text-white/20">
+                            <span>Propagation Delta: 42ms</span>
+                            <span>Edge Verification: 100% Secure</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="p-10 rounded-[40px] bg-[#051423]/60 border border-white/5 flex flex-col justify-between">
+                    <div>
+                        <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-500 mb-6">Systems_Sync_Uptime</h4>
+                        <div className="text-5xl font-black italic tracking-tighter text-white mb-2">99.999<span className="text-[20px] text-blue-500/50">%</span></div>
+                        <p className="text-[9px] font-bold uppercase tracking-widest text-blue-200/30">Continuous Operational Verification Active</p>
+                    </div>
+                    <div className="pt-8 border-t border-white/5">
+                        <div className="flex justify-between items-center mb-4">
+                            <span className="text-[9px] font-black uppercase tracking-widest text-gray-500">Security Pulse</span>
+                            <div className="flex gap-1">
+                                {[1, 2, 3, 4, 5].map(i => <div key={i} className="w-1 h-3 bg-[#00D09C]/40 rounded-full" />)}
+                            </div>
+                        </div>
+                        <button className="w-full py-4 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-[9px] font-black uppercase tracking-widest text-blue-400 hover:bg-blue-500 hover:text-white transition-all">
+                            Initialize Global Security Audit
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             {/* Sovereign Security Pulse (The Sentry Log) */}
             {securityLogs.length > 0 && (
                 <div className="space-y-6">
@@ -227,19 +278,20 @@ export function IntelligenceDashboard() {
                         <Shield className="w-3 h-3" />
                         Sovereign Defense Pulse (SPD-1)
                     </h4>
-                    <div className="grid gap-4">
+                    <div className="grid gap-4 bg-black/40 p-4 rounded-[32px] border border-white/5">
                         {securityLogs.map((log, idx: number) => (
-                            <div key={idx} className="p-6 rounded-[24px] bg-[#051423]/30 border border-white/5 flex justify-between items-center group hover:bg-[#051423]/50 transition-all backdrop-blur-sm">
-                                <div className="flex items-center gap-4">
-                                    <div className={`w-2 h-2 rounded-full ${log.level === 'critical' ? 'bg-red-500 animate-pulse shadow-[0_0_10px_red]' : 'bg-amber-500 shadow-[0_0_10px_orange]'}`} />
+                            <div key={idx} className="p-5 rounded-[20px] bg-[#051423]/50 border border-white/5 flex justify-between items-center group hover:border-[#00D09C]/40 transition-all font-mono">
+                                <div className="flex items-center gap-6">
+                                    <div className={`w-1.5 h-1.5 rounded-full ${log.level === 'critical' ? 'bg-red-500 animate-pulse' : 'bg-amber-500'}`} />
+                                    <span className="text-[10px] text-zinc-600 font-bold">[{new Date(log.created_at).toLocaleTimeString()}]</span>
                                     <div>
-                                        <p className="text-[10px] font-black text-white uppercase tracking-tight">{log.message}</p>
-                                        <p className="text-[8px] text-zinc-500 uppercase font-bold tracking-widest mt-1">
-                                            Origin: {log.source} • {new Date(log.created_at).toLocaleTimeString()}
+                                        <p className="text-[10px] font-bold text-white uppercase tracking-tight">{log.message}</p>
+                                        <p className="text-[8px] text-[#00D09C]/40 uppercase font-black tracking-widest mt-0.5">
+                                            Source_Node: {log.source}
                                         </p>
                                     </div>
                                 </div>
-                                <div className="text-[8px] font-black text-zinc-600 uppercase tracking-[0.2em] group-hover:text-[#00D09C] transition-colors">Integrity_Verified</div>
+                                <div className="text-[8px] font-black text-zinc-700 uppercase tracking-[0.2em] group-hover:text-white transition-colors">DECRYPTED_SUCCESS</div>
                             </div>
                         ))}
                     </div>

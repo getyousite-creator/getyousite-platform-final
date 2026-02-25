@@ -3,9 +3,9 @@
 import SovereignWrapper from "../SovereignWrapper";
 import { ShoppingBag, Search, User, Filter, ArrowRight, Star, Plus } from "lucide-react";
 import { SovereignTemplateProps } from "@/lib/types/template";
-import { SovereignImage } from "@/components/ui/sovereign-image";
+import { SovereignImage } from "@/shared/components/ui/sovereign-image";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
-import Logo from "@/components/ui/Logo";
+import Logo from "@/shared/components/ui/Logo";
 
 interface Section {
     type: string;
@@ -37,7 +37,7 @@ export default function AlphaStore({ settings, blueprint }: SovereignTemplatePro
             img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2430",
         },
         {
-            name: "Neural Shell",
+            name: "Strategic Shell",
             price: "$580",
             img: "https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=2430",
         },
@@ -119,7 +119,7 @@ export default function AlphaStore({ settings, blueprint }: SovereignTemplatePro
                                     Exclusive_Access
                                 </span>
                                 <h3 className="text-5xl font-black leading-tight italic tracking-tighter mb-6">
-                                    Neural <br /> Textures 01.
+                                    Strategic <br /> Textures 01.
                                 </h3>
                                 <p className="text-zinc-500 font-medium italic">
                                     High-fidelity materials transcribed for the new digital era.

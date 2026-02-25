@@ -11,13 +11,15 @@ import {
 import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Button } from '@/shared/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/shared/components/ui/card';
+import { Badge } from '@/shared/components/ui/badge';
+import { Dialog, DialogContent } from "@/shared/components/ui/dialog";
 import { CheckoutModule } from "@/components/payment/CheckoutModule";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/ui/tabs';
 import { LeadMatrix } from './LeadMatrix';
+import { CommandIntelligence } from './CommandIntelligence';
+import { useAuth } from '@/components/providers/SupabaseProvider';
 import { toast } from 'sonner';
 
 // Types for dashboard data
@@ -72,6 +74,7 @@ interface DashboardActivity {
 }
 
 export default function DashboardClient() {
+    const { user } = useAuth();
     const t = useTranslations("Dashboard");
     const params = useParams();
     const locale = params.locale as string || 'en';
@@ -145,7 +148,7 @@ export default function DashboardClient() {
                     ? `Site "${store.name}" successfully established on global CDN`
                     : store.status === 'pending_payment'
                         ? `Action required: Activate premium nodes for "${store.name}"`
-                        : `Neural draft created: "${store.name}"`,
+                        : `Blueprint configuration created: "${store.name}"`,
                 date: store.updated_at || store.created_at
             })).sort((a: DashboardActivity, b: DashboardActivity) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 5);
 
@@ -154,7 +157,7 @@ export default function DashboardClient() {
                 analytics: analyticsData,
                 seo: seoData,
                 recentActivity: synthesizedActivity.length > 0 ? synthesizedActivity : [
-                    { type: 'info', message: 'Ready for neural synthesis. Launch your first node.', date: new Date().toISOString() }
+                    { type: 'info', message: 'Architectural framework ready. Launch your first node.', date: new Date().toISOString() }
                 ],
             });
         } catch (error) {
@@ -238,6 +241,9 @@ export default function DashboardClient() {
                     <TabsList className="bg-white/5 border border-white/5 p-1 h-14 rounded-2xl w-fit flex gap-1">
                         <TabsTrigger value="overview" className="h-full px-8 rounded-xl data-[state=active]:bg-[#00D09C] data-[state=active]:text-[#0A2540] text-white/40 text-[10px] font-black uppercase tracking-widest transition-all">
                             {t('overview')}
+                        </TabsTrigger>
+                        <TabsTrigger value="command" className="h-full px-8 rounded-xl data-[state=active]:bg-cyan-400 data-[state=active]:text-[#0A2540] text-white/40 text-[10px] font-black uppercase tracking-widest transition-all">
+                            {t('strategy_tab')}
                         </TabsTrigger>
                         <TabsTrigger value="leads" className="h-full px-8 rounded-xl data-[state=active]:bg-[#00D09C] data-[state=active]:text-[#0A2540] text-white/40 text-[10px] font-black uppercase tracking-widest transition-all">
                             {t('leads_tab')}
@@ -359,6 +365,12 @@ export default function DashboardClient() {
                                 </div>
                             </div>
                         </div>
+                    </TabsContent>
+
+                    <TabsContent value="command" className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        {user && selectedStore && (
+                            <CommandIntelligence userId={user.id} storeId={selectedStore} />
+                        )}
                     </TabsContent>
 
                     <TabsContent value="leads" className="animate-in fade-in slide-in-from-bottom-4 duration-500">

@@ -9,7 +9,7 @@ import { MarketIntelligenceBridge, CurrencyLocale, UnitSystem } from "@/lib/engi
 import CinematicVideo from "@/components/home/showcase/CinematicVideo";
 import { useState } from "react";
 import SovereignWrapper from "../SovereignWrapper";
-import Logo from "@/components/ui/Logo";
+import Logo from "@/shared/components/ui/Logo";
 import { ComponentLibrary } from "@/components/engine/ComponentLibrary";
 
 export default function BorealEstates({ settings, blueprint }: { settings: any, blueprint?: any }) {

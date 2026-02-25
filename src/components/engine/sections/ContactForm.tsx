@@ -70,7 +70,7 @@ export default function ContactForm({ content, primaryColor, backgroundColor, te
                             </div>
                             <div>
                                 <p className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Secure Email</p>
-                                <p className="text-lg font-bold">{content?.email || 'intel@getyousite.com'}</p>
+                                <p className="text-lg font-bold">{content?.email || 'intel@GYS Global.com'}</p>
                             </div>
                         </div>
 

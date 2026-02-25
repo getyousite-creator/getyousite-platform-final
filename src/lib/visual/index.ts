@@ -1,9 +1,9 @@
 /**
- * GetYouSite Visual Intelligence Module
+ * GYS Global Visual Intelligence Module
  * 
  * Super-Visual Protocol V2 (SVP-V2) - Complete visual intelligence system
  * 
- * This module transforms GetYouSite from a "website generator" into a
+ * This module transforms GYS Global from a "website generator" into a
  * "digital art studio" that produces high-conversion visual experiences.
  */
 

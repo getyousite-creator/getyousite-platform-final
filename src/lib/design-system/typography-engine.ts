@@ -99,7 +99,7 @@ export const TAJAWAL: FontFamily = {
 // GOLDEN RATIO TYPOGRAPHY SCALE
 // ============================================================================
 
-const GOLDEN_RATIO = 1.618;
+export const GOLDEN_RATIO = 1.618;
 
 /**
  * Generate typography scale based on golden ratio (φ ≈ 1.618)
@@ -128,7 +128,7 @@ export function generateGoldenRatioScale(baseSize: number = 16): TypographyScale
  */
 export function generateRemScale(baseSize: number = 16): TypographyScale {
     const pxScale = generateGoldenRatioScale(baseSize);
-    
+
     return {
         xs: `${(parseFloat(pxScale.xs) / 16).toFixed(3)}rem`,
         sm: `${(parseFloat(pxScale.sm) / 16).toFixed(3)}rem`,
@@ -173,7 +173,7 @@ export const TYPOGRAPHY_CONFIG: TypographyConfig = {
  */
 export function generateTypographyCSS(): string {
     const config = TYPOGRAPHY_CONFIG;
-    
+
     return `
 /* ============================================
    MULTILINGUAL TYPOGRAPHY ENGINE
@@ -277,7 +277,7 @@ h6 { font-size: var(--text-lg); }
  */
 export function generateTailwindTypographyConfig(): Record<string, unknown> {
     const config = TYPOGRAPHY_CONFIG;
-    
+
     return {
         theme: {
             extend: {
@@ -332,7 +332,7 @@ export function getGoogleFontsURL(): string {
         "IBM+Plex+Sans+Arabic:wght@400;500;600;700",
         "Tajawal:wght@300;400;500;700",
     ];
-    
+
     return `https://fonts.googleapis.com/css2?family=${fonts.join("&family=")}&display=swap`;
 }
 
@@ -341,7 +341,7 @@ export function getGoogleFontsURL(): string {
  */
 export function generateFontPreloads(): string[] {
     const base = "https://fonts.gstatic.com/s";
-    
+
     return [
         `<link rel="preload" href="${base}/ibmplexsansarabic/v12/LDI0apOFNxEwR-Bd1O9uYNmnUQomAgE25imKSzHh.woff2" as="font" type="font/woff2" crossorigin>`,
         `<link rel="preload" href="${base}/tajawal/v14/Iura6YBj_oCad4k1nzrBCB5I.woff2" as="font" type="font/woff2" crossorigin>`,
@@ -364,26 +364,26 @@ export interface TypographyValidationResult {
 export function validateTypography(): TypographyValidationResult {
     const warnings: string[] = [];
     const recommendations: string[] = [];
-    
+
     // Check golden ratio adherence
     const config = TYPOGRAPHY_CONFIG;
     const baseSize = 16;
     const lgSize = parseFloat(config.scale.lg);
     const expectedLg = baseSize * GOLDEN_RATIO;
-    
+
     if (Math.abs(lgSize - expectedLg) > 0.5) {
         warnings.push(`LG size (${lgSize}px) deviates from golden ratio (${expectedLg.toFixed(2)}px)`);
     }
-    
+
     // Check line height for readability
     if (config.lineHeight.body < 1.5) {
         warnings.push("Body line height should be at least 1.5 for readability");
     }
-    
+
     // Check font count (max 2 families per language)
     recommendations.push("Ensure max 2 font families per language");
     recommendations.push("Use font-display: swap for better performance");
-    
+
     return {
         valid: warnings.length === 0,
         warnings,

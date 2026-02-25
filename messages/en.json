@@ -1,142 +1,131 @@
 {
     "Header": {
-        "services": "Services",
-        "pricing": "Pricing",
-        "aiEngine": "Engine",
-        "portfolio": "Templates",
-        "blog": "Blog",
-        "contact": "Contact",
-        "launch": "Sign Up",
-        "login": "Login",
-        "signout": "Sign Out",
-        "dashboard": "Dashboard",
+        "services": "Enterprise Solutions",
+        "pricing": "Investment Matrix",
+        "strategicEngine": "Strategic Engine",
+        "portfolio": "Reference Assets",
+        "blog": "Knowledge Base",
+        "contact": "Command Center",
+        "launch": "Establish Project",
+        "login": "Secure Login",
+        "signout": "Terminate Session",
+        "dashboard": "Management Center",
         "backHome": "Back to Home",
-        "sovereign_access": "Secure Access Active"
+        "sovereign_access": "Sovereign Access Active"
     },
     "CTA": {
-        "title": "Ready to <span class='text-primary'>Scale?</span>",
-        "subtitle": "High-performance infrastructure is ready. Move beyond simple builders. Launch your professional business asset today.",
-        "button": "Start Your Project"
+        "title": "Ready to Deploy Your <span class='text-primary'>Digital Architecture?</span>",
+        "subtitle": "High-performance infrastructure engineered by global software strategists. Move beyond simple builders. Launch your professional business asset today.",
+        "button": "Initiate Enterprise Build"
     },
     "Hero": {
-        "badge": "Sovereign Website Builder 2026",
-        "headline": "Manifest Your Digital Empire in Seconds.",
-        "subheadline": "AI that doesn't just design, but engineers total business logic. From a single prompt to high-yield digital assets.",
-        "placeholder": "Describe your commercial vision here...",
-        "generate": "Initiate Neural Build",
-        "gdpr": "GDPR & Security Compliant",
-        "uptime": "99.9% Uptime SLA",
-        "aiCore": "AI Infrastructure",
+        "badge": "Sovereign Digital Engineering Protocol // 2026",
+        "headline": "Engineer Your Digital Empire with Global Precision.",
+        "subheadline": "A sophisticated architectural framework that transcends traditional design to engineer robust business logic. We merge expert software craftsmanship with high-frequency Strategic synthesis to deliver high-yield digital assets.",
+        "placeholder": "Define your strategic commercial vision here...",
+        "generate": "Manifest Architectural Asset",
+        "gdpr": "ISO & Security Compliant",
+        "uptime": "99.99% Operational SLA",
+        "strategicCore": "Central Logic Kernel",
         "badges": {
-            "delivery": "Fast Deployment",
-            "core": "AI Design Engine",
-            "logic": "Business Logic"
+            "delivery": "High-Frequency Deployment",
+            "core": "Precision Architectural Synthesis",
+            "logic": "Sovereign Business Logic"
         }
     },
     "Services": {
-        "title": "Functional Matrix",
-        "subtitle": "Leveraging edge technology to ensure absolute digital sovereignty, high-frequency performance, and clinical-grade security.",
+        "title": "Architectural Matrix",
+        "subtitle": "Leveraging elite software engineering to ensure absolute digital sovereignty, mission-critical performance, and military-grade security.",
         "velocity": {
-            "title": "Instant Velocity",
-            "desc": "Near-zero response times. In the high-frequency era, milliseconds are the currency of success."
+            "title": "Zero-Latency Performance",
+            "desc": "Next-generation optimized infrastructure ensuring near-zero response times. In the digital economy, speed is the ultimate currency."
         },
-        "ai": {
-            "title": "Integrated Neural Synthesis",
-            "desc": "An AI engine that goes beyond content\"”it architects a conversion journey based on visitor psychology."
+        "intelligence": {
+            "title": "Strategic Market Intelligence",
+            "desc": "A strategic engine that goes beyond aesthetics\"”it architects a professional conversion journey based on conversion-science and visitor psychology."
         },
         "cdn": {
-            "title": "Edge Propagation",
-            "desc": "Globally distributed infrastructure ensuring your digital empire is accessible from any node on Earth instantly."
+            "title": "Global Geopolitical Propagation",
+            "desc": "Sophisticated globally distributed infrastructure ensuring your digital empire is accessible from any node on Earth instantly."
         },
         "security": {
-            "title": "Sovereign Shield",
-            "desc": "Military-grade encryption and proactive threat detection to safeguard your digital assets 24/7."
+            "title": "Sovereign Fortress Protocol",
+            "desc": "Military-grade encryption and industrial threat detection designed by cybersecurity experts to safeguard your corporate assets 24/7."
         },
         "responsive": {
-            "title": "Structural Fluidity",
-            "desc": "Perfect adaptation across all devices. A unified high-status user experience that commands respect."
+            "title": "Structural Adaptive Precision",
+            "desc": "Perfect architectural adaptation across all operating environments. A unified high-status user experience that commands professional authority."
         },
         "growth": {
-            "title": "Search Authority (SEO)",
-            "desc": "Automated SEO orchestration that places your project at the frontier of search results, where dominance happens."
+            "title": "Semantic Dominance (SEO)",
+            "desc": "Automated SEO orchestration that places your project at the frontier of search results through the power of strategic market logic."
         },
-        "explore": "Explore Logic"
+        "explore": "Explore Engineering"
     },
     "Testimonials": {
-        "title": "Client Testimonials",
-        "subtitle": "Join thousands who built their sites with us",
+        "title": "Strategic Success Reports",
+        "subtitle": "How global entities achieve digital sovereignty through our engineering partnership.",
         "items": [
             {
-                "name": "Omar El Saqli",
-                "role": "Merchant, Casablanca",
-                "content": "I moved my store to GetYouSite and saved 2000 MAD monthly in commissions. The speed is unreal and support is always on time."
+                "name": "Adrian Zhao",
+                "role": "Director of Technical Operations, FinTech Global",
+                "content": "GYS Global has revolutionized how we deploy digital infrastructure. The engineering precision and embedded logic within the system are unparalleled."
             },
             {
                 "name": "Sarah Jenkins",
-                "role": "Creative Director, New York",
-                "content": "Professional hosting is not a joke. Latency dropped to zero globally. The most logical choice for professional agencies."
-            },
-            {
-                "name": "Yassine Alami",
-                "role": "Founder, TechRabat",
-                "content": "I built my company site in less than 48 hours. The precision in design and performance is incomparable. Proud of a global Moroccan product."
-            },
-            {
-                "name": "Marcus Vohl",
-                "role": "CTO, HyperScale",
-                "content": "Absolute dominance in site building. The AI engine writes precise code. Zero errors, strict execution."
+                "role": "Senior Marketing Strategist, Luxe Diamond",
+                "content": "Transitioning to the Sovereign Standard was a critical strategic move. Our conversion metrics have ascended thanks to the psychological engineering of the interfaces."
             }
         ]
     },
     "Showcase": {
-        "title": "Our <span class='text-blue-500'>Portfolio</span>",
-        "subtitle": "Start with a professional template designed for growth and reliability.",
-        "tabs": {
-            "all": "All",
-            "business": "Business & Agency",
-            "ecommerce": "E-Commerce",
-            "healthcare": "Healthcare",
-            "restaurant": "Restaurant & Food",
-            "creative": "Creative & Portfolio",
-            "finance": "Finance & Legal",
-            "internal": "Internal Tools"
+        "title": "Architectural Reference Assets",
+        "subtitle": "A collection of digital assets synthesized and deployed via our sovereign framework.",
+        "badge": "Elite Asset Portfolio",
+        "viewProject": "Audit Architecture",
+        "categories": {
+            "all": "All Verticals",
+            "business": "Enterprise",
+            "ecommerce": "High-Frequency Commerce",
+            "creative": "Creative Synthesis",
+            "tech": "Technical Infrastructure"
         },
-        "preview": "View Demo",
-        "edit": "Edit This Site",
-        "live_title": "Recent Projects",
-        "live_subtitle": "Professional websites built for our clients",
-        "view_archive": "View All Templates",
+        "preview": "View Asset Demo",
+        "edit": "Modify Architecture",
+        "live_title": "Recent Deployments",
+        "live_subtitle": "Sovereign nodes established for our partners",
+        "view_archive": "Open Registry",
         "header": {
-            "badge": "Professional Architecture Library",
-            "title": "Engineered for <span class='text-primary italic font-light'>Peak Performance</span>",
-            "desc": "Every template is a battle-tested industrial blueprint. Optimized for global speed and ready to be deployed as a high-performance business asset.",
-            "button": "Custom Build Request"
+            "badge": "Industrial Blueprint Library",
+            "title": "Engineered for <span class='text-primary italic font-light'>Absolute Performance</span>",
+            "desc": "Every template is a battle-tested industrial blueprint. Optimized for global throughput and ready to be deployed as a mission-critical asset.",
+            "button": "Request Strategic Build"
         },
         "badges": {
-            "Recommended": "Recommended",
-            "Sales King": "Sales King",
-            "Corporate": "Corporate",
-            "High-Performance": "High-Performance",
-            "Financial": "Financial",
-            "Ops_Ready": "Ops_Ready",
+            "Recommended": "Standardized",
+            "Sales King": "Revenue Engine",
+            "Corporate": "Institutional",
+            "High-Performance": "High-Throughput",
+            "Financial": "Sovereign-Grade",
+            "Ops_Ready": "Operational",
             "Sovereign": "Sovereign",
-            "Luxury": "Luxury",
-            "Creative": "Creative",
-            "Conversion": "Conversion",
-            "Asset": "Asset",
-            "Education": "Education",
-            "Editorial": "Editorial",
-            "Aesthetic": "Aesthetic",
-            "Trend": "Trend",
-            "Legal": "Legal",
-            "Taste": "Taste",
-            "Capital": "Capital",
-            "Care": "Care",
-            "Wellness": "Wellness",
-            "Innovation": "Innovation",
-            "Realty": "Realty",
-            "Press": "Press",
-            "Training": "Training"
+            "Luxury": "Prestige",
+            "Creative": "Proprietary",
+            "Conversion": "High-Yield",
+            "Asset": "Digital Asset",
+            "Education": "Academic",
+            "Editorial": "Discursive",
+            "Aesthetic": "Architectural",
+            "Trend": "Contemporary",
+            "Legal": "Regulatory",
+            "Taste": "Refined",
+            "Capital": "Financial Core",
+            "Care": "Clinical",
+            "Wellness": "Organic",
+            "Innovation": "Frontier",
+            "Realty": "Real Estate",
+            "Press": "Syndicate",
+            "Training": "Operational"
         },
         "projects": {
             "dr-khalil": {
@@ -238,40 +227,37 @@
         }
     },
     "Pricing": {
-        "title": "Pricing Plans",
-        "subtitle": "Choose the right plan for your business. Clear pricing with no hidden fees.",
-        "badge": "Access Protocol v2.0",
-        "per_month": "/ month",
-        "billed_yearly": "billed yearly",
-        "start_free": "Start Free Protocol",
+        "title": "Investment Matrix",
+        "subtitle": "Select the strategic commitment level that aligns with your enterprise growth objectives.",
+        "badge": "Resource Allocation",
+        "monthly": "Quarterly Investment",
+        "yearly": "Sovereign Annual Coverage",
+        "save": "20% Cost Optimization",
+        "cta": "Activate Protocol",
+        "mostPopular": "Optimal Enterprise Choice",
         "currency_code": "USD",
-        "niche": {
-            "blog": "Blog / Personal",
-            "business": "Business / Medical",
-            "store": "Store / E-commerce",
-            "agency": "Agencies / Projects"
+        "plans": {
+            "starter": {
+                "name": "Growth Node",
+                "desc": "Ideal for early-stage ventures requiring a robust foundational infrastructure."
+            },
+            "pro": {
+                "name": "Sovereign System",
+                "desc": "The integrated solution for market dominance and accelerated scaling."
+            },
+            "enterprise": {
+                "name": "Enterprise Core",
+                "desc": "Fully bespoke infrastructure for global entities and distributed networks."
+            }
         },
-        "currency": {
-            "mad": "Morocco (DH)",
-            "usd": "International (USD)"
-        },
-        "starter": "Starter",
-        "pro": "Professional",
-        "business": "Business",
-        "enterprise": "Enterprise",
-        "most_popular": "Most Popular",
-        "payment_notice": "Pay via CIH / Barid Bank for immediate activation with 0% processing fees",
-        "desc": {
-            "starter": "Proof of Concept Protocol - Ideal for early visionaries.",
-            "pro": "Professional Growth Engine - High-status digital presence.",
-            "business": "Digital Empire Infrastructure - Full architectural control.",
-            "enterprise": "Custom infrastructure for large-scale projects with direct engineering support."
-        },
-        "price_custom": "Custom Quote",
-        "per_project": "/project",
-        "choose": "Choose Plan",
         "features": {
-            "ai_generation_basic": "Basic AI Unit Generation",
+            "strategicSynthesis": "Strategic Synthesis Engine",
+            "pages": "Multi-Node Deployment",
+            "design": "Elite Architectural Frameworks",
+            "support": "24/7 Engineering Response",
+            "hosting": "Sovereign Cloud Hosting",
+            "domain": "Global Namespace Encryption",
+            "synthesisFoundational": "Foundational Strategic Synthesis",
             "subdomain_access": "GYS Subdomain Access",
             "gys_branding": "Standard GYS Branding",
             "community_support": "Logic Community Support",
@@ -279,94 +265,94 @@
             "custom_domain_link": "Naked Domain Linking",
             "brand_removal": "Total Brand Sovereignty",
             "priority_logic_support": "Priority Engineering Support",
-            "advanced_analytics": "Neural Traffic Analytics",
+            "advanced_analytics": "Strategic Traffic Analytics",
             "10_sovereign_sites": "10 Sovereign Web Assets",
-            "ai_seo_sovereign": "Autonomous SEO Architect",
+            "autonomousSEO": "Autonomous SEO Architect",
             "live_logic_chat": "Live Logic Support Chat",
             "nightly_backups": "Redundant Security Backups",
-            "api_access_token": "API Access Protocol",
-            "single_page": "Single Page Website",
-            "basic_seo": "Basic SEO Optimization",
-            "mobile": "Mobile Responsive",
-            "delivery": "48-Hour Delivery",
-            "pages": "5-Page System",
-            "cms": "Integrated Content Manager",
-            "analytics": "Analytics Dashboard",
-            "support": "Priority Support",
-            "domain_free": "Free .com Domain",
-            "ecommerce": "Full E-commerce Store",
-            "inventory": "Inventory Management",
-            "reports": "Sales Reports",
-            "chatbot": "AI Assistant Bundle",
-            "multilingual": "Multi-language Support",
-            "animations": "Custom Micro-animations",
-            "monitoring": "24/7 Uptime Monitoring",
-            "team": "Dedicated Project Team",
-            "whitelabel": "White-label Solutions",
-            "whatsapp_support": "Direct WhatsApp Support",
-            "high_security": "Military-grade Security",
-            "unlimited": "Unlimited Projects",
-            "custom_ai": "Custom AI Tools",
-            "sla": "SLA Guarantee",
-            "onpremise": "Private Hosting Options"
-        }
+            "api_access_token": "API Access Protocol"
+        },
+        "niche": {
+            "blog": "Personal / Editorial",
+            "business": "Enterprise / Clinical",
+            "store": "Commerce / Logistics",
+            "agency": "Consultancy / Strategic"
+        },
+        "currency": {
+            "mad": "Morocco (MAD)",
+            "usd": "International (USD)"
+        },
+        "starter": "Foundational",
+        "pro": "Sovereign",
+        "business": "Institutional",
+        "enterprise": "Enterprise",
+        "most_popular": "Partner Choice",
+        "payment_notice": "Transfer via Institutional Channels for 0% processing friction",
+        "price_custom": "Strategic Quote",
+        "per_project": "/node",
+        "choose": "Initiate Protocol"
     },
     "Footer": {
-        "tagline": "We design your digital future. Building professional websites powered by AI.",
-        "platform": "Platform",
-        "aiEngine": "AI Engine",
-        "pricing": "Pricing",
-        "blog": "Blog",
-        "contact": "Contact",
-        "company": "Company",
-        "about": "About Us",
-        "help": "Help Center",
-        "privacy": "Privacy Policy",
-        "terms": "Terms of Service",
-        "legal": "Legal",
-        "system": "System Status",
-        "operational": "All Systems Operational",
-        "hosted": "Securely Hosted",
-        "copyright": "© 2026 GetYouSite. All rights reserved."
+        "tagline": "Architecting the Global Digital Future. Deploying mission-critical infrastructure engineered by experts for visionaries.",
+        "platform": "Infrastructure",
+        "strategicEngine": "Strategic Core",
+        "pricing": "Investment Matrix",
+        "blog": "Intelligence",
+        "contact": "Command Center",
+        "company": "Entity",
+        "about": "Our Architecture",
+        "help": "Systems Support",
+        "privacy": "Data Governance",
+        "terms": "Operational Mandate",
+        "legal": "Compliance & Regulatory",
+        "system": "Network Status",
+        "operational": "Sovereign Nodes Deployment: Active",
+        "hosted": "Hyper-Latency Mesh Protection",
+        "copyright": "© 2026 GYS Global Strategic Engineering Firm. All Infrastructures Verified."
     },
     "Metadata": {
-        "title": "GetYouSite | Sovereign Logic for Digital Empires",
-        "description": "Engineered for absolute market dominance. Build your high-performance professional website in 48 hours with AI neural synthesis."
+        "title": "GYS Global | Strategic Engineering Authority & Digital Sovereignty",
+        "description": "Engineered by GYS Global for absolute market dominance. Deploy mission-critical professional infrastructure via high-performance architectural synthesis."
     },
     "Auth": {
-        "signin_title": "Login",
-        "signup_title": "Sign Up",
-        "subtitle": "Welcome to GetYouSite",
-        "google": "Continue with Google",
-        "apple": "Continue with Apple",
-        "microsoft": "Continue with Microsoft",
-        "or_divider": "or via Email",
-        "email_label": "Email Address",
-        "password_label": "Password",
-        "email_placeholder": "you@example.com",
-        "continue": "Continue",
-        "login_button": "Login",
-        "signup_button": "Create Account",
-        "have_account": "Already have an account? Login",
-        "no_account": "Don't have an account? Sign up",
-        "forgot_password_link": "Forgot password?",
-        "forgot_password_title": "Identify Retrieval",
-        "reset_password_title": "Reset Security Key",
-        "new_password_placeholder": "Enter New Security Key",
-        "update_password_button": "Update Identity",
-        "secure_session_active": "Secure Identity Sequence Active",
-        "security_link_msg": "Enter your email for security link",
-        "reset_success_msg": "Reset instructions sent to your email.",
-        "update_success_msg": "Identity updated. Redirecting...",
-        "signup_success_msg": "Account created. Please check your email for activation.",
-        "signout_success": "Sovereign session terminated successfully.",
-        "error_invalid_email": "Please enter a valid email address.",
-        "error_user_exists": "This email is already registered.",
-        "error_invalid_credentials": "Invalid email or password.",
-        "error_password_too_short": "Security Mandate: Password must be at least 8 characters.",
-        "error_generic": "Authentication failed. Please try again.",
-        "recall_identity": "Return to Login",
-        "terms": "By signing in, you agree to our Terms of Service and Privacy Policy.",
+        "signin_title": "Authorize Identity",
+        "signup_title": "Initialize Account",
+        "subtitle": "GYS Sovereign Identity Management System",
+        "testimonial": {
+            "quote": "GYS Global didn't just give me a website, it gave me a growth engine. Simplicity and power in one place. My business doubled in three months.",
+            "author": "Alex Sterling",
+            "role": "CEO, Apex Ventures"
+        },
+        "google": "Authenticate via Google Enterprise",
+        "apple": "Authenticate via Apple ID",
+        "microsoft": "Authenticate via Microsoft AD",
+        "or_divider": "OR SECURE ENCRYPTED CHANNEL",
+        "email_label": "Official Node Email",
+        "password_label": "Security Access Key",
+        "email_placeholder": "operator@entity.com",
+        "continue": "Initiate Access",
+        "login_button": "Validate Access",
+        "signup_button": "Provisional Deployment",
+        "have_account": "Existing Node? Authorize Access",
+        "no_account": "New Operation? Request Initialization",
+        "forgot_password_link": "Lost Access Credentials?",
+        "forgot_password_title": "Credential Recovery Sequence",
+        "reset_password_title": "Identity Reconstruction",
+        "new_password_placeholder": "New Security Access Key",
+        "update_password_button": "Update Identity Protocol",
+        "secure_session_active": "Sovereign Identity Sequence Active",
+        "security_link_msg": "Transmit Email for Recovery Link",
+        "reset_success_msg": "Recovery instructions routed to your primary node.",
+        "update_success_msg": "Identity Protocol Updated. Redirecting to Command Center...",
+        "signup_success_msg": "Identity Initialized. Verify node via transmitted link.",
+        "signout_success": "Sovereign session terminated. Node detached.",
+        "error_invalid_email": "Invalid Node Format Identified.",
+        "error_user_exists": "Identity already registered in global registry.",
+        "error_invalid_credentials": "Authentication Mismatch. Access Denied.",
+        "error_password_too_short": "Security Mandate: Key must exceed 12-character entropy.",
+        "error_generic": "System Failure during Identity Verification.",
+        "recall_identity": "Return to Authorization",
+        "terms": "By accessing this node, you agree to our Sovereign Governance & Data Compliance Protocols.",
         "backHome": "Back to Home",
         "sovereign_access": "Secure Access Active",
         "check_email_title": "Check Your Email",
@@ -402,17 +388,17 @@
         }
     },
     "Blog": {
-        "title": "GetYouSite Blog",
-        "subtitle": "Insights and tips on web design, AI, and business growth.",
+        "title": "GYS Global Intelligence",
+        "subtitle": "Strategic insights on digital architecture, market engineering, and enterprise growth.",
         "badge": "Knowledge Hub",
         "read_more": "Read More",
         "categories": "Categories",
         "posts": {
             "post1": {
-                "title": "AI in E-Commerce: The Future is Now",
-                "excerpt": "How artificial intelligence is revolutionizing online stores and transforming user experience.",
-                "author": "GetYouSite Team",
-                "category": "Artificial Intelligence",
+                "title": "Digital Infrastructure: The Future is Now",
+                "excerpt": "How advanced architectural engineering is revolutionizing online commerce and transforming user experience.",
+                "author": "GYS Engineering Division",
+                "category": "Digital Architecture",
                 "date": "Feb 05, 2026"
             },
             "post2": {
@@ -440,24 +426,24 @@
             "button": "Subscribe"
         },
         "articles": {
-            "ai-future": {
-                "title": "AI: The Future of Digital Commerce",
-                "excerpt": "Why traditional e-commerce is failing and how AI-powered infrastructure is redistributing market power.",
-                "content": "<p class='text-xl text-slate-300 font-medium leading-relaxed mb-8'>In the past decade, we have seen the rise of centralized platforms that dictate the terms of digital existence. From high commissions to rigid templates, the 'old internet' has become a cage for visionaries.</p><h2 class='text-3xl font-black italic uppercase tracking-tightest mt-12 mb-6'>The Death of Standard Templates</h2><p class='text-slate-400 mb-6 leading-relaxed'>Standard templates are no longer enough. The modern consumer demands a dynamic experience that feels alive. That's where AI comes in. It doesn't just display content; it orchestrates an ecosystem.</p><blockquote class='border-l-4 border-blue-600 pl-10 my-12 py-4 italic text-2xl font-black text-white'>\"Digital sovereignty is not a luxury; it is the fundamental requirement for high-frequency commerce in 2026.\"</blockquote><h2 class='text-3xl font-black italic uppercase tracking-tightest mt-12 mb-6'>Engineered for Success</h2><p class='text-slate-400 mb-6 leading-relaxed'>By leveraging server-side rendering and edge computation, platforms like GetYouSite ensure that your digital empire is never offline and never slow. We are moving from 'websites' to 'digital organisms'.</p>",
-                "author": "GetYouSite Team",
-                "category": "Artificial Intelligence",
+            "digital-engineering-future": {
+                "title": "Digital Engineering: The Future of Commerce",
+                "excerpt": "Why traditional e-commerce is failing and how next-generation engineered infrastructure is redistributing market power.",
+                "content": "<p class='text-xl text-slate-300 font-medium leading-relaxed mb-8'>In the past decade, we have seen the rise of centralized platforms that dictate the terms of digital existence. From high commissions to rigid templates, the 'old internet' has become a cage for visionaries.</p><h2 class='text-3xl font-black italic uppercase tracking-tightest mt-12 mb-6'>The Death of Standard Templates</h2><p class='text-slate-400 mb-6 leading-relaxed'>Standard templates are no longer enough. The modern consumer demands a dynamic experience that feels alive. That's where precision engineering comes in. It doesn't just display content; it orchestrates an ecosystem.</p><blockquote class='border-l-4 border-blue-600 pl-10 my-12 py-4 italic text-2xl font-black text-white'>\"Digital sovereignty is not a luxury; it is the fundamental requirement for high-frequency commerce in 2026.\"</blockquote><h2 class='text-3xl font-black italic uppercase tracking-tightest mt-12 mb-6'>Engineered for Success</h2><p class='text-slate-400 mb-6 leading-relaxed'>By leveraging server-side rendering and edge computation, platforms like GYS Global ensure that your digital empire is never offline and never slow. We are moving from 'websites' to 'digital organisms'.</p>",
+                "author": "GYS Engineering Division",
+                "category": "Digital Architecture",
                 "date": "Feb 05, 2026"
             }
         }
     },
     "About": {
-        "title": "About Us",
-        "subtitle": "We are a team dedicated to empowering business owners with innovative and easy-to-use digital solutions.",
-        "badge": "Our Story",
-        "mission_title": "Our Mission",
-        "mission_text": "To simplify the process of building a digital presence for businesses globally by leveraging AI to deliver high quality in record time.",
-        "vision_title": "Our Vision",
-        "vision_text": "To be the leading platform that enables anyone to create and manage their professional website without needing complex technical expertise."
+        "title": "Corporate Overview",
+        "subtitle": "GYS Global is a global engineering firm specialized in the development of sovereign digital infrastructure.",
+        "badge": "Strategic Mission",
+        "mission_title": "Enterprise Vision",
+        "mission_text": "We aim to empower commercial entities and organizations with absolute digital sovereignty by providing advanced architectural systems that merge elite human expertise with high-frequency Strategic synthesis.",
+        "vision_title": "Market Leadership",
+        "vision_text": "To be the global standard for logic-driven digital engineering, where power, speed, and security are the constants upon which future empires are built."
     },
     "LaunchModal": {
         "init_sequence": "Establish Protocol",
@@ -596,7 +582,8 @@
         "overview": "Overview",
         "leads_tab": "Leads",
         "growth_matrix": "Growth Matrix",
-        "intelligence_tab": "Intelligence",
+        "intelligence_tab": "Intelligence Hub",
+        "strategy_tab": "Strategy Center",
         "total_transmissions": "Total Transmissions",
         "unique_operators": "Unique Operators",
         "conversion_velocity": "Conversion Velocity",
@@ -621,27 +608,27 @@
             "total_leads": "Total Leads",
             "new_hot": "New & Hot",
             "contact_rate": "Contact Rate",
-            "avg_ai_score": "Avg AI Score",
-            "intelligence_desc": "AI-Powered Lead Intelligence & Prioritization",
-            "loading_intelligence": "Analyzing Lead Intelligence..."
+            "avg_quality_score": "Avg Quality Index",
+            "intelligence_desc": "Intelligence-Driven Lead Prioritization",
+            "loading_intelligence": "Analyzing Strategic Intelligence..."
         },
         "intelligence": {
             "title": "Intelligence Hub",
-            "subtitle": "Neural velocity synchronization active",
-            "loading": "Scanning Neural Nodes & Propagating Truth...",
+            "subtitle": "Strategic velocity synchronization active",
+            "loading": "Scanning Strategic Nodes & Propagating Truth...",
             "global_avg": "Global SEO Avg",
-            "scanning": "Reconstructing Neural Map...",
+            "scanning": "Reconstructing Strategic Map...",
             "traffic_velocity": "Traffic Velocity",
-            "neural_resonance": "Neural Resonance",
-            "seo_score": "Neural SEO Score",
+            "systems_resonance": "Systems Resonance",
+            "seo_score": "Strategic SEO Score",
             "rescan": "Re-Scan",
-            "diagnostics": "View Neural Diagnostics",
+            "diagnostics": "View Strategic Diagnostics",
             "expand": "Expand Digital Empire",
-            "integrity_warning": "Neural Integrity Warning",
+            "integrity_warning": "Strategic Integrity Warning",
             "integrity_protocol": "Global Integrity Protocol",
-            "breach_msg": "Protocol Breach: {count} node(s) exhibiting critical SEO degradation. Immediate neural reconstruction mandated.",
+            "breach_msg": "Protocol Breach: {count} node(s) exhibiting critical SEO degradation. Immediate systems reconstruction mandated.",
             "synchronized_msg": "All nodes are currently synchronized with the Sovereign protocol. Security anomalies: 0.",
-            "report_title": "Neural Diagnostic Report",
+            "report_title": "Strategic Diagnostic Report",
             "overall_integrity": "Overall Integrity",
             "semantic_depth": "Semantic Depth",
             "anomalies": "Protocol Anomalies",
@@ -650,39 +637,39 @@
             "acknowledge": "Acknowledge Intelligence"
         }
     },
-    "AIEngine": {
-        "badge": "Neural Architecture Synthesis",
-        "title": "The Engine That <br /> <span class='text-transparent bg-clip-text bg-gradient-to-r from-[#00D09C] to-[#00D09C]/40'>Manifests Reality.</span>",
-        "desc": "Our Sovereign design system analyzes your mission and generates a high-frequency architecture in seconds. It orchestrates layout, copy, and performance parameters for absolute dominance.",
+    "SovereignEngine": {
+        "badge": "Sovereign Infrastructure Synthesis",
+        "title": "The Strategic Engine That <br /> <span class='text-transparent bg-clip-text bg-gradient-to-r from-[#00D09C] to-[#00D09C]/40'>Manifests Digital Power.</span>",
+        "desc": "Our sophisticated engineering framework analyzes enterprise requirements and synthesizes high-performance digital infrastructure following the world's highest software standards. We ensure architectural integrity and global geopolitical propagation.",
         "features": {
-            "refinement": "Intelligent Prompt Refinement",
-            "arabic": "Professional Arabic-First UI",
-            "seo": "Semantic SEO Injection",
-            "edge": "Global Edge Propagation",
-            "ux": "Logical Interface Engineering",
-            "security": "Hardened Enterprise Security"
+            "refinement": "Strategic Logic Refinement",
+            "arabic": "Global Arabic Interface Engineering",
+            "seo": "Semantic Intelligence Injection",
+            "edge": "Enterprise Edge Deployment",
+            "ux": "Logical User Experience Engineering",
+            "security": "Hardened Enterprise Security Protocols"
         },
         "stats": {
-            "lighthouse": "Lighthouse Score",
-            "propagation": "Fast Global Propagation",
+            "lighthouse": "Engineering Efficiency (Lighthouse)",
+            "propagation": "Geopolitical Edge Velocity",
             "propagation_value": "Global",
-            "standard": "Digital Sovereignty Std",
-            "standard_value": "ISO-AI"
+            "standard": "Sovereign Engineering Standard",
+            "standard_value": "ISO-LOGIC"
         },
         "terminal": {
-            "header": "GYS_CORE_LOGIC_V2.OS",
-            "status_active": "SYSTEM ACTIVE",
-            "log_prefix": "LOG_",
-            "init": "Initializing Neural Core...",
-            "loading": "Loading Modules: [Design, Content, Analytics]...",
-            "mesh": "Connecting to High-Performance Mesh...",
-            "opt": "Optimization Level: MAXIMUM",
-            "online": "Status: ONLINE",
-            "ready": "Ready for Digital Genesis."
+            "header": "GYS_ENTERPRISE_LOGIC_V4.OS",
+            "status_active": "CORE ACTIVE",
+            "log_prefix": "SYSTEM_",
+            "init": "Initializing Engineering Protocols...",
+            "loading": "Syncing Modules: [Architecture, Logic, Analytics]...",
+            "mesh": "Connecting to Global High-Frequency Mesh...",
+            "opt": "Optimization Level: ENTERPRISE",
+            "online": "Status: CORE_ONLINE",
+            "ready": "Ready for Sovereign Digital Genesis."
         },
-        "gpt_active_status": "Neural Sync",
-        "gpt_active": "GPT-4o Mini Active",
-        "edge_synthesis": "Edge Synthesis"
+        "synthesis_active_status": "Strategic Sync",
+        "synthesis_active": "Active Synthesis Core",
+        "edge_synthesis": "Enterprise Synthesis"
     },
     "Payment": {
         "title": "Node Activation",
@@ -697,20 +684,20 @@
         "encrypted": "Encrypted via Sovereign Monetization Bridge"
     },
     "HowItWorks": {
-        "title": "The Sovereign Lifecycle",
-        "subtitle": "From abstract thought to clinical-grade digital infrastructure in three logical sequences.",
+        "title": "Sovereign Engineering Lifecycle",
+        "subtitle": "From strategic vision to clinical-grade digital infrastructure through three rigorous architectural sequences.",
         "steps": {
             "step1": {
-                "title": "Vision Injection",
-                "desc": "Input your commercial intent. Our NLP core extracts functional requirements and brand soul instantly."
+                "title": "Strategic Requirement Injection",
+                "desc": "Input your high-status commercial intent. Our expert engineering frameworks and kernels extract functional requirements instantly."
             },
             "step2": {
-                "title": "Neural Projection",
-                "desc": "The AI architects code, content, and design tokens into a synchronized high-performance matrix."
+                "title": "Architectural Synthesis",
+                "desc": "Our platform architects code, logic, and interface tokens into a synchronized high-performance matrix following international standards."
             },
             "step3": {
-                "title": "Digital Genesis",
-                "desc": "Your mission-critical asset is deployed to the global edge network, ready for high-frequency operations."
+                "title": "Enterprise Deployment",
+                "desc": "Your mission-critical asset is deployed to the global edge network, securely encrypted and ready for high-frequency operations."
             }
         }
     },
@@ -769,7 +756,7 @@
             "join_patients": "Join thousands of patients who have experienced our professional standard of care.",
             "book_now": "Book_Now",
             "professional": "Professional",
-            "copyright": "© 2026 GetYouSite Platform. Professional Engineering Infrastructure."
+            "copyright": "© 2026 GYS Global Platform. Professional Engineering Infrastructure."
         },
         "professional": {
             "capabilities": "Capabilities",
@@ -943,8 +930,8 @@
             "work_with_us": "Work\nWith\nUs",
             "studio_zero": "STUDIO_ZERO",
             "pillars": "Core\nPillars.",
-            "neural_design": "Neural Brand Design",
-            "neural_design_desc": "Constructing identities that survive market fluctuations.",
+            "Strategic_design": "Strategic Brand Design",
+            "Strategic_design_desc": "Constructing identities that survive market fluctuations.",
             "kinetic_ux": "Kinetic UI/UX",
             "kinetic_ux_desc": "Motion-adaptive interfaces built for human behavior.",
             "visual_strategy": "Visual Strategy",
@@ -957,7 +944,7 @@
             "cat_motion": "Motion_Audit",
             "proj_ui": "Sovereign UI",
             "cat_eco": "Eco_System",
-            "proj_branding": "Neural Branding",
+            "proj_branding": "Strategic Branding",
             "cat_identity": "Identity_Shift",
             "proj_minimal": "Void Minimal",
             "cat_zero": "Visual_Zero",
@@ -979,7 +966,7 @@
             "training_protocols": "Training_Protocols.",
             "biological_transformations": "Optimized Biological Transformations",
             "active": "Active",
-            "neural_muscle": "Neural_Muscle",
+            "Strategic_muscle": "Strategic_Muscle",
             "sovereign_athleticism": "Sovereign_Athleticism",
             "bio_optimization": "Bio_Optimization",
             "live_tracking": "Live_Tracking",
@@ -990,7 +977,7 @@
             "kinetic_lab": "KINETIC_LAB",
             "sovereign_hypertrophy": "Sovereign Hypertrophy",
             "kinetic_fat_loss": "Kinetic Fat Loss",
-            "neural_athleticism": "Neural Athleticism",
+            "Strategic_athleticism": "Strategic Athleticism",
             "advanced": "Advanced",
             "beginner": "Beginner",
             "elite": "Elite",
@@ -1008,7 +995,7 @@
             "detox_logic": "Detox Logic",
             "cellular_integrity": "Cellular Integrity",
             "breath_arc": "Breath Arc",
-            "neural_drift": "Neural Drift",
+            "Strategic_drift": "Strategic Drift",
             "core_flow": "Core Flow",
             "biological_sync": "Biological Sync",
             "certified_care": "Certified Care",
@@ -1051,10 +1038,10 @@
             "legal": "Legal",
             "system_verified": "© 2026 Sovereign Landing System. All Protocols Verified.",
             "protocol": "PROTOCOL",
-            "neural_latency": "Neural Latency",
-            "neural_latency_desc": "42ms response timing globally via Edge Node architecture.",
+            "Strategic_latency": "Strategic Latency",
+            "Strategic_latency_desc": "42ms response timing globally via Edge Node architecture.",
             "logic_synthesis": "Logic Synthesis",
-            "logic_synthesis_desc": "AI-driven decision matrix that optimizes user conversion paths.",
+            "logic_synthesis_desc": "Systems-driven decision matrix that optimizes user conversion paths.",
             "sovereign_scale": "Sovereign Scale",
             "sovereign_scale_desc": "Elastic infrastructure that expands autonomously with demand."
         },
@@ -1082,8 +1069,8 @@
             "dispatch_architecture": "© 2026 Public Dispatch Architecture. Logic-First Editorial.",
             "manifesto": "The Sovereign Manifesto",
             "manifesto_excerpt": "Analyzing the shift from centralized dependencies to absolute digital ownership.",
-            "neural_synthesis": "Neural Synthesis v2.4",
-            "neural_synthesis_desc": "How generative architecture is replacing static selection models.",
+            "Strategic_synthesis": "Strategic Synthesis v2.4",
+            "Strategic_synthesis_desc": "How generative architecture is replacing static selection models.",
             "economic_resilience": "Economic Resilience",
             "economic_resilience_desc": "Strategic protocols for building recession-proof digital empires.",
             "cat_philosophy": "Philosophy",
@@ -1120,7 +1107,7 @@
             "certificates": "Certificates",
             "academy_stat": "© 2026 Sovereign Intelligence Academy. All Logic Verified.",
             "architecture_sovereignty": "Architecture of Sovereignty",
-            "neural_logic_masterclass": "Neural Logic Masterclass",
+            "Strategic_logic_masterclass": "Strategic Logic Masterclass",
             "digital_empire_economics": "Digital Empire Economics",
             "scholars_count": "Scholars",
             "duration": "h"
@@ -1128,7 +1115,7 @@
         "internal": {
             "core_intel": "CORE_INTEL",
             "overview_logic": "Overview_Logic",
-            "neural_registry": "Neural_Registry",
+            "Strategic_registry": "Strategic_Registry",
             "asset_inventory": "Asset_Inventory",
             "system_flux": "System_Flux",
             "data_silo": "Data_Silo",

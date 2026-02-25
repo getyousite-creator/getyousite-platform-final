@@ -19,7 +19,7 @@ export const SUBSCRIPTION_PLANS: Record<string, SubscriptionPlan> = {
             'Logic Community Support',
             'Standard GYS Branding',
             'GYS Subdomain Access',
-            'Basic AI Unit Generation',
+            'Basic Synthesis Units',
         ],
     },
     pro: {
@@ -29,7 +29,7 @@ export const SUBSCRIPTION_PLANS: Record<string, SubscriptionPlan> = {
         price: 19,
         currency: 'USD',
         features: [
-            'Neural Traffic Analytics',
+            'Strategic Traffic Analytics',
             'Priority Engineering Support',
             'Total Brand Sovereignty',
             'Naked Domain Linking',

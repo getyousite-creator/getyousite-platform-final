@@ -45,7 +45,7 @@ export default function OmegaAgency() {
                                 <div className="absolute top-full left-0 pt-10 hidden group-hover:block">
                                     <div className="w-64 bg-zinc-900 border border-white/5 p-8 space-y-6 shadow-2xl">
                                         <div className="flex flex-col gap-4">
-                                            <span className="text-white hover:translate-x-2 transition-transform">Neural_Ads</span>
+                                            <span className="text-white hover:translate-x-2 transition-transform">Strategic_Ads</span>
                                             <span className="text-white hover:translate-x-2 transition-transform">Astra_SEO</span>
                                         </div>
                                     </div>

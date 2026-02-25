@@ -69,7 +69,7 @@ export class STRPOrchestrator {
 
     constructor(config?: STRPConfig) {
         this.config = {
-            sessionId: config?.sessionId,
+            sessionId: config?.sessionId ?? `session-${Date.now()}`,
             enableOptimisticUpdates: config?.enableOptimisticUpdates ?? true,
             enableProactiveSuggestions: config?.enableProactiveSuggestions ?? true,
             enableVisionAnalysis: config?.enableVisionAnalysis ?? true,
@@ -219,19 +219,19 @@ export class STRPOrchestrator {
             }
         }
 
-        // For complex requests, use AI to generate mutation command
-        // This would call the AI engine in production
+        // For complex requests, use Synthesis Engine to generate mutation command
+        // This would call the Sovereign logic in production
         return await this.handleComplexRequest(input, blueprint);
     }
 
     /**
-     * Handle complex requests that need AI processing
+     * Handle complex requests that need Synthesis processing
      */
     private async handleComplexRequest(
         input: UserInput,
         blueprint: SiteBlueprint
     ): Promise<UpdateResult> {
-        // In production, this would call the AI engine
+        // In production, this would call the Sovereign Synthesis engine
         // For now, return a placeholder response
 
         return {
@@ -239,7 +239,7 @@ export class STRPOrchestrator {
             blueprint,
             optimisticUpdate: false,
             affectedSections: [],
-            message: `Processing: "${input.text}". This requires AI analysis.`,
+            message: `Processing: "${input.text}". This requires Strategic Synthesis analysis.`,
         };
     }
 
@@ -413,6 +413,7 @@ export class STRPOrchestrator {
             id: "default",
             name: "Default Site",
             description: "Default description",
+            whiteLabel: false,
             navigation: {
                 logo: "Logo",
                 links: [],
@@ -430,14 +431,13 @@ export class STRPOrchestrator {
             pages: {},
             layout: [],
             footer: {
-                copyright: "© 2026",
+                copyright: "© 2026 GYS Global",
                 links: [],
                 social: {},
             },
             metadata: {},
             economic_impact: {
-                estimated_savings: "$0",
-                valuation: 0,
+                estimated_savings: "0",
                 logic_verified: true,
             },
             timestamp: new Date().toISOString(),

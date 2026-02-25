@@ -28,7 +28,7 @@ export default function MasterAccounting(props: SovereignTemplateProps) {
     const { settings, blueprint } = props;
     const { headline, subheadline } = settings;
 
-    // AI Blueprint Extraction
+    // Sovereign Blueprint Synthesis
     const featuresSection = blueprint?.layout?.find((s) => s.type === 'features');
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

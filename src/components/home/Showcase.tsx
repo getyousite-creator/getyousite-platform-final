@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, ArrowUpRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useLaunchModal } from "@/hooks/use-launch-modal";

@@ -1,7 +1,7 @@
 /**
  * Design System Module - Visual Identity Protocol
  * 
- * Complete sovereign design system for GetYouSite.com
+ * Complete sovereign design system for GYS Global.com
  * - Emerald Cyber-Noir color palette
  * - Multilingual typography with golden ratio
  * - Atomic components with glassmorphism

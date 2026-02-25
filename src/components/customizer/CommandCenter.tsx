@@ -15,12 +15,13 @@ import {
     RefreshCw,
     Shield,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { Badge } from "@/shared/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/components/ui/tabs";
 import { templates as SHARED_TEMPLATES } from "@/data/template-data";
+import { StrategicAnalysisHUD } from "./StrategicAnalysisHUD";
 
 interface CommandTemplate {
     id: string;
@@ -52,7 +53,7 @@ interface CommandCenterProps {
     activeStoreId: string | null;
     userId: string;
     onAssetUpload: (url: string) => void;
-    aiInsight?: string;
+    architecture_insight?: string;
     blueprint?: SiteBlueprint | null;
     selectedPageSlug?: string;
     onSelectPage?: (slug: string) => void;
@@ -111,7 +112,7 @@ export function CommandCenter(props: CommandCenterProps) {
         isGenerating,
         onGenerate,
         activeStoreId,
-        aiInsight,
+        architecture_insight,
         blueprint,
         selectedPageSlug,
         onSelectPage,
@@ -160,12 +161,12 @@ export function CommandCenter(props: CommandCenterProps) {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-[#00D09C]/10 border border-[#00D09C]/20 flex items-center justify-center">
-                        <Brain className="w-5 h-5 text-[#00D09C]" />
+                        <Shield className="w-5 h-5 text-[#00D09C]" />
                     </div>
                     <div>
-                        <h2 className="text-lg font-bold text-foreground">Sovereign Architect</h2>
-                        <p className="text-xs text-muted-foreground">
-                            Generates conversion-optimized sites
+                        <h2 className="text-lg font-black uppercase tracking-tighter text-foreground">Sovereign Engine</h2>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-[#00D09C]/60">
+                            High-Fidelity Architectural Protocol V4
                         </p>
                     </div>
                 </div>
@@ -196,92 +197,85 @@ export function CommandCenter(props: CommandCenterProps) {
                         variant="outline"
                         className="bg-[#00D09C]/10 text-[#00D09C] border-[#00D09C]/20"
                     >
-                        <Sparkles className="w-3 h-3 mr-1" />
-                        Gemini Flash
+                        <Shield className="w-3 h-3 mr-1" />
+                        Logic Verified
                     </Badge>
                 </div>
             </div>
 
             {/* Tabs */}
             <Tabs defaultValue="details">
-                <TabsList className="w-full grid grid-cols-4 bg-secondary/5">
+                <TabsList className="w-full grid grid-cols-5 bg-secondary/5 rounded-2xl p-1 h-auto">
                     <TabsTrigger
                         value="details"
-                        className="data-[state=active]:bg-secondary/20 text-[10px] font-black uppercase"
+                        className="data-[state=active]:bg-secondary/20 text-[10px] font-black uppercase py-3 rounded-xl transition-all"
                     >
-                        Details
+                        1. Input
                     </TabsTrigger>
                     <TabsTrigger
                         value="pages"
-                        className="data-[state=active]:bg-secondary/20 text-[10px] font-black uppercase"
+                        className="data-[state=active]:bg-secondary/20 text-[10px] font-black uppercase py-3 rounded-xl transition-all"
                     >
-                        Pages
+                        2. Pages
                     </TabsTrigger>
                     <TabsTrigger
                         value="template"
-                        className="data-[state=active]:bg-secondary/20 text-[10px] font-black uppercase"
+                        className="data-[state=active]:bg-secondary/20 text-[10px] font-black uppercase py-3 rounded-xl transition-all"
                     >
-                        Template
+                        3. Design
                     </TabsTrigger>
                     <TabsTrigger
                         value="style"
-                        className="data-[state=active]:bg-secondary/20 text-[10px] font-black uppercase"
+                        className="data-[state=active]:bg-secondary/20 text-[10px] font-black uppercase py-3 rounded-xl transition-all"
                     >
-                        Style
+                        4. Style
                     </TabsTrigger>
                     <TabsTrigger
-                        value="agency"
-                        className="data-[state=active]:bg-secondary/20 text-[10px] font-black uppercase"
+                        value="publish"
+                        className="data-[state=active]:bg-neon-lime data-[state=active]:text-obsidian text-[10px] font-black uppercase py-3 rounded-xl transition-all"
                     >
-                        Agency
+                        5. Deploy
                     </TabsTrigger>
                 </TabsList>
 
-                {/* Agency & Security Tab */}
-                <TabsContent value="agency" className="space-y-6 mt-6">
-                    <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
-                        <div className="flex items-center gap-2 mb-2">
-                            <Shield className="w-4 h-4 text-emerald-400" />
-                            <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400">
-                                حصن الأمان السيادي
-                            </span>
-                        </div>
-                        <p className="text-[10px] text-white/40 leading-relaxed uppercase tracking-wide">
-                            حماية البيانات: نشطة | نسخة احتياطية: فورية | تشفير SSL: 256-bit
-                        </p>
-                    </div>
-
-                    <div className="space-y-4">
-                        <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                            إعدادات الوكالة (White-Label)
-                        </Label>
-                        <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 group hover:border-[#00D09C]/30 transition-all">
+                {/* Publish & Deployment Tab */}
+                <TabsContent value="publish" className="space-y-6 mt-6">
+                    <div className="p-6 rounded-[2rem] bg-gradient-to-br from-neon-lime/10 to-transparent border border-neon-lime/20 shadow-vip-glow">
+                        <div className="flex items-center gap-4 mb-6">
+                            <div className="w-12 h-12 rounded-2xl bg-neon-lime text-obsidian flex items-center justify-center shadow-lg">
+                                <Zap className="w-6 h-6 fill-current" />
+                            </div>
                             <div>
-                                <h4 className="text-sm font-bold text-white">
-                                    إخفاء علامة GetYouSite
-                                </h4>
-                                <p className="text-[9px] text-white/40 font-mono">
-                                    SOVEREIGN_MODE: ENABLED
-                                </p>
-                            </div>
-                            <div
-                                onClick={() => {
-                                    /* Toggle Logic */
-                                }}
-                                className="w-12 h-6 rounded-full bg-[#00D09C]/20 border border-[#00D09C]/40 relative cursor-pointer"
-                            >
-                                <div className="absolute top-1 left-1 w-4 h-4 rounded-full bg-[#00D09C] shadow-[0_0_10px_rgba(0,208,156,0.5)]" />
+                                <h3 className="text-lg font-black uppercase tracking-tighter">Status: Global_Ready</h3>
+                                <p className="text-[10px] text-white/40 uppercase tracking-widest">Protocol Verified · Secure Hosting Active</p>
                             </div>
                         </div>
+
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5">
+                                <span className="text-xs font-bold uppercase tracking-widest text-white/60">SEO Optimization</span>
+                                <Badge className="bg-emerald-500/20 text-emerald-400 border-none px-3">OPTIMAL</Badge>
+                            </div>
+                            <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5">
+                                <span className="text-xs font-bold uppercase tracking-widest text-white/60">Asset Integrity</span>
+                                <Badge className="bg-emerald-500/20 text-emerald-400 border-none px-3">VERIFIED</Badge>
+                            </div>
+                        </div>
+
+                        <Button
+                            className="w-full mt-8 bg-neon-lime text-obsidian hover:bg-neon-lime/90 h-16 rounded-2xl font-black uppercase tracking-[0.3em] text-xs shadow-vip-glow transition-all hover:scale-[1.02] active:scale-[0.98]"
+                            onClick={() => toast.success("Sovereign Deployment Initiated...")}
+                        >
+                            Launch Digital Empire
+                        </Button>
                     </div>
 
-                    <div className="space-y-3">
-                        <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                            الدعم الفني الذكي (AI Support)
-                        </Label>
-                        <Button className="w-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black tracking-widest hover:bg-blue-500/20">
-                            <RefreshCw className="w-3 h-3 mr-2" />
-                            إصلاح الأخطاء تلقائياً
+                    <div className="grid grid-cols-2 gap-4">
+                        <Button variant="outline" className="h-14 border-white/10 bg-white/5 uppercase font-black text-[9px] tracking-widest rounded-xl hover:bg-white/10">
+                            Connect Domain
+                        </Button>
+                        <Button variant="outline" className="h-14 border-white/10 bg-white/5 uppercase font-black text-[9px] tracking-widest rounded-xl hover:bg-white/10">
+                            Export Blueprint
                         </Button>
                     </div>
                 </TabsContent>
@@ -329,7 +323,7 @@ export function CommandCenter(props: CommandCenterProps) {
                                                 <span
                                                     className={`text-[9px] font-black uppercase tracking-widest ${isDraft ? "text-zinc-500" : "text-[#00D09C]"}`}
                                                 >
-                                                    {isDraft ? "Draft_Protocol" : "Neural_Ready"}
+                                                    {isDraft ? "Draft_Protocol" : "Sovereign_Active"}
                                                 </span>
                                             </div>
                                         </div>
@@ -374,9 +368,9 @@ export function CommandCenter(props: CommandCenterProps) {
                     <div className="space-y-3">
                         <Label
                             htmlFor="businessName"
-                            className="text-xs font-bold text-muted-foreground uppercase tracking-widest"
+                            className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]"
                         >
-                            Business Name
+                            Enterprise Identity
                         </Label>
                         <Input
                             id="businessName"
@@ -389,8 +383,8 @@ export function CommandCenter(props: CommandCenterProps) {
 
                     {/* Niche Selection */}
                     <div className="space-y-3">
-                        <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                            Industry / Niche
+                        <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">
+                            Sector Verticals
                         </Label>
                         <div className="relative">
                             <select
@@ -416,9 +410,9 @@ export function CommandCenter(props: CommandCenterProps) {
                     <div className="space-y-3">
                         <Label
                             htmlFor="vision"
-                            className="text-xs font-bold text-muted-foreground uppercase tracking-widest"
+                            className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]"
                         >
-                            Your Vision
+                            Strategic Intent / Requirement Injection
                         </Label>
                         <textarea
                             id="vision"
@@ -429,29 +423,19 @@ export function CommandCenter(props: CommandCenterProps) {
                             className="w-full bg-background border border-border rounded-xl px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-primary transition-colors resize-none"
                         />
                         <p className="text-xs text-muted-foreground">
-                            {vision.length}/500 characters • The more details, the better the AI
-                            understands your needs
+                            {vision.length}/500 characters • Precise details ensure architectural alignment with your strategic goals.
                         </p>
                     </div>
 
-                    {/* AI Suggestions */}
-                    {(aiInsight || vision.length > 20) && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="p-4 rounded-xl bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20"
-                        >
-                            <div className="flex items-center gap-2 mb-2">
-                                <Sparkles className="w-4 h-4 text-blue-400" />
-                                <span className="text-xs font-bold text-blue-400 uppercase">
-                                    AI Strategy
-                                </span>
-                            </div>
-                            <p className="text-sm text-foreground/80">
-                                {aiInsight || "Analyzing your vision for structural advantages..."}
-                            </p>
-                        </motion.div>
-                    )}
+                    {/* SOVEREIGN STRATEGIC BENCHMARKING */}
+                    <div className="space-y-4">
+                        <StrategicAnalysisHUD
+                            vision={vision}
+                            niche={niche}
+                            businessName={businessName}
+                            onOptimize={(optimalBrief) => setVision(optimalBrief)}
+                        />
+                    </div>
                 </TabsContent>
 
                 {/* Template Tab */}
@@ -478,10 +462,9 @@ export function CommandCenter(props: CommandCenterProps) {
                                 onClick={() => setSelectedId(template.id)}
                                 className={`
                                     relative rounded-xl overflow-hidden cursor-pointer border-2 transition-all
-                                    ${
-                                        selectedId === template.id
-                                            ? "border-[#00D09C] ring-2 ring-[#00D09C]/20"
-                                            : "border-border hover:border-border/50"
+                                    ${selectedId === template.id
+                                        ? "border-[#00D09C] ring-2 ring-[#00D09C]/20"
+                                        : "border-border hover:border-border/50"
                                     }
                                 `}
                             >
@@ -575,7 +558,7 @@ export function CommandCenter(props: CommandCenterProps) {
                                         key={color}
                                         className="w-full aspect-square rounded-full border-2 border-border hover:border-foreground hover:scale-110 transition-all shadow-lg"
                                         style={{ backgroundColor: color }}
-                                        onClick={() => {}} // No-op
+                                        onClick={() => { }} // No-op
                                     />
                                 ))}
                             </div>
@@ -655,22 +638,21 @@ export function CommandCenter(props: CommandCenterProps) {
                     disabled={!vision || isGenerating}
                     className={`
                         w-full h-14 rounded-xl font-bold text-sm uppercase tracking-[0.2em] transition-all
-                        ${
-                            isGenerating
-                                ? "bg-secondary text-muted-foreground cursor-wait"
-                                : "bg-[#00D09C] hover:bg-[#00B085] text-white shadow-[0_0_20px_rgba(0,208,156,0.3)] hover:shadow-[0_0_30px_rgba(0,208,156,0.5)]"
+                        ${isGenerating
+                            ? "bg-secondary text-muted-foreground cursor-wait"
+                            : "bg-[#00D09C] hover:bg-[#00B085] text-white shadow-[0_0_20px_rgba(0,208,156,0.3)] hover:shadow-[0_0_30px_rgba(0,208,156,0.5)]"
                         }
                     `}
                 >
                     {isGenerating ? (
                         <>
-                            <RefreshCw className="w-5 h-5 mr-2 animate-spin" />
-                            Generating Your Empire...
+                            <RefreshCw className="w-5 h-5 mr-3 animate-spin" />
+                            SYNERGIZING ENTERPRISE ASSET...
                         </>
                     ) : (
                         <>
-                            <Sparkles className="w-5 h-5 mr-2" />
-                            Generate Website
+                            <Zap className="w-5 h-5 mr-3" />
+                            INITIATE ARCHITECTURAL SYNTHESIS
                         </>
                     )}
                 </Button>

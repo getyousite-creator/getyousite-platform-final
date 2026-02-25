@@ -44,7 +44,7 @@ export default function FloatingChat() {
                 body: JSON.stringify({ messages: updatedMessages, locale }),
             });
 
-            if (!response.ok) throw new Error('Neural Bridge Failure');
+            if (!response.ok) throw new Error('Strategic Bridge Failure');
 
             const reader = response.body?.getReader();
             if (!reader) throw new Error('Stream Decoder Failure');
@@ -104,7 +104,7 @@ export default function FloatingChat() {
                 }
             }
         } catch (error) {
-            console.error('CHAT_NEURAL_FAILURE:', error);
+            console.error('CHAT_Strategic_FAILURE:', error);
         } finally {
             setIsLoading(false);
         }
@@ -130,7 +130,7 @@ export default function FloatingChat() {
                                     <h3 className="text-sm font-black text-foreground uppercase tracking-widest">{personaName}</h3>
                                     <div className="flex items-center gap-1.5">
                                         <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                                        <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-tighter">Neural Network Active</span>
+                                        <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-tighter">Strategic Network Active</span>
                                     </div>
                                 </div>
                             </div>
@@ -189,7 +189,7 @@ export default function FloatingChat() {
                                                             addResult ? "bg-emerald-500" : "bg-amber-500"
                                                         )} />
                                                         <div>
-                                                            <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Neural_Action</p>
+                                                            <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Strategic_Action</p>
                                                             <p className="text-xs font-bold text-muted-foreground uppercase italic">
                                                                 {toolInvocation.toolName.replace(/_/g, ' ')}
                                                             </p>

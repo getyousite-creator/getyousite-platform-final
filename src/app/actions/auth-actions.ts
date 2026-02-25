@@ -15,10 +15,12 @@ export type ActionResult<T = void> = {
   data?: T;
 };
 
+import { User } from '@supabase/supabase-js';
+
 type AuthResponse = {
   success: boolean;
   error?: string;
-  user?: any;
+  user?: User | null;
   redirectTo?: string;
 };
 
@@ -37,42 +39,23 @@ async function getSiteUrl() {
 /**
  * Sign up a new user with email and password
  */
-export async function signUpAction(email: string, password: string): Promise<AuthResponse> {
+export async function signUpAction(email: string, password: string, locale: string = 'en'): Promise<AuthResponse> {
   try {
-    // Validate Supabase is configured
     if (!isSupabaseConfigured()) {
-      console.error('[AUTH] Supabase not configured');
       return {
         success: false,
-        error: 'Authentication service not available. Please contact support.',
-      };
-    }
-
-    // Validate inputs
-    if (!email || !password) {
-      return {
-        success: false,
-        error: 'Email and password are required',
-      };
-    }
-
-    if (password.length < 8) {
-      return {
-        success: false,
-        error: 'Password must be at least 8 characters long',
+        error: 'Authentication service not available. Contact system administrator.',
       };
     }
 
     const supabase = await createClient();
+    const siteUrl = await getSiteUrl();
 
-    console.log('[AUTH-SIGNUP] Attempting signup for:', email);
-
-    // Create user in Supabase Auth
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: `${await getSiteUrl()}/auth/callback`,
+        emailRedirectTo: `${siteUrl}/auth/callback?next=/${locale}/dashboard`,
       },
     });
 
@@ -102,46 +85,32 @@ export async function signUpAction(email: string, password: string): Promise<Aut
 /**
  * Sign in an existing user with email and password
  */
-export async function signInAction(email: string, password: string): Promise<AuthResponse> {
+export async function signInAction(email: string, password: string, locale: string = 'en'): Promise<AuthResponse> {
   try {
     if (!isSupabaseConfigured()) {
-      console.error('[AUTH] Supabase not configured');
       return {
         success: false,
-        error: 'Authentication service not available. Please contact support.',
-      };
-    }
-
-    if (!email || !password) {
-      return {
-        success: false,
-        error: 'Email and password are required',
+        error: 'Authentication service not available.',
       };
     }
 
     const supabase = await createClient();
-
-    console.log('[AUTH-SIGNIN] Attempting signin for:', email);
-
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
-      console.error('[AUTH-SIGNIN] Supabase error:', error.message);
       return {
         success: false,
-        error: error.message || 'Invalid email or password',
+        error: error.message || 'Invalid logical identity credentials.',
       };
     }
-
-    console.log('[AUTH-SIGNIN] Success:', data.user?.id);
 
     return {
       success: true,
       user: data.user,
-      redirectTo: '/dashboard',
+      redirectTo: `/${locale}/dashboard`,
     };
   } catch (err) {
     console.error('[AUTH-SIGNIN] Exception:', err);
@@ -155,45 +124,20 @@ export async function signInAction(email: string, password: string): Promise<Aut
 /**
  * Sign in with OAuth provider (Google, Apple, Microsoft)
  */
-export async function signInWithOAuthAction(provider: 'google' | 'apple' | 'azure'): Promise<AuthResponse> {
+export async function signInWithOAuthAction(provider: 'google' | 'apple' | 'azure', locale: string = 'en'): Promise<AuthResponse> {
   let redirectUrl: string | null = null;
-
   try {
     if (!isSupabaseConfigured()) {
-      console.error('[AUTH] Supabase not configured');
-      return {
-        success: false,
-        error: 'Authentication service not available.',
-      };
+      return { success: false, error: 'Authentication service not available.' };
     }
 
     const supabase = await createClient();
-
-    console.log('[AUTH-OAUTH] Initiating OAuth with provider:', provider);
-
-    // Map parameter names to Supabase provider names
-    const providerMap: Record<string, 'google' | 'apple' | 'azure'> = {
-      google: 'google',
-      apple: 'apple',
-      azure: 'azure',
-    };
-
-    const providerName = providerMap[provider];
-    if (!providerName) {
-      return {
-        success: false,
-        error: 'Invalid OAuth provider',
-      };
-    }
-
     const siteUrl = await getSiteUrl();
 
-    console.log('[AUTH-OAUTH] Redirecting back to:', siteUrl);
-
     const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: providerName,
+      provider,
       options: {
-        redirectTo: `${siteUrl}/auth/callback?next=/dashboard`,
+        redirectTo: `${siteUrl}/auth/callback?next=/${locale}/dashboard`,
       },
     });
 
@@ -235,40 +179,18 @@ export async function signInWithOAuthAction(provider: 'google' | 'apple' | 'azur
 /**
  * Request a password reset email
  */
-export async function resetPasswordAction(email: string): Promise<AuthResponse> {
+export async function resetPasswordAction(email: string, locale: string = 'en'): Promise<AuthResponse> {
   try {
     if (!isSupabaseConfigured()) {
-      return {
-        success: false,
-        error: 'Authentication service not available.',
-      };
-    }
-
-    if (!email) {
-      return {
-        success: false,
-        error: 'Email is required',
-      };
+      return { success: false, error: 'Authentication service not available.' };
     }
 
     const supabase = await createClient();
-
-    console.log('[AUTH-RESET] Requesting password reset for:', email);
+    const siteUrl = await getSiteUrl();
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${await getSiteUrl()}/reset-password`,
+      redirectTo: `${siteUrl}/${locale}/reset-password`,
     });
-
-    if (error) {
-      console.error('[AUTH-RESET] Supabase error:', error.message);
-      // Don't expose whether email exists for security
-      return {
-        success: true,
-        error: undefined,
-      };
-    }
-
-    console.log('[AUTH-RESET] Email sent successfully');
 
     return {
       success: true,

@@ -16,9 +16,9 @@ import {
     CheckCircle2,
 } from "lucide-react";
 import { SovereignTemplateProps } from "@/lib/types/template";
-import { SovereignImage } from "@/components/ui/sovereign-image";
+import { SovereignImage } from "@/shared/components/ui/sovereign-image";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
-import Logo from "@/components/ui/Logo";
+import Logo from "@/shared/components/ui/Logo";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 

@@ -24,20 +24,20 @@ export function SocialProof({ userCount, sitesBuilt, countries }: SocialProofPro
                     <StatCard
                         icon={<Users className="w-8 h-8 text-primary" />}
                         value={userCount.toLocaleString()}
-                        label="Active Users"
-                        description="Building their digital presence"
+                        label="Sovereign Operators"
+                        description="Powering Global Infrastructures"
                     />
                     <StatCard
                         icon={<Layers className="w-8 h-8 text-accent-neon" />}
                         value={sitesBuilt.toLocaleString()}
-                        label="Sites Created"
-                        description="Powered by AI"
+                        label="Nodes Established"
+                        description="Synthesized by GYS Core"
                     />
                     <StatCard
                         icon={<Globe className="w-8 h-8 text-info" />}
                         value={countries.toString()}
-                        label="Countries"
-                        description="Worldwide reach"
+                        label="Regional Clusters"
+                        description="Global Market Presence"
                     />
                 </div>
             </div>

@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { SITE_TEMPLATES } from "@/lib/templates";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
 import { ArrowRight, Layers, Globe } from "lucide-react";
 import Image from "next/image";
@@ -215,7 +215,7 @@ export default function ShowcaseGallery() {
                                             <Button
                                                 onClick={() =>
                                                     window.open(
-                                                        `https://${site.slug}.getyousite.com/${locale}`,
+                                                        `https://${site.slug}.GYS Global.com/${locale}`,
                                                         "_blank",
                                                     )
                                                 }

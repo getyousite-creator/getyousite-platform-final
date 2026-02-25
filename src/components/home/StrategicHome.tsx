@@ -6,36 +6,47 @@ import { useRouter, Link } from "@/i18n/routing";
 import { track } from "@vercel/analytics";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { Sparkles, Globe2, PenLine, Search, Palette, Layers3 } from "lucide-react";
+import { Sparkles, Globe2, PenLine, Search, Palette, Layers3, Shield, ArrowRight } from "lucide-react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 
 const COPY = {
     ar: {
-        heroTitle: "???? ????? ????????? ??????? ????????? ?? ?????",
-        heroSub: "?? ????? ???? ????????? ??? ???? ???? ?????: ????? ?????? ?????? ????? ??? ????.",
-        inputPlaceholder: "????? ?????? ????? ???? ??????...",
-        startFree: "???? ??????",
-        exploreTemplates: "?????? ???????",
-        trustedBy: "????? ?? ??? ???? ??????? ?????",
-        featuresTitle: "????? GetYouSite",
-        howTitle: "??? ???? ??????",
-        legalTitle: "???????? ??????",
+        heroTitle: "هندسة الحضور الرقمي السيادي",
+        heroSub: "حدد قصدك الاستراتيجي. مجالسنا الهندسية ستقوم بتوليف بنية تحتية رقمية محصنة إنتاجياً بسيادة معمارية مطلقة.",
+        inputPlaceholder: "مطعم، عيادة، متجر، مكتب محاماة...",
+        startFree: "تفعيل البروتوكول",
+        exploreTemplates: "استكشاف الهياكل",
+        trustedBy: "موثوق من قبل المؤسسات الرقمية الأكثر نمواً",
+        featuresTitle: "المعايير الهندسية لـ GYS Global",
+        howTitle: "بروتوكول التشغيل الهيكلي",
+        legalTitle: "السيادة والامتثال",
+        councilsTitle: "المجالس الهندسية الاستراتيجية",
+        councilsSub: "يتم تخطيط كل كائن رقمي وتوليفه تحت إشراف مجالسنا المتخصصة لضمان السيادة المطلقة."
     },
     default: {
-        heroTitle: "Create Your Professional AI Website In Minutes",
+        heroTitle: "Architect Your Sovereign Digital Presence",
         heroSub:
-            "Describe your business once, and launch a production-ready website with content, structure, and a clear publishing path.",
+            "Define your strategic intent. Our engineering councils synthesize a production-hardened digital infrastructure with total architectural sovereignty.",
         inputPlaceholder: "Restaurant, clinic, store, legal office...",
-        startFree: "Start For Free",
-        exploreTemplates: "Explore Templates",
-        trustedBy: "Trusted by teams shipping websites faster",
-        featuresTitle: "Why GetYouSite",
-        howTitle: "How It Works",
-        legalTitle: "Trust And Compliance",
+        startFree: "Activate Protocol",
+        exploreTemplates: "Explore Blueprints",
+        trustedBy: "Trusted by digital empires shipping with total authority",
+        featuresTitle: "Engineering Standards of GYS Global",
+        howTitle: "Structural Operating Protocol",
+        legalTitle: "Sovereignty And Compliance",
+        councilsTitle: "Strategic Engineering Councils",
+        councilsSub: "Every digital asset is architected and synthesized under the oversight of our specialized councils to ensure absolute sovereignty."
     },
 };
 
-const TRUST_LOGOS = ["Atlas Studio", "Nexa Clinic", "Beldi Coffee", "Flux Legal", "Nova Beauty"];
+const TRUST_LOGOS = ["Atlas Executive", "Nexa Clinical", "Beldi Strategic", "Flux Juris", "Nova Global"];
+
+const COUNCILS = [
+    { title: "Architectural Council", ar: "المجلس المعماري", role: "Structural Integrity & Scalability" },
+    { title: "Strategic Synthesis Team", ar: "فريق التوليف الاستراتيجي", role: "Market Dominance & Resonance" },
+    { title: "UX Governance Board", ar: "مجلس حوكمة تجربة المستخدم", role: "Frictionless Behavioral Engineering" },
+    { title: "Global Security Ops", ar: "عمليات الأمن العالمي", role: "Hardened Infrastructure Sovereignty" },
+];
 
 export default function StrategicHome() {
     const locale = useLocale();
@@ -47,8 +58,8 @@ export default function StrategicHome() {
     const isArabic = locale === "ar";
     const t = isArabic ? COPY.ar : COPY.default;
     const words = isArabic
-        ? ["مطعم", "عيادة", "استشارات", "متجر إلكتروني", "شركة تقنية"]
-        : ["Restaurant", "Clinic", "Consulting", "Ecommerce", "AI Startup"];
+        ? ["مطعم فاخر", "مركز طبي عيادي", "مكتب استشارات استراتيجي", "إمبراطورية تجارة إلكترونية", "شركة تقنية سيادية"]
+        : ["Fine Dining", "Clinical Center", "Strategic Advisory", "Ecommerce Empire", "Sovereign Tech"];
 
     // typewriter
     useEffect(() => {
@@ -71,9 +82,9 @@ export default function StrategicHome() {
 
     // rotating live preview deck
     const previews = [
-        { title: isArabic ? "مطعم راقٍ" : "Fine Dining", desc: isArabic ? "قائمة موسمية وصور أطباق عالية الدقة" : "Seasonal menu with cinematic food shots" },
-        { title: isArabic ? "شركة تقنية" : "Tech SaaS", desc: isArabic ? "لوحة أسعار حديثة وتجربة تسجيل سلسة" : "Modern pricing + smooth onboarding" },
-        { title: isArabic ? "متجر إلكتروني" : "Ecommerce", desc: isArabic ? "سلة سريعة مع بوابات دفع مدمجة" : "Fast cart with embedded payments" },
+        { title: isArabic ? "بنية مطعم راقٍ" : "Fine Dining Architecture", desc: isArabic ? "قائمة موسمية وتوليف هوية بصرية عيادي" : "Seasonal layout with clinical brand synthesis" },
+        { title: isArabic ? "منصة تقنية سيادية" : "Sovereign Tech SaaS", desc: isArabic ? "محرك أسعار متطور وتكامل مع شبكة الحافة" : "Advanced pricing engine with Edge synchronization" },
+        { title: isArabic ? "إمبراطورية تجارة" : "Ecommerce Empire", desc: isArabic ? "هندسة سلة سريعة ووحدات دفع محصنة" : "Fast-cart engineering with hardened payment silos" },
     ];
     useEffect(() => {
         const id = setInterval(() => {
@@ -115,89 +126,76 @@ export default function StrategicHome() {
                         className="pointer-events-none absolute inset-[-20%] blur-3xl opacity-60"
                     >
                         <div className="absolute w-[70%] h-[70%] top-10 left-10 rounded-full"
-                            style={{ background: "radial-gradient(circle at 30% 30%, rgba(190,242,100,0.25), transparent 60%)" }} />
+                            style={{ background: "radial-gradient(circle at 30% 30%, rgba(34,211,238,0.2), transparent 60%)" }} />
                         <div className="absolute w-[60%] h-[60%] bottom-10 right-10 rounded-full"
-                            style={{ background: "radial-gradient(circle at 70% 70%, rgba(6,78,59,0.4), transparent 70%)" }} />
+                            style={{ background: "radial-gradient(circle at 70% 70%, rgba(0,208,156,0.1), transparent 70%)" }} />
                     </motion.div>
 
                     <div className="mx-auto max-w-5xl text-center relative z-10 space-y-8">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-lime-200/80 text-[10px] uppercase tracking-[0.25em]">
-                            <Sparkles className="w-3 h-3" />
-                            Zero-Learning UI · 5s Rule
-                        </div>
-                        <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight">
-                            {t.heroTitle}
-                            <br />
-                            <span className="text-lime-200">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-cyan-400 text-[9px] font-black uppercase tracking-[0.3em] shadow-[0_0_20px_rgba(34,211,238,0.1)]"
+                        >
+                            <Shield className="w-3 h-3 text-cyan-400" />
+                            Sovereign Engineering Kernel // v7.2-SIP
+                        </motion.div>
+
+                        <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.85] uppercase italic">
+                            {isArabic ? "تجسيد الأصول" : "Manifest"}{" "}
+                            <span className="text-cyan-400 not-italic underline decoration-white/10 underline-offset-[12px]">
                                 {typed}
-                                <span className="animate-pulse">|</span>
                             </span>
+                            <br />
+                            {isArabic ? "الرقمية السيادية" : "Sovereign Assets"}
                         </h1>
-                        <p className="text-base md:text-xl text-white/70 max-w-3xl mx-auto">
+
+                        <p className="text-lg md:text-2xl text-white/50 max-w-3xl mx-auto font-medium leading-relaxed">
                             {t.heroSub}
                         </p>
 
-                        <div className="mt-6 rounded-3xl border border-white/10 bg-white/5 p-4 md:p-5 backdrop-blur-xl shadow-[0_25px_80px_rgba(0,0,0,0.4)]">
-                            <input
-                                type="text"
-                                value={prompt}
-                                onChange={(e) => setPrompt(e.target.value)}
-                                onKeyDown={(e) => e.key === "Enter" && submitPrompt()}
-                                placeholder={t.inputPlaceholder}
-                                className="w-full rounded-2xl bg-[#0b1227] border border-white/10 px-5 md:px-6 py-4 md:py-5 text-base md:text-xl placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-lime-300/60"
-                            />
-                            <button
-                                onClick={submitPrompt}
-                                className="mt-4 w-full vip-button py-4 text-lg font-black uppercase tracking-[0.2em] magnetic-hover relative overflow-hidden"
-                            >
-                                <span className="relative z-10">{t.startFree}</span>
-                                <motion.span
-                                    className="absolute inset-0 bg-white/10"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: [0, 0.3, 0] }}
-                                    transition={{ duration: 1.8, repeat: Infinity }}
-                                />
-                            </button>
-                            <p className="text-xs text-white/60 mt-3">
-                                {isArabic ? "انضم إلى +5000 مستخدم نشروا مواقعهم اليوم" : "Join 5,000+ users who launched today"}
-                            </p>
-
-                            {/* Live interactive preview */}
-                            <div className="mt-6 rounded-2xl border border-white/10 bg-[#0b1227]/70 p-4">
-                                <div className="flex items-center justify-between text-xs text-white/60 mb-3">
-                                    <span>{isArabic ? "معاينة حية" : "Live Preview"}</span>
-                                    <span className="text-lime-200/80">AI / {previews[previewIndex].title}</span>
+                        <div className="relative mt-12 max-w-3xl mx-auto group">
+                            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-[2.5rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+                            <div className="relative rounded-[2rem] border border-white/10 bg-black/40 backdrop-blur-3xl p-3 shadow-2xl">
+                                <div className="flex flex-col md:flex-row gap-3">
+                                    <input
+                                        type="text"
+                                        value={prompt}
+                                        onChange={(e) => setPrompt(e.target.value)}
+                                        onKeyDown={(e) => e.key === "Enter" && submitPrompt()}
+                                        placeholder={t.inputPlaceholder}
+                                        className="flex-1 rounded-2xl bg-white/5 border border-white/10 px-6 py-5 text-xl placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 focus:bg-white/[0.08] transition-all"
+                                    />
+                                    <button
+                                        onClick={submitPrompt}
+                                        className="vip-button px-10 py-5 text-lg font-black uppercase tracking-widest relative overflow-hidden group/btn shadow-vip-glow hover:scale-[1.02] active:scale-[0.98]"
+                                        style={{ backgroundColor: '#00D09C' }}
+                                    >
+                                        <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/20 bg-[length:200%_100%] animate-shimmer opacity-0 group-hover/btn:opacity-20 transition-opacity" />
+                                        <span className="relative z-10 flex items-center gap-2 text-[#0A2540]">
+                                            {t.startFree}
+                                            <Sparkles className="w-5 h-5 text-[#0A2540]" />
+                                        </span>
+                                    </button>
                                 </div>
-                                <motion.div
-                                    key={previewIndex}
-                                    initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    transition={{ duration: 0.4 }}
-                                    className="rounded-xl bg-gradient-to-br from-[#0f172a] via-[#0b1227] to-[#022C22] border border-white/10 p-4 text-left"
-                                >
-                                    <p className="text-sm font-bold text-lime-200 mb-2">{previews[previewIndex].title}</p>
-                                    <p className="text-xs text-white/70">{previews[previewIndex].desc}</p>
-                                    <div className="mt-3 grid grid-cols-3 gap-2 text-[10px] text-white/60">
-                                        <span className="bg-white/5 rounded-lg px-2 py-1">Hero + CTA</span>
-                                        <span className="bg-white/5 rounded-lg px-2 py-1">SEO Schema</span>
-                                        <span className="bg-white/5 rounded-lg px-2 py-1">Responsive</span>
-                                    </div>
-                                </motion.div>
                             </div>
                         </div>
+
+                        <p className="text-[10px] text-zinc-500 font-black uppercase tracking-[0.4em]">
+                            {isArabic ? "توليف برمجيات عيادي • أتمتة معمارية شاملة" : "Clinical Software Synthesis • Global Edge Orchestration"}
+                        </p>
                     </div>
                 </section>
 
-                <section className="container mx-auto px-6 pb-10">
-                    <p className="text-center text-xs uppercase tracking-[0.2em] text-white/40 mb-4">
+                <section className="container mx-auto px-6 pb-20">
+                    <p className="text-center text-xs uppercase tracking-[0.2em] text-white/40 mb-8">
                         {t.trustedBy}
                     </p>
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 max-w-6xl mx-auto">
                         {TRUST_LOGOS.map((name) => (
                             <div
                                 key={name}
-                                className="rounded-xl border border-white/10 bg-white/[0.03] py-4 text-center text-sm text-white/70"
+                                className="rounded-xl border border-white/5 bg-white/[0.02] py-6 text-center text-[10px] font-black uppercase tracking-widest text-white/30 hover:text-white/60 transition-colors"
                             >
                                 {name}
                             </div>
@@ -205,41 +203,66 @@ export default function StrategicHome() {
                     </div>
                 </section>
 
-                <section id="features" className="container mx-auto px-6 py-14">
-                    <h2 className="text-2xl md:text-4xl font-black tracking-tight mb-8">
+                {/* THE ENGINEERING COUNCILS (NEW SECTION) */}
+                <section className="bg-white/[0.02] border-y border-white/5 py-32">
+                    <div className="container mx-auto px-6">
+                        <div className="max-w-4xl space-y-4 mb-20">
+                            <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase italic">{t.councilsTitle}</h2>
+                            <p className="text-white/40 text-[11px] font-black uppercase tracking-[0.3em] leading-relaxed max-w-2xl">{t.councilsSub}</p>
+                        </div>
+                        <div className="grid md:grid-cols-4 gap-6">
+                            {COUNCILS.map((council) => (
+                                <div key={council.title} className="p-8 rounded-[2rem] border border-white/5 bg-black/40 hover:border-cyan-400/30 transition-all group">
+                                    <div className="w-8 h-1 bg-cyan-400/20 mb-6 group-hover:w-12 group-hover:bg-cyan-400 transition-all duration-500" />
+                                    <h3 className="text-xl font-black mb-2 uppercase">{isArabic ? council.ar : council.title}</h3>
+                                    <p className="text-[9px] text-white/30 uppercase font-black tracking-widest leading-relaxed">{council.role}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                <section id="features" className="container mx-auto px-6 py-32">
+                    <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase mb-16 italic">
                         {t.featuresTitle}
                     </h2>
-                    <div className="grid md:grid-cols-3 gap-4">
+                    <div className="grid md:grid-cols-3 gap-6">
                         {[FEATURE_ITEMS[0], FEATURE_ITEMS[1], FEATURE_ITEMS[3]].map((item) => (
                             <article
                                 key={item.title}
-                                className="rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+                                className="rounded-[2.5rem] border border-white/5 bg-white/[0.02] p-10 space-y-6 hover:bg-white/[0.05] transition-all"
                             >
-                                <item.icon className="w-6 h-6 text-cyan-300 mb-3" />
-                                <h3 className="font-bold text-lg mb-1">{item.title}</h3>
-                                <p className="text-white/65 text-sm">{item.desc}</p>
+                                <div className="w-14 h-14 rounded-2xl bg-cyan-400/10 flex items-center justify-center border border-cyan-400/20">
+                                    <item.icon className="w-7 h-7 text-cyan-400" />
+                                </div>
+                                <div>
+                                    <h3 className="font-black text-xl mb-3 uppercase tracking-tight">{item.title}</h3>
+                                    <p className="text-white/40 text-[11px] font-black uppercase tracking-widest leading-relaxed">{item.desc}</p>
+                                </div>
                             </article>
                         ))}
                     </div>
                 </section>
 
-                <section className="container mx-auto px-6 py-14">
+                <section className="container mx-auto px-6 py-20">
                     <h2 className="text-2xl md:text-4xl font-black tracking-tight mb-8">
                         {t.howTitle}
                     </h2>
                     <div className="grid md:grid-cols-3 gap-4">
                         {[
-                            "1. Describe Your Business",
-                            "2. AI Generates Instantly",
-                            "3. Publish & Share",
+                            isArabic ? "1. تعريف القصد الاستراتيجي" : "1. Strategic Intent Definition",
+                            isArabic ? "2. التوليف الهيكلي تحت إشراف المجلس" : "2. Structural Synthesis Under Council Oversight",
+                            isArabic ? "3. تفعيل البروتوكول العالمي" : "3. Global Protocol Activation",
                         ].map((step) => (
                             <div
                                 key={step}
-                                className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 font-semibold text-white/85"
+                                className="rounded-2xl border border-white/5 bg-white/[0.02] p-8 font-black text-white/50 uppercase text-[10px] tracking-widest flex items-center gap-4"
                             >
+                                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_10px_cyan]" />
                                 {step}
                             </div>
                         ))}
+
                     </div>
                 </section>
 
@@ -275,7 +298,6 @@ export default function StrategicHome() {
                     </div>
                 </section>
             </main>
-
             <Footer />
         </div>
     );
@@ -284,7 +306,7 @@ export default function StrategicHome() {
 const FEATURE_ITEMS = [
     {
         icon: Sparkles,
-        title: "AI Site Generation",
+        title: "Sovereign Synthesis",
         desc: "From intent to complete site structure.",
     },
     { icon: PenLine, title: "Persona Content", desc: "Copy adapts to your business tone." },

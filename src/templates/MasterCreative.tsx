@@ -33,7 +33,7 @@ export default function MasterCreative(props: SovereignTemplateProps) {
     const { settings, blueprint } = props;
     const { headline, subheadline, primaryColor = "#1d1d1f" } = settings;
 
-    // AI Blueprint Extraction
+    // Sovereign Blueprint Synthesis
     const heroSection = blueprint?.layout?.find((s) => s.type === "hero");
     const portfolioSection = blueprint?.layout?.find((s) => s.type === "features");
 
@@ -47,39 +47,39 @@ export default function MasterCreative(props: SovereignTemplateProps) {
     const projects: CaseStudy[] =
         projectsRaw.length > 0
             ? projectsRaw.map((item) => ({
-                  title: item.title || t("untitled"),
-                  category: item.description?.substring(0, 15) || t("creative_work"),
-                  img:
-                      item.image ||
-                      "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2400&auto=format&fit=crop",
-                  year: "2024",
-              }))
+                title: item.title || t("untitled"),
+                category: item.description?.substring(0, 15) || t("creative_work"),
+                img:
+                    item.image ||
+                    "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2400&auto=format&fit=crop",
+                year: "2024",
+            }))
             : [
-                  {
-                      title: t("proj_kinetic"),
-                      category: t("cat_motion"),
-                      img: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2400&auto=format&fit=crop",
-                      year: "2026",
-                  },
-                  {
-                      title: t("proj_ui"),
-                      category: t("cat_eco"),
-                      img: "https://images.unsplash.com/photo-1581291518151-0ca98316f31f?q=80&w=2400&auto=format&fit=crop",
-                      year: "2025",
-                  },
-                  {
-                      title: t("proj_branding"),
-                      category: t("cat_identity"),
-                      img: "https://images.unsplash.com/photo-1618556450991-2f1af64e8191?q=80&w=2400&auto=format&fit=crop",
-                      year: "2026",
-                  },
-                  {
-                      title: t("proj_minimal"),
-                      category: t("cat_zero"),
-                      img: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?q=80&w=2400&auto=format&fit=crop",
-                      year: "2024",
-                  },
-              ];
+                {
+                    title: t("proj_kinetic"),
+                    category: t("cat_motion"),
+                    img: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2400&auto=format&fit=crop",
+                    year: "2026",
+                },
+                {
+                    title: t("proj_ui"),
+                    category: t("cat_eco"),
+                    img: "https://images.unsplash.com/photo-1581291518151-0ca98316f31f?q=80&w=2400&auto=format&fit=crop",
+                    year: "2025",
+                },
+                {
+                    title: t("proj_branding"),
+                    category: t("cat_identity"),
+                    img: "https://images.unsplash.com/photo-1618556450991-2f1af64e8191?q=80&w=2400&auto=format&fit=crop",
+                    year: "2026",
+                },
+                {
+                    title: t("proj_minimal"),
+                    category: t("cat_zero"),
+                    img: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?q=80&w=2400&auto=format&fit=crop",
+                    year: "2024",
+                },
+            ];
 
     const onOpen = useLaunchModal((state) => state.onOpen);
 
@@ -187,9 +187,9 @@ export default function MasterCreative(props: SovereignTemplateProps) {
                                 <div className="space-y-12">
                                     {[
                                         {
-                                            title: t("neural_design"),
+                                            title: t("Strategic_design"),
                                             icon: Layers,
-                                            desc: t("neural_design_desc"),
+                                            desc: t("Strategic_design_desc"),
                                         },
                                         {
                                             title: t("kinetic_ux"),

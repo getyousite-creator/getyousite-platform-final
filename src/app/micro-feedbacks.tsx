@@ -142,19 +142,19 @@ export const MicroButton: React.FC<MicroButtonProps> = ({
             }}
             transition={{
                 duration: state === "error" ? 0.4 : 0.2,
-            }}
+            } as any}
             className={`
                 relative px-6 py-3 rounded-[12px] font-medium
                 transition-all duration-300
                 ${state === "success"
                     ? "bg-success text-white"
                     : state === "error"
-                    ? "bg-error text-white"
-                    : "bg-grad-premium text-white hover:shadow-glow-primary"
+                        ? "bg-error text-white"
+                        : "bg-grad-premium text-white hover:shadow-glow-primary"
                 }
                 disabled:opacity-50 disabled:cursor-not-allowed
             `}
-            {...props}
+            {...(props as any)}
         >
             <AnimatePresence mode="wait">
                 {state === "loading" ? (
@@ -394,26 +394,26 @@ export function getHumanErrorMessage(error: string): string {
         // Network errors
         "NetworkError": "عذراً، يبدو أن اتصالك بالإنترنت ضعيف. يرجى التحقق والمحاولة مرة أخرى.",
         "TimeoutError": "استغرق الطلب وقتاً طويلاً. يرجى المحاولة مرة أخرى.",
-        
+
         // Validation errors
         "InvalidEmail": "عذراً، هذا البريد الإلكتروني غير صالح. يرجى التحقق من الصيغة.",
         "InvalidURL": "عذراً، هذا الرابط غير صالح. يرجى التأكد من الصيغة.",
         "RequiredField": "هذا الحقل مطلوب. يرجى ملؤه للمتابعة.",
         "TooShort": "النص قصير جداً. يرجى كتابة المزيد من التفاصيل.",
         "TooLong": "النص طويل جداً. يرجى الاختصار.",
-        
+
         // Auth errors
         "Unauthorized": "عذراً، يبدو أنك غير مسجل الدخول. يرجى تسجيل الدخول والمحاولة مرة أخرى.",
         "Forbidden": "عذراً، ليس لديك صلاحية للقيام بهذا الإجراء.",
-        
+
         // Server errors
         "ServerError": "حدث خطأ غير متوقع في الخادم. يرجى المحاولة بعد قليل.",
         "ServiceUnavailable": "الخدمة غير متاحة حالياً. يرجى المحاولة لاحقاً.",
-        
+
         // File errors
         "FileTooLarge": "حجم الملف كبير جداً. يرجى رفع ملف أصغر من 5 ميجابايت.",
         "InvalidFileType": "نوع الملف غير مدعوم. يرجى رفع صورة بصيغة JPG أو PNG.",
-        
+
         // Default
         "default": "عذراً، حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.",
     };

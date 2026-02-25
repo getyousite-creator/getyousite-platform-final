@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
 import { isSupabaseConfigured } from "@/lib/supabase";
 import { AlertCircle, Globe } from "lucide-react";
-import Logo from "@/components/ui/Logo";
+import Logo from "@/shared/components/ui/Logo";
 import { createClient } from "@/lib/supabase/client"; // REFACTORED: Direct client
 import { useRouter } from "next/navigation";
 
@@ -120,7 +120,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                                 <Label className="text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-1">Identity_Link</Label>
                                 <Input
                                     type="email"
-                                    placeholder="commander@getyousite.com"
+                                    placeholder="commander@GYS Global.com"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="bg-secondary/50 border-border h-12 text-foreground"

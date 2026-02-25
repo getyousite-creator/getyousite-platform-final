@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
 import { useAutoSave } from "@/hooks/use-auto-save";
 import { CustomizerEngine } from "@/lib/engine/customizer";
-import { refineBlueprintAction } from "@/app/actions/ai-actions";
+import { refineBlueprintAction } from "@/app/actions/architectural-actions";
 import { ChatRefinementEngine, DualMemory, sendPreviewUpdate } from "@/lib/engine/refinement";
 
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
@@ -13,8 +13,8 @@ import { PreviewCanvas } from "@/components/customizer/PreviewCanvas";
 import { saveStoreAction, getStoreAction } from "@/app/actions/store-actions";
 import { StorageService } from "@/lib/services/storage-service";
 import AuthModal from "@/components/auth/AuthModal";
-import AICommandBar from "@/components/customizer/AICommandBar";
-import AITweakerPanel from "@/components/editor/AITweakerPanel";
+import StrategicCommandBar from "@/components/customizer/StrategicCommandBar";
+import StrategicRefinementTerminal from "@/components/editor/StrategicRefinementTerminal";
 import { useSearchParams, useRouter, useParams } from "next/navigation";
 import { Activity, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -152,7 +152,7 @@ export default function CustomizerPage() {
                     // Optionally set selectedId if stored in blueprint metadata
                 }
             } else {
-                toast.error("Failed to load store");
+                toast.error("Failed to load architectural asset");
             }
             setIsLoadingStore(false);
         };
@@ -243,7 +243,7 @@ export default function CustomizerPage() {
             <div className="min-h-screen bg-[#0A2540] flex flex-col items-center justify-center text-white sovereign">
                 <Activity className="animate-spin text-[#00D09C] w-12 h-12 mb-6" />
                 <span className="font-black text-[10px] uppercase tracking-widest text-zinc-400 animate-pulse">
-                    RECONSTRUCTING_STORE_DNA...
+                    SYNCHRONIZING_GLOBAL_NODE_DATA...
                 </span>
             </div>
         );
@@ -268,24 +268,23 @@ export default function CustomizerPage() {
                             <div className="flex items-center gap-4">
                                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#051423] border border-white/10">
                                     <div
-                                        className={`w-2 h-2 rounded-full ${
-                                            saveStatus === "saving"
-                                                ? "bg-yellow-500 animate-pulse"
-                                                : saveStatus === "saved"
-                                                  ? "bg-[#00D09C]"
-                                                  : saveStatus === "error"
+                                        className={`w-2 h-2 rounded-full ${saveStatus === "saving"
+                                            ? "bg-yellow-500 animate-pulse"
+                                            : saveStatus === "saved"
+                                                ? "bg-[#00D09C]"
+                                                : saveStatus === "error"
                                                     ? "bg-red-500"
                                                     : "bg-gray-600"
-                                        }`}
+                                            }`}
                                     />
                                     <span className="text-[10px] uppercase font-bold text-gray-400">
                                         {saveStatus === "saving"
-                                            ? "Syncing..."
+                                            ? "TRANSMITTING..."
                                             : saveStatus === "saved"
-                                              ? "Synced"
-                                              : saveStatus === "error"
-                                                ? "Sync Error"
-                                                : "Unsaved"}
+                                                ? "SECURED"
+                                                : saveStatus === "error"
+                                                    ? "PROTO_ERROR"
+                                                    : "BUFFERED"}
                                     </span>
                                 </div>
                                 <Button
@@ -302,8 +301,8 @@ export default function CustomizerPage() {
                             </div>
                         ) : (
                             <div className="px-3 py-1.5 rounded-full bg-[#00D09C]/10 border border-[#00D09C]/20">
-                                <span className="text-[10px] uppercase font-bold text-[#00D09C]">
-                                    New Session
+                                <span className="text-[10px] uppercase font-black tracking-widest text-[#00D09C]">
+                                    Establishing_New_Protocol
                                 </span>
                             </div>
                         )}
@@ -323,7 +322,7 @@ export default function CustomizerPage() {
                         activeStoreId={activeStoreId}
                         userId={userId}
                         onAssetUpload={handleAssetUpload}
-                        aiInsight={blueprint?.ai_insight}
+                        architecture_insight={blueprint?.architecture_insight}
                         blueprint={blueprint || null}
                         selectedPageSlug={selectedPageSlug}
                         onSelectPage={setSelectedPageSlug}
@@ -338,7 +337,7 @@ export default function CustomizerPage() {
                 <main className="flex-1 bg-[#051423] overflow-hidden relative p-8 md:p-12 flex flex-col">
                     {/* Top Bar with AI Command */}
                     <div className="w-full flex justify-center mb-8 relative z-[60]">
-                        <AICommandBar
+                        <StrategicCommandBar
                             isProcessing={isGenerating}
                             flashSuccess={flashSuccess}
                             flashError={flashError}
@@ -363,7 +362,7 @@ export default function CustomizerPage() {
                                     const opCount = Array.isArray(localPatch.operations)
                                         ? localPatch.operations.length
                                         : 0;
-                                    toast.success(`Command patch applied (${opCount} ops)`);
+                                    toast.success(`Directive executed (${opCount} patches applied)`);
                                     return;
                                 }
 
@@ -380,12 +379,12 @@ export default function CustomizerPage() {
                                             setFlashSuccess(true);
                                             setTimeout(() => setFlashSuccess(false), 900);
                                         }
-                                        toast.success(result.message || "Applied via STRP");
+                                        toast.success(result.message || "Synthesis successful");
                                         return;
                                     }
                                 }
 
-                                // Remote AI refinement fallback
+                                // Remote Synthesis fallback
                                 setIsGenerating(true);
                                 try {
                                     const modifiedBlueprint = await refineBlueprintAction({
@@ -405,12 +404,12 @@ export default function CustomizerPage() {
                                         setFlashSuccess(true);
                                         setTimeout(() => setFlashSuccess(false), 900);
                                     }
-                                    toast.success("Blueprint refined by AI");
+                                    toast.success("Synthesis blueprint updated");
                                 } catch (e) {
                                     console.error(e);
                                     setFlashError(true);
                                     setTimeout(() => setFlashError(false), 900);
-                                    toast.error("Refinement failed");
+                                    toast.error("Synthesis failed");
                                 } finally {
                                     setIsGenerating(false);
                                 }
@@ -482,7 +481,7 @@ export default function CustomizerPage() {
                 </main>
             </div>
 
-            <AITweakerPanel />
+            <StrategicRefinementTerminal />
             <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
         </PayPalScriptProvider>
     );

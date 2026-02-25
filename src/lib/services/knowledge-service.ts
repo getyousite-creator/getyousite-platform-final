@@ -9,7 +9,7 @@ import { Post, Category } from "@/lib/schemas";
 // MOCK DATA SEED - In production, this would be a database integration
 const CATEGORIES: Category[] = [
     { id: "strategy", name: "Digital Strategy", slug: "digital-strategy" },
-    { id: "ai", name: "Artificial Intelligence", slug: "artificial-intelligence" },
+    { id: "synthesis", name: "Sovereign Architecture", slug: "sovereign-architecture" },
     { id: "ecommerce", name: "E-Commerce", slug: "e-commerce" }
 ];
 
@@ -18,13 +18,13 @@ const POSTS: Post[] = [
         id: "sovereign-manifesto",
         title: "The Death of Generic Web Design",
         slug: "death-of-generic-web-design",
-        excerpt: "Why templates are dead and how AI-driven sovereign architecture is the only way forward for serious businesses in 2026.",
+        excerpt: "Why templates are dead and how systems-driven sovereign architecture is the only way forward for serious businesses in 2026.",
         content: `
             <h2 class="text-3xl font-black mb-6">The Old Internet is Dead.</h2>
             <p class="mb-6 text-lg text-slate-300 leading-relaxed">For two decades, businesses have been held hostage by "themes". You pick a template, fill in the blanks, and hope for the best. This era is over.</p>
             
             <h3 class="text-2xl font-bold mb-4 text-[#00D09C]">The Sovereign Shift</h3>
-            <p class="mb-6 text-lg text-slate-300 leading-relaxed">True digital sovereignty means your infrastructure adapts to <strong>YOU</strong>, not the other way around. Our AI doesn't just "design"; it engineers a psychological journey tailored to your specific niche.</p>
+            <p class="mb-6 text-lg text-slate-300 leading-relaxed">True digital sovereignty means your infrastructure adapts to <strong>YOU</strong>, not the other way around. Our synthesis logic doesn't just "design"; it engineers a psychological journey tailored to your specific niche.</p>
 
             <blockquote class="border-l-4 border-[#00D09C] pl-6 my-8 italic text-xl text-white">
                 "Stop building websites. Start architecting digital empires."
@@ -37,16 +37,16 @@ const POSTS: Post[] = [
         date: "2026-02-10",
         category: "Digital Strategy",
         image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop",
-        tags: ["Strategy", "Future", "AI"]
+        tags: ["Strategy", "Future", "Synthesis"]
     },
     {
-        id: "ai-conversion-logic",
-        title: "Atomic Conversion Logic: How AI Writes Better Copy",
+        id: "synthesis-conversion-logic",
+        title: "Atomic Conversion Logic: How Synthesis Writes Better Copy",
         slug: "atomic-conversion-logic",
-        excerpt: "Understanding the AIDA model implementation within our neural engine.",
+        excerpt: "Understanding the AIDA model implementation within our Strategic engine.",
         content: `
             <h2 class="text-3xl font-black mb-6">Words That Sell.</h2>
-            <p class="mb-6 text-lg text-slate-300 leading-relaxed">Most business owners struggle to write about themselves. They are too close to the product. Our AI operates with "Clinical Detachment".</p>
+            <p class="mb-6 text-lg text-slate-300 leading-relaxed">Most business owners struggle to write about themselves. They are too close to the product. Our synthesis logic operates with "Clinical Detachment".</p>
             
             <h3 class="text-2xl font-bold mb-4 text-[#00D09C]">The AIDA Protocol</h3>
             <ul class="list-disc pl-6 mb-6 text-slate-300 space-y-2">
@@ -56,11 +56,11 @@ const POSTS: Post[] = [
                 <li><strong>Action:</strong> Commands, not suggestions.</li>
             </ul>
         `,
-        author: { name: "Neural Engine", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Engine" },
+        author: { name: "Strategic Engine", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Engine" },
         date: "2026-02-08",
-        category: "Artificial Intelligence",
+        category: "Sovereign Architecture",
         image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1965&auto=format&fit=crop",
-        tags: ["Copywriting", "Sales", "AI"]
+        tags: ["Copywriting", "Sales", "Synthesis"]
     },
     {
         id: "ecommerce-dominance",

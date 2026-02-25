@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
 const PROFILES = [
     {
@@ -21,7 +21,7 @@ const PROFILES = [
     },
 ];
 
-async function hasHorizontalOverflow(page: Parameters<typeof test>[0]["page"]) {
+async function hasHorizontalOverflow(page: Page) {
     return page.evaluate(() => {
         const doc = document.documentElement;
         return doc.scrollWidth > doc.clientWidth + 1;

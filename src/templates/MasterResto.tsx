@@ -21,7 +21,7 @@ export default function MasterResto(props: SovereignTemplateProps) {
     const { settings, blueprint } = props;
     const { headline, subheadline, primaryColor = "#c2410c" } = settings;
 
-    // AI Blueprint Extraction
+    // Sovereign Blueprint Synthesis
     const heroSection = blueprint?.layout?.find((s) => s.type === "hero");
     const menuSection = blueprint?.layout?.find((s) => s.type === "features");
     const aboutSection = blueprint?.layout?.find((s) => s.type === "about");
@@ -32,7 +32,7 @@ export default function MasterResto(props: SovereignTemplateProps) {
         (heroSection?.content?.image as string) ||
         "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2070&auto=format&fit=crop";
 
-    // About/Philosophy Images (Use AI injected or Fallback)
+    // About/Philosophy Images (Use architecture injected or Fallback)
     const aboutImg1 =
         (aboutSection?.content?.image as string) ||
         "https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=1974&auto=format&fit=crop";

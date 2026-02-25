@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { ArrowRight, Zap, Cpu, Shield } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { useState } from "react";
@@ -32,7 +32,7 @@ export default function Hero() {
                 <div className="absolute top-[-10%] left-[-10%] w-[70%] h-[70%] bg-primary/20 blur-[130px] rounded-full animate-pulse" />
                 <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-[#10B981]/15 blur-[160px] rounded-full delay-1000" />
 
-                {/* AI Neural Network/Grid Overlay */}
+                {/* Strategic Mesh & Grid Overlay */}
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.15] mix-blend-overlay" />
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20" />
             </div>
@@ -78,7 +78,7 @@ export default function Hero() {
                     transition={{ delay: 0.3, type: "spring", stiffness: 100 }}
                     className="w-full max-w-4xl relative group mb-32"
                 >
-                    {/* NEURAL GLOW */}
+                    {/* Strategic GLOW */}
                     <div className="absolute -inset-4 bg-primary/20 rounded-[3rem] blur-3xl opacity-0 group-focus-within:opacity-100 transition-all duration-1000" />
 
                     <div className="relative flex flex-col md:flex-row items-center bg-white/[0.03] backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-3 shadow-[0_32px_120px_rgba(0,0,0,0.8)] transition-all duration-500 group-focus-within:border-primary/40 group-focus-within:bg-white/[0.05]">
@@ -109,10 +109,10 @@ export default function Hero() {
                     {/* QUICK SUGGESTIONS (NLP_ASSIST) */}
                     <div className="mt-10 flex flex-wrap justify-center gap-4 animate-in fade-in slide-in-from-top-4 duration-1000">
                         {[
-                            { ar: 'مطعم فاخر في الرياض', en: 'Luxury Fine Dining in London' },
-                            { ar: 'وكالة تسويق سيادية', en: 'Sovereign Growth Agency' },
-                            { ar: 'عيادة تجميل ذكية', en: 'Smart Aesthetic Clinic' },
-                            { ar: 'منصة عقارات بأسلوب تقني', en: 'Tech-First Real Estate Hub' }
+                            { ar: 'بنية تحتية للخدمات اللوجستية العالمية', en: 'Global Logistics Infrastructure' },
+                            { ar: 'معمارية التكنولوجيا المالية عالية الأداء', en: 'High-Performance FinTech Architecture' },
+                            { ar: 'نظام إدارة الرعاية الصحية السيادية', en: 'Sovereign HealthCare Governance Node' },
+                            { ar: 'إطار العمل الاستراتيجي للمؤسسات', en: 'Strategic Enterprise Framework' }
                         ].map((hint) => (
                             <button
                                 key={hint.en}

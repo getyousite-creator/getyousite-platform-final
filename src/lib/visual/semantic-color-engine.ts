@@ -142,10 +142,10 @@ export const INDUSTRY_COLOR_PROFILES: Record<string, IndustryColorProfile> = {
         gradient: "from-orange-600 via-orange-500 to-yellow-500",
     },
 
-    // Technology & AI - Innovation & Future
+    // Technology & Synthesis - Innovation & Future
     tech: {
         industry: "Technology & SaaS",
-        keywords: ["tech", "software", "saas", "ai", "artificial", "startup", "digital", "app"],
+        keywords: ["tech", "software", "saas", "synthesis", "sovereign", "startup", "digital", "app"],
         palette: {
             primary: "#7C3AED",      // Deep Purple
             secondary: "#09090B",    // Carbon Black

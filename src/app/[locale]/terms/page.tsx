@@ -38,7 +38,7 @@ export default function TermsOfServicePage() {
                         <Section
                             icon={Globe}
                             title="1. ARCHITECTURAL SERVICE"
-                            text="GetYouSite functions as a Sovereign Site Architect. By deploying architectures through our engine, you retain 100% ownership of your business logic and customer data. GetYouSite remains the guardian of the underlying core code and hosting infrastructure."
+                            text="GYS Global functions as a Sovereign Site Architect. By deploying architectures through our engine, you retain 100% ownership of your business logic and customer data. GYS Global remains the guardian of the underlying core code and hosting infrastructure."
                         />
 
                         {/* SECTION 2 - PAYMENTS */}

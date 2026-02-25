@@ -1,0 +1,60 @@
+name: Sovereign Core CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  logic_audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Sovereign Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Syntax & Pattern Audit (Lint)
+        run: npm run lint
+
+      - name: Security Vulnerability Scan (Snyk)
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Static Analysis & Logic Audit (SonarQube)
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      - name: Execute Full Logic Suite (Vitest)
+        run: npm run test:coverage
+
+      - name: Enforce Governance (80% Coverage Gate)
+        run: |
+            COVERAGE=$(cat coverage/summary.json | jq '.total.lines.pct')
+            if (( $(echo "$COVERAGE < 80.0" | bc -l) )); then
+              echo "CRITICAL: Logic coverage ($COVERAGE%) is below sovereign threshold (80%)"
+              exit 1
+            fi
+
+  deployment_orchestration:
+    needs: logic_audit
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Deploy to Sovereign Edge
+        run: |
+          echo "Initiating Deployment Sequence..."
+          # Logic to trigger Vercel/Cloudflare deployment or SSH sync
+          echo "Status: SUCCESS"

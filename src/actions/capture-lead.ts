@@ -60,8 +60,8 @@ export async function captureLead(prevState: ActionState, formData: FormData): P
         const { data: user } = await AuthService.getCurrentUser();
 
         // 1. GENERATE FINAL BLUEPRINT VIA SOVEREIGN ORCHESTRATOR
-        const { AIOrchestrator } = await import("@/lib/ai/orchestrator");
-        const finalBlueprint = await AIOrchestrator.generateCompleteSite({
+        const { SovereignOrchestrator } = await import("@/lib/ai/orchestrator");
+        const finalBlueprint = await SovereignOrchestrator.generateCompleteSite({
             brandName: vision.split(' ').slice(0, 3).join(' '), // Better extraction
             description: vision,
             goal: siteType,

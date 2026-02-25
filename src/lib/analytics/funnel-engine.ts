@@ -58,7 +58,7 @@ export interface UserJourney {
 
 export class FunnelEngine {
     private prisma: PrismaClient;
-    
+
     // Funnel definition
     private funnelSteps = [
         'site_generation_started',
@@ -79,12 +79,12 @@ export class FunnelEngine {
      */
     async calculateFunnel(startDate: Date, endDate: Date): Promise<FunnelStep[]> {
         const steps: FunnelStep[] = [];
-        
+
         for (let i = 0; i < this.funnelSteps.length; i++) {
             const stepName = this.funnelSteps[i];
-            
-            // Count users who completed this step
-            const stepCount = await this.prisma.analyticsEvent.groupBy({
+
+            // Count sessions via groupBy on Analytics model (siteId-based, no userId)
+            const stepCount = await this.prisma.analytics.groupBy({
                 by: ['sessionId'],
                 where: {
                     eventType: stepName,
@@ -95,18 +95,18 @@ export class FunnelEngine {
                 },
                 _count: true,
             });
-            
+
             const users = stepCount.length;
             const totalUsers = i === 0 ? users : steps[i - 1].users;
             const conversionRate = totalUsers > 0 ? (users / totalUsers) * 100 : 0;
-            
+
             // Calculate average time to complete
             const avgTime = await this.calculateAvgTimeToStep(stepName, startDate, endDate);
-            
+
             // Calculate drop-off rate
             const prevUsers = i === 0 ? 0 : steps[i - 1].users;
             const dropOffRate = prevUsers > 0 ? ((prevUsers - users) / prevUsers) * 100 : 0;
-            
+
             steps.push({
                 step: i + 1,
                 name: this.formatStepName(stepName),
@@ -116,7 +116,7 @@ export class FunnelEngine {
                 dropOffRate,
             });
         }
-        
+
         return steps;
     }
 
@@ -128,7 +128,7 @@ export class FunnelEngine {
         startDate: Date,
         endDate: Date
     ): Promise<number> {
-        const events = await this.prisma.analyticsEvent.findMany({
+        const events = await this.prisma.analytics.findMany({
             where: {
                 eventType: stepName,
                 createdAt: { gte: startDate, lte: endDate },
@@ -139,26 +139,26 @@ export class FunnelEngine {
                 createdAt: true,
             },
         });
-        
+
         if (events.length === 0) return 0;
-        
+
         // Calculate time from session start to this step
         const times = await Promise.all(
-            events.map(async (event) => {
-                const sessionStart = await this.prisma.analyticsEvent.findFirst({
+            events.map(async (event: { sessionId: string | null; createdAt: Date }) => {
+                const sessionStart = await this.prisma.analytics.findFirst({
                     where: {
                         sessionId: event.sessionId,
-                        eventType: 'session_started',
+                        eventType: 'VISIT_INITIALIZED',
                     },
                     orderBy: { createdAt: 'asc' },
                 });
-                
+
                 if (!sessionStart) return 0;
                 return event.createdAt.getTime() - sessionStart.createdAt.getTime();
             })
         );
-        
-        const avgTime = times.reduce((a, b) => a + b, 0) / times.length;
+
+        const avgTime = times.reduce((a: number, b: number) => a + b, 0) / times.length;
         return avgTime / 1000; // Convert to seconds
     }
 
@@ -195,7 +195,7 @@ export class FunnelEngine {
             ORDER BY duration_seconds DESC
             LIMIT 1000
         `;
-        
+
         return frictionSessions;
     }
 
@@ -203,34 +203,32 @@ export class FunnelEngine {
      * Get user journey
      */
     async getUserJourney(sessionId: string): Promise<UserJourney | null> {
-        const events = await this.prisma.analyticsEvent.findMany({
+        const events = await this.prisma.analytics.findMany({
             where: { sessionId },
             orderBy: { createdAt: 'asc' },
         });
-        
         if (events.length === 0) return null;
-        
-        const userId = events[0].userId || 'anonymous';
+        const userId = (events[0] as any).visitorId || 'anonymous';
         const steps = [];
-        
+
         for (let i = 0; i < events.length; i++) {
             const event = events[i];
             const nextEvent = events[i + 1];
-            const duration = nextEvent 
+            const duration = nextEvent
                 ? nextEvent.createdAt.getTime() - event.createdAt.getTime()
                 : 0;
-            
+
             steps.push({
-                step: event.eventType,
+                step: event.eventType || 'unknown_event',
                 timestamp: event.createdAt,
                 duration: duration / 1000, // seconds
                 actions: 1,
             });
         }
-        
+
         const totalTime = steps.reduce((a, b) => a + b.duration, 0);
-        const completed = events.some(e => e.eventType === 'site_published');
-        
+        const completed = events.some((e: any) => e.eventType === 'site_published');
+
         return {
             userId,
             sessionId,
@@ -266,10 +264,10 @@ export class RetentionEngine {
      * Calculate retention metrics
      */
     async calculateRetention(cohort: string = 'all'): Promise<RetentionMetrics> {
-        const cohortFilter = cohort === 'all' ? {} : { 
+        const cohortFilter = cohort === 'all' ? {} : {
             userMetadata: { path: ['cohort'], equals: cohort }
         };
-        
+
         // Get users who signed up 30+ days ago
         const cohortUsers = await this.prisma.user.findMany({
             where: {
@@ -278,31 +276,31 @@ export class RetentionEngine {
             },
             select: { id: true, createdAt: true },
         });
-        
+
         if (cohortUsers.length === 0) {
             return { day1: 0, day7: 0, day30: 0, cohort };
         }
-        
+
         const totalUsers = cohortUsers.length;
-        
+
         // Calculate day 1 retention
         const day1Active = await this.countActiveUsers(
             cohortUsers.map(u => u.id),
             1
         );
-        
+
         // Calculate day 7 retention
         const day7Active = await this.countActiveUsers(
             cohortUsers.map(u => u.id),
             7
         );
-        
+
         // Calculate day 30 retention
         const day30Active = await this.countActiveUsers(
             cohortUsers.map(u => u.id),
             30
         );
-        
+
         return {
             day1: (day1Active / totalUsers) * 100,
             day7: (day7Active / totalUsers) * 100,
@@ -315,18 +313,20 @@ export class RetentionEngine {
      * Count active users after N days
      */
     private async countActiveUsers(userIds: string[], days: number): Promise<number> {
-        const activeUsers = await this.prisma.analyticsEvent.findMany({
+        // RetentionEngine: Analytics model is site-based, not user-based.
+        // For user-level retention, we check site activity for a given userId via Site relation.
+        const activeSites = await this.prisma.site.findMany({
             where: {
                 userId: { in: userIds },
-                createdAt: {
+                updatedAt: {
                     gte: new Date(Date.now() - (days + 1) * 24 * 60 * 60 * 1000),
-                    lte: new Date(Date.now() - (days - 1) * 24 * 60 * 60 * 1000),
+                    lte: new Date(Date.now() - Math.max(0, days - 1) * 24 * 60 * 60 * 1000),
                 },
             },
             distinct: ['userId'],
         });
-        
-        return activeUsers.length;
+
+        return activeSites.length;
     }
 }
 

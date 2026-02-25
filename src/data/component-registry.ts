@@ -18,7 +18,7 @@ export const COMPONENT_REGISTRY: Record<ComponentType, ComponentDefinition> = {
         category: 'hero',
         defaultProps: {
             title: 'Welcome to the Future',
-            subtitle: 'This is a sovereign digital asset built by GetYouSite AI.',
+            subtitle: 'This is a sovereign digital asset synthesized by the GYS Global Engine.',
             ctaText: 'Start Now',
             layout: 'modern',
             alignment: 'center',

@@ -29,7 +29,7 @@ interface Lead {
     stores?: { name: string } | null;
 }
 
-// AI-powered lead scoring algorithm
+// Strategic lead scoring algorithm
 function calculateLeadScore(lead: Lead): number {
     let score = 50; // Base score
 
@@ -106,7 +106,7 @@ export function LeadMatrix() {
         }
     };
 
-    // AI-powered lead intelligence
+    // Sovereign lead intelligence
     const leadsWithScores = useMemo(() => {
         return leads
             .map((lead) => ({
@@ -144,7 +144,7 @@ export function LeadMatrix() {
 
     return (
         <div className="space-y-8 sovereign">
-            {/* AI-Powered Analytics Dashboard */}
+            {/* Sovereign Analytics Dashboard */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                 <div className="p-6 rounded-[24px] bg-gradient-to-br from-[#00D09C]/10 to-transparent border border-[#00D09C]/20">
                     <div className="flex items-center justify-between mb-2">
@@ -184,7 +184,7 @@ export function LeadMatrix() {
                         <span className="text-2xl font-black text-white">{analytics.avgScore}</span>
                     </div>
                     <p className="text-[9px] font-black uppercase tracking-widest text-zinc-500">
-                        {t('avg_ai_score')}
+                        {t('avg_quality_score')}
                     </p>
                 </div>
             </div>
@@ -214,7 +214,7 @@ export function LeadMatrix() {
                     </div>
                 ) : (
                     leadsWithScores.map((lead) => {
-                        // AI Score color coding
+                        // Strategic Score color coding
                         const scoreColor =
                             lead.score >= 75
                                 ? "text-[#00D09C]"
@@ -232,8 +232,8 @@ export function LeadMatrix() {
                             <div
                                 key={lead.id}
                                 className={`p-6 rounded-[32px] border transition-all flex flex-col md:flex-row gap-6 items-start md:items-center ${lead.status === "new"
-                                        ? "bg-[#00D09C]/5 border-[#00D09C]/20 shadow-[0_0_20px_rgba(0,208,156,0.05)]"
-                                        : "bg-[#051423]/50 border-white/5"
+                                    ? "bg-[#00D09C]/5 border-[#00D09C]/20 shadow-[0_0_20px_rgba(0,208,156,0.05)]"
+                                    : "bg-[#051423]/50 border-white/5"
                                     }`}
                             >
                                 <div className="flex-1 space-y-4">
@@ -249,7 +249,7 @@ export function LeadMatrix() {
                                                         <span className="w-2 h-2 rounded-full bg-[#00D09C] animate-ping" />
                                                     )}
                                                 </h4>
-                                                {/* AI Quality Score Badge */}
+                                                {/* Strategic Quality Score Badge */}
                                                 <div
                                                     className={`px-3 py-1 rounded-full border ${scoreBg} flex items-center gap-1.5`}
                                                 >

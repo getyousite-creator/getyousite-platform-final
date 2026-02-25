@@ -55,6 +55,15 @@ export function VisualEditor({ initialBlueprint, onSave }: VisualEditorProps) {
     }, [onMessage]);
 
     // Handle keyboard shortcuts
+    // Handle save
+    const handleSave = async () => {
+        if (!blueprint) return;
+
+        if (onSave) {
+            await onSave(blueprint);
+        }
+    };
+
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             // Ctrl/Cmd + Z = Undo
@@ -62,25 +71,25 @@ export function VisualEditor({ initialBlueprint, onSave }: VisualEditorProps) {
                 e.preventDefault();
                 if (canUndo) undo();
             }
-            
+
             // Ctrl/Cmd + Shift + Z = Redo
             if ((e.ctrlKey || e.metaKey) && e.key === 'z' && e.shiftKey) {
                 e.preventDefault();
                 if (canRedo) redo();
             }
-            
+
             // Ctrl/Cmd + S = Save
             if ((e.ctrlKey || e.metaKey) && e.key === 's') {
                 e.preventDefault();
                 handleSave();
             }
-            
+
             // Ctrl/Cmd + P = Toggle Preview/Edit
             if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
                 e.preventDefault();
                 setMode(mode === 'edit' ? 'preview' : 'edit');
             }
-            
+
             // Escape = Close toolbar
             if (e.key === 'Escape') {
                 setIsToolbarOpen(false);
@@ -89,16 +98,7 @@ export function VisualEditor({ initialBlueprint, onSave }: VisualEditorProps) {
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [canUndo, canRedo, undo, redo, mode, setMode]);
-
-    // Handle save
-    const handleSave = async () => {
-        if (!blueprint) return;
-        
-        if (onSave) {
-            await onSave(blueprint);
-        }
-    };
+    }, [canUndo, canRedo, undo, redo, mode, setMode, blueprint, onSave]);
 
     return (
         <div className="w-full h-screen bg-neutral-900 overflow-hidden">
@@ -124,11 +124,10 @@ export function VisualEditor({ initialBlueprint, onSave }: VisualEditorProps) {
                 <div className="flex items-center gap-2">
                     <button
                         onClick={() => setMode('edit')}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
-                            mode === 'edit'
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${mode === 'edit'
                                 ? 'bg-primary text-white'
                                 : 'bg-white/5 text-neutral-400 hover:text-white'
-                        }`}
+                            }`}
                         aria-label="Edit mode"
                     >
                         <Edit3 className="w-4 h-4" />
@@ -136,11 +135,10 @@ export function VisualEditor({ initialBlueprint, onSave }: VisualEditorProps) {
                     </button>
                     <button
                         onClick={() => setMode('preview')}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
-                            mode === 'preview'
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${mode === 'preview'
                                 ? 'bg-primary text-white'
                                 : 'bg-white/5 text-neutral-400 hover:text-white'
-                        }`}
+                            }`}
                         aria-label="Preview mode"
                     >
                         <Eye className="w-4 h-4" />
@@ -210,11 +208,10 @@ function ToolbarIconButton({ icon, tooltip, disabled, onClick }: ToolbarIconButt
         <button
             onClick={onClick}
             disabled={disabled}
-            className={`p-2 rounded-lg transition-all ${
-                disabled
+            className={`p-2 rounded-lg transition-all ${disabled
                     ? 'opacity-50 cursor-not-allowed'
                     : 'hover:bg-white/10 text-white'
-            }`}
+                }`}
             aria-label={tooltip}
             title={tooltip}
         >

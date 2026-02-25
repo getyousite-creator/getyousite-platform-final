@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  gys-core:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.prod
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - SENTRY_DSN=${SENTRY_DSN}
+    ports:
+      - "3001:3001"
+    restart: always
+    networks:
+      - gys-mesh
+
+  gys-db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_DB=gys_sovereign
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - gys-mesh
+
+  gys-cache:
+    image: redis:7-alpine
+    networks:
+      - gys-mesh
+
+networks:
+  gys-mesh:
+    driver: bridge
+
+volumes:
+  postgres_data:

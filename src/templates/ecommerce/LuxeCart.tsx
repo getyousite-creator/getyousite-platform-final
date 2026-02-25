@@ -7,7 +7,7 @@ import { useLaunchModal } from "@/hooks/use-launch-modal";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
 
 import { SovereignTemplateProps } from "@/lib/types/template";
-import { SovereignImage } from "@/components/ui/sovereign-image";
+import { SovereignImage } from "@/shared/components/ui/sovereign-image";
 
 export default function LuxeCart({ settings, blueprint }: SovereignTemplateProps) {
     const { primaryColor, secondaryColor, headline, subheadline, fontFamily } = settings;

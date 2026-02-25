@@ -1,7 +1,7 @@
 /**
  * Design System Documentation Page
  * 
- * Single Source of Truth for GetYouSite Visual Identity
+ * Single Source of Truth for GYS Global Visual Identity
  * Displays all colors, typography, buttons, cards, and loading states
  */
 
@@ -44,7 +44,7 @@ export default function DesignSystemDocs() {
                 <header className="mb-12">
                     <FadeIn direction="up">
                         <h1 className="text-5xl font-bold mb-4 bg-grad-premium bg-clip-text text-transparent">
-                            GetYouSite Design System
+                            GYS Global Design System
                         </h1>
                         <p className="text-xl text-neutral-slate">
                             Visual Identity Protocol - Emerald Cyber-Noir
@@ -361,7 +361,7 @@ export default function DesignSystemDocs() {
                 {/* Footer */}
                 <footer className="border-t border-neutral-slate/20 pt-8 mt-12">
                     <p className="text-sm text-neutral-slate">
-                        GetYouSite Design System v1.0 - Emerald Cyber-Noir
+                        GYS Global Design System v1.0 - Emerald Cyber-Noir
                     </p>
                     <p className="text-xs text-neutral-light mt-2">
                         Last updated: {new Date().toLocaleDateString()}

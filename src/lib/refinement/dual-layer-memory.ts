@@ -106,7 +106,7 @@ export class DualLayerMemoryManager {
     }
 
     /**
-     * Get conversation context for AI
+     * Get conversation context for Strategic Synthesis
      */
     getConversationContext(): string {
         const recent = this.getRecentMessages(10);
@@ -371,7 +371,7 @@ export class ContextResolver {
     }
 
     /**
-     * Build full context for AI processing
+     * Build full context for Synthesis processing
      */
     buildContext(input: string): {
         userInput: string;

@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { useTemplateEditor } from '@/hooks/use-template-editor';
-import { NeuralBeacon } from '@/components/analytics/NeuralBeacon';
+import { StrategicBeacon } from '@/components/analytics/StrategicBeacon';
 
 const MasterMedical = dynamic<SovereignTemplateProps>(() => import('./MasterMedical'));
 const MasterRetail = dynamic<SovereignTemplateProps>(() => import('./MasterRetail'));
@@ -22,7 +22,7 @@ const MasterAccounting = dynamic<SovereignTemplateProps>(() => import('./MasterA
 const MasterInternal = dynamic<SovereignTemplateProps>(() => import('./MasterInternal'));
 
 // SOVEREIGN SPECIFIC IMPLEMENTATIONS
-const NeuraAgency = dynamic<SovereignTemplateProps>(() => import('./agency/NeuraAgency'));
+const SovereignAgency = dynamic<SovereignTemplateProps>(() => import('./agency/SovereignAgency'));
 const OmegaAgencyPro = dynamic<SovereignTemplateProps>(() => import('./agency/OmegaAgencyPro'));
 const LuxeCart = dynamic<SovereignTemplateProps>(() => import('./ecommerce/LuxeCart'));
 const AlphaStorePro = dynamic<SovereignTemplateProps>(() => import('./ecommerce/AlphaStorePro'));
@@ -67,7 +67,7 @@ const templateMap: Record<string, React.ComponentType<any>> = {
     'fusion-bistro': MasterResto,
 
     // CREATIVE PILLAR
-    'creative-agency': NeuraAgency,
+    'sovereign-agency': SovereignAgency,
     'cyber-portfolio': MasterCreative, // Mapped to MasterCreative by default, but should ideally point to CyberPortfolio if implemented
     'python-portfolio': PythonPortfolio,
     'studio-zero': MasterCreative,
@@ -153,10 +153,10 @@ export default function TemplateRenderer({
 
     const Template = templateMap[templateId] || AtomicRenderer;
 
-    // Sovereign Update: Inject full architecture metadata & Neural Beacon
+    // Sovereign Update: Inject full architecture metadata & Strategic Beacon
     return (
         <>
-            {meta?.id && <NeuralBeacon storeId={meta.id} />}
+            {meta?.id && <StrategicBeacon storeId={meta.id} />}
             <Template settings={editorSettings} blueprint={activeBlueprint} meta={meta} selectedPageSlug={selectedPageSlug} />
         </>
     );

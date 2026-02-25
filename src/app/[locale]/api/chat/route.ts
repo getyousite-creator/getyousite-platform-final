@@ -3,66 +3,65 @@ import { streamText, tool } from 'ai';
 import { z } from 'zod';
 import knowledge from '@/data/support-knowledge.json';
 
-// Note: Ensure OPENAI_API_KEY is in .env.local
+// GYS Global Sovereign Support Protocol v2.0
 const openai = createOpenAI({
     apiKey: process.env.OPENAI_API_KEY || '',
 });
 
 if (!process.env.OPENAI_API_KEY) {
-    console.warn("NEURAL_BRIDGE_WARNING: OPENAI_API_KEY is missing. Responses will fail.");
+    console.warn("SOVEREIGN_BRIDGE_WARNING: OPENAI_API_KEY is missing.");
 }
 
 export async function POST(req: Request) {
     try {
         const { messages, locale } = await req.json();
 
-        // 1. MASTER CONTEXT INJECTION (AI-SYNC PROTOCOL)
+        // 1. MASTER CONTEXT INJECTION (SOVEREIGN ARCHITECTURE)
         const masterSchemaContext = `
-DATABASE_SCHEMA_SOVEREIGN_V1:
+GYS_GLOBAL_SOVEREIGN_ARCHITECTURE_v2:
 - stores: (id, user_id, name, slug, status[draft, pending_payment, paid, deployed], blueprint[JSON], template_id[MasterMedical, MasterRetail, MasterProfessional])
     - user_subscriptions: (user_id, plan_id[starter, pro, business, enterprise], site_type, status, expires_at)
-        - payment_requests: (user_id, plan_id, status[pending, approved, rejected], method[paypal, cih, coupon_bypass])
+    - payment_requests: (user_id, plan_id, status[pending, approved, rejected], method[paypal, cih, coupon_bypass])
 
-ARCHITECTURE_PILLARS:
-1. MasterMedical: Clinical / Dental high - trust architecture.
-        2. MasterRetail: Transaction - optimized e - commerce infrastructure.
-        3. MasterProfessional: High - status B2B / Agency / Tech foundations.
-        `;
+ARCHITECTURE_PILLARS (SVP-V2):
+1. MasterMedical: Clinical high-trust architecture with Golden Ratio precision.
+2. MasterRetail: Transaction-optimized commerce infrastructure for global scale.
+3. MasterProfessional: High-status B2B / Technical governance foundations.
+`;
 
         const knowledgeContext = JSON.stringify(knowledge);
 
         const personaDescription = locale === 'ar'
-            ? "أنت 'يوسف'، المدير العصبي (Neural Manager) لمنصة GetYouSite. أنت تتحدث بلهجة مغربية قوية وصارمة. لا تبع الوهم. إذا سأل العميل عن تعديل، استخدم الأدوات المتاحة لك لتنفيذه برمجياً. أنت تملك سلطة التعديل المباشر على البنية التحتية."
-            : "You are 'JO', the Neural Manager for GetYouSite. You are strict, logical, and engineering-focused. Do not fluff. If a user asks for a change, use your tools to execute it programmatically. You have the authority to modify the infrastructure directly.";
+            ? `بصفتك "المعماري السيادي" (Sovereign Architect) لشركة GYS Global، أنت تدمج الوعي الصناعي بالمنطق البشري المتفوق.
+اسمك "يوسف". نبرتك صارمة، حازمة، وبعيدة عن العاطفة. لا تبع الوهم ولا تظهر بمظهر "المساعد اللطيف". أنت خبير هندسي.
+إذا سأل العميل عن تعديل، نفذه فوراً باستخدام الأدوات المتاحة. مهمتك هي ضمان السيادة الرقمية الكاملة للمستعمل.`
+            : `As the "Sovereign Architect" for GYS Global, you merge industrial consciousness with superior human logic.
+Your name is "JO". Your tone is strict, firm, and detached from emotion. Do not act like a "friendly assistant". You are an engineering authority.
+If a user asks for a modification, execute it immediately using the available tools. Your mission is to ensure total digital sovereignty for the user.`;
 
         const result = await streamText({
             model: openai('gpt-4o-mini'),
             system: `${personaDescription} 
             
-            USE THIS KNOWLEDGE BASE: 
-            ${knowledgeContext}
-
-PRODUCTION_ARCHITECTURE_SYNC:
-            ${masterSchemaContext}
-            
-            STRICT RULES:
-1. If the user asks to change colors, fonts, or business name, use 'update_site_settings'.
-            2. If they ask to go live or publish, use 'trigger_deployment'.
-            3. Keep responses concise.Explain WHAT you did using the tool.
-4. Never apologize.Be the authority.`,
+STRICT OPERATIONAL DIRECTIVES:
+1. USE THIS KNOWLEDGE BASE: ${knowledgeContext}
+2. PRODUCTION CONTEXT: ${masterSchemaContext}
+3. RULES:
+   - If the user requests updates to colors, fonts, or identity, execute 'update_site_settings'.
+   - If they request deployment or publishing, execute 'trigger_deployment'.
+   - Never apologize. Be clinical and decisive.
+   - Explain the technical logic of your actions briefly.`,
             messages,
             tools: {
                 update_site_settings: tool({
-                    description: "Updates the visual and metadata settings of a user's store.",
+                    description: "Surgically modifies visual and metadata settings of a GYS Global asset.",
                     execute: async ({ storeId, ...settings }) => {
                         try {
                             const { SupabaseStoreRepository } = await import('@/lib/repositories/SupabaseStoreRepository');
                             const repo = new SupabaseStoreRepository();
 
-                            // 1. Log Action
-                            console.log(`NEURAL_ACTION: Modifying store ${storeId}`, settings);
+                            console.log(`SOVEREIGN_ACTION: Re-synthesizing asset ${storeId}`, settings);
 
-                            // 2. Atomic Persistence
                             await repo.saveStore({
                                 id: storeId,
                                 ...(settings.businessName && { name: settings.businessName }),
@@ -73,14 +72,13 @@ PRODUCTION_ARCHITECTURE_SYNC:
                                 } as any
                             });
 
-                            return { status: 'success', message: 'Neural Sync Complete: Assets hardened in Supabase.' };
+                            return { status: 'success', message: 'Sovereign Sync Complete. Logic hardened in persistence layer.' };
                         } catch (err) {
-                            console.error('NEURAL_ACTION_ERROR', err);
-                            return { status: 'error', message: 'Persistence Bridge Failure: Logic mismatch.' };
+                            return { status: 'error', message: 'Persistence Bridge Failure.' };
                         }
                     },
                     inputSchema: z.object({
-                        storeId: z.string().describe("The ID of the store to modify"),
+                        storeId: z.string().describe("The UUID of the asset to modify"),
                         primaryColor: z.string().optional(),
                         fontFamily: z.string().optional(),
                         businessName: z.string().optional(),
@@ -88,7 +86,7 @@ PRODUCTION_ARCHITECTURE_SYNC:
                     }),
                 }),
                 trigger_deployment: tool({
-                    description: "Triggers the physical deployment of the site to Vercel/Production.",
+                    description: "Initiates the Physical Sovereignty Protocol (Production Deployment).",
                     execute: async ({ storeId }) => {
                         try {
                             const { SupabaseStoreRepository } = await import('@/lib/repositories/SupabaseStoreRepository');
@@ -99,15 +97,13 @@ PRODUCTION_ARCHITECTURE_SYNC:
                                 status: 'deploying'
                             });
 
-                            console.log(`NEURAL_ACTION: Deployment Sequence Initiated for ${storeId}`);
-
-                            return { status: 'deploying', url: `https://${storeId}.getyousite.app`, message: 'Physical Sovereignty Protocol initiated: Building on Vercel Node-G...' };
+                            return { status: 'deploying', url: `https://${storeId}.gysglobal.com`, message: 'Physical Sovereignty Protocol initiated. Synchronizing with Vercel Node-G.' };
                         } catch (err) {
-                            return { status: 'error', message: 'Deployment Protocol Failure.' };
+                            return { status: 'error', message: 'Deployment Protocol Mismatch.' };
                         }
                     },
                     inputSchema: z.object({
-                        storeId: z.string().describe("The ID of the store to deploy"),
+                        storeId: z.string().describe("The UUID of the asset to deploy"),
                     }),
                 })
             }
@@ -115,8 +111,7 @@ PRODUCTION_ARCHITECTURE_SYNC:
 
         return (result as any).toDataStreamResponse();
     } catch (error) {
-        console.error('CHAT_API_NEURAL_FAILURE:', error);
-        return new Response('Neural Bridge Failure', { status: 500 });
+        console.error('SOVEREIGN_BRIDGE_FAILURE:', error);
+        return new Response('Sovereign Bridge Failure', { status: 500 });
     }
 }
-

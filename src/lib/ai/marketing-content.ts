@@ -1,10 +1,10 @@
 /**
- * Real Marketing Content Generator
+ * Sovereign Marketing Content Engine
  * 
  * SOVEREIGN CONTENT PROTOCOL: No Lorem Ipsum Ever
  * 
  * Generates authentic, high-conversion marketing copy based on the user's
- * business sector using Gemini 3 Flash's linguistic capabilities.
+ * business sector using the Sovereign Synthesis engine.
  * 
  * Implements:
  * - AIDA Model (Attention, Interest, Desire, Action)
@@ -23,22 +23,22 @@ import { Section } from "@/lib/schemas";
 export interface ContentGenerationRequest {
     /** Business name */
     businessName: string;
-    
+
     /** Business niche/industry */
     niche: string;
-    
+
     /** Business vision/description */
     vision: string;
-    
+
     /** Target locale (ar|en) */
     locale: string;
-    
+
     /** Section type to generate content for */
     sectionType: string;
-    
+
     /** Target audience demographics */
     audience?: string[];
-    
+
     /** Brand voice tone */
     tone?: "authoritative" | "premium" | "friendly" | "technical" | "minimal";
 }
@@ -46,32 +46,32 @@ export interface ContentGenerationRequest {
 export interface GeneratedContent {
     /** Headline (AIDA: Attention) */
     headline: string;
-    
+
     /** Subheadline (AIDA: Interest) */
     subheadline: string;
-    
+
     /** Body copy (AIDA: Desire) */
     body: string;
-    
+
     /** Call-to-action (AIDA: Action) */
     cta: string;
-    
+
     /** Secondary CTA (optional) */
     ctaSecondary?: string;
-    
+
     /** Supporting points/features */
     features?: Array<{
         title: string;
         description: string;
     }>;
-    
+
     /** Social proof elements */
     socialProof?: {
         testimonials?: string[];
         stats?: Array<{ value: string; label: string }>;
         clients?: string[];
     };
-    
+
     /** SEO metadata */
     seo?: {
         title: string;
@@ -199,7 +199,7 @@ const INDUSTRY_PATTERNS: Record<string, { painPoints: string[]; benefits: string
         ],
         tone: "technical",
     },
-    
+
     // Medical & Healthcare
     medical: {
         painPoints: [
@@ -216,7 +216,7 @@ const INDUSTRY_PATTERNS: Record<string, { painPoints: string[]; benefits: string
         ],
         tone: "friendly",
     },
-    
+
     // Legal & Consulting
     legal: {
         painPoints: [
@@ -233,7 +233,7 @@ const INDUSTRY_PATTERNS: Record<string, { painPoints: string[]; benefits: string
         ],
         tone: "authoritative",
     },
-    
+
     // Real Estate
     realEstate: {
         painPoints: [
@@ -250,7 +250,7 @@ const INDUSTRY_PATTERNS: Record<string, { painPoints: string[]; benefits: string
         ],
         tone: "premium",
     },
-    
+
     // Food & Restaurant
     food: {
         painPoints: [
@@ -267,7 +267,7 @@ const INDUSTRY_PATTERNS: Record<string, { painPoints: string[]; benefits: string
         ],
         tone: "friendly",
     },
-    
+
     // E-commerce & Retail
     ecommerce: {
         painPoints: [
@@ -284,7 +284,7 @@ const INDUSTRY_PATTERNS: Record<string, { painPoints: string[]; benefits: string
         ],
         tone: "premium",
     },
-    
+
     // Education & Training
     education: {
         painPoints: [
@@ -301,7 +301,7 @@ const INDUSTRY_PATTERNS: Record<string, { painPoints: string[]; benefits: string
         ],
         tone: "technical",
     },
-    
+
     // Fitness & Gym
     fitness: {
         painPoints: [
@@ -358,10 +358,10 @@ export class MarketingContentGenerator {
 
         try {
             const content: GeneratedContent = JSON.parse(result.content);
-            
+
             // Validate AIDA structure
             this.validateAIDA(content, template);
-            
+
             console.log("[Marketing Content] Content generated successfully");
             return content;
         } catch (error) {
@@ -404,7 +404,7 @@ export class MarketingContentGenerator {
         const generatedContent = await this.generateContent(request);
 
         // Merge generated content with existing section
-        const enhancedContent = {
+        const enhancedContent: Record<string, any> = {
             ...section.content,
             // Map AIDA content to section content fields
             headline: generatedContent.headline || section.content.headline,
@@ -440,13 +440,13 @@ export class MarketingContentGenerator {
      */
     private findIndustryPattern(niche: string): typeof INDUSTRY_PATTERNS[keyof typeof INDUSTRY_PATTERNS] {
         const nicheLower = niche.toLowerCase();
-        
+
         for (const [key, pattern] of Object.entries(INDUSTRY_PATTERNS)) {
             if (nicheLower.includes(key)) {
                 return pattern;
             }
         }
-        
+
         // Default pattern
         return {
             painPoints: [
@@ -473,9 +473,14 @@ export class MarketingContentGenerator {
         const isArabic = request.locale === "ar";
 
         return `
-أنت "كاتب المحتوى السيادي" (Sovereign Copywriter) لمنصة GetYouSite.
+ أنت "كاتب المحتوى السيادي" (Sovereign Copywriter) لمؤسسة GYS Global.
 
-مهمتك: كتابة محتوى تسويقي حقيقي عالي التحويل بناءً على نموذج AIDA.
+مهمتك: كتابة محتوى تسويقي احترافي عالي التحويل يبدو وكأنه صِيغ يدوياً من قبل وكالة تسويق عالمية مرموقة.
+
+**التوجيه الحاسم (الجمالية المهنية):**
+- لا تذكر أبداً كلمات مثل "الذكاء الاصطناعي"، "آلي"، "تلقائي"، أو "بوت" في المحتوى الموجه للجمهور.
+- يجب أن يبدو المحتوى وكأنه عمل فريق من الخبراء البشريين والمحللين الاستراتيجيين.
+- ركّز على القيمة، النتائج، الموثوقية، والهيبة (Prestige).
 
 **القواعد الصارمة:**
 
@@ -488,17 +493,17 @@ export class MarketingContentGenerator {
    - Action (الإجراء): زر CTA واضح ومقنع
 
 3. **${isArabic ? "اللغة العربية" : "اللغة الإنجليزية"}**:
-   ${isArabic 
-     ? `- فصحى حديثة (Modern Standard Arabic)
+   ${isArabic
+                ? `- فصحى حديثة (Modern Standard Arabic)
 - تجنب العامية تماماً
 - استخدام لغة استراتيجية تقنية
 - طول الجملة: 10-20 كلمة كحد أقصى
 - أفعال أمر قوية: "ابدأ"، "اكتشف"، "حقّق"`
-     : `- Professional Business English
+                : `- Professional Business English
 - Clear and concise
 - Action-oriented verbs: "Start", "Discover", "Achieve"
 - Sentence length: 10-20 words max`
-   }
+            }
 
 4. **نبرة الصوت**: ${request.tone || "professional"}
    - authoritative: سلطوية، تقنية، مطمئنة
@@ -568,7 +573,7 @@ ${JSON.stringify(template.structure, null, 2)}
      */
     private validateAIDA(content: GeneratedContent, template: ContentTemplate): void {
         const requiredFields = template.structure;
-        
+
         for (const field of requiredFields) {
             const contentRecord = content as unknown as Record<string, unknown>;
             if (!contentRecord[field]) {

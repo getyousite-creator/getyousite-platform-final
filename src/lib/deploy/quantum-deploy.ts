@@ -45,8 +45,9 @@ export interface HealthCheckResult {
 
 const vercel = new Vercel({
     bearerToken: process.env.VERCEL_TOKEN!,
-    teamId: process.env.VERCEL_TEAM_ID,
 });
+
+const VERCEL_TEAM_ID = process.env.VERCEL_TEAM_ID;
 
 // ============================================================================
 // SMART EXPORT ENGINE
@@ -146,13 +147,13 @@ export async function processAssets(assets: Array<{ name: string; content: Buffe
     for (const asset of assets) {
         // Compress with gzip
         const compressed = await gzipAsync(asset.content);
-        
+
         // Generate hash for cache busting
         const hash = createHash('sha256').update(compressed).digest('hex').slice(0, 8);
-        
+
         // Upload to Vercel Blob Storage (CDN)
         const cdnUrl = await uploadToBlobStorage(asset.name, compressed, hash);
-        
+
         processed.push({
             name: asset.name,
             cdnUrl
@@ -169,10 +170,10 @@ async function uploadToBlobStorage(name: string, content: Buffer, hash: string):
     // In production, use actual Vercel Blob API
     const blobName = `${hash}-${name}`;
     const cdnUrl = `https://${process.env.VERCEL_BLOB_DOMAIN}/${blobName}`;
-    
+
     // Simulate upload
     console.log(`[QDP] Uploaded ${name} → ${cdnUrl}`);
-    
+
     return cdnUrl;
 }
 
@@ -200,49 +201,43 @@ export async function deployToVercel(config: DeploymentConfig): Promise<Deployme
         const assets = await extractAssets(config.blueprint);
         const processedAssets = await processAssets(assets);
 
-        // Step 4: Create deployment
-        console.log(`[QDP] Creating deployment on Vercel...`);
-        const deployment = await vercel.deployments.create({
-            name: `site-${config.siteId}`,
-            meta: {
-                environment: config.environment,
-                siteId: config.siteId,
-            },
-        });
+        // Step 4: Create deployment via Vercel REST API (SDK v3 pattern)
+        console.log('[QDP] Creating deployment on Vercel...');
 
-        // Step 5: Upload files
-        console.log('[QDP] Uploading files...');
-        for (const [path, content] of shakenPages) {
-            await vercel.files.upload({
-                deploymentId: deployment.id!,
-                path: `/${path}`,
-                content: content,
-            });
+        const fileMap: Record<string, { content: string }> = {};
+        for (const [filePath, content] of shakenPages) {
+            fileMap[filePath] = { content };
         }
+        // Assets are uploaded to Vercel Blob CDN via processAssets — no need to embed in file map
+        // processedAssets[i].cdnUrl is referenced in generated pages
 
-        // Step 6: Deploy
-        console.log('[QDP] Deploying...');
-        const deployed = await vercel.deployments.promote(deployment.id!);
+        const deployment = await (vercel.deployments as any).createDeployment({
+            name: `site-${config.siteId}`,
+            files: Object.entries(fileMap).map(([file, { content }]) => ({ file, data: content })),
+            projectSettings: { framework: 'nextjs' },
+            meta: { siteId: config.siteId, environment: config.environment },
+            target: config.environment === 'production' ? 'production' : 'preview',
+            ...(VERCEL_TEAM_ID ? { teamId: VERCEL_TEAM_ID } : {}),
+        });
 
         // Step 7: Configure custom domain if provided
         let customDomainUrl: string | undefined;
         if (config.customDomain) {
             console.log(`[QDP] Configuring custom domain: ${config.customDomain}...`);
-            await configureCustomDomain(deployment.id!, config.customDomain);
+            await configureCustomDomain(deployment.id, config.customDomain);
             customDomainUrl = `https://${config.customDomain}`;
         }
 
         const buildTime = Date.now() - startTime;
-
         console.log(`[QDP] Deployment complete in ${buildTime}ms`);
 
         return {
             success: true,
-            deploymentId: deployment.id!,
-            url: deployed.url!,
+            deploymentId: deployment.id,
+            url: deployment.url ? `https://${deployment.url}` : '',
             customDomainUrl,
             buildTime,
-            regions: ['iad1', 'sfo1', 'lhr1', 'fra1', 'cdg1', 'nrt1', 'syd1'], // Vercel edge regions
+            regions: ['iad1', 'sfo1', 'lhr1', 'fra1', 'cdg1', 'nrt1', 'syd1'],
         };
     } catch (error) {
         console.error('[QDP] Deployment failed:', error);
@@ -261,16 +256,8 @@ export async function deployToVercel(config: DeploymentConfig): Promise<Deployme
  */
 export async function configureCustomDomain(deploymentId: string, domain: string): Promise<void> {
     try {
-        // Add domain to deployment
-        await vercel.domains.add({
-            name: domain,
-        });
-
-        // Configure SSL (automatic with Vercel)
-        await vercel.domains.configure({
-            name: domain,
-            redirect: 'www', // Redirect non-www to www
-        });
+        // Add domain via SDK (cast as any to avoid SDK version type drift)
+        await (vercel.domains as any).create({ name: domain });
 
         console.log(`[QDP] Domain ${domain} configured with SSL`);
     } catch (error) {
@@ -291,7 +278,7 @@ async function extractAssets(blueprint: any): Promise<Array<{ name: string; cont
             if (section.content?.image) {
                 const imageUrl = section.content.image;
                 const imageName = imageUrl.split('/').pop() || 'image.jpg';
-                
+
                 // In production, fetch actual image
                 const content = Buffer.from('placeholder-image-content');
                 assets.push({ name: imageName, content });
@@ -316,7 +303,7 @@ export async function healthCheck(url: string): Promise<HealthCheckResult> {
         const response = await fetch(url, {
             method: 'HEAD',
             headers: {
-                'User-Agent': 'GetYouSite-HealthCheck/1.0',
+                'User-Agent': 'GYS Global-HealthCheck/1.0',
             },
         });
 
@@ -347,7 +334,7 @@ export async function autoRollback(siteId: string, lastStableSnapshotId: string)
 
         // Get snapshot
         const snapshot = await getSnapshot(lastStableSnapshotId);
-        
+
         // Redeploy snapshot
         await deployToVercel({
             siteId,
@@ -387,7 +374,7 @@ export async function startHealthMonitoring(siteId: string, url: string, checkIn
             const lastStableSnapshot = await getLastStableSnapshot(siteId);
             if (lastStableSnapshot) {
                 const rollbackSuccess = await autoRollback(siteId, lastStableSnapshot.id);
-                
+
                 result.autoRollbackTriggered = rollbackSuccess;
             }
         }
@@ -428,7 +415,7 @@ export async function exportSourceCode(blueprint: any, siteId: string): Promise<
 
     // Create package.json
     const packageJson = {
-        name: `getyousite-${siteId}`,
+        name: `GYS Global-${siteId}`,
         version: '1.0.0',
         private: true,
         scripts: {
@@ -484,7 +471,7 @@ module.exports = nextConfig;
     };
 
     // In production, create actual ZIP file
-    const zipUrl = `https://getyousite.com/exports/${siteId}.zip`;
+    const zipUrl = `https://GYS Global.com/exports/${siteId}.zip`;
 
     console.log(`[QDP] Source code exported to ${zipUrl}`);
 

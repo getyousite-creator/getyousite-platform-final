@@ -29,7 +29,7 @@ export default function MasterInternal(props: SovereignTemplateProps) {
     const { settings, blueprint } = props;
     const { headline } = settings;
 
-    // AI Blueprint Extraction
+    // Sovereign Blueprint Synthesis
     const dashboardSection = blueprint?.layout?.find((s) => s.type === 'features');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const itemsRaw = (dashboardSection?.content?.items as any[]) || [];
@@ -46,10 +46,10 @@ export default function MasterInternal(props: SovereignTemplateProps) {
         color: i === 0 ? "text-blue-500" : i === 1 ? "text-purple-500" : "text-emerald-500"
     }));
 
-    // If no AI data, fallbacks must be generic but strictly typed
+    // If no sovereign data, fallbacks must be generic but strictly typed
     const navigationItems = sidebarItems.length > 0 ? sidebarItems : [
         { icon: LayoutDashboard, label: t("overview_logic") },
-        { icon: Users2, label: t("neural_registry") },
+        { icon: Users2, label: t("Strategic_registry") },
         { icon: Package, label: t("asset_inventory") },
         { icon: Activity, label: t("system_flux") },
         { icon: Database, label: t("data_silo") }

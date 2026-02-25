@@ -4,7 +4,7 @@
  * Appears above selected element only
  * Shows relevant tools based on element type:
  * - Text: Typography tools
- * - Image: Filter, crop, AI generation
+ * - Image: Filter, crop, Sovereign Synthesis
  * - Section: Layout, padding controls
  */
 
@@ -102,8 +102,8 @@ export function FloatingToolbar({ onClose }: ToolbarProps) {
                 {/* Common actions */}
                 <ToolbarButton icon={<Move className="w-4 h-4" />} tooltip="Move" />
                 <ToolbarButton icon={<Copy className="w-4 h-4" />} tooltip="Duplicate" />
-                <ToolbarButton 
-                    icon={<Trash2 className="w-4 h-4 text-error" />} 
+                <ToolbarButton
+                    icon={<Trash2 className="w-4 h-4 text-error" />}
                     tooltip="Delete"
                     variant="danger"
                 />
@@ -129,15 +129,15 @@ function TextTools() {
             <ToolbarButton icon={<Bold className="w-4 h-4" />} tooltip="Bold" />
             <ToolbarButton icon={<Italic className="w-4 h-4" />} tooltip="Italic" />
             <ToolbarButton icon={<Underline className="w-4 h-4" />} tooltip="Underline" />
-            
+
             <div className="w-px h-6 bg-white/10 mx-1" />
-            
+
             <ToolbarButton icon={<AlignLeft className="w-4 h-4" />} tooltip="Align Left" />
             <ToolbarButton icon={<AlignCenter className="w-4 h-4" />} tooltip="Align Center" />
             <ToolbarButton icon={<AlignRight className="w-4 h-4" />} tooltip="Align Right" />
-            
+
             <div className="w-px h-6 bg-white/10 mx-1" />
-            
+
             <ToolbarButton icon={<Type className="w-4 h-4" />} tooltip="Font Family" />
             <ToolbarButton icon={<Palette className="w-4 h-4" />} tooltip="Color" />
         </>
@@ -153,12 +153,12 @@ function ImageTools() {
         <>
             <ToolbarButton icon={<Crop className="w-4 h-4" />} tooltip="Crop" />
             <ToolbarButton icon={<Palette className="w-4 h-4" />} tooltip="Filters" />
-            
+
             <div className="w-px h-6 bg-white/10 mx-1" />
-            
-            <ToolbarButton 
-                icon={<Wand2 className="w-4 h-4 text-accent-neon" />} 
-                tooltip="AI Generate"
+
+            <ToolbarButton
+                icon={<Wand2 className="w-4 h-4 text-accent-neon" />}
+                tooltip="Sovereign Synthesis"
                 variant="accent"
             />
         </>
@@ -174,15 +174,11 @@ function LayoutTools() {
         <>
             <ToolbarButton icon={<Layout className="w-4 h-4" />} tooltip="Layout" />
             <ToolbarButton icon={<Palette className="w-4 h-4" />} tooltip="Background" />
-            
+
             <div className="w-px h-6 bg-white/10 mx-1" />
-            
-            <ToolbarButton tooltip="Padding">
-                <span className="text-xs font-bold">P</span>
-            </ToolbarButton>
-            <ToolbarButton tooltip="Margin">
-                <span className="text-xs font-bold">M</span>
-            </ToolbarButton>
+
+            <ToolbarButton icon={<span className="text-xs font-bold">P</span>} tooltip="Padding" />
+            <ToolbarButton icon={<span className="text-xs font-bold">M</span>} tooltip="Margin" />
         </>
     );
 }
@@ -192,19 +188,19 @@ function LayoutTools() {
 // ============================================================================
 
 interface ToolbarButtonProps {
-    icon: React.ReactNode;
+    icon?: React.ReactNode;
     tooltip: string;
     variant?: 'default' | 'danger' | 'accent';
     children?: React.ReactNode;
     onClick?: () => void;
 }
 
-function ToolbarButton({ 
-    icon, 
-    tooltip, 
+function ToolbarButton({
+    icon,
+    tooltip,
     variant = 'default',
     children,
-    onClick 
+    onClick
 }: ToolbarButtonProps) {
     const [showTooltip, setShowTooltip] = useState(false);
 

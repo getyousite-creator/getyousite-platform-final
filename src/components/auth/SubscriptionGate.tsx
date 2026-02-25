@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/components/providers/SupabaseProvider";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { Lock } from "lucide-react";
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";

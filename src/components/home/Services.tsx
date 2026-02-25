@@ -17,7 +17,7 @@ export default function Services() {
         },
         {
             icon: Cpu,
-            id: "ai",
+            id: "intelligence",
             color: "text-[#00D09C]",
         },
         {

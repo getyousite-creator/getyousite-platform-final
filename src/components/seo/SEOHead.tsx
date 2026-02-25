@@ -25,15 +25,15 @@ interface SEOProps {
 }
 
 export function generateSEO({
-    title = "GetYouSite - AI-Powered Website Builder",
-    description = "Create professional websites in minutes with our AI-powered website builder. No coding required. Fast, affordable, and stunning results.",
-    keywords = ["website builder", "AI website", "create website", "drag and drop website", "professional web design"],
-    image = "https://getyousite.com/images/og-default.jpg",
-    url = "https://getyousite.com",
+    title = "GYS Global - Sovereign Engineering Architecture",
+    description = "Deploy mission-critical digital infrastructure with GYS Global. High-performance, low-latency, and sovereign architectural systems for the modern enterprise.",
+    keywords = ["sovereign engineering", "digital infrastructure", "enterprise architecture", "high-performance web", "GYS Global"],
+    image = "https://gysglobal.com/images/og-default.jpg",
+    url = "https://gysglobal.com",
     type = "website",
     publishedTime,
     modifiedTime,
-    author = "GetYouSite Team",
+    author = "GYS Engineering Division",
     section,
     locale = "en",
     noindex = false,
@@ -54,7 +54,7 @@ export function generateSEO({
         keywords: keywords.join(', '),
         authors: [{ name: author }],
         creator: author,
-        publisher: "GetYouSite",
+        publisher: "GYS Global",
         robots: {
             index: !noindex,
             follow: !nofollow,
@@ -65,7 +65,7 @@ export function generateSEO({
             url,
             title,
             description,
-            siteName: "GetYouSite",
+            siteName: "GYS Global",
             images: [
                 {
                     url: image,
@@ -84,7 +84,7 @@ export function generateSEO({
             title,
             description,
             images: [image],
-            creator: "@getyousite",
+            creator: "@gysglobal",
         },
         alternates: {
             canonical: url,
@@ -99,14 +99,14 @@ export function generateOrganizationSchema() {
     return {
         '@context': 'https://schema.org',
         '@type': 'Organization',
-        name: 'GetYouSite',
-        url: 'https://getyousite.com',
-        logo: 'https://getyousite.com/logo.png',
+        name: 'GYS Global',
+        url: 'https://gysglobal.com',
+        logo: 'https://gysglobal.com/logo.png',
         sameAs: [
-            'https://facebook.com/getyousite',
-            'https://twitter.com/getyousite',
-            'https://instagram.com/getyousite',
-            'https://linkedin.com/company/getyousite',
+            'https://facebook.com/gysglobal',
+            'https://twitter.com/gysglobal',
+            'https://instagram.com/gysglobal',
+            'https://linkedin.com/company/gysglobal',
         ],
         contactPoint: {
             '@type': 'ContactPoint',

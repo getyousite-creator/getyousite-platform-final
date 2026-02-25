@@ -2,7 +2,7 @@
  * Smart Tuning & Refinement Protocol (STRP) Module
  * 
  * The brain for conversational site refinement.
- * Transforms GetYouSite from a "website generator" into a "creative partner".
+ * Transforms GYS Global from a "website generator" into a "creative partner".
  */
 
 // AST Mutation Engine

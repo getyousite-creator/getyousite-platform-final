@@ -76,7 +76,7 @@ export function buildSiteSchemaGraph({ hostname, store }: SchemaInput) {
     const seo = (metadata.seo || {}) as GenericRecord;
 
     const siteUrl = `https://${hostname}`;
-    const name = safeString(store.name, "GetYouSite");
+    const name = safeString(store.name, "GYS Global");
     const title = safeString(seo.title || store.seo_title, name);
     const description = safeString(
         seo.description || store.seo_description || blueprint.description,

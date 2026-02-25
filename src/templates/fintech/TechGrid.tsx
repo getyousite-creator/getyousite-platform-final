@@ -111,7 +111,7 @@ export default function TechGrid({ settings }: TechGridProps) {
                     <div className="grid grid-cols-2 md:grid-cols-2 gap-8">
                         <div className="p-8 rounded-3xl bg-white/5 border border-white/5 flex flex-col items-center gap-4">
                             <Cpu className="w-8 h-8 text-blue-400" />
-                            <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Neural Core</span>
+                            <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Strategic Core</span>
                         </div>
                         <div className="p-8 rounded-3xl bg-white/5 border border-white/5 flex flex-col items-center gap-4">
                             <Layout className="w-8 h-8 text-purple-400" />

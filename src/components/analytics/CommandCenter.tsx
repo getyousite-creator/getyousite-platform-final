@@ -4,7 +4,7 @@
  * Metrics:
  * - North Star: Sites Published
  * - Magic Moment: Prompt → Preview time
- * - Efficiency Ratio: AI vs Manual edits
+ * - Efficiency Ratio: Sovereign vs Manual edits
  * - Live user activity
  */
 
@@ -27,7 +27,7 @@ import {
     ResponsiveContainer,
     Cell,
 } from 'recharts';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -44,7 +44,7 @@ interface DashboardMetrics {
         status: 'excellent' | 'good' | 'warning' | 'critical';
     };
     efficiencyRatio: {
-        aiEdits: number;
+        sovereignEdits: number;
         manualEdits: number;
         ratio: number;
     };
@@ -75,7 +75,7 @@ export function CommandCenterDashboard() {
 
     useEffect(() => {
         fetchMetrics();
-        
+
         const interval = setInterval(fetchMetrics, refreshInterval);
         return () => clearInterval(interval);
     }, []);
@@ -123,11 +123,10 @@ export function CommandCenterDashboard() {
                     <div className="text-5xl font-bold">
                         {metrics.northStar.sitesPublished}
                     </div>
-                    <div className={`text-sm mt-2 ${
-                        metrics.northStar.change24h >= 0 
-                            ? 'text-green-600' 
-                            : 'text-red-600'
-                    }`}>
+                    <div className={`text-sm mt-2 ${metrics.northStar.change24h >= 0
+                        ? 'text-green-600'
+                        : 'text-red-600'
+                        }`}>
                         {metrics.northStar.change24h >= 0 ? '+' : ''}
                         {metrics.northStar.change24h}% from last 24h
                     </div>
@@ -155,7 +154,7 @@ export function CommandCenterDashboard() {
             {/* Efficiency Ratio */}
             <Card>
                 <CardHeader>
-                    <CardTitle>Efficiency Ratio: AI vs Manual</CardTitle>
+                    <CardTitle>Efficiency Ratio: Sovereign vs Manual</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="h-48">
@@ -163,7 +162,7 @@ export function CommandCenterDashboard() {
                             <PieChart>
                                 <Pie
                                     data={[
-                                        { name: 'AI Edits', value: metrics.efficiencyRatio.aiEdits },
+                                        { name: 'Sovereign Edits', value: metrics.efficiencyRatio.sovereignEdits },
                                         { name: 'Manual Edits', value: metrics.efficiencyRatio.manualEdits },
                                     ]}
                                     cx="50%"
@@ -171,8 +170,8 @@ export function CommandCenterDashboard() {
                                     innerRadius={60}
                                     outerRadius={80}
                                     dataKey="value"
-                                    label={({ name, percent }) => 
-                                        `${name}: ${(percent * 100).toFixed(0)}%`
+                                    label={({ name, percent }) =>
+                                        `${name}: ${((percent ?? 0) * 100).toFixed(0)}%`
                                     }
                                 >
                                     <Cell fill="#10b981" />
@@ -183,7 +182,7 @@ export function CommandCenterDashboard() {
                         </ResponsiveContainer>
                     </div>
                     <div className="text-center text-sm text-muted-foreground mt-2">
-                        AI Ratio: {metrics.efficiencyRatio.ratio.toFixed(2)}x
+                        Sovereign Ratio: {metrics.efficiencyRatio.ratio.toFixed(2)}x
                     </div>
                 </CardContent>
             </Card>
@@ -292,7 +291,7 @@ function StatusBadge({ status }: { status: string }) {
         warning: 'bg-yellow-500',
         critical: 'bg-red-500',
     };
-    
+
     return (
         <div className={`px-2 py-1 rounded text-xs text-white ${colors[status as keyof typeof colors]}`}>
             {status.toUpperCase()}

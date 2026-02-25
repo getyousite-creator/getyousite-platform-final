@@ -61,8 +61,8 @@ export async function createServer(config: ServerConfig): Promise<FastifyInstanc
 async function registerPlugins(server: FastifyInstance, config: ServerConfig) {
     // 1. CORS
     await server.register(cors, {
-        origin: config.environment === 'production' 
-            ? ['https://getyousite.com', 'https://www.getyousite.com']
+        origin: config.environment === 'production'
+            ? ['https://GYS Global.com', 'https://www.GYS Global.com']
             : true,
         credentials: true,
     });
@@ -84,7 +84,7 @@ async function registerPlugins(server: FastifyInstance, config: ServerConfig) {
     await server.register(rateLimit, {
         max: 100,
         timeWindow: '1 minute',
-        keyGenerator: (request) => {
+        keyGenerator: (request: any) => {
             // Use JWT user ID if available, otherwise IP
             const user = (request as any).user;
             return user?.userId || request.ip;
@@ -113,9 +113,9 @@ async function registerPlugins(server: FastifyInstance, config: ServerConfig) {
     const prisma = new PrismaClient({
         log: config.environment === 'production' ? ['error', 'warn'] : ['query', 'error', 'warn'],
     });
-    
+
     await prisma.$connect();
-    
+
     server.decorate('prisma', prisma);
     server.addHook('onClose', async () => {
         await prisma.$disconnect();
@@ -126,6 +126,15 @@ async function registerPlugins(server: FastifyInstance, config: ServerConfig) {
     server.addHook('onClose', async () => {
         await global.redisClient.quit();
     });
+
+    // 8. Auth Decorator
+    server.decorate('authenticate', async (request: any, reply: any) => {
+        try {
+            await request.jwtVerify();
+        } catch (err) {
+            reply.send(err);
+        }
+    });
 }
 
 // ============================================================================
@@ -135,7 +144,7 @@ async function registerPlugins(server: FastifyInstance, config: ServerConfig) {
 async function registerRoutes(server: FastifyInstance) {
     // Health check
     server.get('/health', async (request, reply) => {
-        return { 
+        return {
             status: 'healthy',
             timestamp: new Date().toISOString(),
             uptime: process.uptime(),
@@ -144,16 +153,16 @@ async function registerRoutes(server: FastifyInstance) {
 
     // Auth routes
     await server.register(import('./routes/auth.js'), { prefix: '/api/v1/auth' });
-    
+
     // User routes
     await server.register(import('./routes/users.js'), { prefix: '/api/v1/users' });
-    
+
     // Site routes
     await server.register(import('./routes/sites.js'), { prefix: '/api/v1/sites' });
-    
+
     // Deployment routes
     await server.register(import('./routes/deploy.js'), { prefix: '/api/v1/deploy' });
-    
+
     // Analytics routes
     await server.register(import('./routes/analytics.js'), { prefix: '/api/v1/analytics' });
 
@@ -167,9 +176,9 @@ async function registerRoutes(server: FastifyInstance) {
     });
 
     // Error handler
-    server.setErrorHandler((error, request, reply) => {
+    server.setErrorHandler((error: any, request, reply) => {
         server.log.error(error);
-        
+
         reply.code(error.statusCode || 500).send({
             error: error.name,
             message: error.message,
@@ -184,16 +193,16 @@ async function registerRoutes(server: FastifyInstance) {
 
 function registerGracefulShutdown(server: FastifyInstance) {
     const signals = ['SIGINT', 'SIGTERM'];
-    
+
     signals.forEach((signal) => {
         process.on(signal, async () => {
             server.log.info(`Received ${signal}, shutting down gracefully...`);
-            
+
             try {
                 await server.close();
                 server.log.info('Server closed');
                 process.exit(0);
-            } catch (error) {
+            } catch (error: any) {
                 server.log.error(error);
                 process.exit(1);
             }
@@ -238,6 +247,7 @@ declare global {
 declare module 'fastify' {
     interface FastifyInstance {
         prisma: PrismaClient;
+        authenticate: (request: any, reply: any) => Promise<void>;
     }
 }
 

@@ -24,10 +24,10 @@ export async function proxy(request: NextRequest) {
 
     // 1. SOVEREIGN DOMAIN RESOLUTION
     const mainDomains = [
-        'getyousite.com',
+        'GYS Global.com',
         'localhost:3000',
-        'getyousite-platform.vercel.app',
-        'getyousite.vercel.app'
+        'GYS Global-platform.vercel.app',
+        'GYS Global.vercel.app'
     ];
     const isMainDomain = mainDomains.some(d => hostname === d || hostname.endsWith(`.${d}`));
     const isRoot = mainDomains.includes(hostname);

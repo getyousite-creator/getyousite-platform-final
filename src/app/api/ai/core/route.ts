@@ -1,5 +1,5 @@
 /**
- * GetYouSite Core API - AI Engine v1.0
+ * GYS Global Core API - Sovereign Synthesis Engine v1.0
  * 
  * Sovereign site generation endpoint with Chain-of-Thought prompting
  * Implements the full Sovereign Blueprint protocol
@@ -7,7 +7,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import {
-    GetYouSiteEngine,
+    SovereignEngine,
     generateSiteWithCoT,
     type GeneratedCode,
 } from "@/lib/ai/getyousite-core";
@@ -21,16 +21,16 @@ import { generateMarketingContent } from "@/lib/ai/marketing-content";
 interface GenerateSiteRequest {
     /** User's site description prompt */
     prompt: string;
-    
+
     /** Target locale (ar|en) */
     locale?: string;
-    
+
     /** Optional: Business name */
     businessName?: string;
-    
+
     /** Optional: Business niche */
     niche?: string;
-    
+
     /** Optional: Business vision */
     vision?: string;
 }
@@ -44,13 +44,13 @@ interface GenerateSiteResponse {
 interface PartialUpdateRequest {
     /** Existing blueprint to modify */
     blueprint: any;
-    
+
     /** Modification command */
     command: string;
-    
+
     /** Optional: Target section ID */
     targetSectionId?: string;
-    
+
     /** Optional: Locale */
     locale?: string;
 }
@@ -75,13 +75,13 @@ export async function POST(request: NextRequest) {
         switch (action) {
             case "generate":
                 return handleGenerateSite(payload as GenerateSiteRequest);
-            
+
             case "update":
                 return handlePartialUpdate(payload as PartialUpdateRequest);
-            
+
             case "content":
                 return handleGenerateContent(payload as ContentGenerateRequest);
-            
+
             default:
                 return NextResponse.json(
                     {
@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
                 );
         }
     } catch (error) {
-        console.error("[GetYouSite Core API] Error:", error);
+        console.error("[GYS Global Core API] Error:", error);
         return NextResponse.json(
             {
                 success: false,
@@ -120,10 +120,10 @@ async function handleGenerateSite(payload: GenerateSiteRequest): Promise<NextRes
         );
     }
 
-    console.log("[GetYouSite Core API] Generating site for prompt:", prompt);
+    console.log("[GYS Global Core API] Generating site for prompt:", prompt);
 
     // Initialize engine with Gemini 3 Flash
-    const engine = new GetYouSiteEngine({
+    const engine = new SovereignEngine({
         model: process.env.GEMINI_MODEL || "gemini-3-flash",
         cachedContent: process.env.GEMINI_CACHED_CONTENT,
     });
@@ -153,7 +153,7 @@ async function handlePartialUpdate(payload: PartialUpdateRequest): Promise<NextR
         );
     }
 
-    console.log("[GetYouSite Core API] Partial update for command:", command);
+    console.log("[GYS Global Core API] Partial update for command:", command);
 
     const result = await partialUpdate(blueprint, command, {
         targetSectionId,
@@ -182,7 +182,7 @@ async function handleGenerateContent(payload: ContentGenerateRequest): Promise<N
         );
     }
 
-    console.log("[GetYouSite Core API] Generating content for section:", sectionType);
+    console.log("[GYS Global Core API] Generating content for section:", sectionType);
 
     const content = await generateMarketingContent({
         businessName,
@@ -204,9 +204,9 @@ async function handleGenerateContent(payload: ContentGenerateRequest): Promise<N
 
 export async function GET() {
     return NextResponse.json({
-        name: "GetYouSite Core API",
+        name: "GYS Global Core API",
         version: "1.0",
-        description: "Sovereign AI Engine with Chain-of-Thought Prompting",
+        description: "Sovereign Synthesis Engine with Chain-of-Thought Prompting",
         endpoints: {
             generate: {
                 method: "POST",

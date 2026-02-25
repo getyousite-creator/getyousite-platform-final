@@ -1,294 +1,203 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Layout } from 'lucide-react';
 import { ComponentLibrary } from './ComponentLibrary';
 import { registerPreviewListener } from '@/lib/engine/refinement';
+import type { SiteBlueprint } from "@/lib/schemas";
+import { SOVEREIGN_IDENTITY } from '@/lib/config/identity';
 
 interface PreviewProps {
-    config: any; // Data from CustomizerEngine
+    config: SiteBlueprint | null;
     isGenerating: boolean;
     selectedPageSlug?: string;
     onTextChange?: (sectionId: string, text: string) => void;
     onReorder?: (sourceId: string, targetId: string) => void;
 }
 
-export const LivePreview: React.FC<PreviewProps> = ({ 
-    config, 
-    isGenerating, 
+export const LivePreview: React.FC<PreviewProps> = ({
+    config,
+    isGenerating,
     selectedPageSlug = 'index',
     onTextChange,
-    onReorder 
+    onReorder
 }) => {
-    const [liveBlueprint, setLiveBlueprint] = useState(config?.final_config || config);
+    const [liveBlueprint, setLiveBlueprint] = useState<SiteBlueprint | null>(config);
 
-    // 1. Logic Hardening: Analytics Ingestion
     useEffect(() => {
-        if (config?.id || config?.site_id) {
-            const trackView = async () => {
-                try {
-                    await fetch('/api/dashboard/analytics', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            storeId: config.id || config.site_id,
-                            path: `/${selectedPageSlug}`,
-                            metadata: {
-                                device: window.innerWidth < 768 ? 'mobile' : 'desktop',
-                                referrer: document.referrer,
-                                source: 'live_preview'
-                            }
-                        })
-                    });
-                } catch (e) {
-                    console.error("ANALYTICS_INGEST_FAIL:", e);
-                }
-            };
-            trackView();
-        }
-    }, [config?.id, config?.site_id, selectedPageSlug]);
+        if (config) setLiveBlueprint(config);
+    }, [config]);
 
-    // 2. STRP: listen to live preview updates
+    // 1. Logic Hardening: Analytics Oracle
+    const trackInteraction = useCallback(async (path: string) => {
+        if (!config?.id) return;
+        try {
+            await fetch('/api/dashboard/analytics', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    storeId: config.id,
+                    path,
+                    metadata: {
+                        device: typeof window !== 'undefined' ? (window.innerWidth < 768 ? 'mobile' : 'desktop') : 'server',
+                        source: 'live_preview'
+                    }
+                })
+            });
+        } catch (e) { /* Silent protocol recovery */ }
+    }, [config?.id]);
+
     useEffect(() => {
-        const dispose = registerPreviewListener((payload) => {
+        trackInteraction(`/${selectedPageSlug}`);
+    }, [selectedPageSlug, trackInteraction]);
+
+    // 2. STRP: Subscription to Remote Preview Updates
+    useEffect(() => {
+        return registerPreviewListener((payload) => {
             if (payload?.type === "blueprint-update" && payload.blueprint) {
-                setLiveBlueprint(payload.blueprint);
-            }
-            if (payload?.type === "command") {
-                // future: show inline HUD/notification
+                setLiveBlueprint(payload.blueprint as SiteBlueprint);
             }
         });
-        return dispose;
     }, []);
 
-    // keep local blueprint in sync when config changes externally
+    // Synthetic Sync
     useEffect(() => {
-        if (!config) return;
-        const next = config?.final_config || config;
-        if (next !== liveBlueprint) {
-            const id = requestAnimationFrame(() => setLiveBlueprint(next));
-            return () => cancelAnimationFrame(id);
+        if (config && config !== liveBlueprint) {
+            setLiveBlueprint(config);
         }
-    }, [config, liveBlueprint]);
+    }, [config]);
 
-    // 3. Generation Logic: If generating and no config, show skeleton
     if (isGenerating && !liveBlueprint) {
         return <GenerationSkeleton />;
     }
 
     return (
-        <div className="relative w-full h-full bg-card overflow-hidden shadow-2xl rounded-2xl border-4 border-border aspect-[9/16] md:aspect-[16/10]">
+        <div className="relative w-full h-full bg-[#020617] overflow-hidden shadow-[0_64px_128px_-12px_rgba(0,0,0,0.8)] rounded-3xl border border-white/5 aspect-[9/16] md:aspect-[16/10]">
             <AnimatePresence mode="wait">
                 <motion.div
-                    key={liveBlueprint?.site_id || 'initial'}
-                    initial={{ opacity: 0, scale: 0.98 }}
+                    key={liveBlueprint?.id || 'empty'}
+                    initial={{ opacity: 0, scale: 0.99 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.8, ease: "circOut" }}
-                    className="w-full h-full overflow-y-auto scrollbar-hide"
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                    className="w-full h-full overflow-y-auto scrollbar-hide selection:bg-primary/30"
                 >
-                    {/* DYNAMIC INJECTION ENGINE */}
                     <DynamicRenderer
                         blueprint={liveBlueprint}
                         selectedPageSlug={selectedPageSlug}
+                        isGenerating={isGenerating}
                         onTextChange={onTextChange}
                         onReorder={onReorder}
                     />
                 </motion.div>
             </AnimatePresence>
 
-            {/* HUD: AI Processing Layer */}
-            {isGenerating && <AIProcessingHUD />}
+            {isGenerating && <SovereignProcessingHUD />}
         </div>
     );
 };
 
-const DynamicRenderer = ({ blueprint, selectedPageSlug = 'index', isGenerating, onTextChange, onReorder }: any) => {
-    if (!blueprint && !isGenerating) return (
-        <div className="flex flex-col items-center justify-center p-20 text-center space-y-4">
-            <div className="w-12 h-12 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-            <p className="text-muted-foreground font-mono text-xs uppercase tracking-widest">Initializing Neural Link...</p>
-        </div>
-    );
+const DynamicRenderer: React.FC<{
+    blueprint: SiteBlueprint | null;
+    selectedPageSlug: string;
+    isGenerating: boolean;
+    onTextChange?: (id: string, text: string) => void;
+    onReorder?: (s: string, t: string) => void;
+}> = ({ blueprint, selectedPageSlug, isGenerating, onReorder }) => {
 
-    const primaryColor = blueprint?.theme?.primary || '#3b82f6';
+    const activeLayout = useMemo(() => {
+        if (!blueprint) return [];
+        return blueprint.layout || [];
+    }, [blueprint]);
 
-    // Extract layout based on selected page
-    let activeLayout = blueprint?.layout || [];
-    if (blueprint?.pages && blueprint?.pages[selectedPageSlug]) {
-        activeLayout = blueprint.pages[selectedPageSlug].layout || [];
-    }
-
-    // If generating and no layout yet, show skeleton sequence
-    if (isGenerating && activeLayout.length === 0) {
+    if (!blueprint && !isGenerating) {
         return (
-            <div className="p-12 space-y-12">
-                <div className="h-20 bg-white/[0.03] rounded-3xl animate-pulse w-full" />
-                <div className="h-[400px] bg-white/[0.03] rounded-[3rem] animate-pulse w-full" />
-                <div className="grid grid-cols-3 gap-8">
-                    <div className="h-48 bg-white/[0.03] rounded-3xl animate-pulse" />
-                    <div className="h-48 bg-white/[0.03] rounded-3xl animate-pulse" />
-                    <div className="h-48 bg-white/[0.03] rounded-3xl animate-pulse" />
-                </div>
+            <div className="flex flex-col items-center justify-center h-full text-center space-y-6">
+                <div className="w-12 h-12 border border-primary/20 border-t-primary rounded-full animate-spin" />
+                <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.5em]">Establishing_Secure_Link</p>
             </div>
         );
     }
 
-    // Native drag-and-drop handlers
-    const handleDragStart = (e: React.DragEvent, sectionId: string) => {
-        e.dataTransfer.setData("section-id", sectionId);
-        e.dataTransfer.effectAllowed = "move";
-    };
-
-    const handleDragOver = (e: React.DragEvent) => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = "move";
-    };
-
-    const handleDrop = (e: React.DragEvent, targetId: string) => {
-        e.preventDefault();
-        const sourceId = e.dataTransfer.getData("section-id");
-        if (sourceId && sourceId !== targetId && onReorder) {
-            onReorder(sourceId, targetId);
-        }
-    };
-
-    const handleDoubleClick = (section: any) => {
-        const current =
-            section.content?.title || 
-            section.content?.heading || 
-            section.content?.headline || 
-            section.content?.text || 
-            section.content?.description ||
-            "";
-        const next = prompt("Edit text", String(current ?? ""));
-        if (next !== null && next !== current && onTextChange) {
-            onTextChange(section.id, next);
-        }
-    };
-
     return (
-        <div style={{ '--primary-color': primaryColor } as any} className="min-h-full">
-            {/* 1. Header Rendering */}
-            <section id="preview-header" className={`border-b border-white/5 p-6 md:p-8 flex justify-between items-center bg-background/80 backdrop-blur-md sticky top-0 z-10 ${blueprint?.navigation?.transparent ? 'absolute inset-x-0 bg-transparent border-none' : ''}`}>
-                <div className="font-black text-2xl tracking-tighter" style={{ color: primaryColor }}>
-                    {blueprint?.navigation?.logo || blueprint?.name || "Sovereign_Site"}
+        <div className="min-h-full flex flex-col">
+            {/* Header: Institutional Branding */}
+            <header className="sticky top-0 z-[100] p-8 flex justify-between items-center bg-[#020617]/80 backdrop-blur-2xl border-b border-white/5">
+                <div className="font-black text-2xl tracking-tighter text-white">
+                    {blueprint?.navigation?.logo || "GYS_PROTOCOL"}
                 </div>
-                <div className="flex gap-8 text-[11px] font-black uppercase tracking-[0.3em] text-white/40">
-                    {blueprint?.navigation?.links ? (
-                        blueprint.navigation.links.map((link: any, i: number) => (
-                            <span key={i} className={selectedPageSlug === (link.href === '/' ? 'index' : link.href.replace('/', '')) ? 'text-primary' : ''}>
-                                {link.label}
-                            </span>
-                        ))
-                    ) : (
-                        <>
-                            <span>Logic_Home</span>
-                            <span>Capabilities</span>
-                            <span>Empire_Contact</span>
-                        </>
-                    )}
-                </div>
-            </section>
+                <nav className="hidden md:flex gap-8">
+                    {blueprint?.navigation?.links?.map((link, i) => (
+                        <span key={i} className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 hover:text-white transition-colors cursor-pointer">
+                            {link.label}
+                        </span>
+                    ))}
+                </nav>
+            </header>
 
-            {/* 2. Content Injection (Silos) - with drag-and-drop and inline edit */}
-            {activeLayout.length > 0 ? (
-                activeLayout.map((section: any, index: number) => (
+            <main className="flex-1">
+                {activeLayout.map((section, index) => (
                     <motion.div
                         key={section.id || index}
-                        initial={{ y: 40, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{
-                            delay: index * 0.15,
-                            type: "spring",
-                            stiffness: 70
-                        }}
-                        draggable
-                        onDragStart={(e) => handleDragStart(e, section.id)}
-                        onDragOver={handleDragOver}
-                        onDrop={(e) => handleDrop(e, section.id)}
-                        onDoubleClick={() => handleDoubleClick(section)}
-                        className="group relative cursor-move"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.1 }}
+                        className="relative group transition-all"
                     >
                         <ComponentLibrary
+                            id={section.id}
                             type={section.type}
                             content={section.content}
-                            primaryColor={primaryColor}
-                            backgroundColor={blueprint?.theme?.backgroundColor}
-                            textColor={blueprint?.theme?.textColor}
+                            primaryColor={blueprint?.theme?.primary || '#3b82f6'}
+                            isEditable={true}
                         />
-                        {/* Hover hint for editability */}
-                        <div className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity text-[9px] uppercase font-black tracking-wider px-2 py-1 rounded bg-black/60 backdrop-blur-sm text-white/80 pointer-events-none z-20">
-                            Drag · Double-click to edit
-                        </div>
+                        <div className="absolute inset-0 border-2 border-primary/0 group-hover:border-primary/20 pointer-events-none transition-colors" />
                     </motion.div>
-                ))
-            ) : (
-                <div className="flex flex-col items-center justify-center p-32 text-center space-y-8 min-h-[600px]">
-                    <div className="w-20 h-20 rounded-full bg-white/5 border border-white/10 flex items-center justify-center animate-pulse">
-                        <Layout className="w-8 h-8 text-white/20" />
-                    </div>
-                    <div>
-                        <h3 className="text-xl font-black uppercase tracking-widest text-white/80">Draft_Neural_Silo</h3>
-                        <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] max-w-xs mx-auto mt-4 leading-relaxed">
-                            Generate this page in the Sovereign Architect to reveal the structural logic.
-                        </p>
-                    </div>
-                </div>
-            )}
+                ))}
+            </main>
 
-            {/* 3. Footer Rendering */}
             <footer className="p-20 bg-black/40 border-t border-white/5 text-center">
-                <div className="mb-10 flex justify-center gap-10">
-                    {blueprint?.footer?.links?.map((link: any, i: number) => (
-                        <span key={i} className="text-[10px] text-white/30 uppercase font-black tracking-[0.3em] cursor-pointer hover:text-white transition-colors">{link.label}</span>
-                    ))}
-                </div>
-                <p className="text-[11px] text-white/10 uppercase tracking-[0.5em] font-black mb-6">
-                    {blueprint?.footer?.copyright || `© 2026 ${blueprint?.name || 'Sovereign'} Systems Verified`}
+                <p className="text-[10px] text-white/10 uppercase tracking-[0.4em] font-black">
+                    {blueprint?.footer?.copyright || `© ${new Date().getFullYear()} GYS Global Systems`}
                 </p>
-                <div className="flex justify-center gap-6 text-white/20">
-                    {blueprint?.footer?.social && Object.entries(blueprint.footer.social).map(([platform, url]: any) => (
-                        <span key={platform} className="text-[9px] font-black uppercase tracking-widest">{platform}_Secure</span>
-                    ))}
-                </div>
             </footer>
         </div>
     );
 };
 
-
-const AIProcessingHUD = () => (
-    <div className="absolute inset-0 bg-primary/5 backdrop-blur-[2px] pointer-events-none flex items-center justify-center z-50">
+const SovereignProcessingHUD = () => (
+    <div className="absolute inset-0 bg-[#020617]/60 backdrop-blur-[4px] flex items-center justify-center z-[200]">
         <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-[#020617]/90 text-primary p-8 font-mono text-[10px] rounded-[2rem] border border-primary/20 shadow-[0_32px_120px_rgba(0,0,0,0.5)] space-y-4 min-w-[300px]"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-[#0f172a]/95 border border-primary/30 p-10 rounded-[2.5rem] shadow-[0_0_100px_rgba(59,130,246,0.15)] min-w-[320px] space-y-6"
         >
-            <div className="flex gap-4 items-center border-b border-white/5 pb-4">
-                <div className="w-2 h-2 bg-primary rounded-full animate-ping" />
-                <span className="font-black uppercase tracking-[0.3em]">Neural_Link_Status: Active</span>
+            <div className="flex items-center gap-4">
+                <div className="w-2.5 h-2.5 bg-primary rounded-full animate-ping" />
+                <span className="text-[11px] font-black uppercase tracking-[0.4em] text-primary">Strategic_Orchestration</span>
             </div>
-            <div className="space-y-2 opacity-60">
-                <div className="flex justify-between"><span>{">"} INJECTING_STRATEGIC_LOGIC</span><span>DONE</span></div>
-                <div className="flex justify-between"><span>{">"} SYNTHESIZING_ATOMIC_STACK</span><span className="animate-pulse">RUNNING</span></div>
-                <div className="flex justify-between"><span>{">"} DEPLOYING_TO_EDGE</span><span>PENDING</span></div>
+            <div className="space-y-3 font-mono text-[9px] text-white/40 uppercase">
+                <div className="flex justify-between"><span>{">"} ANALYZING_VECTORS</span><span className="text-primary">COMPLETE</span></div>
+                <div className="flex justify-between"><span>{">"} SYNTHESIZING_BLUEPRINT</span><span className="animate-pulse">ACTIVE</span></div>
+                <div className="flex justify-between"><span>{">"} HARDENING_LOGIC</span><span>WAITING</span></div>
             </div>
-            <div className="pt-4 border-t border-white/5 text-center text-white/20 uppercase tracking-[0.2em]">
-                Protocol_v2_Sovereign
+            <div className="pt-6 border-t border-white/5 text-[9px] text-center text-white/10 font-black uppercase tracking-[0.3em]">
+                {SOVEREIGN_IDENTITY.PROTOCOL_VERSION}
             </div>
         </motion.div>
     </div>
 );
 
-
 const GenerationSkeleton = () => (
-    <div className="w-full h-full bg-background flex items-center justify-center rounded-2xl border border-border">
-        <div className="space-y-4 w-2/3">
-            <div className="h-4 bg-secondary rounded-full w-3/4 animate-pulse" />
-            <div className="h-4 bg-secondary rounded-full w-1/2 animate-pulse" />
-            <div className="h-32 bg-secondary rounded-xl w-full animate-pulse" />
+    <div className="w-full h-full bg-[#020617] flex items-center justify-center rounded-3xl border border-white/5 p-12">
+        <div className="w-full max-w-md space-y-8">
+            <div className="h-4 bg-white/5 rounded-full w-2/3 animate-pulse" />
+            <div className="h-64 bg-white/5 rounded-[2rem] w-full animate-pulse" />
+            <div className="grid grid-cols-2 gap-4">
+                <div className="h-32 bg-white/5 rounded-[2rem] animate-pulse" />
+                <div className="h-32 bg-white/5 rounded-[2rem] animate-pulse" />
+            </div>
         </div>
     </div>
 );

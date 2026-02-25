@@ -34,7 +34,7 @@ export default function MasterLMS(props: SovereignTemplateProps) {
     const { settings, blueprint } = props;
     const { headline, subheadline, primaryColor = "#6366f1" } = settings;
 
-    // AI Blueprint Extraction
+    // Sovereign Blueprint Synthesis
     const heroSection = blueprint?.layout?.find((s) => s.type === 'hero');
     const coursesSection = blueprint?.layout?.find((s) => s.type === 'features');
 
@@ -51,7 +51,7 @@ export default function MasterLMS(props: SovereignTemplateProps) {
         duration: `${(i + 4) * 2}${t("duration")}`
     })) : [
         { title: t("architecture_sovereignty"), students: "1.2k", rating: "4.9", img: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop", duration: `12${t("duration")}` },
-        { title: t("neural_logic_masterclass"), students: "800", rating: "4.8", img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop", duration: `8${t("duration")}` },
+        { title: t("Strategic_logic_masterclass"), students: "800", rating: "4.8", img: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop", duration: `8${t("duration")}` },
         { title: t("digital_empire_economics"), students: "2.5k", rating: "5.0", img: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop", duration: `24${t("duration")}` }
     ];
 

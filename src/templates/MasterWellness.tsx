@@ -36,7 +36,7 @@ export default function MasterWellness(props: SovereignTemplateProps) {
     const { settings, blueprint } = props;
     const { headline, subheadline, primaryColor = "#f97316" } = settings;
 
-    // AI Blueprint Extraction
+    // Sovereign Blueprint Synthesis
     const heroSection = blueprint?.layout?.find((s) => s.type === "hero");
     const wellnessSection = blueprint?.layout?.find((s) => s.type === "features");
 
@@ -50,37 +50,37 @@ export default function MasterWellness(props: SovereignTemplateProps) {
     const treatments: Treatment[] =
         treatmentsRaw.length > 0
             ? treatmentsRaw.map((item) => ({
-                  title: item.title,
-                  duration: `60 ${t("min")}`,
-                  price: t("def_price"),
-                  img:
-                      item.image ||
-                      "https://images.unsplash.com/photo-1540555700478-4be289fbecee?q=80&w=2070&auto=format&fit=crop",
-                  desc: item.description || t("holistic_desc"),
-              }))
+                title: item.title,
+                duration: `60 ${t("min")}`,
+                price: t("def_price"),
+                img:
+                    item.image ||
+                    "https://images.unsplash.com/photo-1540555700478-4be289fbecee?q=80&w=2070&auto=format&fit=crop",
+                desc: item.description || t("holistic_desc"),
+            }))
             : [
-                  {
-                      title: t("ritual"),
-                      duration: `90 ${t("min")}`,
-                      price: t("ritual_price"),
-                      img: "https://images.unsplash.com/photo-1540555700478-4be289fbecee?q=80&w=2070&auto=format&fit=crop",
-                      desc: t("holistic_desc"),
-                  },
-                  {
-                      title: t("glow_therapy"),
-                      duration: `60 ${t("min")}`,
-                      price: t("glow_price"),
-                      img: "https://images.unsplash.com/photo-1590439471364-192aa70c0b53?q=80&w=1974&auto=format&fit=crop",
-                      desc: t("facial_desc"),
-                  },
-                  {
-                      title: t("sauna_flux"),
-                      duration: `45 ${t("min")}`,
-                      price: t("sauna_price"),
-                      img: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=2070&auto=format&fit=crop",
-                      desc: t("detox_desc"),
-                  },
-              ];
+                {
+                    title: t("ritual"),
+                    duration: `90 ${t("min")}`,
+                    price: t("ritual_price"),
+                    img: "https://images.unsplash.com/photo-1540555700478-4be289fbecee?q=80&w=2070&auto=format&fit=crop",
+                    desc: t("holistic_desc"),
+                },
+                {
+                    title: t("glow_therapy"),
+                    duration: `60 ${t("min")}`,
+                    price: t("glow_price"),
+                    img: "https://images.unsplash.com/photo-1590439471364-192aa70c0b53?q=80&w=1974&auto=format&fit=crop",
+                    desc: t("facial_desc"),
+                },
+                {
+                    title: t("sauna_flux"),
+                    duration: `45 ${t("min")}`,
+                    price: t("sauna_price"),
+                    img: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=2070&auto=format&fit=crop",
+                    desc: t("detox_desc"),
+                },
+            ];
 
     const onOpen = useLaunchModal((state) => state.onOpen);
 
@@ -179,7 +179,7 @@ export default function MasterWellness(props: SovereignTemplateProps) {
                                     title: t("detox_logic"),
                                     label: t("cellular_integrity"),
                                 },
-                                { icon: Wind, title: t("breath_arc"), label: t("neural_drift") },
+                                { icon: Wind, title: t("breath_arc"), label: t("Strategic_drift") },
                                 { icon: Heart, title: t("core_flow"), label: t("biological_sync") },
                                 {
                                     icon: Award,

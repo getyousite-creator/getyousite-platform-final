@@ -8,7 +8,8 @@
  */
 
 import { create } from 'zustand';
-import { temporal, TemporalState } from 'zundo';
+import { temporal } from 'zundo';
+import { useStore } from 'zustand';
 import { applyPatch, Operation } from 'fast-json-patch';
 
 // ============================================================================
@@ -18,23 +19,23 @@ import { applyPatch, Operation } from 'fast-json-patch';
 export interface EditorState {
     // Current blueprint
     blueprint: any | null;
-    
+
     // Selected element
     selectedElementId: string | null;
-    
+
     // Viewport mode
     viewport: 'mobile' | 'tablet' | 'desktop';
-    
+
     // Editor mode
     mode: 'edit' | 'preview';
-    
+
     // Loading state
     isLoading: boolean;
-    
+
     // Save state
     isSaving: boolean;
     lastSaved: Date | null;
-    
+
     // Actions
     setBlueprint: (blueprint: any) => void;
     updateElement: (elementId: string, updates: Record<string, any>) => void;
@@ -130,20 +131,20 @@ export const useEditorStore = create<EditorState>()(
                 // Create JSON patch for efficient update
                 const path = `/layout/${elementId}`;
                 const operations = createUpdatePatch(path, updates);
-                
+
                 // Apply patch
                 const newBlueprint = applyJsonPatch(blueprint, operations);
-                
+
                 // Optimistic update
                 set({ blueprint: newBlueprint });
-                
+
                 // Auto-save after 1 second
                 setTimeout(() => {
                     if (get().mode === 'edit') {
                         get().setIsSaving(true);
                         // Save to backend here
                         setTimeout(() => {
-                            set({ 
+                            set({
                                 isSaving: false,
                                 lastSaved: new Date()
                             });
@@ -159,8 +160,8 @@ export const useEditorStore = create<EditorState>()(
 
                 const operations = createRemovePatch(`/layout/${elementId}`);
                 const newBlueprint = applyJsonPatch(blueprint, operations);
-                
-                set({ 
+
+                set({
                     blueprint: newBlueprint,
                     selectedElementId: null
                 });
@@ -174,7 +175,7 @@ export const useEditorStore = create<EditorState>()(
                 const path = parentId ? `/layout/${parentId}/children` : '/layout';
                 const operations = createAddPatch(path, element);
                 const newBlueprint = applyJsonPatch(blueprint, operations);
-                
+
                 set({ blueprint: newBlueprint });
             },
 
@@ -186,11 +187,11 @@ export const useEditorStore = create<EditorState>()(
                 // Remove from old position
                 const removeOps = createRemovePatch(`/layout/${elementId}`);
                 const tempBlueprint = applyJsonPatch(blueprint, removeOps);
-                
+
                 // Add to new position
                 const addOps = createAddPatch('/layout', blueprint.layout[elementId], newIndex);
                 const newBlueprint = applyJsonPatch(tempBlueprint, addOps);
-                
+
                 set({ blueprint: newBlueprint });
             },
 
@@ -216,7 +217,7 @@ export const useEditorStore = create<EditorState>()(
         }),
         {
             limit: 100, // Store last 100 states for undo/redo
-            partialize: (state) => ({ 
+            partialize: (state) => ({
                 blueprint: state.blueprint,
                 selectedElementId: state.selectedElementId
             }),
@@ -238,14 +239,10 @@ export const useEditorStore = create<EditorState>()(
  * Hook for undo/redo functionality
  */
 export function useEditorHistory() {
-    const { undo, redo, canUndo, canRedo } = useEditorStore(
-        (state: TemporalState<unknown>) => ({
-            undo: state.undo,
-            redo: state.redo,
-            canUndo: state.canUndo,
-            canRedo: state.canRedo,
-        })
-    );
+    const temporalStore = useEditorStore.temporal;
+    const { undo, redo, pastStates, futureStates } = useStore(temporalStore);
+    const canUndo = pastStates.length > 0;
+    const canRedo = futureStates.length > 0;
 
     return { undo, redo, canUndo, canRedo };
 }
@@ -255,7 +252,7 @@ export function useEditorHistory() {
  */
 export function useSelectedElement() {
     const { selectedElementId, selectElement, blueprint } = useEditorStore();
-    
+
     const selectedElement = blueprint?.layout?.find(
         (el: any) => el.id === selectedElementId
     );
@@ -273,7 +270,7 @@ export function useSelectedElement() {
  */
 export function useViewport() {
     const { viewport, setViewport } = useEditorStore();
-    
+
     const getWidth = () => {
         switch (viewport) {
             case 'mobile': return '375px';
@@ -290,7 +287,7 @@ export function useViewport() {
  */
 export function useEditorMode() {
     const { mode, setMode } = useEditorStore();
-    
+
     return {
         mode,
         setMode,
@@ -304,7 +301,7 @@ export function useEditorMode() {
  */
 export function useSaveState() {
     const { isSaving, lastSaved, setIsSaving } = useEditorStore();
-    
+
     return { isSaving, lastSaved, setIsSaving };
 }
 

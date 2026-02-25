@@ -3,14 +3,14 @@
 import { useState, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
 import { Loader2, Mail, Apple, Sparkles, ShieldCheck, Lock, ArrowRight, Quote, Star } from "lucide-react";
 import { signInAction, signUpAction, signInWithOAuthAction, resetPasswordAction, updatePasswordAction } from "@/app/actions/auth-actions";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import Logo from "@/components/ui/Logo";
+import Logo from "@/shared/components/ui/Logo";
 import { useSupabase } from "@/components/providers/SupabaseProvider";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -48,7 +48,7 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
 
     const [mode, setMode] = useState<"signin" | "signup" | "forgot-password" | "reset-password" | "check-email">(
         initialMode === "signin"
-            ? (typeof window !== "undefined" && window.location.pathname.includes("reset-password") ? "reset-password" : "signin")
+            ? (typeof window !== "undefined" && window.location.pathname.includes("/reset-password") ? "reset-password" : "signin")
             : initialMode
     );
     const [loading, setLoading] = useState(false);
@@ -109,7 +109,7 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
         }
 
         if (mode === "forgot-password") {
-            const result = await resetPasswordAction(data.email);
+            const result = await resetPasswordAction(data.email, locale);
             if (!result.success) {
                 setError(mapError(result.error || ""));
             } else {
@@ -120,8 +120,8 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
         }
 
         const result = mode === "signin"
-            ? await signInAction(data.email, data.password!)
-            : await signUpAction(data.email, data.password!);
+            ? await signInAction(data.email, data.password!, locale)
+            : await signUpAction(data.email, data.password!, locale);
 
         if (!result.success) {
             setError(mapError(result.error || ""));
@@ -160,13 +160,13 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
                 <div className="space-y-8">
                     <Quote className="w-10 h-10 text-[#00D09C] opacity-50" />
                     <h2 className="text-3xl font-bold leading-relaxed">
-                        "GETYOUSITE.COM didn't just give me a website, it gave me a growth engine. Simplicity and power in one place. My business doubled in three months."
+                        "{t('testimonial.quote')}"
                     </h2>
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 border border-white/10" />
                         <div>
-                            <p className="font-bold text-lg">Alex Sterling</p>
-                            <p className="text-sm text-blue-200">CEO, Apex Ventures</p>
+                            <p className="font-bold text-lg">{t('testimonial.author')}</p>
+                            <p className="text-sm text-blue-200">{t('testimonial.role')}</p>
                         </div>
                     </div>
                 </div>
@@ -204,10 +204,10 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
                     <Logo className="mb-8" showText={true} />
 
                     <h1 className="text-3xl font-black text-foreground tracking-tight mb-2">
-                        {mode === "signin" ? t('signin_title') : mode === "signup" ? "Create your professional site in minutes" : "Reset Password"}
+                        {mode === "signin" ? t('signin_title') : mode === "signup" ? t('signup_title') : t('reset_password_title')}
                     </h1>
                     <p className="text-muted-foreground mb-8">
-                        {mode === "signin" ? "Welcome back to your command center." : "Join thousands of sovereign creators."}
+                        {mode === "signin" ? t('subtitle') : mode === "signup" ? t('subtitle') : t('subtitle')}
                     </p>
 
                     {/* SOCIAL LOGIN (Protocol 2: ZERO FRICTION) */}
@@ -215,7 +215,7 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
                         <div className="space-y-4 mb-10">
                             <AuthButton
                                 icon={<GoogleIcon />}
-                                label="Instant Access with Google"
+                                label={t('google')}
                                 onClick={() => handleOAuth('google')}
                                 disabled={loading}
                             />
@@ -228,7 +228,7 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
                                 <span className="w-full border-t border-white/5" />
                             </div>
                             <div className="relative flex justify-center text-[10px] uppercase font-black tracking-[0.2em] text-zinc-500">
-                                <span className="bg-background px-4">Sovereign Link Alternative</span>
+                                <span className="bg-background px-4">{t('or_divider')}</span>
                             </div>
                         </div>
                     )}
@@ -240,21 +240,21 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
                             <div className="w-20 h-20 rounded-full bg-[#00D09C]/10 flex items-center justify-center mx-auto mb-6">
                                 <Mail className="w-10 h-10 text-[#00D09C] animate-pulse" />
                             </div>
-                            <h3 className="text-xl font-bold mb-2">Check your email</h3>
+                            <h3 className="text-xl font-bold mb-2">{t('check_email_title')}</h3>
                             <p className="text-muted-foreground mb-6">{t('check_email_desc')}</p>
-                            <Button onClick={() => setMode('signin')} variant="outline" className="w-full">Back to Login</Button>
+                            <Button onClick={() => setMode('signin')} variant="outline" className="w-full">{t('recall_identity')}</Button>
                         </div>
                     ) : (
                         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                             {mode !== "reset-password" && (
                                 <div className="space-y-2">
-                                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Identity Access</Label>
+                                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">{t('email_label')}</Label>
                                     <div className="relative group">
                                         <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-primary transition-colors" />
                                         <Input
                                             {...register("email")}
                                             type="email"
-                                            placeholder="commander@getyousite.com"
+                                            placeholder={t('email_placeholder')}
                                             className={cn(
                                                 "pl-12 h-14 bg-white/[0.02] border-white/5 focus:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all rounded-xl text-sm",
                                                 errors.email && "border-red-500/50 ring-4 ring-red-500/10"
@@ -268,10 +268,10 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
                             {mode !== "forgot-password" && (
                                 <div className="space-y-2">
                                     <div className="flex justify-between items-center px-1">
-                                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Security Key</Label>
+                                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">{t('password_label')}</Label>
                                         {mode === "signin" && (
                                             <button type="button" onClick={() => setMode("forgot-password")} className="text-[10px] font-black uppercase tracking-[0.2em] text-primary hover:text-primary/80 transition-colors">
-                                                Recovery?
+                                                {t('forgot_password_link')}
                                             </button>
                                         )}
                                     </div>
@@ -311,7 +311,7 @@ export default function AuthHub({ initialMode = "signin" }: AuthHubProps) {
                             >
                                 {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (
                                     <span className="flex items-center gap-2">
-                                        {mode === "signin" ? t('login_button') : mode === "signup" ? "Create My Account" : "Submit"}
+                                        {mode === "signin" ? t('login_button') : mode === "signup" ? t('signup_button') : t('continue')}
                                         <ArrowRight className="w-5 h-5" />
                                     </span>
                                 )}

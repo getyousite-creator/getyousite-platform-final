@@ -147,6 +147,13 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
             });
         }
 
+        if (!user.passwordHash) {
+            return reply.code(401).send({
+                error: 'Unauthorized',
+                message: 'This account uses a different authentication method.',
+            });
+        }
+
         // Verify password with Argon2
         const validPassword = await argon2.verify(user.passwordHash, password);
 

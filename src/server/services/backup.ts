@@ -48,7 +48,7 @@ export class BackupService {
     constructor(prisma: PrismaClient, config: BackupConfig) {
         this.prisma = prisma;
         this.config = config;
-        
+
         this.s3Client = new S3Client({
             region: config.s3Region,
             credentials: {
@@ -63,12 +63,12 @@ export class BackupService {
      */
     public startScheduledBackups(): void {
         const intervalMs = this.config.backupIntervalHours * 60 * 60 * 1000;
-        
+
         console.log(`[Backup] Starting scheduled backups every ${this.config.backupIntervalHours} hours`);
-        
+
         // Run first backup immediately
         this.performBackup();
-        
+
         // Schedule recurring backups
         this.backupTimer = setInterval(() => {
             this.performBackup();
@@ -93,32 +93,32 @@ export class BackupService {
         const startTime = Date.now();
         const backupId = `backup-${Date.now()}`;
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-        
+
         try {
             console.log(`[Backup] Starting backup ${backupId}...`);
-            
+
             // Get data from all tables (incremental - only updated since last backup)
             const lastBackupTime = await this.getLastBackupTime();
-            
+
             const data = await this.exportData(lastBackupTime);
-            
+
             // Compress data
             const compressed = await this.compressData(data);
-            
+
             // Encrypt data
             const encrypted = await this.encryptData(compressed);
-            
+
             // Upload to S3
             const s3Key = `backups/${timestamp}-${backupId}.gz.enc`;
             await this.uploadToS3(s3Key, encrypted);
-            
+
             // Record backup in database
             await this.recordBackup(backupId, s3Key, encrypted.length);
-            
+
             const duration = Date.now() - startTime;
-            
+
             console.log(`[Backup] Backup ${backupId} completed in ${duration}ms`);
-            
+
             return {
                 success: true,
                 backupId,
@@ -138,7 +138,7 @@ export class BackupService {
      */
     private async exportData(since?: Date): Promise<Record<string, any[]>> {
         const data: Record<string, any[]> = {};
-        
+
         // Export users (excluding password hashes for security)
         data.users = await this.prisma.user.findMany({
             where: since ? {
@@ -153,28 +153,28 @@ export class BackupService {
                 updatedAt: true,
             },
         });
-        
+
         // Export sites
         data.sites = await this.prisma.site.findMany({
             where: since ? {
                 updatedAt: { gt: since }
             } : undefined,
         });
-        
+
         // Export deployments
         data.deployments = await this.prisma.deployment.findMany({
             where: since ? {
                 createdAt: { gt: since }
             } : undefined,
         });
-        
+
         // Export subscriptions
         data.subscriptions = await this.prisma.subscription.findMany({
             where: since ? {
                 updatedAt: { gt: since }
             } : undefined,
         });
-        
+
         // Export audit logs
         data.auditLogs = await this.prisma.auditLog.findMany({
             where: since ? {
@@ -183,9 +183,9 @@ export class BackupService {
             orderBy: { createdAt: 'desc' },
             take: 10000, // Limit to last 10k logs
         });
-        
+
         console.log(`[Backup] Exported ${Object.keys(data).length} tables`);
-        
+
         return data;
     }
 
@@ -197,17 +197,17 @@ export class BackupService {
         const compressed = await new Promise<Buffer>((resolve, reject) => {
             const chunks: Buffer[] = [];
             const gzip = createGzip();
-            
+
             gzip.on('data', (chunk) => chunks.push(chunk));
             gzip.on('end', () => resolve(Buffer.concat(chunks)));
             gzip.on('error', reject);
-            
+
             gzip.write(jsonString);
             gzip.end();
         });
-        
+
         console.log(`[Backup] Compressed from ${jsonString.length} bytes to ${compressed.length} bytes`);
-        
+
         return compressed;
     }
 
@@ -217,13 +217,13 @@ export class BackupService {
     private async encryptData(data: Buffer): Promise<Buffer> {
         // In production, use crypto.createCipheriv with AES-256-GCM
         const encryptionKey = process.env.BACKUP_ENCRYPTION_KEY || 'default-key';
-        
+
         // Simple XOR encryption (NOT SECURE - replace with AES-256)
         const encrypted = Buffer.alloc(data.length);
         for (let i = 0; i < data.length; i++) {
             encrypted[i] = data[i] ^ encryptionKey.charCodeAt(i % encryptionKey.length);
         }
-        
+
         return encrypted;
     }
 
@@ -241,9 +241,9 @@ export class BackupService {
                 'created-at': new Date().toISOString(),
             },
         });
-        
+
         await this.s3Client.send(command);
-        
+
         console.log(`[Backup] Uploaded ${key} to S3 bucket ${this.config.s3Bucket}`);
     }
 
@@ -270,8 +270,8 @@ export class BackupService {
             where: { status: 'COMPLETED' },
             orderBy: { completedAt: 'desc' },
         });
-        
-        return lastBackup?.completedAt;
+
+        return lastBackup?.completedAt ?? undefined;
     }
 
     /**
@@ -279,21 +279,21 @@ export class BackupService {
      */
     public async restoreFromBackup(backupId: string): Promise<void> {
         console.log(`[Backup] Restoring from backup ${backupId}...`);
-        
+
         // Get backup record
         const backup = await this.prisma.backup.findUnique({
             where: { id: backupId },
         });
-        
+
         if (!backup) {
             throw new Error(`Backup ${backupId} not found`);
         }
-        
+
         // Download from S3
         // Decrypt
         // Decompress
         // Import to database
-        
+
         console.log(`[Backup] Restore from ${backupId} completed`);
     }
 }

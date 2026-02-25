@@ -232,7 +232,7 @@ export const SovereignIcon: React.FC<IconProps> = ({
     strokeWidth = 1.5,
     color = "currentColor",
 }) => {
-    return React.cloneElement(children as React.ReactElement, {
+    return React.cloneElement(children as any, {
         width: size,
         height: size,
         stroke: color,

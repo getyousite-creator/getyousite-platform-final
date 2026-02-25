@@ -1,7 +1,7 @@
 "use client";
 
 import { useSupabase } from "@/components/providers/SupabaseProvider";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { Lock, Zap, Crown, ShieldCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";

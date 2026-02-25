@@ -63,7 +63,7 @@ export const DeploymentEngine = {
             });
 
             // 6. PROVISIONING ARCHITECTURE (Orchestrating Global Edge)
-            const hostname = store.custom_domain || `${slug}.getyousite.com`;
+            const hostname = store.custom_domain || `${slug}.GYS Global.com`;
             console.log(`DEPLOYMENT_ENGINE: Provisioning Edge Node for ${hostname}`);
 
             // Trigger the absolute truth provisioning action via VercelService
@@ -83,7 +83,7 @@ export const DeploymentEngine = {
 
             const liveUrl = `https://${hostname}`;
 
-            // 7. NEURAL METADATA PROPAGATION
+            // 7. Strategic METADATA PROPAGATION
             // Logic: Synchronize blueprint SEO data with store columns for Truth-Based Scoring.
             const blueprint = store.blueprint as any;
             const seoTags = blueprint?.metadata?.seo || {};

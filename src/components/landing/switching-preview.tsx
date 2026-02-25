@@ -1,12 +1,12 @@
 /**
- * Switching Preview - Live AI-Generated Site Showcase
+ * Switching Preview - Live Asset Synthesis Showcase
  * 
  * Rotates through 3 different niche examples every 5 seconds:
  * 1. Restaurant (La Trattoria)
- * 2. Technology (Nexus AI)
+ * 2. Technology (Nexus Protocol)
  * 3. E-commerce (Luxe Boutique)
  * 
- * Demonstrates GetYouSite's versatility across industries
+ * Demonstrates GYS Global's versatility across industries
  */
 
 "use client";
@@ -36,8 +36,8 @@ const PREVIEWS: Preview[] = [
     {
         id: 'tech',
         niche: 'Technology & SaaS',
-        title: 'Nexus AI',
-        description: 'Next-generation AI solutions for enterprise',
+        title: 'Nexus Protocol',
+        description: 'Advanced logical solutions for global enterprise',
         color: '#7C3AED', // Deep Purple
         cta: 'Start Free Trial',
     },
@@ -80,33 +80,30 @@ export function SwitchingPreview() {
             <div className="flex justify-center gap-2 mb-4">
                 <button
                     onClick={() => setDevice('mobile')}
-                    className={`p-2 rounded-lg transition-all ${
-                        device === 'mobile'
-                            ? 'bg-primary text-white'
-                            : 'bg-white/5 text-neutral-400 hover:text-white'
-                    }`}
+                    className={`p-2 rounded-lg transition-all ${device === 'mobile'
+                        ? 'bg-primary text-white'
+                        : 'bg-white/5 text-neutral-400 hover:text-white'
+                        }`}
                     aria-label="Mobile view"
                 >
                     <Smartphone className="w-4 h-4" />
                 </button>
                 <button
                     onClick={() => setDevice('tablet')}
-                    className={`p-2 rounded-lg transition-all ${
-                        device === 'tablet'
-                            ? 'bg-primary text-white'
-                            : 'bg-white/5 text-neutral-400 hover:text-white'
-                    }`}
+                    className={`p-2 rounded-lg transition-all ${device === 'tablet'
+                        ? 'bg-primary text-white'
+                        : 'bg-white/5 text-neutral-400 hover:text-white'
+                        }`}
                     aria-label="Tablet view"
                 >
                     <Tablet className="w-4 h-4" />
                 </button>
                 <button
                     onClick={() => setDevice('desktop')}
-                    className={`p-2 rounded-lg transition-all ${
-                        device === 'desktop'
-                            ? 'bg-primary text-white'
-                            : 'bg-white/5 text-neutral-400 hover:text-white'
-                    }`}
+                    className={`p-2 rounded-lg transition-all ${device === 'desktop'
+                        ? 'bg-primary text-white'
+                        : 'bg-white/5 text-neutral-400 hover:text-white'
+                        }`}
                     aria-label="Desktop view"
                 >
                     <Monitor className="w-4 h-4" />
@@ -129,7 +126,7 @@ export function SwitchingPreview() {
                         </div>
                         <div className="flex-1 text-center">
                             <div className="inline-block px-3 py-0.5 bg-neutral-700 rounded text-[10px] text-neutral-400">
-                                {currentPreview.title.toLowerCase().replace(' ', '')}.getyousite.com
+                                {currentPreview.title.toLowerCase().replace(' ', '')}.GYS Global.com
                             </div>
                         </div>
                     </div>
@@ -185,11 +182,10 @@ export function SwitchingPreview() {
                         {PREVIEWS.map((_, index) => (
                             <div
                                 key={index}
-                                className={`h-1 rounded-full transition-all duration-300 ${
-                                    index === currentIndex
-                                        ? 'w-8 bg-primary'
-                                        : 'w-2 bg-neutral-600'
-                                }`}
+                                className={`h-1 rounded-full transition-all duration-300 ${index === currentIndex
+                                    ? 'w-8 bg-primary'
+                                    : 'w-2 bg-neutral-600'
+                                    }`}
                             />
                         ))}
                     </div>
@@ -202,11 +198,10 @@ export function SwitchingPreview() {
                     <button
                         key={preview.id}
                         onClick={() => setCurrentIndex(index)}
-                        className={`px-4 py-2 rounded-full text-xs font-medium transition-all ${
-                            index === currentIndex
-                                ? 'bg-primary text-white'
-                                : 'bg-white/5 text-neutral-400 hover:text-white'
-                        }`}
+                        className={`px-4 py-2 rounded-full text-xs font-medium transition-all ${index === currentIndex
+                            ? 'bg-primary text-white'
+                            : 'bg-white/5 text-neutral-400 hover:text-white'
+                            }`}
                         aria-label={`Show ${preview.niche} preview`}
                     >
                         {preview.niche}

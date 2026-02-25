@@ -1,6 +1,6 @@
 import { generateCompleteWebsite } from "@/lib/ai/multi-provider";
 import { createClient } from "@/lib/supabase/server";
-import { applyPersonaMicrocopy } from "@/lib/ai/persona-microcopy";
+import { applyPersonaRefinement } from "@/lib/ai/persona-refinement";
 
 /**
  * Locale-scoped generate endpoint.
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
             locale: locale || "en",
             features: features || ["responsive", "seo", "multilingual"],
         });
-        const enrichedBlueprint = applyPersonaMicrocopy(
+        const enrichedBlueprint = applyPersonaRefinement(
             blueprint,
             { businessName, niche, vision },
             locale || "en",

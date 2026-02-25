@@ -1,26 +1,42 @@
 import { SiteBlueprint } from '@/lib/schemas';
+import { generateSiteWithCoT } from './getyousite-core';
+import { refinementEngine, RefinementState, STRPUpdateResult } from './refinement-engine';
 
 /**
- * Sovereign AI Orchestrator
- * يطبق الأوامر الـ 20 من خلال إدارة دورة حياة الموقع من الوصف إلى الكود
+ * Sovereign Engineering Orchestrator
+ * يطبق البروتوكول السيادي من خلال إدارة دورة حياة الموقع من الوصف إلى الكود
  */
-export class AIOrchestrator {
+export class SovereignOrchestrator {
   /**
-   * المرحلة المدمجة: التوليد الكامل (الأمر رقم 5 و 6 و 7)
-   * يجمع بين التحليل، التخطيط، وتوليد المحتوى في تدفق واحد سيادي عبر Abqari Engine
+   * المرحلة المدمجة: التوليد السيادي الكامل (Phases 1-3)
+   * يطبق بروتوكول: التحليل -> التخطيط -> التوليد
    */
   static async generateCompleteSite(data: { brandName: string, description: string, goal: string, style: string }, locale: string = 'ar'): Promise<SiteBlueprint> {
-    const { generateCompleteWebsite } = await import('./multi-provider');
+    console.log(`[Orchestrator] Initiating Sovereign Synthesis for: ${data.brandName}`);
 
-    console.log(`[Orchestrator] Initiating Abqari Synthesis for: ${data.brandName}`);
+    const prompt = `Brand: ${data.brandName}. Description: ${data.description}. Goal: ${data.goal}. Style: ${data.style}.`;
+    const result = await generateSiteWithCoT(prompt, locale);
 
-    const blueprint = await generateCompleteWebsite({
-      businessName: data.brandName,
-      niche: data.description,
-      vision: `Goal: ${data.goal}. Style: ${data.style}. Business Description: ${data.description}`,
-      locale: locale,
-    });
+    return result.blueprint;
+  }
 
-    return blueprint;
+  /**
+   * Conversational Refinement (STRP v1.0)
+   * يطبق بروتوكول الضبط والتحسين الذكي عبر الحوار
+   */
+  static async refineSiteConversationally(command: string, state: RefinementState): Promise<STRPUpdateResult> {
+    console.log(`[Orchestrator] Initiating STRP Refinement: ${command}`);
+    const result = await refinementEngine.processRefinement(command, state);
+    return result;
+  }
+
+  /**
+   * Partial Update — routes through full CoT generation to maintain blueprint integrity
+   */
+  static async updateSitePartially(blueprint: SiteBlueprint, command: string, locale: string = 'ar'): Promise<SiteBlueprint> {
+    console.log(`[Orchestrator] Initiating Partial Update: ${command}`);
+    const prompt = `UPDATE EXISTING SITE. Command: ${command}. Summary: ${JSON.stringify(blueprint).slice(0, 500)}`;
+    const result = await generateSiteWithCoT(prompt, locale);
+    return result.blueprint;
   }
 }

@@ -158,7 +158,7 @@ export default function DrKhalilDental(props: SovereignTemplateProps) {
                                 <ServiceCard
                                     icon={Users2}
                                     title="Invisalign Elite"
-                                    desc="Platinum-tier orthodontic alignment using AI-driven 3D modeling for perfect results."
+                                    desc="Platinum-tier orthodontic alignment using precision-guided 3D modeling for perfect results."
                                 />
                                 <ServiceCard
                                     icon={Clock}

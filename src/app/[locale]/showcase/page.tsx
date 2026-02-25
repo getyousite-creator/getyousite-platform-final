@@ -16,7 +16,7 @@ export default function ShowcasePage() {
 
             {/* CINEMATIC HERO SECTION */}
             <section className="relative pt-48 pb-32 px-6">
-                {/* Neural Mesh Background */}
+                {/* Strategic Mesh Background */}
                 <div className="absolute top-0 left-0 w-full h-full z-0 overflow-hidden">
                     <div className="absolute top-1/4 left-1/4 w-[50%] h-[50%] bg-primary/5 blur-[160px] rounded-full animate-pulse" />
                     <div className="absolute bottom-1/4 right-1/4 w-[40%] h-[40%] bg-emerald-500/5 blur-[140px] rounded-full delay-1000" />
@@ -59,7 +59,7 @@ export default function ShowcasePage() {
                         transition={{ delay: 0.4, duration: 0.8 }}
                         className="text-white/40 text-xl md:text-2xl max-w-3xl mx-auto font-light leading-relaxed mb-20"
                     >
-                        Explore the high-frequency business assets engineered by our AI Design Core. Optimized for zero-latency commerce and absolute market dominance.
+                        Explore high-frequency business assets engineered by our Strategic Synthesis Core. Optimized for zero-latency commerce and absolute market dominance.
                     </motion.p>
 
                     {/* Tech Stats Bar */}
@@ -103,7 +103,7 @@ export default function ShowcasePage() {
                     <p className="text-white/40 text-lg mb-12">Deployment takes less than 48 hours. Logic is permanent.</p>
                     <div className="flex flex-col md:flex-row items-center justify-center gap-6">
                         <button className="h-16 px-16 bg-primary hover:bg-[#2563eb] text-[#020617] font-black tracking-widest uppercase text-xs rounded-2xl shadow-[0_0_50px_rgba(59,130,246,0.5)] transition-all">
-                            Initialize Neural Build
+                            Initialize Sovereign Build
                         </button>
                     </div>
                 </div>

@@ -10,7 +10,7 @@ import { LivePreview } from "@/components/engine/LivePreview";
 import { SITE_TEMPLATES } from "@/lib/templates";
 import { SiteBlueprint } from "@/lib/schemas";
 import { useLocale } from "next-intl";
-import { applyPersonaMicrocopy } from "@/lib/ai/persona-microcopy";
+import { applyPersonaRefinement } from "@/lib/ai/persona-refinement";
 import TrustLayer from "@/components/trust/TrustLayer";
 import { trackExperimentEvent } from "@/lib/analytics/experiment-tracker";
 
@@ -52,7 +52,7 @@ function applyEdits(
         heroSection.content.subheadline = edits.subheadline;
     }
 
-    return applyPersonaMicrocopy(
+    return applyPersonaRefinement(
         next,
         {
             businessName: edits.businessContext.split(" ").slice(0, 3).join(" ") || "My Brand",
@@ -156,14 +156,14 @@ export default function PlaygroundTemplatePage() {
     const ctaLabel = isTrialExpired
         ? "Sign up to continue"
         : experimentVariant === "trust_first"
-          ? "Secure and Publish"
-          : "Publish Website";
+            ? "Secure and Publish"
+            : "Publish Website";
 
     const helperText = isTrialExpired
         ? "Trial ended. Sign up to keep editing and publish."
         : experimentVariant === "trust_first"
-          ? "Trust and security checks are ready for launch."
-          : "No signup required during trial. Signup is requested at publish.";
+            ? "Trust and security checks are ready for launch."
+            : "No signup required during trial. Signup is requested at publish.";
 
     if (!previewBlueprint) {
         return (
@@ -253,11 +253,10 @@ export default function PlaygroundTemplatePage() {
                                 `/signup?intent=publish&template=${templateId}&variant=${experimentVariant}`,
                             );
                         }}
-                        className={`w-full h-12 font-black ${
-                            experimentVariant === "trust_first"
+                        className={`w-full h-12 font-black ${experimentVariant === "trust_first"
                                 ? "bg-emerald-400 text-slate-950 hover:bg-emerald-300"
                                 : "bg-cyan-400 text-slate-950 hover:bg-cyan-300"
-                        }`}
+                            }`}
                     >
                         {ctaLabel}
                     </Button>

@@ -81,7 +81,7 @@ export const SEOService = {
             let accessibilityScore = 100;
             const bestPracticesScore = 100;
 
-            // 1. NEURAL CONTENT ANALYSIS (Blueprint Inspection)
+            // 1. Strategic CONTENT ANALYSIS (Blueprint Inspection)
             const sections = blueprint?.layout || [];
             let totalWordCount = 0;
             let brandMentioned = false;
@@ -115,7 +115,7 @@ export const SEOService = {
                 issues.push({
                     type: 'error',
                     category: 'Brand',
-                    message: 'Brand name missing from neural nodes',
+                    message: 'Brand name missing from Strategic nodes',
                     suggestion: `Integrate "${store.name}" into headlines and section descriptions.`,
                     priority: 1,
                 });
@@ -279,7 +279,7 @@ export const SEOService = {
     },
 
     /**
-     * Generate meta tags automatically using AI
+     * Generate meta tags automatically using strategic logic synthesis
      */
     async generateMetaTags(
         title: string,

@@ -1,0 +1,45 @@
+# SOVEREIGN ENGINE - INDUSTRIAL DOCKER MANIFEST
+# Multi-stage build for maximum efficiency and security
+
+# Stage 1: Build Environment
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy dependency manifests
+COPY package*.json ./
+COPY prisma ./prisma/
+
+# Install all dependencies (including dev)
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Generate Prisma Client & Build TypeScript
+RUN npx prisma generate
+RUN npm run build
+
+# Stage 2: Production Runtime
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+# Set production environment
+ENV NODE_ENV=production
+
+# Copy only necessary files from builder
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/prisma ./prisma
+
+# Security: Run as non-privileged user
+RUN addgroup -S gysgroup && adduser -S gysuser -G gysgroup
+USER gysuser
+
+# Expose Sovereign Port
+EXPOSE 3001
+
+# Activation Sequence
+CMD ["node", "dist/index.js"]

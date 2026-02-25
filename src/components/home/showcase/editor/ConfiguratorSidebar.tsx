@@ -1,7 +1,7 @@
 "use client";
 
 import { Settings, Palette, Type, Layout, CheckCircle2, Zap } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -23,7 +23,7 @@ export default function ConfiguratorSidebar({ onEdit, onLaunch }: ConfiguratorSi
 
                 {/* Categories of Controls */}
                 <div className="space-y-4">
-                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block">Neural Palette</label>
+                    <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block">Strategic Palette</label>
                     <div className="grid grid-cols-2 gap-3">
                         {[
                             { label: "Oceanic", color: "#3b82f6" },

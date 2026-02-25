@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { isSupabaseConfigured } from "@/lib/supabase";
 import { AlertCircle, ShieldAlert, Rocket } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 
 export default function SignInForm() {
     const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +35,7 @@ export default function SignInForm() {
                         type="email"
                         disabled={!isSupabaseConfigured}
                         className="w-full h-12 rounded-xl bg-secondary border border-border px-4 text-foreground focus:outline-none focus:border-primary/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        placeholder="commander@getyousite.com"
+                        placeholder="commander@GYS Global.com"
                     />
                 </div>
                 <div className="space-y-2">

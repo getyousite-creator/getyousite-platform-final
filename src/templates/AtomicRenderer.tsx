@@ -25,6 +25,17 @@ export default function AtomicRenderer({
 
     if (!blueprint) return null;
 
+    const isArabic = blueprint.metadata?.locale === "ar";
+    const sector = (blueprint.metadata as any)?.sector || "tech";
+
+    // VIP Typography Synergy Logic
+    const getFontFamily = () => {
+        if (isArabic) {
+            return "font-arabic-heading"; // IBM Plex Sans Arabic + Tajawal fallback
+        }
+        return "font-heading"; // Clash Display + Satoshi fallback
+    };
+
     const primaryColor = blueprint.theme?.primary || "#3b82f6";
     const bgColor = blueprint.theme?.backgroundColor || "#ffffff";
     const textColor = blueprint.theme?.textColor || "#000000";
@@ -61,7 +72,7 @@ export default function AtomicRenderer({
 
     return (
         <div
-            className="min-h-screen transition-colors duration-500"
+            className={`min-h-screen transition-colors duration-500 ${getFontFamily()}`}
             style={
                 {
                     "--primary-color": primaryColor,
@@ -71,8 +82,8 @@ export default function AtomicRenderer({
                 } as React.CSSProperties
             }
         >
-            {/* 1. SOVEREIGN NAVIGATION */}
-            <header className="sticky top-0 z-[100] bg-background/80 backdrop-blur-2xl border-b border-white/5">
+            {/* 1. SOVEREIGN NAVIGATION (Strategic Z-Pattern) */}
+            <header className="sticky top-0 z-[100] bg-background/80 backdrop-blur-2xl border-b border-white/5 shadow-premium">
                 <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
                     <div
                         className="font-black text-2xl tracking-tighter"
@@ -80,16 +91,27 @@ export default function AtomicRenderer({
                     >
                         {blueprint.navigation?.logo || blueprint.name}
                     </div>
-                    <ul className="hidden md:flex gap-8 text-[11px] font-black uppercase tracking-[0.3em] opacity-60">
-                        {blueprint.navigation?.links?.map((link: NavLink, i: number) => (
-                            <li
-                                key={i}
-                                className="hover:text-primary transition-colors cursor-pointer"
-                            >
-                                <a href={link.href || "#home"}>{link.label}</a>
-                            </li>
-                        ))}
-                    </ul>
+
+                    {/* High-Contrast CTA placement based on locale */}
+                    <div className="flex items-center gap-8">
+                        <ul className="hidden md:flex gap-8 text-[11px] font-black uppercase tracking-[0.3em] opacity-60">
+                            {blueprint.navigation?.links?.map((link: NavLink, i: number) => (
+                                <li
+                                    key={i}
+                                    className="hover:text-primary transition-colors cursor-pointer"
+                                >
+                                    <a href={link.href || "#home"}>{link.label}</a>
+                                </li>
+                            ))}
+                        </ul>
+
+                        <button
+                            className="hidden md:block px-6 py-2 rounded-full font-black uppercase text-[10px] tracking-widest text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
+                            style={{ backgroundColor: primaryColor }}
+                        >
+                            {isArabic ? "ابدأ الآن" : "Start Now"}
+                        </button>
+                    </div>
                 </nav>
             </header>
 
@@ -99,10 +121,10 @@ export default function AtomicRenderer({
                     <motion.section
                         key={section.id || index}
                         id={getAnchorFromSection(section, index)}
-                        initial={{ opacity: 0, y: 30 }}
+                        initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px", amount: 0.1 }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
                         className="relative overflow-hidden"
                     >
                         <ComponentLibrary
@@ -114,6 +136,7 @@ export default function AtomicRenderer({
                             textColor={textColor}
                             isEditable={!!blueprint.id}
                             priority={index === 0}
+                            storeId={meta?.id}
                         />
                     </motion.section>
                 ))}

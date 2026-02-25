@@ -5,8 +5,10 @@
  * Uses temporal middleware with persistent storage
  */
 
+import React from "react";
 import { create } from "zustand";
-import { temporal, TemporalState } from "zundo";
+import { temporal } from "zundo";
+import { useStore } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 // ============================================================================
@@ -87,40 +89,25 @@ export const useDashboardStore = create<DashboardState>()(
 // ============================================================================
 
 export function useUndo() {
-    const { undo, redo, canUndo, canRedo } = useDashboardStore(
-        (state: TemporalState<unknown>) => ({
-            undo: state.undo,
-            redo: state.redo,
-            canUndo: state.canUndo,
-            canRedo: state.canRedo,
-        })
-    );
+    const temporalStore = useDashboardStore.temporal;
+    const { undo, redo, pastStates, futureStates } = useStore(temporalStore);
+    const canUndo = pastStates.length > 0;
+    const canRedo = futureStates.length > 0;
 
     return { undo, redo, canUndo, canRedo };
 }
 
 export function useTimeTravel() {
-    const {
-        undo,
-        redo,
-        canUndo,
-        canRedo,
-        pastStates,
-        futureStates,
-    } = useDashboardStore((state: TemporalState<unknown>) => ({
-        undo: state.undo,
-        redo: state.redo,
-        canUndo: state.canUndo,
-        canRedo: state.canRedo,
-        pastStates: state.past,
-        futureStates: state.future,
-    }));
+    const temporalStore = useDashboardStore.temporal;
+    const { undo, redo, pastStates, futureStates } = useStore(temporalStore);
+    const canUndo = pastStates.length > 0;
+    const canRedo = futureStates.length > 0;
 
     const history = [
-        ...pastStates.map((state, index) => ({
+        ...pastStates.map((state: any, index: number) => ({
             type: "past" as const,
             index: pastStates.length - 1 - index,
-            settings: (state as any).settings,
+            settings: state.settings,
             timestamp: new Date().getTime() - (pastStates.length - index) * 60000,
         })),
         {
@@ -129,32 +116,22 @@ export function useTimeTravel() {
             settings: useDashboardStore.getState().settings,
             timestamp: new Date().getTime(),
         },
-        ...futureStates.map((state, index) => ({
+        ...futureStates.map((state: any, index: number) => ({
             type: "future" as const,
             index,
-            settings: (state as any).settings,
+            settings: state.settings,
             timestamp: new Date().getTime() + (index + 1) * 60000,
         })),
     ];
 
     return {
-        undo,
-        redo,
-        canUndo,
-        canRedo,
-        history,
+        undo, redo, canUndo, canRedo, history,
         jumpTo: (index: number) => {
             if (index < pastStates.length) {
-                // Jump to past
-                for (let i = 0; i <= index; i++) {
-                    undo();
-                }
+                for (let i = 0; i <= index; i++) undo();
             } else if (index > pastStates.length) {
-                // Jump to future
                 const jumpsNeeded = index - pastStates.length;
-                for (let i = 0; i < jumpsNeeded; i++) {
-                    redo();
-                }
+                for (let i = 0; i < jumpsNeeded; i++) redo();
             }
         },
     };
@@ -169,7 +146,7 @@ export const UndoButton: React.FC = () => {
 
     return (
         <button
-            onClick={undo}
+            onClick={() => undo()}
             disabled={!canUndo}
             className="flex items-center gap-2 px-3 py-1.5 bg-white/5 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed border border-white/10 rounded-[8px] transition-all text-sm"
         >
@@ -185,7 +162,7 @@ export const RedoButton: React.FC = () => {
 
     return (
         <button
-            onClick={redo}
+            onClick={() => redo()}
             disabled={!canRedo}
             className="flex items-center gap-2 px-3 py-1.5 bg-white/5 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed border border-white/10 rounded-[8px] transition-all text-sm"
         >

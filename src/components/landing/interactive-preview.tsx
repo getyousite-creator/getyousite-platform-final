@@ -1,7 +1,7 @@
 /**
- * Interactive Preview - Live AI-Generated Sites
+ * Interactive Preview - Live Sovereign-Synthesized Sites
  * 
- * Shows rotating preview of AI-generated websites
+ * Shows rotating preview of strategically generated websites
  * Changes every 5 seconds to showcase different niches
  */
 
@@ -30,8 +30,8 @@ const SITE_PREVIEWS: SitePreview[] = [
     {
         id: "tech",
         niche: "Technology",
-        title: "Nexus AI",
-        description: "Next-generation AI solutions for enterprise",
+        title: "Nexus Protocol",
+        description: "Advanced logical solutions for global enterprise",
         color: "#7C3AED",
     },
     {
@@ -82,10 +82,10 @@ export function InteractivePreview({ locale }: InteractivePreviewProps) {
                 {/* Section Header */}
                 <div className="text-center mb-12">
                     <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
-                        See AI in Action
+                        Sovereign Synthesis in Action
                     </h2>
                     <p className="text-neutral-slate max-w-2xl mx-auto">
-                        Watch as AI generates unique, professional websites for different industries
+                        Watch as our Strategic Logic synthesizes unique, professional archetypes for different industries
                     </p>
                 </div>
 
@@ -93,31 +93,28 @@ export function InteractivePreview({ locale }: InteractivePreviewProps) {
                 <div className="flex justify-center gap-4 mb-8">
                     <button
                         onClick={() => setDevice("mobile")}
-                        className={`p-2 rounded-lg transition-all ${
-                            device === "mobile"
+                        className={`p-2 rounded-lg transition-all ${device === "mobile"
                                 ? "bg-primary text-white"
                                 : "bg-white/5 text-neutral-slate hover:text-white"
-                        }`}
+                            }`}
                     >
                         <Smartphone className="w-5 h-5" />
                     </button>
                     <button
                         onClick={() => setDevice("tablet")}
-                        className={`p-2 rounded-lg transition-all ${
-                            device === "tablet"
+                        className={`p-2 rounded-lg transition-all ${device === "tablet"
                                 ? "bg-primary text-white"
                                 : "bg-white/5 text-neutral-slate hover:text-white"
-                        }`}
+                            }`}
                     >
                         <Tablet className="w-5 h-5" />
                     </button>
                     <button
                         onClick={() => setDevice("desktop")}
-                        className={`p-2 rounded-lg transition-all ${
-                            device === "desktop"
+                        className={`p-2 rounded-lg transition-all ${device === "desktop"
                                 ? "bg-primary text-white"
                                 : "bg-white/5 text-neutral-slate hover:text-white"
-                        }`}
+                            }`}
                     >
                         <Monitor className="w-5 h-5" />
                     </button>
@@ -145,7 +142,7 @@ export function InteractivePreview({ locale }: InteractivePreviewProps) {
                             </div>
                             <div className="flex-1 text-center">
                                 <div className="inline-block px-3 py-0.5 bg-white rounded text-[10px] text-neutral-500">
-                                    {currentSite.title.toLowerCase().replace(" ", "")}.getyousite.com
+                                    {currentSite.title.toLowerCase().replace(" ", "")}.GYS Global.com
                                 </div>
                             </div>
                         </div>
@@ -197,11 +194,10 @@ export function InteractivePreview({ locale }: InteractivePreviewProps) {
                             {SITE_PREVIEWS.map((_, index) => (
                                 <div
                                     key={index}
-                                    className={`w-2 h-2 rounded-full transition-all ${
-                                        index === currentIndex
+                                    className={`w-2 h-2 rounded-full transition-all ${index === currentIndex
                                             ? "bg-primary w-4"
                                             : "bg-neutral-300"
-                                    }`}
+                                        }`}
                                 />
                             ))}
                         </div>
@@ -214,11 +210,10 @@ export function InteractivePreview({ locale }: InteractivePreviewProps) {
                         <button
                             key={site.id}
                             onClick={() => setCurrentIndex(index)}
-                            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                                index === currentIndex
+                            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${index === currentIndex
                                     ? "bg-primary text-white"
                                     : "bg-white/5 text-neutral-slate hover:text-white"
-                            }`}
+                                }`}
                         >
                             {site.niche}
                         </button>

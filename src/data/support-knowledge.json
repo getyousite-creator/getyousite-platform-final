@@ -1,6 +1,6 @@
 {
     "platform": {
-        "name": "GetYouSite",
+        "name": "GYS Global",
         "vision": "Sovereign Digital Infrastructure for Professional Entities.",
         "deployment": "Automated Vercel Node-G delivery.",
         "stack": "Next.js, Supabase, PayPal, Prisma."

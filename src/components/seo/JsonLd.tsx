@@ -9,29 +9,30 @@ interface JsonLdProps {
 export default function JsonLd({ name, url, description, logo, locale }: JsonLdProps) {
     const jsonLd = {
         '@context': 'https://schema.org',
-        '@type': 'Organization',
+        '@type': 'WebApplication',
         name: name,
         url: url,
-        logo: logo,
+        image: logo,
         description: description,
+        applicationCategory: 'BusinessApplication',
+        operatingSystem: 'All',
         inLanguage: locale,
-        address: {
-            '@type': 'PostalAddress',
-            addressLocality: 'Casablanca',
-            addressCountry: 'MA'
+        offers: {
+            '@type': 'Offer',
+            'price': '0',
+            'priceCurrency': 'USD'
+        },
+        author: {
+            '@type': 'Organization',
+            'name': 'GYS Global Sovereign'
         },
         contactPoint: {
             '@type': 'ContactPoint',
             telephone: '+212-000-000000',
             contactType: 'customer service',
             areaServed: 'Global',
-            availableLanguage: ['Arabic', 'English', 'French', 'Spanish']
-        },
-        sameAs: [
-            'https://twitter.com/getyousite',
-            'https://linkedin.com/company/getyousite',
-            'https://facebook.com/getyousite'
-        ]
+            availableLanguage: ['Arabic', 'English', 'French', 'Spanish', 'German', 'Italian', 'Russian']
+        }
     };
 
     return (

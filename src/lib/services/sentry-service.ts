@@ -27,7 +27,7 @@ export const SentryService = {
 
         if (isBot) {
             // We don't necessarily block all bots (SEO crawlers are needed), 
-            // but we register them to prevent "Neural Pollution" in analytics.
+            // but we register them to prevent "Strategic Pollution" in analytics.
             return { blocked: false, reason: 'identified_non_human' };
         }
 

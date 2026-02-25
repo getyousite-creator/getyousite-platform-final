@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Compass, MapPin, Star, Volume2, ArrowRight } from "lucide-react";
 import { useLaunchModal } from "@/hooks/use-launch-modal";
 import { useTemplateEditor } from "@/hooks/use-template-editor";
-import { SovereignImage } from "@/components/ui/sovereign-image";
+import { SovereignImage } from "@/shared/components/ui/sovereign-image";
 import { SovereignTemplateProps } from "@/lib/types/template";
 import { Section } from "@/lib/schemas";
 
@@ -126,7 +126,7 @@ export default function VermaHospitality({ settings, blueprint }: SovereignTempl
                     </p>
                     <ul className="space-y-6 text-[10px] font-black uppercase tracking-[0.4em] text-zinc-800">
                         <li className="flex items-center gap-4"><ArrowRight className="w-4 h-4 text-[#c4a47c]" /> Private Concierge API</li>
-                        <li className="flex items-center gap-4"><ArrowRight className="w-4 h-4 text-[#c4a47c]" /> Neural Mood Lighting</li>
+                        <li className="flex items-center gap-4"><ArrowRight className="w-4 h-4 text-[#c4a47c]" /> Strategic Mood Lighting</li>
                         <li className="flex items-center gap-4"><ArrowRight className="w-4 h-4 text-[#c4a47c]" /> Sovereign Retreat Mode</li>
                     </ul>
                 </div>

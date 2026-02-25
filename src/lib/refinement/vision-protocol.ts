@@ -82,7 +82,7 @@ export class VisionAnalyzer {
             // Build analysis prompt based on type
             const prompt = this.buildAnalysisPrompt(request);
 
-            // Call Gemini Vision API
+            // Call Sovereign Vision Protocol
             const result = await generateWithFallback({
                 prompt,
                 jsonMode: true,
@@ -143,7 +143,7 @@ export class VisionAnalyzer {
      */
     private buildAnalysisPrompt(request: VisionAnalysisRequest): string {
         const basePrompt = `
-أنت "محلل الرؤية السيادي" (Sovereign Vision Analyst) لمنصة GetYouSite.
+أنت "محلل الرؤية السيادي" (Sovereign Vision Analyst) لمنصة GYS Global.
 
 مهمتك: تحليل الصورة المقدمة واستخراج المعلومات البصرية بدقة.
 
@@ -254,7 +254,7 @@ export class VisionAnalyzer {
 export class ClientSideColorExtractor {
     /**
      * Extract dominant colors from image using Canvas API
-     * (Fallback when AI is unavailable)
+     * (Fallback when Synthesis is unavailable)
      */
     static async extractFromImage(imageUrl: string): Promise<ExtractedColorPalette | null> {
         try {

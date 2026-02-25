@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateCompleteWebsite } from "@/lib/ai/multi-provider";
-import { applyPersonaMicrocopy } from "@/lib/ai/persona-microcopy";
+import { applyPersonaRefinement } from "@/lib/ai/persona-refinement";
 import { z } from "zod";
 
 // Strict Input Validation
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
             locale,
             features,
         });
-        const enrichedBlueprint = applyPersonaMicrocopy(
+        const enrichedBlueprint = applyPersonaRefinement(
             blueprint,
             { businessName, niche, vision },
             locale,

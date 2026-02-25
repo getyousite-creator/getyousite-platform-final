@@ -9,7 +9,7 @@
 
 import { useEffect, useCallback, useRef } from 'react';
 
-export type MessageType = 
+export type MessageType =
     | 'BLUEPRINT_UPDATE'
     | 'STYLE_UPDATE'
     | 'CONTENT_UPDATE'
@@ -60,7 +60,7 @@ function verifySignature(message: EditorMessage): boolean {
 /**
  * Create PostMessage Bridge
  */
-export function usePostMessageBridge(iframeRef: React.RefObject<HTMLIFrameElement>) {
+export function usePostMessageBridge(iframeRef: React.RefObject<HTMLIFrameElement | null>) {
     const handlersRef = useRef<Map<MessageType, Set<MessageHandler>>>(new Map());
 
     // Send message to iframe

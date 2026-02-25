@@ -156,7 +156,7 @@ export const AnalyticsService = {
                     sessionsCount++;
                 }
 
-                // Conversion detection within neural event array
+                // Conversion detection within Strategic event array
                 if (row.events && Array.isArray(row.events)) {
                     const hasConversion = row.events.some((e: any) =>
                         e.type === 'conversion' || e.type === 'lead_capture' || e.type === 'sale'

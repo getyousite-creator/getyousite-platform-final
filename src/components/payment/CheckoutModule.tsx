@@ -7,7 +7,7 @@ import { useAuth } from "@/components/providers/SupabaseProvider";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Shield, Zap } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { trackExperimentEvent } from "@/lib/analytics/experiment-tracker";
 
 interface CheckoutModuleProps {

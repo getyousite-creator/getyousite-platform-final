@@ -6,8 +6,11 @@
 CREATE TABLE IF NOT EXISTS public.users (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   email TEXT NOT NULL UNIQUE,
+  password_hash TEXT,
+  name TEXT,
   tier TEXT DEFAULT 'starter',
   credits INTEGER DEFAULT 0,
+  role TEXT DEFAULT 'USER',
   locale TEXT DEFAULT 'ar',
   timezone TEXT DEFAULT 'Africa/Casablanca',
   email_verified BOOLEAN DEFAULT false,

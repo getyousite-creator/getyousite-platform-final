@@ -35,7 +35,7 @@ export default function MasterFitness(props: SovereignTemplateProps) {
     const { settings, blueprint } = props;
     const { headline, subheadline, primaryColor = "#bef264" } = settings;
 
-    // AI Blueprint Extraction
+    // Sovereign Blueprint Synthesis
     const programsSection = blueprint?.layout?.find((s) => s.type === 'features');
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,7 +51,7 @@ export default function MasterFitness(props: SovereignTemplateProps) {
     })) : [
         { title: t("sovereign_hypertrophy"), level: t("advanced"), duration: `12 ${t("weeks")}`, img: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop", icon: Dumbbell },
         { title: t("kinetic_fat_loss"), level: t("beginner"), duration: `8 ${t("weeks")}`, img: "https://images.unsplash.com/photo-1541534741688-611c501f21ee?q=80&w=2070&auto=format&fit=crop", icon: Flame },
-        { title: t("neural_athleticism"), level: t("elite"), duration: `6 ${t("months")}`, img: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2070&auto=format&fit=crop", icon: Zap }
+        { title: t("Strategic_athleticism"), level: t("elite"), duration: `6 ${t("months")}`, img: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2070&auto=format&fit=crop", icon: Zap }
     ];
 
     const onOpen = useLaunchModal((state) => state.onOpen);
@@ -186,7 +186,7 @@ export default function MasterFitness(props: SovereignTemplateProps) {
                         <div className="flex whitespace-nowrap overflow-hidden gap-20">
                             {[1, 2, 3].map(i => (
                                 <div key={i} className="flex gap-20 animate-marquee items-center">
-                                    <span className="text-8xl font-black uppercase tracking-tighter italic opacity-10">{t("neural_muscle")}</span>
+                                    <span className="text-8xl font-black uppercase tracking-tighter italic opacity-10">{t("Strategic_muscle")}</span>
                                     <span className="w-4 h-4 rounded-full bg-lime-400" />
                                     <span className="text-8xl font-black uppercase tracking-tighter italic opacity-10">{t("sovereign_athleticism")}</span>
                                     <span className="w-4 h-4 rounded-full bg-lime-400" />

@@ -185,7 +185,7 @@ export async function verifyDomainAction(storeId: string): Promise<ActionResult<
         if (fetchError || !store) return { success: false, error: 'Store node not found.' };
         if (store.user_id !== user.data.id) return { success: false, error: 'Permission denied for this asset.' };
 
-        const hostname = store.custom_domain || (store.slug ? `${store.slug}.getyousite.com` : null);
+        const hostname = store.custom_domain || (store.slug ? `${store.slug}.gysglobal.com` : null);
         if (!hostname) return { success: false, error: 'No hostname assigned to this node.' };
 
         // 2. Perform Vercel Verification

@@ -2,7 +2,7 @@
  * Visual Identity Protocol (VIP) - Sovereign Color System
  * 
  * "Emerald Cyber-Noir" Palette
- * Moving beyond corporate blue and AI purple to create a unique, premium identity
+ * Moving beyond corporate blue and generic purple to create a unique, premium identity
  * that suggests "luxury personal engineer" rather than "template tool"
  */
 
@@ -65,7 +65,7 @@ export interface ThemeMode {
 
 /**
  * Primary brand colors - Deep emerald green representing trust and growth
- * Moving away from typical corporate blue (#2563EB) and AI purple (#7C3AED)
+ * Moving away from typical corporate blue (#2563EB) and legacy purple (#7C3AED)
  */
 export const SOVEREIGN_COLORS: ColorPalette = {
     primary: {
@@ -73,26 +73,26 @@ export const SOVEREIGN_COLORS: ColorPalette = {
         DEFAULT: "#059669", // Emerald 600 - Primary actions
         light: "#34D399",   // Emerald 400 - Highlights, hover states
     },
-    
+
     accent: {
-        neon: "#BEF264",    // Lime 300 - Electric energy, AI intelligence
+        neon: "#BEF264",    // Lime 300 - Electric energy, Strategic vision
         DEFAULT: "#84CC16", // Lime 500 - Secondary actions
         dim: "#65A30D",     // Lime 600 - Subtle accents
     },
-    
+
     neutral: {
         obsidian: "#0A0A0A", // Volcanic black - Luxury dark backgrounds
         DEFAULT: "#171717",  // Neutral 900 - Primary dark surfaces
         light: "#262626",    // Neutral 800 - Elevated surfaces
         slate: "#404040",    // Neutral 700 - Borders, dividers
     },
-    
+
     surface: {
         DEFAULT: "#0A0A0A",  // Main background (dark mode)
         elevated: "#171717", // Cards, modals
         overlay: "rgba(0, 0, 0, 0.8)", // Overlays, dialogs
     },
-    
+
     semantic: {
         success: "#10B981",  // Emerald 500 - Success states
         warning: "#F59E0B",  // Amber 500 - Warning states
@@ -111,26 +111,26 @@ export const SOVEREIGN_COLORS_LIGHT: ColorPalette = {
         DEFAULT: "#10B981", // Emerald 500
         light: "#6EE7B7",   // Emerald 300
     },
-    
+
     accent: {
         neon: "#D9F99D",    // Lime 200 - Softer neon for light mode
         DEFAULT: "#A3E635", // Lime 400
         dim: "#84CC16",     // Lime 500
     },
-    
+
     neutral: {
         obsidian: "#0A0A0A", // Keep for text
         DEFAULT: "#262626",  // Neutral 800
         light: "#525252",    // Neutral 600
         slate: "#A3A3A3",    // Neutral 400
     },
-    
+
     surface: {
         DEFAULT: "#FFFFFF",  // Pure white background
         elevated: "#FAFAFA", // Neutral 50
         overlay: "rgba(0, 0, 0, 0.5)",
     },
-    
+
     semantic: SOVEREIGN_COLORS.semantic,
 };
 
@@ -179,7 +179,7 @@ export const GRADIENT_PRESETS: GradientPreset[] = [
  */
 export function generateCSSVariables(mode: "light" | "dark" = "dark"): string {
     const colors = mode === "dark" ? SOVEREIGN_COLORS : SOVEREIGN_COLORS_LIGHT;
-    
+
     return `
 /* ============================================
    SOVEREIGN VISUAL IDENTITY - ${mode.toUpperCase()} MODE
@@ -359,10 +359,10 @@ export function calculateContrastRatio(foreground: string, background: string): 
  */
 export function validateWCAG(foreground: string, background: string): ContrastResult {
     const ratio = calculateContrastRatio(foreground, background);
-    
+
     let level: "AA" | "AAA" | "FAIL";
     let pass: boolean;
-    
+
     if (ratio >= 7.0) {
         level = "AAA";
         pass = true;
@@ -388,24 +388,24 @@ export function validateWCAG(foreground: string, background: string): ContrastRe
  */
 export function validateSovereignPalette(): ContrastResult[] {
     const results: ContrastResult[] = [];
-    
+
     // Test primary on neutral backgrounds
     results.push(validateWCAG(SOVEREIGN_COLORS.primary.DEFAULT, SOVEREIGN_COLORS.neutral.obsidian));
     results.push(validateWCAG(SOVEREIGN_COLORS.primary.DEFAULT, SOVEREIGN_COLORS.surface.DEFAULT));
-    
+
     // Test accent on neutral backgrounds
     results.push(validateWCAG(SOVEREIGN_COLORS.accent.neon, SOVEREIGN_COLORS.neutral.obsidian));
     results.push(validateWCAG(SOVEREIGN_COLORS.accent.DEFAULT, SOVEREIGN_COLORS.neutral.obsidian));
-    
+
     // Test neutral text on primary backgrounds
     results.push(validateWCAG("#FFFFFF", SOVEREIGN_COLORS.primary.deep));
     results.push(validateWCAG("#FFFFFF", SOVEREIGN_COLORS.primary.DEFAULT));
-    
+
     // Test semantic colors
     results.push(validateWCAG(SOVEREIGN_COLORS.semantic.success, SOVEREIGN_COLORS.neutral.obsidian));
     results.push(validateWCAG(SOVEREIGN_COLORS.semantic.error, SOVEREIGN_COLORS.neutral.obsidian));
     results.push(validateWCAG(SOVEREIGN_COLORS.semantic.warning, SOVEREIGN_COLORS.neutral.obsidian));
-    
+
     return results;
 }
 

@@ -8,7 +8,7 @@
  * - Automatic webhook triggers for high-risk users
  */
 
-import * as tf from '@tensorflow/tfjs-node';
+import * as tf from '@tensorflow/tfjs';
 import { UserFeature, ChurnLabel, TrainingExample } from './ml-pipeline';
 
 // ============================================================================
@@ -102,7 +102,7 @@ export class XGBoostModel {
         this.model.compile({
             optimizer: tf.train.adam(this.config.learningRate),
             loss: 'binaryCrossentropy',
-            metrics: ['accuracy', 'auc'],
+            metrics: ['accuracy'],
         });
 
         // Train
@@ -113,10 +113,10 @@ export class XGBoostModel {
             verbose: 1,
             callbacks: [
                 tf.callbacks.earlyStopping({
-                    monitor: 'val_auc',
+                    monitor: 'val_accuracy',
                     patience: 10,
                     restoreBestWeights: true,
-                }),
+                } as any),
             ],
         });
 
@@ -144,8 +144,8 @@ export class XGBoostModel {
                 inputShape: [this.featureNames.length],
                 units: 64,
                 activation: 'relu',
-                kernel_regularizer: tf.regularizer.l2({ l2: this.config.regAlpha }),
-            })
+                kernelRegularizer: tf.regularizers.l2({ l2: this.config.regAlpha }),
+            } as any)
         );
 
         model.add(tf.layers.dropout({ rate: 0.3 }));
@@ -156,8 +156,8 @@ export class XGBoostModel {
                 tf.layers.dense({
                     units: 32,
                     activation: 'relu',
-                    kernel_regularizer: tf.regularizer.l2({ l2: this.config.regLambda }),
-                })
+                    kernelRegularizer: tf.regularizers.l2({ l2: this.config.regLambda }),
+                } as any)
             );
             model.add(tf.layers.dropout({ rate: 0.2 }));
         }

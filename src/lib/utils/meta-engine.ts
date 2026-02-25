@@ -17,7 +17,7 @@ export class MetaEngine {
         const heroImage = heroSection?.content?.image;
 
         return {
-            title: `${heroTitle} | Developed with GetYouSite`,
+            title: `${heroTitle} | Developed with GYS Global`,
             description: metaDesc,
             openGraph: {
                 title: heroTitle,
@@ -41,7 +41,7 @@ export class MetaEngine {
      */
     static getStandardMetadata(title: string, description: string): Metadata {
         return {
-            title: `${title} | GetYouSite platform`,
+            title: `${title} | GYS Global platform`,
             description: description,
         };
     }

@@ -15,10 +15,24 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-20 mb-20">
                     {/* Brand Section */}
                     <div className="space-y-6">
-                        <h3 className="text-3xl font-bold tracking-tighter text-white">GET<span className="text-primary italic font-light">YOU</span>SITE</h3>
+                        <div className="space-y-2">
+                            <h3 className="text-3xl font-black tracking-[-0.05em] text-white leading-none uppercase italic">GYS <span className="text-primary not-italic font-black">GLOBAL</span></h3>
+                            <div className="text-[9px] font-black tracking-[0.5em] text-white/20 uppercase">Strategic Engineering Firm</div>
+                        </div>
                         <p className="text-white/30 text-[11px] font-bold uppercase tracking-[.25em] leading-relaxed max-w-[200px]">
                             {t('tagline')}
                         </p>
+                        <div className="pt-4 flex items-center gap-4 opacity-30 grayscale hover:grayscale-0 hover:opacity-100 transition-all cursor-crosshair">
+                            <div className="h-10 w-10 border border-white/20 rounded flex items-center justify-center">
+                                <span className="text-[8px] font-black leading-none text-center">ISO<br />9001</span>
+                            </div>
+                            <div className="h-10 w-10 border border-white/20 rounded flex items-center justify-center">
+                                <span className="text-[8px] font-black leading-none text-center">GDPR<br />READY</span>
+                            </div>
+                            <div className="h-10 w-10 border border-white/20 rounded flex items-center justify-center">
+                                <span className="text-[8px] font-black leading-none text-center">SAAS<br />V2.1</span>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Navigation Cluster */}
@@ -28,8 +42,9 @@ export default function Footer() {
                             <div className="h-px flex-1 bg-white/5" />
                         </h4>
                         <ul className="space-y-4 text-[11px] font-bold uppercase tracking-[0.15em] text-white/30">
-                            <li><Link href="/services" className="hover:text-primary transition-colors">{t('aiEngine')}</Link></li>
+                            <li><Link href="/services" className="hover:text-primary transition-colors">{t('strategicEngine')}</Link></li>
                             <li><Link href="/pricing" className="hover:text-primary transition-colors">{t('pricing')}</Link></li>
+                            <li><Link href="/templates" className="hover:text-primary transition-colors">{t('portfolio')}</Link></li>
                             <li><Link href="/blog" className="hover:text-primary transition-colors">{t('blog')}</Link></li>
                             <li><Link href="/contact" className="hover:text-primary transition-colors">{t('contact')}</Link></li>
                         </ul>
@@ -75,9 +90,9 @@ export default function Footer() {
                 <div className="border-t border-white/5 pt-12 flex flex-col md:flex-row items-center justify-between gap-8">
                     <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-white/10">{t('copyright')}</p>
                     <div className="flex items-center gap-8">
-                        <a href="https://twitter.com/getyousite" target="_blank" rel="noopener noreferrer" aria-label="GetYouSite on X" className="text-white/20 hover:text-primary transition-all hover:scale-110"><Twitter size={18} /></a>
-                        <a href="https://github.com/getyousite-creator" target="_blank" rel="noopener noreferrer" aria-label="GetYouSite on GitHub" className="text-white/20 hover:text-primary transition-all hover:scale-110"><Github size={18} /></a>
-                        <a href="https://www.linkedin.com/company/getyousite" target="_blank" rel="noopener noreferrer" aria-label="GetYouSite on LinkedIn" className="text-white/20 hover:text-primary transition-all hover:scale-110"><Linkedin size={18} /></a>
+                        <a href="https://twitter.com/gysglobal" target="_blank" rel="noopener noreferrer" aria-label="GYS Global on X" className="text-white/20 hover:text-primary transition-all hover:scale-110"><Twitter size={18} /></a>
+                        <a href="https://github.com/gys-global" target="_blank" rel="noopener noreferrer" aria-label="GYS Global on GitHub" className="text-white/20 hover:text-primary transition-all hover:scale-110"><Github size={18} /></a>
+                        <a href="https://www.linkedin.com/company/gys-global" target="_blank" rel="noopener noreferrer" aria-label="GYS Global on LinkedIn" className="text-white/20 hover:text-primary transition-all hover:scale-110"><Linkedin size={18} /></a>
                     </div>
                 </div>
             </div>

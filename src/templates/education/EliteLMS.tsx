@@ -114,7 +114,7 @@ export default function EliteLMS({ settings }: EliteLMSProps) {
             <section className="bg-slate-900 py-32 px-10 rounded-t-[60px] text-white">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16">
                     <Module title="Quantum Thinking" duration="12h" icon={BookOpen} color="#6366f1" />
-                    <Module title="Neural Architectures" duration="24h" icon={ShieldCheck} color="#10b981" />
+                    <Module title="Strategic Architectures" duration="24h" icon={ShieldCheck} color="#10b981" />
                     <Module title="Sovereign Design" duration="18h" icon={Trophy} color="#f59e0b" />
                 </div>
             </section>

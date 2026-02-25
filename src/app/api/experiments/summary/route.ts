@@ -10,7 +10,7 @@ import {
 
 export async function GET(req: NextRequest) {
     try {
-        const AUTHORIZED_EMAIL = "u110877386@getyousite.com";
+        const AUTHORIZED_EMAIL = "u110877386@GYS Global.com";
         const supabase = await createClient();
         const {
             data: { user },

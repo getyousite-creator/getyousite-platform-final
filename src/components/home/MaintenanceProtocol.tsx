@@ -13,7 +13,7 @@ export default function MaintenanceProtocol() {
                 <div className="w-12 h-12 border border-border flex items-center justify-center rotate-45 bg-card">
                     <Hammer className="w-6 h-6 -rotate-45 text-foreground" />
                 </div>
-                <span className="text-xl font-black tracking-tighter uppercase italic">GetYouSite Platform</span>
+                <span className="text-xl font-black tracking-tighter uppercase italic">GYS Global Platform</span>
             </div>
 
             {/* STATUS CAROUSEL (STATIC LOGIC) */}

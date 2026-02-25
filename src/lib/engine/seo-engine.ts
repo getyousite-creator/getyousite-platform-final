@@ -1,6 +1,6 @@
 /**
  * SEO INTEGRITY ENGINE
- * Logic: Neural-based heuristic analysis of site performance and search visibility.
+ * Logic: Strategic-based heuristic analysis of site performance and search visibility.
  * Goal: Zero-tolerance for technical debt and conversion blockers.
  */
 
