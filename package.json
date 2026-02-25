@@ -27,7 +27,6 @@
         "test:coverage": "vitest run --coverage",
         "test:integration": "vitest run --config vitest.config.ts",
         "test:smoke": "playwright test --grep @smoke",
-        "prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then husky; fi",
         "postinstall": "prisma generate"
     },
     "lint-staged": {
