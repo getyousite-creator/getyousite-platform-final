@@ -24,13 +24,16 @@ export async function proxy(request: NextRequest) {
 
     // 1. SOVEREIGN DOMAIN RESOLUTION
     const mainDomains = [
-        'GYS Global.com',
+        'getyousite.com',
         'localhost:3000',
-        'GYS Global-platform.vercel.app',
-        'GYS Global.vercel.app'
+        'getyousite-platform-final-p8dr.vercel.app'
     ];
-    const isMainDomain = mainDomains.some(d => hostname === d || hostname.endsWith(`.${d}`));
-    const isRoot = mainDomains.includes(hostname);
+
+    // Logic: If it contains 'vercel.app' and doesn't match a custom domain protocol, 
+    // it's treated as main platform infrastructure.
+    const isMainDomain = mainDomains.some(d => hostname === d || hostname.endsWith(`.${d}`)) ||
+        hostname.includes('vercel.app');
+    const isRoot = isMainDomain;
 
     // Keep Supabase callback route non-localized. It must stay at /auth/callback.
     if (pathname.startsWith('/auth/callback')) {
